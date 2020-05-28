@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kravel.server.auth.mapper.AccountMapper">
-    <select id="selectAccount" resultType="account">
+    <select id="selectAccount" resultType="com.kravel.server.auth.model.Account">
 		SELECT
 			*
 		FROM

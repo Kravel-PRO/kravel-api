@@ -17,7 +17,7 @@ public class AuthController {
 
     @PostMapping("/{id}")
     public void selectAccount(@PathVariable("id") String loginEmail) {
-        Account account = accountMapper.selectAccount(loginEmail);
+        Account account = accountMapper.findByLoginEmail(loginEmail);
         System.out.println(account);
         System.out.println("HelloWorld");
     }
