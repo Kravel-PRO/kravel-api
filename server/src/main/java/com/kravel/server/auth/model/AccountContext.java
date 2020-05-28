@@ -11,8 +11,11 @@ import java.util.stream.Collectors;
 
 public class AccountContext extends User {
 
-    private AccountContext(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    private Account account;
+
+    private AccountContext(Account account, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
+        this.account = account;
     }
 
     private static List<SimpleGrantedAuthority> parseAuthorities(UserRole role) {
@@ -20,7 +23,11 @@ public class AccountContext extends User {
     }
 
     public static AccountContext fromAccountModel(Account account) {
-        return new AccountContext(account.getLoginEmail(), account.getLoginPw(), parseAuthorities(account.getUserRole()));
+        return new AccountContext(account, account.getLoginEmail(), account.getLoginPw(), parseAuthorities(account.getUserRole()));
+    }
+
+    public Account getAccount() {
+        return account;
     }
 
 }
