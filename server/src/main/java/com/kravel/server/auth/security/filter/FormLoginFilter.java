@@ -1,5 +1,8 @@
 package com.kravel.server.auth.security.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kravel.server.auth.dto.FormLoginDTO;
+import com.kravel.server.auth.security.token.PreAuthorizationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -33,8 +36,16 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        return null;
+    public Authentication attemptAuthentication(
+            HttpServletRequest req,
+            HttpServletResponse res
+    ) throws AuthenticationException, IOException, ServletException {
+
+        FormLoginDTO dto = new ObjectMapper().readValue(req.getReader(), FormLoginDTO.class);
+
+        PreAuthorizationToken token = new PreAuthorizationToken(dto);
+
+        return super.getAuthenticationManager().authenticate(token);
     }
 
     @Override
