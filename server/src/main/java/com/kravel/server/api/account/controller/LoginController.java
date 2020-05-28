@@ -1,6 +1,6 @@
 package com.kravel.server.api.account.controller;
 
-import com.kravel.server.auth.domain.Account;
+import com.kravel.server.auth.model.Account;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

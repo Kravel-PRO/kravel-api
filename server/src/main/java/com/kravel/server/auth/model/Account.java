@@ -1,10 +1,12 @@
-package com.kravel.server.auth.domain;
+package com.kravel.server.auth.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.ibatis.type.Alias;
 
 @Getter
 @Setter
+@Alias("account")
 public class Account {
     private Long accountId;
     private String userName;

@@ -1,4 +1,4 @@
-package com.kravel.server.auth.domain;
+package com.kravel.server.auth.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
