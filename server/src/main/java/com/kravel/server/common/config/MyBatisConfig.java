@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan("com.kravel.server.auth.mapper")
+@MapperScan({"com.kravel.server.auth.mapper"})
 @EnableTransactionManagement
 public class MyBatisConfig {
 
@@ -27,6 +27,7 @@ public class MyBatisConfig {
 
         Resource[] res = new PathMatchingResourcePatternResolver().getResources("classpath:mapper/**/*.xml");
         sessionFactory.setMapperLocations(res);
+        sessionFactory.setTypeAliasesPackage("com.kravel.server/**");
 
         return sessionFactory.getObject();
     }

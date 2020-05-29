@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface AccountMapper {
 
     public Account findByLoginEmail(@Param("loginEmail") String loginEmail);
+
+    public int saveAccount(@Param("account") Account account);
 }
