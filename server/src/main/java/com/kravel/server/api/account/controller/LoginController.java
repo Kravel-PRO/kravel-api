@@ -1,6 +1,9 @@
 package com.kravel.server.api.account.controller;
 
 import com.kravel.server.auth.model.Account;
+import com.kravel.server.auth.security.token.PostAuthorizationToken;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,8 +20,12 @@ public class LoginController {
         return  new Account();
     }
 
+    // EXAMPLE
     @PutMapping("/{id}")
-    public Account modifyAccount(@PathVariable("id") int id) {
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public Account modifyAccount(@PathVariable("id") int id, Authentication authentication) {
+        PostAuthorizationToken token = (PostAuthorizationToken) authentication;
+
         return new Account();
     }
 

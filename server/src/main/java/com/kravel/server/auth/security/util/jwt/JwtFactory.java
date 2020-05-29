@@ -1,4 +1,4 @@
-package com.kravel.server.auth.security.factory;
+package com.kravel.server.auth.security.util.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -6,11 +6,9 @@ import com.kravel.server.auth.model.AccountContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 @Component
 public class JwtFactory {
@@ -27,6 +25,7 @@ public class JwtFactory {
         try {
             token = JWT.create()
                     .withIssuer("ooeunz")
+                    .withClaim("LOGIN_EMAIL", context.getAccount().getLoginEmail())
                     .withClaim("USER_ROLE", context.getAccount().getUserRole().getRoleName())
                     .sign(generateAlgorithm());
 

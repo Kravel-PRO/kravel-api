@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kravel.server.auth.dto.TokenDTO;
 import com.kravel.server.auth.model.AccountContext;
-import com.kravel.server.auth.security.factory.JwtFactory;
+import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,8 +41,6 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
     }
 
     private void processResponse(HttpServletResponse res, TokenDTO dto) throws JsonProcessingException, IOException {
-
-        System.out.println("token:" + objectMapper.writeValueAsString(dto));
 
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
         res.setStatus(HttpStatus.OK.value());
