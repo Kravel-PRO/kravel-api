@@ -5,7 +5,6 @@ import com.kravel.server.auth.model.Account;
 import com.kravel.server.auth.model.AccountContext;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.security.token.PreAuthorizationToken;
-import com.kravel.server.auth.service.AccountContextService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -19,8 +18,9 @@ import java.util.NoSuchElementException;
 public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private AccountContextService accountContextService;
     private AccountMapper accountMapper;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -50,6 +50,6 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
     }
 
     private boolean isCorrectPassword(String password, Account account) {
-        return passwordEncoder.matches(account.getLoginPw(), password);
+        return passwordEncoder.matches(password, account.getLoginPw());
     }
 }

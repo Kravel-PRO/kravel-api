@@ -3,6 +3,8 @@ package com.kravel.server.auth.security.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kravel.server.auth.dto.FormLoginDTO;
 import com.kravel.server.auth.security.token.PreAuthorizationToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -14,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 
 public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -55,6 +58,12 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        super.unsuccessfulAuthentication(request, response, failed);
+        AuthenticationFailureHandler handler = (req, res, exception) -> {
+            Logger log = LoggerFactory.getLogger("authentication_failure");
+
+            log.error(exception.getMessage());
+        };
+
+        handler.onAuthenticationFailure(request, response, failed);
     }
 }

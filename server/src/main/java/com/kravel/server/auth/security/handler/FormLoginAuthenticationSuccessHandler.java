@@ -23,6 +23,8 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
 
     @Autowired
     private JwtFactory factory;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @Override
