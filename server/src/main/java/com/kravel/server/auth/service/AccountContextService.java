@@ -13,17 +13,22 @@ import org.springframework.stereotype.Component;
 public class AccountContextService implements UserDetailsService {
 
     @Autowired
-    AccountMapper accountMapper;
+    private AccountMapper accountMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        try {
 
             Account account = accountMapper.findByLoginEmail(username);
-            if (account.getLoginEmail().isEmpty()) {
-                throw new UsernameNotFoundException("Account is empty!");
-            }
+//            if (account.getLoginEmail().isEmpty()) {
+//                throw new UsernameNotFoundException("Account is empty!");
+//            }
 
             return getAccountContext(account);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     private AccountContext getAccountContext(Account account) {

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kravel.server.auth.dto.TokenDTO;
 import com.kravel.server.auth.model.AccountContext;
-import com.kravel.server.auth.security.factory.JwtFactory;
+import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,12 +30,9 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException, ServletException {
 
-        PostAuthorizationToken token = (PostAuthorizationToken) auth;
-
-        AccountContext context = (AccountContext) token.getPrincipal();
+        AccountContext context = ((PostAuthorizationToken) auth).getAccountContext();
 
         String tokenString = factory.generateToken(context);
-
         processResponse(res, writeDTO(tokenString));
     }
 
@@ -43,9 +40,10 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
         return new TokenDTO(token);
     }
 
-    private void processResponse(HttpServletResponse res, TokenDTO tokenDTO) throws JsonProcessingException, IOException {
+    private void processResponse(HttpServletResponse res, TokenDTO dto) throws JsonProcessingException, IOException {
+
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
         res.setStatus(HttpStatus.OK.value());
-        res.getWriter().write(objectMapper.writeValueAsString(tokenDTO));
+        res.getWriter().write(objectMapper.writeValueAsString(dto));
     }
 }

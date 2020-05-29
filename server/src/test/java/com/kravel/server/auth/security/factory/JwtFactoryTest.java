@@ -3,6 +3,7 @@ package com.kravel.server.auth.security.factory;
 import com.kravel.server.auth.model.Account;
 import com.kravel.server.auth.model.AccountContext;
 import com.kravel.server.auth.model.UserRole;
+import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,8 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)

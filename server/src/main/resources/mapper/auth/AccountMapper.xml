@@ -7,7 +7,8 @@
 			tam.ACCOUNT_ID accountId,
 			tam.USER_NAME userName,
 			tam.LOGIN_EMAIL loginEmail,
-			tam.LOGIN_PW loginPw
+			tam.LOGIN_PW loginPw,
+			tam.USER_ROLE userRole
 		FROM
 			tb_account_main tam
 		WHERE
