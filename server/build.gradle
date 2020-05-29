@@ -27,6 +27,8 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile group: 'com.auth0', name: 'java-jwt', version: '3.3.0'
 
+    compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4', version: '1.16'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
     compileOnly 'org.projectlombok:lombok'

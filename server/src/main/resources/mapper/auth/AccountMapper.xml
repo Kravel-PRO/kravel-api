@@ -2,13 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kravel.server.auth.mapper.AccountMapper">
-    <select id="selectAccount" parameterType="string" resultType="com.kravel.server.auth.model.Account">
+    <select id="findByLoginEmail" parameterType="string" resultType="com.kravel.server.auth.model.Account">
 		SELECT
-			*
+			tam.ACCOUNT_ID accountId,
+			tam.USER_NAME userName,
+			tam.LOGIN_EMAIL loginEmail
 		FROM
 			tb_account_main tam
 		WHERE
-			tam.LOGIN_EMAIL = #{loginEmail}
+			tam.LOGIN_EMAIL = #{loginEmail};
 	</select>
 
 </mapper>
