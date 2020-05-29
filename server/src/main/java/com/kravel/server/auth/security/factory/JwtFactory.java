@@ -15,8 +15,8 @@ import java.util.List;
 @Component
 public class JwtFactory {
 
-    @Value("${auth.jwt.secret-key}")
-    private static String secretKey;
+    @Value("${keys.jwt.secret-key}")
+    private String secretKey;
 
     private static final Logger log = LoggerFactory.getLogger(JwtFactory.class);
 

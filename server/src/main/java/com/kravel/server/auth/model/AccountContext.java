@@ -18,12 +18,12 @@ public class AccountContext extends User {
         this.account = account;
     }
 
-    private static List<SimpleGrantedAuthority> parseAuthorities(UserRole role) {
-        return Arrays.asList(role).stream().map(r -> new SimpleGrantedAuthority(r.getRoleName())).collect(Collectors.toList());
-    }
-
     public static AccountContext fromAccountModel(Account account) {
         return new AccountContext(account, account.getLoginEmail(), account.getLoginPw(), parseAuthorities(account.getUserRole()));
+    }
+
+    private static List<SimpleGrantedAuthority> parseAuthorities(UserRole role) {
+        return Arrays.asList(role).stream().map(r -> new SimpleGrantedAuthority(r.getRoleName())).collect(Collectors.toList());
     }
 
     public Account getAccount() {

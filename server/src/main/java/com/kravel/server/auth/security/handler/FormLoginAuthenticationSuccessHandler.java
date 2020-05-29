@@ -30,12 +30,9 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException, ServletException {
 
-        PostAuthorizationToken token = (PostAuthorizationToken) auth;
-
-        AccountContext context = (AccountContext) token.getPrincipal();
+        AccountContext context = ((PostAuthorizationToken) auth).getAccountContext();
 
         String tokenString = factory.generateToken(context);
-
         processResponse(res, writeDTO(tokenString));
     }
 
@@ -43,9 +40,12 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
         return new TokenDTO(token);
     }
 
-    private void processResponse(HttpServletResponse res, TokenDTO tokenDTO) throws JsonProcessingException, IOException {
+    private void processResponse(HttpServletResponse res, TokenDTO dto) throws JsonProcessingException, IOException {
+
+        System.out.println("token:" + objectMapper.writeValueAsString(dto));
+
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
         res.setStatus(HttpStatus.OK.value());
-        res.getWriter().write(objectMapper.writeValueAsString(tokenDTO));
+        res.getWriter().write(objectMapper.writeValueAsString(dto));
     }
 }
