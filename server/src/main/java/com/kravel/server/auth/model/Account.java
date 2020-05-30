@@ -12,6 +12,7 @@ public class Account {
     private String userName;
     private String loginEmail;
     private String loginPw;
+    private String checkPw;
     private String nickName;
     private String phoneNum;
     private String gender;
