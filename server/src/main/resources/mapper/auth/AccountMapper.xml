@@ -14,6 +14,15 @@
 		WHERE
 			tam.LOGIN_EMAIL = #{loginEmail};
 	</select>
+	
+	<select id="checkDuplicateLoginEmail" parameterType="string" resultType="int">
+		SELECT
+			COUNT(tam.ACCOUNT_ID)
+		FROM
+			tb_account_main tam
+		WHERE
+			tam.LOGIN_EMAIL = ${loginEmail};
+	</select>
 
 	<insert id="saveAccount" parameterType="account">
 		INSERT INTO
