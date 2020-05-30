@@ -21,7 +21,7 @@
 		FROM
 			tb_account_main tam
 		WHERE
-			tam.LOGIN_EMAIL = ${loginEmail};
+			tam.LOGIN_EMAIL = #{loginEmail};
 	</select>
 
 	<insert id="saveAccount" parameterType="account">

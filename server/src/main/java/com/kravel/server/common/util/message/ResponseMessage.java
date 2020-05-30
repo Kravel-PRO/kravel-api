@@ -5,6 +5,8 @@ import com.kravel.server.common.util.exception.AbstractBaseException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +20,7 @@ public class ResponseMessage {
     private int code;
     private boolean status;
     private String message;
-    private Date timestamp;
+    private String timestamp;
     private Map<String, Object> data;
     private ErrorMessage error;
 
@@ -31,7 +33,7 @@ public class ResponseMessage {
         this.code = httpStatus.value();
         this.status = (httpStatus.isError())? false:true;
         this.message = httpStatus.getReasonPhrase();
-        this.timestamp = new Date();
+        this.timestamp = convertDateFormat(new Date());
     }
 
     public ResponseMessage(AbstractBaseException ex, String referedUrl) {
@@ -41,7 +43,7 @@ public class ResponseMessage {
         this.status = (httpStatus.isError())? false:true;
         this.message = httpStatus.getReasonPhrase();
         this.error = new ErrorMessage(code, ex.getMessage(), referedUrl);
-        this.timestamp = new Date();
+        this.timestamp = convertDateFormat(new Date());
     }
 
     public ResponseMessage(HttpStatus status, Object result) {
@@ -55,6 +57,11 @@ public class ResponseMessage {
 
     public void remove(String key) {
         this.data.remove(key);
+    }
+
+    private String convertDateFormat(Date date) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(date);
     }
 }
 

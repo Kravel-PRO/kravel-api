@@ -18,13 +18,13 @@ public class AccountContextService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-
             Account account = accountMapper.findByLoginEmail(username);
-//            if (account.getLoginEmail().isEmpty()) {
-//                throw new UsernameNotFoundException("Account is empty!");
-//            }
+            if (account.getLoginEmail().isEmpty()) {
+                throw new UsernameNotFoundException("Account is empty!");
+            }
 
             return getAccountContext(account);
+
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

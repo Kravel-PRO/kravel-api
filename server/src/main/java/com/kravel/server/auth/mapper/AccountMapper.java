@@ -12,4 +12,6 @@ public interface AccountMapper {
     public Account findByLoginEmail(@Param("loginEmail") String loginEmail);
 
     public int saveAccount(@Param("account") Account account);
+
+    public int checkDuplicateLoginEmail(@Param("loginEmail") String loginEmail);
 }
