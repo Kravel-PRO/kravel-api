@@ -18,19 +18,23 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/sign-up")
-//    @ExceptionHandler(InvalidRequestException.class)
-    public ResponseMessage selectAccount(HttpServletRequest req,
-                                         Exception exception,
+    public ResponseMessage signUpAccount(HttpServletRequest req, @RequestBody Account account) throws Exception {
+        return new ResponseMessage(HttpStatus.OK, authService.signUpAccount(account));
+    }
 
-                                         @RequestBody Account account) throws Exception {
+    @PutMapping("/{accountId}")
+    public ResponseMessage updateAccount(@PathVariable("accountId") int accountId, @RequestBody Account account) throws Exception {
+        return new ResponseMessage(HttpStatus.CREATED, authService.updateAccount(accountId, account));
+    }
 
-        if (authService.signUpAccount(account) > 0) {
-            return new ResponseMessage(HttpStatus.OK);
-        }
+    @DeleteMapping("/{accountId}")
+    public ResponseMessage deleteAccount(@PathVariable("accountId") int accountId, @RequestBody Account account) throws Exception {
+        return new ResponseMessage(HttpStatus.ACCEPTED, authService.deleteAccount(accountId, account));
+    }
 
-        return new ResponseMessage(
-                new InvalidRequestException("hi"),
-                req.getRequestURL().toString()
-        );
+    @ExceptionHandler(InvalidRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseMessage exceptionHandler(HttpServletRequest req, Exception e) {
+        return new ResponseMessage(new InvalidRequestException(e.getMessage(), e), req.getRequestURL().toString());
     }
 }

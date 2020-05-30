@@ -37,7 +37,9 @@ public class ResponseMessage {
     }
 
     public ResponseMessage(AbstractBaseException ex, String referedUrl) {
+
         HttpStatus httpStatus = ex.getHttpStatus();
+
         this.data = new HashMap<>();
         this.code = httpStatus.value();
         this.status = (httpStatus.isError())? false:true;
@@ -60,7 +62,7 @@ public class ResponseMessage {
     }
 
     private String convertDateFormat(Date date) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);
     }
 }

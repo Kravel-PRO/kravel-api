@@ -14,6 +14,19 @@
 		WHERE
 			tam.LOGIN_EMAIL = #{loginEmail};
 	</select>
+
+	<select id="findByAccountId" parameterType="int" resultType="account">
+		SELECT
+			tam.ACCOUNT_ID accountId,
+			tam.USER_NAME userName,
+			tam.LOGIN_EMAIL loginEmail,
+			tam.LOGIN_PW loginPw,
+			tam.USER_ROLE userRole
+		FROM
+			tb_account_main tam
+		WHERE
+			tam.ACCOUNT_ID = #{accountId};
+	</select>
 	
 	<select id="checkDuplicateLoginEmail" parameterType="string" resultType="int">
 		SELECT
@@ -43,6 +56,26 @@
 			#{account.gender}
 		);
 	</insert>
+
+	<update id="updateAccount">
+		UPDATE
+			tb_account_main
+		SET
+			LOGIN_PW = #{account.loginPw},
+			NICK_NAME = #{account.nickName},
+			PHONE_NUM = #{account.phoneNum}
+		WHERE
+			ACCOUNT_ID = #{accountId};
+	</update>
+
+	<delete id="deleteAccount">
+		DELETE FROM
+			tb_account_main
+		WHERE
+			ACCOUNT_ID = #{accountId};
+
+
+	</delete>
 
 
 
