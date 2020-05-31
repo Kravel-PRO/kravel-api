@@ -35,7 +35,6 @@ public class ResponseMessage {
     }
 
     public ResponseMessage(AbstractBaseException ex, String referedUrl) {
-
         HttpStatus httpStatus = ex.getHttpStatus();
 
         this.data = new HashMap<>();

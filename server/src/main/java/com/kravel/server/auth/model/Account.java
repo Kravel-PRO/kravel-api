@@ -14,7 +14,6 @@ public class Account {
     private String loginPw;
     private String checkPw;
     private String nickName;
-    private String phoneNum;
     private String gender;
     private String createDe;
     private String updateDe;

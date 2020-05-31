@@ -57,13 +57,20 @@
 		);
 	</insert>
 
-	<update id="updateAccount">
+	<update id="updateAccountLoginPw">
 		UPDATE
 			tb_account_main
 		SET
 			LOGIN_PW = #{account.loginPw},
+		WHERE
+			ACCOUNT_ID = #{accountId};
+	</update>
+
+	<update id="updateAccountNickName">
+		UPDATE
+			tb_account_main
+		SET
 			NICK_NAME = #{account.nickName},
-			PHONE_NUM = #{account.phoneNum}
 		WHERE
 			ACCOUNT_ID = #{accountId};
 	</update>
@@ -73,8 +80,6 @@
 			tb_account_main
 		WHERE
 			ACCOUNT_ID = #{accountId};
-
-
 	</delete>
 
 

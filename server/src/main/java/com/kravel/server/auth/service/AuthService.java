@@ -30,7 +30,7 @@ public class AuthService {
         return accountMapper.saveAccount(account) != 0;
     }
 
-    public boolean updateAccount(int accountId, Account account) throws Exception {
+    public boolean updateAccountLoginPw(int accountId, Account account) throws Exception {
 
         Account savedAccount = accountMapper.findByAccountId(accountId);
         if (!passwordEncoder.matches(account.getCheckPw(), savedAccount.getLoginPw())) {
@@ -38,7 +38,13 @@ public class AuthService {
         }
 
         account.setLoginPw(encodePassword(account));
-        return accountMapper.updateAccount(accountId, account) != 0;
+        return accountMapper.updateAccountLoginPw(accountId, account) != 0;
+    }
+
+    public boolean updateAccountNickName(int accountId, Account account) throws Exception {
+
+        account.setLoginPw(encodePassword(account));
+        return accountMapper.updateAccountNickName(accountId, account) != 0;
     }
 
     public boolean deleteAccount(int accountId, Account account) throws Exception {

@@ -18,23 +18,38 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/sign-up")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseMessage signUpAccount(HttpServletRequest req, @RequestBody Account account) throws Exception {
         return new ResponseMessage(HttpStatus.OK, authService.signUpAccount(account));
     }
 
     @PutMapping("/{accountId}")
-    public ResponseMessage updateAccount(@PathVariable("accountId") int accountId, @RequestBody Account account) throws Exception {
-        return new ResponseMessage(HttpStatus.CREATED, authService.updateAccount(accountId, account));
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseMessage updateAccount(HttpServletRequest req,
+                                         @PathVariable("accountId") int accountId,
+                                         @RequestParam("type") String type,
+                                         @RequestBody Account account) throws Exception {
+        boolean result ;
+        switch (type) {
+            case "password": result = authService.updateAccountLoginPw(accountId, account);
+                break;
+
+            case "nickname": result = authService.updateAccountNickName(accountId, account);
+                break;
+
+            default:
+                return new ResponseMessage(
+                        new InvalidRequestException("유효하지 않는 값입니다."),
+                        req.getRequestURL().toString());
+        }
+
+        return new ResponseMessage(HttpStatus.CREATED, result);
     }
 
     @DeleteMapping("/{accountId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseMessage deleteAccount(@PathVariable("accountId") int accountId, @RequestBody Account account) throws Exception {
         return new ResponseMessage(HttpStatus.ACCEPTED, authService.deleteAccount(accountId, account));
     }
 
-    @ExceptionHandler(InvalidRequestException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseMessage exceptionHandler(HttpServletRequest req, Exception e) {
-        return new ResponseMessage(new InvalidRequestException(e.getMessage(), e), req.getRequestURL().toString());
-    }
 }
