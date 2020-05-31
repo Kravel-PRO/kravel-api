@@ -11,15 +11,15 @@ public interface MemberMapper {
 
     public Member findByLoginEmail(@Param("loginEmail") String loginEmail);
 
-    public Member findByMemberId(@Param("memberId") int memberId);
+    public Member findByMemberId(@Param("loginEmail") String loginEmail);
 
     public int saveMember(@Param("member") Member member);
 
     public int checkDuplicateLoginEmail(@Param("loginEmail") String loginEmail);
 
-    public int updateMemberLoginPw(@Param("memberId") int memberId, @Param("member") Member member);
+    public int updateMemberLoginPw(@Param("loginEmail") String loginEmail, @Param("member") Member member);
 
-    public int updateMemberNickName(@Param("memberId") int memberId, @Param("member") Member member);
+    public int updateMemberNickName(@Param("loginEmail") String loginEmail, @Param("member") Member member);
 
-    public int deleteMember(@Param("memberId") int memberId);
+    public int deleteMember(@Param("loginEmail") String loginEmail);
 }

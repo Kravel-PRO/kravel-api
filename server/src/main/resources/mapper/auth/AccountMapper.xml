@@ -23,7 +23,7 @@
 		FROM
 			tb_member_main tmm
 		WHERE
-			tmm.MEMBER_ID = #{memberId};
+			tmm.LOGIN_EMAIL = #{loginEmail};
 	</select>
 	
 	<select id="checkDuplicateLoginEmail" parameterType="string" resultType="int">
@@ -57,7 +57,7 @@
 		SET
 			LOGIN_PW = #{member.loginPw}
 		WHERE
-			MEMBER_ID = #{memberId};
+			tmm.LOGIN_EMAIL = #{loginEmail};
 	</update>
 
 	<update id="updateMemberNickName">
@@ -66,14 +66,14 @@
 		SET
 			NICK_NAME = #{member.nickName}
 		WHERE
-			MEMBER_ID = #{memberId};
+			tmm.LOGIN_EMAIL = #{loginEmail};
 	</update>
 
 	<delete id="deleteMember">
 		DELETE FROM
 			tb_member_main
 		WHERE
-			MEMBER_ID = #{memberId};
+			tmm.LOGIN_EMAIL = #{loginEmail};
 	</delete>
 
 

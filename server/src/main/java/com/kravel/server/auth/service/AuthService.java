@@ -30,30 +30,30 @@ public class AuthService {
         return memberMapper.saveMember(member) != 0;
     }
 
-    public boolean updateMemberLoginPw(int memberId, Member member) throws Exception {
+    public boolean updateMemberLoginPw(String loginEmail, Member member) throws Exception {
 
-        Member savedMember = memberMapper.findByMemberId(memberId);
+        Member savedMember = memberMapper.findByMemberId(loginEmail);
         if (!passwordEncoder.matches(member.getComparedCurPw(), savedMember.getLoginPw())) {
             throw new InvalidRequestException("Password is not correct!");
         }
 
         member.setLoginPw(encodePassword(member));
-        return memberMapper.updateMemberLoginPw(memberId, member) != 0;
+        return memberMapper.updateMemberLoginPw(loginEmail, member) != 0;
     }
 
-    public boolean updateMemberNickName(int memberId, Member member) throws Exception {
+    public boolean updateMemberNickName(String loginEmail, Member member) throws Exception {
 
-        return memberMapper.updateMemberNickName(memberId, member) != 0;
+        return memberMapper.updateMemberNickName(loginEmail, member) != 0;
     }
 
-    public boolean deleteMember(int memberId, Member member) throws Exception {
+    public boolean deleteMember(String loginEmail, Member member) throws Exception {
 
-        Member savedMember = memberMapper.findByMemberId(memberId);
+        Member savedMember = memberMapper.findByMemberId(loginEmail);
         if (!passwordEncoder.matches(member.getLoginPw(), savedMember.getLoginPw())) {
             throw new InvalidRequestException("Password is not correct!");
         }
 
-        return memberMapper.deleteMember(memberId) != 0;
+        return memberMapper.deleteMember(loginEmail) != 0;
     }
 
 }

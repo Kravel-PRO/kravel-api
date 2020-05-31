@@ -26,15 +26,15 @@ public class AuthController {
     @PutMapping("/{memberId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseMessage updateMember(HttpServletRequest req,
-                                         @PathVariable("memberId") int memberId,
+                                         @PathVariable("loginEmail") String loginEmail,
                                          @RequestParam("type") String type,
                                          @RequestBody Member member) throws Exception {
         boolean result ;
         switch (type) {
-            case "password": result = authService.updateMemberLoginPw(memberId, member);
+            case "password": result = authService.updateMemberLoginPw(loginEmail, member);
                 break;
 
-            case "nickname": result = authService.updateMemberNickName(memberId, member);
+            case "nickname": result = authService.updateMemberNickName(loginEmail, member);
                 break;
 
             default:
@@ -48,8 +48,8 @@ public class AuthController {
 
     @DeleteMapping("/{memberId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseMessage deleteMember(@PathVariable("memberId") int memberId, @RequestBody Member member) throws Exception {
-        return new ResponseMessage(HttpStatus.ACCEPTED, authService.deleteMember(memberId, member));
+    public ResponseMessage deleteMember(@PathVariable("loginEmail") String loginEmail, @RequestBody Member member) throws Exception {
+        return new ResponseMessage(HttpStatus.ACCEPTED, authService.deleteMember(loginEmail, member));
     }
 
 }
