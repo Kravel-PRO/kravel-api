@@ -23,7 +23,7 @@ public class AuthController {
         return new ResponseMessage(HttpStatus.OK, authService.signUpMember(member));
     }
 
-    @PutMapping("/{memberId}")
+    @PutMapping("/{loginEmail}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseMessage updateMember(HttpServletRequest req,
                                          @PathVariable("loginEmail") String loginEmail,
@@ -46,7 +46,7 @@ public class AuthController {
         return new ResponseMessage(HttpStatus.CREATED, result);
     }
 
-    @DeleteMapping("/{memberId}")
+    @DeleteMapping("/{loginEmail}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseMessage deleteMember(@PathVariable("loginEmail") String loginEmail, @RequestBody Member member) throws Exception {
         return new ResponseMessage(HttpStatus.ACCEPTED, authService.deleteMember(loginEmail, member));

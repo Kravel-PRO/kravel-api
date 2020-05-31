@@ -27,6 +27,8 @@ public class AuthService {
         }
 
         member.setLoginPw(encodePassword(member));
+        member.setGender(member.getGender().toUpperCase());
+
         return memberMapper.saveMember(member) != 0;
     }
 
