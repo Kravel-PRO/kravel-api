@@ -8,14 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan({"com.kravel.server.auth.mapper"})
+@MapperScan({"com.kravel.server.auth.mapper", "com.kravel.server.api.member.mapper"})
 @EnableTransactionManagement
 public class MyBatisConfig {
 

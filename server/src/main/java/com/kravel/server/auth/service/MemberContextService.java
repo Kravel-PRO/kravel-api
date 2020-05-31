@@ -1,8 +1,8 @@
 package com.kravel.server.auth.service;
 
-import com.kravel.server.auth.model.Account;
-import com.kravel.server.auth.mapper.AccountMapper;
-import com.kravel.server.auth.model.AccountContext;
+import com.kravel.server.auth.model.Member;
+import com.kravel.server.auth.mapper.AuthMapper;
+import com.kravel.server.auth.model.MemberContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,20 +10,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AccountContextService implements UserDetailsService {
+public class MemberContextService implements UserDetailsService {
 
     @Autowired
-    private AccountMapper accountMapper;
+    private AuthMapper authMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            Account account = accountMapper.findByLoginEmail(username);
-            if (account.getLoginEmail().isEmpty()) {
-                throw new UsernameNotFoundException("Account is empty!");
+            Member member = authMapper.findByLoginEmail(username);
+            if (member.getLoginEmail().isEmpty()) {
+                throw new UsernameNotFoundException("Member is empty!");
             }
 
-            return getAccountContext(account);
+            return getMemberContext(member);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -31,7 +31,7 @@ public class AccountContextService implements UserDetailsService {
         }
     }
 
-    private AccountContext getAccountContext(Account account) {
-        return AccountContext.fromAccountModel(account);
+    private MemberContext getMemberContext(Member member) {
+        return MemberContext.fromMemberModel(member);
     }
 }

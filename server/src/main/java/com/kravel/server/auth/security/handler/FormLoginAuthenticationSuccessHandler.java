@@ -3,7 +3,7 @@ package com.kravel.server.auth.security.handler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kravel.server.auth.dto.TokenDTO;
-import com.kravel.server.auth.model.AccountContext;
+import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException, ServletException {
 
-        AccountContext context = ((PostAuthorizationToken) auth).getAccountContext();
+        MemberContext context = ((PostAuthorizationToken) auth).getMemberContext();
 
         String tokenString = factory.generateToken(context);
         processResponse(res, writeDTO(tokenString));

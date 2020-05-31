@@ -1,8 +1,8 @@
 package com.kravel.server.auth.security.factory;
 
-import com.kravel.server.auth.model.Account;
-import com.kravel.server.auth.model.AccountContext;
-import com.kravel.server.auth.model.UserRole;
+import com.kravel.server.auth.model.Member;
+import com.kravel.server.auth.model.MemberContext;
+import com.kravel.server.auth.model.Role;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,19 +19,19 @@ public class JwtFactoryTest {
 
     private static final Logger log = LoggerFactory.getLogger(JwtFactory.class);
 
-    private AccountContext context;
+    private MemberContext context;
 
     @Autowired
     private JwtFactory factory;
 
     @Before
     public void setUp() {
-        Account account = new Account();
-        account.setLoginEmail("ooeunz@gmail.com");
-        account.setLoginPw("1234");
-        account.setUserRole(UserRole.USER);
+        Member member = new Member();
+        member.setLoginEmail("ooeunz@gmail.com");
+        member.setLoginPw("1234");
+        member.setRole(Role.USER);
 
-        this.context = AccountContext.fromAccountModel(account);
+        this.context = MemberContext.fromMemberModel(member);
     }
 
     @Test

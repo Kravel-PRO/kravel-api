@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kravel.server.api.member.mapper.MemberMapper">
+
+    <update id="modifyMemberLoginPw">
+		UPDATE
+			tb_member_main
+		SET
+			LOGIN_PW = #{member.loginPw}
+		WHERE
+			tmm.LOGIN_EMAIL = #{loginEmail};
+	</update>
+
+    <update id="modifyMemberNickName">
+		UPDATE
+			tb_member_main
+		SET
+			NICK_NAME = #{member.nickName}
+		WHERE
+			tmm.LOGIN_EMAIL = #{loginEmail};
+	</update>
+
+    <delete id="removeMember">
+		DELETE FROM
+			tb_member_main
+		WHERE
+			tmm.LOGIN_EMAIL = #{loginEmail};
+	</delete>
+
+</mapper>

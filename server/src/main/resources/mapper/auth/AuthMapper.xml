@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kravel.server.auth.mapper.AuthMapper">
+    <select id="findByLoginEmail" parameterType="string" resultType="member">
+		SELECT
+			tmm.MEMBER_ID memberId,
+			tmm.LOGIN_EMAIL loginEmail,
+			tmm.LOGIN_PW loginPw,
+			tmm.ROLE role
+		FROM
+			tb_member_main tmm
+		WHERE
+			tmm.LOGIN_EMAIL = #{loginEmail};
+	</select>
+	
+	<select id="checkDuplicateLoginEmail" parameterType="string" resultType="int">
+		SELECT
+			COUNT(tmm.MEMBER_ID)
+		FROM
+			tb_member_main tmm
+		WHERE
+			tmm.LOGIN_EMAIL = #{loginEmail};
+	</select>
+
+	<insert id="saveMember" parameterType="member">
+		INSERT INTO
+			tb_member_main(
+				LOGIN_EMAIL,
+				LOGIN_PW,
+				NICK_NAME,
+				GENDER
+			)
+		VALUE (
+			#{member.loginEmail},
+			#{member.loginPw},
+			#{member.nickName},
+			#{member.gender}
+		);
+	</insert>
+</mapper>

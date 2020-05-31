@@ -17,7 +17,6 @@ public class ResponseMessage {
     private static final long serialVersionUID = 1L;
 
     private static final String DEFAULT_KEY = "result";
-    private int code;
     private boolean status;
     private String message;
     private String timestamp;
@@ -30,21 +29,18 @@ public class ResponseMessage {
 
     public ResponseMessage(HttpStatus httpStatus) {
         this.data = new HashMap<>();
-        this.code = httpStatus.value();
         this.status = (httpStatus.isError())? false:true;
         this.message = httpStatus.getReasonPhrase();
         this.timestamp = convertDateFormat(new Date());
     }
 
     public ResponseMessage(AbstractBaseException ex, String referedUrl) {
-
         HttpStatus httpStatus = ex.getHttpStatus();
 
         this.data = new HashMap<>();
-        this.code = httpStatus.value();
         this.status = (httpStatus.isError())? false:true;
         this.message = httpStatus.getReasonPhrase();
-        this.error = new ErrorMessage(code, ex.getMessage(), referedUrl);
+        this.error = new ErrorMessage(httpStatus.value(), ex.getMessage(), referedUrl);
         this.timestamp = convertDateFormat(new Date());
     }
 

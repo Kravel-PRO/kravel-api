@@ -1,6 +1,6 @@
 package com.kravel.server.auth.security.provider;
 
-import com.kravel.server.auth.model.AccountContext;
+import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.token.JwtPreProcessingToken;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.security.util.jwt.JwtDecoder;
@@ -21,9 +21,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
         String token = (String) authentication.getPrincipal();
 
-        AccountContext context = jwtDecoder.decodedJwt(token);
+        MemberContext context = jwtDecoder.decodedJwt(token);
 
-        return PostAuthorizationToken.getTokenFromAccountContext(context);
+        return PostAuthorizationToken.getTokenFromMemberContext(context);
     }
 
     @Override
