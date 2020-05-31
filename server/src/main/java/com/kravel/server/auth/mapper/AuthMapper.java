@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
-public interface MemberMapper {
+public interface AuthMapper {
 
     public Member findByLoginEmail(@Param("loginEmail") String loginEmail);
 
@@ -17,9 +17,5 @@ public interface MemberMapper {
 
     public int checkDuplicateLoginEmail(@Param("loginEmail") String loginEmail);
 
-    public int updateMemberLoginPw(@Param("loginEmail") String loginEmail, @Param("member") Member member);
 
-    public int updateMemberNickName(@Param("loginEmail") String loginEmail, @Param("member") Member member);
-
-    public int deleteMember(@Param("loginEmail") String loginEmail);
 }

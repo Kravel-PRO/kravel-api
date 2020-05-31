@@ -1,6 +1,6 @@
 package com.kravel.server.auth.security.provider;
 
-import com.kravel.server.auth.mapper.MemberMapper;
+import com.kravel.server.auth.mapper.AuthMapper;
 import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private MemberMapper memberMapper;
+    private AuthMapper authMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -30,7 +30,7 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
         String username = token.getUsername();
         String password = token.getPassword();
 
-        Member member = memberMapper.findByLoginEmail(username);
+        Member member = authMapper.findByLoginEmail(username);
         if (member.getLoginEmail().isEmpty()) {
             throw new NoSuchElementException("Member is empty!");
         }

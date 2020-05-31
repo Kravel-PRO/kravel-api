@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kravel.server.auth.mapper.MemberMapper">
+<mapper namespace="com.kravel.server.auth.mapper.AuthMapper">
     <select id="findByLoginEmail" parameterType="string" resultType="member">
-		SELECT
-			tmm.MEMBER_ID memberId,
-			tmm.LOGIN_EMAIL loginEmail,
-			tmm.LOGIN_PW loginPw,
-			tmm.ROLE role
-		FROM
-			tb_member_main tmm
-		WHERE
-			tmm.LOGIN_EMAIL = #{loginEmail};
-	</select>
-
-	<select id="findByMemberId" parameterType="int" resultType="member">
 		SELECT
 			tmm.MEMBER_ID memberId,
 			tmm.LOGIN_EMAIL loginEmail,
@@ -50,32 +38,4 @@
 			#{member.gender}
 		);
 	</insert>
-
-	<update id="updateMemberLoginPw">
-		UPDATE
-			tb_member_main
-		SET
-			LOGIN_PW = #{member.loginPw}
-		WHERE
-			tmm.LOGIN_EMAIL = #{loginEmail};
-	</update>
-
-	<update id="updateMemberNickName">
-		UPDATE
-			tb_member_main
-		SET
-			NICK_NAME = #{member.nickName}
-		WHERE
-			tmm.LOGIN_EMAIL = #{loginEmail};
-	</update>
-
-	<delete id="deleteMember">
-		DELETE FROM
-			tb_member_main
-		WHERE
-			tmm.LOGIN_EMAIL = #{loginEmail};
-	</delete>
-
-
-
 </mapper>

@@ -12,6 +12,7 @@ public class ErrorMessage {
     private int code;
     private String errorMessage;
     private String referedUrl;
+
     public ErrorMessage(int code, String errorMessage, String referedUrl) {
         super();
         this.code = code;
