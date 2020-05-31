@@ -1,0 +1,8 @@
+DELETE http://localhost:8080/auth/4
+Content-Type: application/json
+
+{
+  "loginPw": "12345"
+}
+
+###

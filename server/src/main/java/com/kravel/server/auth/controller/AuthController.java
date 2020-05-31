@@ -1,6 +1,6 @@
 package com.kravel.server.auth.controller;
 
-import com.kravel.server.auth.model.Account;
+import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.service.AuthService;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.message.ResponseMessage;
@@ -19,22 +19,22 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseMessage signUpAccount(HttpServletRequest req, @RequestBody Account account) throws Exception {
-        return new ResponseMessage(HttpStatus.OK, authService.signUpAccount(account));
+    public ResponseMessage signUpMember(HttpServletRequest req, @RequestBody Member member) throws Exception {
+        return new ResponseMessage(HttpStatus.OK, authService.signUpMember(member));
     }
 
-    @PutMapping("/{accountId}")
+    @PutMapping("/{memberId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseMessage updateAccount(HttpServletRequest req,
-                                         @PathVariable("accountId") int accountId,
+    public ResponseMessage updateMember(HttpServletRequest req,
+                                         @PathVariable("memberId") int memberId,
                                          @RequestParam("type") String type,
-                                         @RequestBody Account account) throws Exception {
+                                         @RequestBody Member member) throws Exception {
         boolean result ;
         switch (type) {
-            case "password": result = authService.updateAccountLoginPw(accountId, account);
+            case "password": result = authService.updateMemberLoginPw(memberId, member);
                 break;
 
-            case "nickname": result = authService.updateAccountNickName(accountId, account);
+            case "nickname": result = authService.updateMemberNickName(memberId, member);
                 break;
 
             default:
@@ -46,10 +46,10 @@ public class AuthController {
         return new ResponseMessage(HttpStatus.CREATED, result);
     }
 
-    @DeleteMapping("/{accountId}")
+    @DeleteMapping("/{memberId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseMessage deleteAccount(@PathVariable("accountId") int accountId, @RequestBody Account account) throws Exception {
-        return new ResponseMessage(HttpStatus.ACCEPTED, authService.deleteAccount(accountId, account));
+    public ResponseMessage deleteMember(@PathVariable("memberId") int memberId, @RequestBody Member member) throws Exception {
+        return new ResponseMessage(HttpStatus.ACCEPTED, authService.deleteMember(memberId, member));
     }
 
 }

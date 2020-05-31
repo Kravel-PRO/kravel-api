@@ -1,85 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kravel.server.auth.mapper.AccountMapper">
-    <select id="findByLoginEmail" parameterType="string" resultType="account">
+<mapper namespace="com.kravel.server.auth.mapper.MemberMapper">
+    <select id="findByLoginEmail" parameterType="string" resultType="member">
 		SELECT
-			tam.ACCOUNT_ID accountId,
-			tam.USER_NAME userName,
-			tam.LOGIN_EMAIL loginEmail,
-			tam.LOGIN_PW loginPw,
-			tam.USER_ROLE userRole
+			tmm.MEMBER_ID memberId,
+			tmm.LOGIN_EMAIL loginEmail,
+			tmm.LOGIN_PW loginPw,
+			tmm.ROLE role
 		FROM
-			tb_account_main tam
+			tb_member_main tmm
 		WHERE
-			tam.LOGIN_EMAIL = #{loginEmail};
+			tmm.LOGIN_EMAIL = #{loginEmail};
 	</select>
 
-	<select id="findByAccountId" parameterType="int" resultType="account">
+	<select id="findByMemberId" parameterType="int" resultType="member">
 		SELECT
-			tam.ACCOUNT_ID accountId,
-			tam.USER_NAME userName,
-			tam.LOGIN_EMAIL loginEmail,
-			tam.LOGIN_PW loginPw,
-			tam.USER_ROLE userRole
+			tmm.MEMBER_ID memberId,
+			tmm.LOGIN_EMAIL loginEmail,
+			tmm.LOGIN_PW loginPw,
+			tmm.ROLE role
 		FROM
-			tb_account_main tam
+			tb_member_main tmm
 		WHERE
-			tam.ACCOUNT_ID = #{accountId};
+			tmm.MEMBER_ID = #{memberId};
 	</select>
 	
 	<select id="checkDuplicateLoginEmail" parameterType="string" resultType="int">
 		SELECT
-			COUNT(tam.ACCOUNT_ID)
+			COUNT(tmm.MEMBER_ID)
 		FROM
-			tb_account_main tam
+			tb_member_main tmm
 		WHERE
-			tam.LOGIN_EMAIL = #{loginEmail};
+			tmm.LOGIN_EMAIL = #{loginEmail};
 	</select>
 
-	<insert id="saveAccount" parameterType="account">
+	<insert id="saveMember" parameterType="member">
 		INSERT INTO
-			tb_account_main(
-				USER_NAME,
+			tb_member_main(
 				LOGIN_EMAIL,
 				LOGIN_PW,
 				NICK_NAME,
-				PHONE_NUM,
 				GENDER
 			)
 		VALUE (
-			#{account.userName},
-			#{account.loginEmail},
-			#{account.loginPw},
-			#{account.nickName},
-			#{account.phoneNum},
-			#{account.gender}
+			#{member.loginEmail},
+			#{member.loginPw},
+			#{member.nickName},
+			#{member.gender}
 		);
 	</insert>
 
-	<update id="updateAccountLoginPw">
+	<update id="updateMemberLoginPw">
 		UPDATE
-			tb_account_main
+			tb_member_main
 		SET
-			LOGIN_PW = #{account.loginPw},
+			LOGIN_PW = #{member.loginPw}
 		WHERE
-			ACCOUNT_ID = #{accountId};
+			MEMBER_ID = #{memberId};
 	</update>
 
-	<update id="updateAccountNickName">
+	<update id="updateMemberNickName">
 		UPDATE
-			tb_account_main
+			tb_member_main
 		SET
-			NICK_NAME = #{account.nickName},
+			NICK_NAME = #{member.nickName}
 		WHERE
-			ACCOUNT_ID = #{accountId};
+			MEMBER_ID = #{memberId};
 	</update>
 
-	<delete id="deleteAccount">
+	<delete id="deleteMember">
 		DELETE FROM
-			tb_account_main
+			tb_member_main
 		WHERE
-			ACCOUNT_ID = #{accountId};
+			MEMBER_ID = #{memberId};
 	</delete>
 
 

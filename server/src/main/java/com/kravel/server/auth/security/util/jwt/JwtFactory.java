@@ -2,7 +2,7 @@ package com.kravel.server.auth.security.util.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.kravel.server.auth.model.AccountContext;
+import com.kravel.server.auth.model.MemberContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,15 +18,15 @@ public class JwtFactory {
 
     private static final Logger log = LoggerFactory.getLogger(JwtFactory.class);
 
-    public String generateToken(AccountContext context) {
+    public String generateToken(MemberContext context) {
 
         String token = null;
 
         try {
             token = JWT.create()
                     .withIssuer("ooeunz")
-                    .withClaim("LOGIN_EMAIL", context.getAccount().getLoginEmail())
-                    .withClaim("USER_ROLE", context.getAccount().getUserRole().getRoleName())
+                    .withClaim("LOGIN_EMAIL", context.getMember().getLoginEmail())
+                    .withClaim("ROLE", context.getMember().getRole().getRoleName())
                     .sign(generateAlgorithm());
 
         } catch (Exception e) {

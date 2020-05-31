@@ -1,0 +1,9 @@
+PUT http://localhost:8080/auth/4?type=password
+Content-Type: application/json
+
+{
+  "comparedCurPw": "1234",
+  "loginPw": "12345"
+}
+
+###

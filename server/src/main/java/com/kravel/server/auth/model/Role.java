@@ -6,13 +6,13 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 @Getter
-public enum UserRole {
+public enum Role {
 
     ADMIN("ROLE_ADMIN"), USER("ROLE_USER");
 
     private String roleName;
 
-    UserRole(String roleName) {
+    Role(String roleName) {
         this.roleName = roleName;
     }
 
@@ -20,7 +20,7 @@ public enum UserRole {
         return name.equalsIgnoreCase(this.roleName);
     }
 
-    public static UserRole getRoleByName(String roleName) {
-        return Arrays.stream(UserRole.values()).filter(r -> r.isCorrectName(roleName)).findFirst().orElseThrow(() -> new NoSuchElementException("No have ROLE"));
+    public static Role getRoleByName(String roleName) {
+        return Arrays.stream(Role.values()).filter(r -> r.isCorrectName(roleName)).findFirst().orElseThrow(() -> new NoSuchElementException("No have ROLE"));
     }
 }

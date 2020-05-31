@@ -6,21 +6,25 @@ import org.apache.ibatis.type.Alias;
 
 @Getter
 @Setter
-@Alias("account")
-public class Account {
-    private Long accountId;
-    private String userName;
+@Alias("member")
+public class Member {
+    private Long memberId;
+
     private String loginEmail;
     private String loginPw;
-    private String checkPw;
+    private String comparedCurPw;
+
     private String nickName;
+
     private String gender;
+
     private String createDe;
     private String updateDe;
-    private UserRole userRole;
+
+    private Role role;
 
     private Long socialId;
-    private String socialProfilePic;
 
+    private String socialProfilePic;
     private String useAt;
 }

@@ -1,8 +1,8 @@
 package com.kravel.server.auth.security.provider;
 
-import com.kravel.server.auth.mapper.AccountMapper;
-import com.kravel.server.auth.model.Account;
-import com.kravel.server.auth.model.AccountContext;
+import com.kravel.server.auth.mapper.MemberMapper;
+import com.kravel.server.auth.model.Member;
+import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.security.token.PreAuthorizationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private AccountMapper accountMapper;
+    private MemberMapper memberMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -30,14 +30,14 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
         String username = token.getUsername();
         String password = token.getPassword();
 
-        Account account = accountMapper.findByLoginEmail(username);
-        if (account.getLoginEmail().isEmpty()) {
-            throw new NoSuchElementException("Account is empty!");
+        Member member = memberMapper.findByLoginEmail(username);
+        if (member.getLoginEmail().isEmpty()) {
+            throw new NoSuchElementException("Member is empty!");
         }
 
-        if (isCorrectPassword(password, account)) {
-            return PostAuthorizationToken.getTokenFromAccountContext(
-                    AccountContext.fromAccountModel(account)
+        if (isCorrectPassword(password, member)) {
+            return PostAuthorizationToken.getTokenFromMemberContext(
+                    MemberContext.fromMemberModel(member)
             );
         }
 
@@ -49,7 +49,7 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
         return PreAuthorizationToken.class.isAssignableFrom(authentication);
     }
 
-    private boolean isCorrectPassword(String password, Account account) {
-        return passwordEncoder.matches(password, account.getLoginPw());
+    private boolean isCorrectPassword(String password, Member member) {
+        return passwordEncoder.matches(password, member.getLoginPw());
     }
 }

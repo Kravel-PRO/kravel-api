@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected FormLoginFilter formLoginFilter() throws Exception {
-        FormLoginFilter filter = new FormLoginFilter("/formLogin", formLoginAuthenticationSuccessHandler, null);
+        FormLoginFilter filter = new FormLoginFilter("/auth/sign-in", formLoginAuthenticationSuccessHandler, null);
         filter.setAuthenticationManager(super.authenticationManagerBean());
 
         return filter;

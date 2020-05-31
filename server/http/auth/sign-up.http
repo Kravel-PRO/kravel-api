@@ -1,1 +1,11 @@
-GET http://localhost:8080/api
+POST http://localhost:8080/auth/sign-up
+Content-Type: application/json
+
+{
+  "loginEmail": "soar_dy@naver.com",
+  "loginPw": "1234",
+  "nickName": "펭수",
+  "gender": "WOMAN"
+}
+
+###

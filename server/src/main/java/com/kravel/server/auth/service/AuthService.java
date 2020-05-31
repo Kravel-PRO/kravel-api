@@ -1,7 +1,7 @@
 package com.kravel.server.auth.service;
 
-import com.kravel.server.auth.mapper.AccountMapper;
-import com.kravel.server.auth.model.Account;
+import com.kravel.server.auth.mapper.MemberMapper;
+import com.kravel.server.auth.model.Member;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,50 +11,49 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     @Autowired
-    private AccountMapper accountMapper;
+    private MemberMapper memberMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private String encodePassword(Account account) {
-        return passwordEncoder.encode(account.getLoginPw());
+    private String encodePassword(Member member) {
+        return passwordEncoder.encode(member.getLoginPw());
     }
 
-    public boolean signUpAccount(Account account) throws Exception {
+    public boolean signUpMember(Member member) throws Exception {
 
-        if (accountMapper.checkDuplicateLoginEmail(account.getLoginEmail()) > 0) {
+        if (memberMapper.checkDuplicateLoginEmail(member.getLoginEmail()) > 0) {
             throw new InvalidRequestException("Login Email is already exist");
         }
 
-        account.setLoginPw(encodePassword(account));
-        return accountMapper.saveAccount(account) != 0;
+        member.setLoginPw(encodePassword(member));
+        return memberMapper.saveMember(member) != 0;
     }
 
-    public boolean updateAccountLoginPw(int accountId, Account account) throws Exception {
+    public boolean updateMemberLoginPw(int memberId, Member member) throws Exception {
 
-        Account savedAccount = accountMapper.findByAccountId(accountId);
-        if (!passwordEncoder.matches(account.getCheckPw(), savedAccount.getLoginPw())) {
+        Member savedMember = memberMapper.findByMemberId(memberId);
+        if (!passwordEncoder.matches(member.getComparedCurPw(), savedMember.getLoginPw())) {
             throw new InvalidRequestException("Password is not correct!");
         }
 
-        account.setLoginPw(encodePassword(account));
-        return accountMapper.updateAccountLoginPw(accountId, account) != 0;
+        member.setLoginPw(encodePassword(member));
+        return memberMapper.updateMemberLoginPw(memberId, member) != 0;
     }
 
-    public boolean updateAccountNickName(int accountId, Account account) throws Exception {
+    public boolean updateMemberNickName(int memberId, Member member) throws Exception {
 
-        account.setLoginPw(encodePassword(account));
-        return accountMapper.updateAccountNickName(accountId, account) != 0;
+        return memberMapper.updateMemberNickName(memberId, member) != 0;
     }
 
-    public boolean deleteAccount(int accountId, Account account) throws Exception {
+    public boolean deleteMember(int memberId, Member member) throws Exception {
 
-        Account savedAccount = accountMapper.findByAccountId(accountId);
-        if (!passwordEncoder.matches(account.getCheckPw(), savedAccount.getLoginPw())) {
+        Member savedMember = memberMapper.findByMemberId(memberId);
+        if (!passwordEncoder.matches(member.getLoginPw(), savedMember.getLoginPw())) {
             throw new InvalidRequestException("Password is not correct!");
         }
 
-        return accountMapper.deleteAccount(accountId) != 0;
+        return memberMapper.deleteMember(memberId) != 0;
     }
 
 }

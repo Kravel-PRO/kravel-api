@@ -1,6 +1,6 @@
 package com.kravel.server.auth.security.token;
 
-import com.kravel.server.auth.model.AccountContext;
+import com.kravel.server.auth.model.MemberContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -12,11 +12,11 @@ public class PostAuthorizationToken extends UsernamePasswordAuthenticationToken 
         super(principal, credentials, authorities);
     }
 
-    public AccountContext getAccountContext() {
-        return (AccountContext) super.getPrincipal();
+    public MemberContext getMemberContext() {
+        return (MemberContext) super.getPrincipal();
     }
 
-    public static PostAuthorizationToken getTokenFromAccountContext(AccountContext context) {
+    public static PostAuthorizationToken getTokenFromMemberContext(MemberContext context) {
         return new PostAuthorizationToken(context, context.getPassword(), context.getAuthorities());
     }
 }

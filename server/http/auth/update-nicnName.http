@@ -1,0 +1,8 @@
+PUT http://localhost:8080/auth/4?type=nickname
+Content-Type: application/json
+
+{
+  "nickName": "자이언트 펭"
+}
+
+###
