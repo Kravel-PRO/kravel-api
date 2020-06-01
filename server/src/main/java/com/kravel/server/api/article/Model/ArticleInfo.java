@@ -13,5 +13,5 @@ public class ArticleInfo {
 
     private String subject;
     private String contents;
-    private String infoLanguage;
+    private String infoLangu;
 }

@@ -1,9 +1,5 @@
-PUT http://localhost:8080/api/member/soar_dy@naver.com?type=nickname
+GET http://localhost:8080/api/articles/places?sort=CREATE_DE
 Content-Type: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiUk9MRV9VU0VSIiwiTE9HSU5fRU1BSUwiOiJzb2FyX2R5QG5hdmVyLmNvbSIsImlzcyI6Im9vZXVueiIsIkdFTkRFUiI6IldPTUFOIiwiTEFOR1UiOiJLT1IifQ.necEBKSJMj5V96GlqvritrPW4JpGG8UnrrDWoHU8xLE
-
-{
-  "nickName": "자이언트 펭"
-}
 
 ###

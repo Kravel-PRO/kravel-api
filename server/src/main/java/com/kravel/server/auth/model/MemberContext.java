@@ -1,6 +1,7 @@
 package com.kravel.server.auth.model;
 
 import com.kravel.server.auth.security.token.JwtPostProcessingToken;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ToString
 public class MemberContext extends User {
 
     private Member member;

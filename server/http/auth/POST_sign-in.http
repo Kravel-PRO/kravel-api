@@ -1,0 +1,9 @@
+DELETE http://localhost:8080/auth/sign-in
+Content-Type: application/json
+
+{
+  "loginEmail": "soar_dy@naver.com",
+  "loginPw": "1234"
+}
+
+###

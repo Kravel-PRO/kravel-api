@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,7 +16,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseMessage exceptionHandler(HttpServletRequest req, Exception e) {
+    public ResponseMessage inValidExceptionHandler(HttpServletRequest req, Exception e) {
         log.error(req.getRequestURL().toString());
         return new ResponseMessage(new InvalidRequestException(e.getMessage(), e), req.getRequestURL().toString());
     }

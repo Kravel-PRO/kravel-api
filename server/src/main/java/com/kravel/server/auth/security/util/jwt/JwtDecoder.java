@@ -28,13 +28,15 @@ public class JwtDecoder {
 
         String loginEmail = decodedJWT.getClaim("LOGIN_EMAIL").asString();
         String role = decodedJWT.getClaim("ROLE").asString();
+        String langu = decodedJWT.getClaim("LANGU").asString();
+        String gender = decodedJWT.getClaim("GENDER").asString();
 
         Member member = new Member();
-        String language = decodedJWT.getClaim("LANGUAGE").asString();
 
         member.setLoginEmail(loginEmail);
         member.setLoginPw("UNUSED_CREDENTIALS");
-        member.setLanguage(language);
+        member.setLangu(langu);
+        member.setGender(gender);
         member.setRole(Role.getRoleByName(role));
 
         return MemberContext.fromMemberModel(member);

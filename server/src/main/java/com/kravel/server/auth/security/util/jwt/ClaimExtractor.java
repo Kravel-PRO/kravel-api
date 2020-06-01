@@ -18,11 +18,11 @@ public class ClaimExtractor {
         return member.getLoginEmail();
     }
 
-    public String getLanguage(Authentication authentication) {
+    public String getLangu(Authentication authentication) {
         PostAuthorizationToken token = (PostAuthorizationToken) authentication;
         Member member = token.getMemberContext().getMember();
 
-        return member.getLanguage();
+        return member.getLangu();
     }
 
     public String getGender(Authentication authentication) {

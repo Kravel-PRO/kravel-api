@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kravel.server.api.article.mapper.PlaceMapper">
-    <select id="findAllPlaces" parameterType="hashmap" resultType="article">
+    <select id="findAllPlaces" parameterType="hashmap" resultType="articleListDTO">
         SELECT
             tam.ARTICLE_ID articleId,
             tai.SUBJECT subejct,
@@ -20,16 +20,16 @@
             LEFT JOIN
                 tb_celebrity_main tcm ON tam.ARTICLE_ID = tcm.ARTICLE_ID
         WHERE
-            tai.SUBJECT LIKE CONCAT("%", #{search}, "%")
-            AND tai.INFO_LANGUAGE = #{language }
+            tai.SUBJECT LIKE CONCAT("%", #{param.search}, "%")
+            AND tai.INFO_LANGU = #{param.langu}
             AND tam.USE_AT = "Y"
         ORDER BY
-            tam.${sort} ${order}
+            tam.${param.sort} ${param.order}
         LIMIT
-            ${offset}, ${max};
+            ${param.offset}, ${param.max};
     </select>
 
-    <select id="findPlaceByArticleID" parameterType="hashmap" resultType="article">
+    <select id="findPlaceByArticleID" parameterType="hashmap" resultType="articleDetailDTO">
         SELECT
             tam.ARTICLE_ID articleId,
             tai.SUBJECT subject,
@@ -39,29 +39,25 @@
             tam.LONGITUDE longitude,
             tmm.MEDIA_ID mediaId,
             tmm.MEDIA_NAME mediaName
-
-            FROM
-                tb_article_main tam
-                INNER JOIN
-                    tb_article_info tai
-                ON tam.ARTICLE_ID = tai.ARTICLE_ID
-
-                INNER JOIN
-                    tb_article_review tar
-                ON tai.ARTICLE_ID = tar.ARTICLE_ID
-
-                LEFT JOIN
-                    tb_media_main tmm
-                ON tar.MEDIA_ID = tmm.MEDIA_ID
-
-            WHERE
-                tam.ARTICLE_ID = #{articleId}
-                AND tai.INFO_LANGUAGE = #{language}
-                AND tam.USE_AT = "Y";
+        FROM
+            tb_article_main tam
+            INNER JOIN
+                tb_article_info tai
+            ON tam.ARTICLE_ID = tai.ARTICLE_ID
+            INNER JOIN
+                tb_article_review tar
+            ON tai.ARTICLE_ID = tar.ARTICLE_ID
+            LEFT JOIN
+                tb_media_main tmm
+            ON tar.MEDIA_ID = tmm.MEDIA_ID
+        WHERE
+            tam.ARTICLE_ID = #{articleId}
+            AND tai.INFO_LANGU = #{langu}
+            AND tam.USE_AT = "Y";
 
     </select>
 
-    <select id="findCelebritiesByArticleId" parameterType="int" resultType="celebrityDTO">
+    <select id="findCelebrityListByArticleId" parameterType="hashmap" resultType="celebrityDTO">
         SELECT
             tcm.CELEBRITY_ID celebrityId,
             tcm.CELEBRITY_NAME celebrityName
@@ -74,7 +70,7 @@
             tam.ARTICLE_ID = #{articleId};
     </select>
 
-    <select id="findRepreReviewImgByArticleImg" parameterType="int" resultType="articleRevieDTO">
+    <select id="findReviewListByArticleId" parameterType="hashmap" resultType="articleReviewDTO">
         SELECT
             tari.REVIEW_ID reviewId,
             tari.RW_IMG repreRwImg

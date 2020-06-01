@@ -27,7 +27,7 @@ public class JwtFactory {
                     .withIssuer("ooeunz")
                     .withClaim("LOGIN_EMAIL", context.getMember().getLoginEmail())
                     .withClaim("ROLE", context.getMember().getRole().getRoleName())
-                    .withClaim("LANGUAGE", context.getMember().getLanguage())
+                    .withClaim("LANGU", context.getMember().getLangu())
                     .withClaim("GENDER", context.getMember().getGender())
                     .sign(generateAlgorithm());
 
