@@ -29,7 +29,7 @@
             ${param.offset}, ${param.max};
     </select>
 
-    <select id="findPlaceByArticleID" parameterType="hashmap" resultType="articleDetailDTO">
+    <select id="findPlaceByArticleId" parameterType="hashmap" resultType="articleDetailDTO">
         SELECT
             tam.ARTICLE_ID articleId,
             tai.SUBJECT subject,
@@ -38,7 +38,8 @@
             tam.LATITUDE latitud,
             tam.LONGITUDE longitude,
             tmm.MEDIA_ID mediaId,
-            tmm.MEDIA_NAME mediaName
+            tmm.MEDIA_NAME mediaName,
+            COUNT(tar.REVIEW_ID) reviewCnt
         FROM
             tb_article_main tam
             INNER JOIN
@@ -51,8 +52,8 @@
                 tb_media_main tmm
             ON tar.MEDIA_ID = tmm.MEDIA_ID
         WHERE
-            tam.ARTICLE_ID = #{articleId}
-            AND tai.INFO_LANGU = #{langu}
+            tam.ARTICLE_ID = #{param.articleId}
+            AND tai.INFO_LANGU = #{param.langu}
             AND tam.USE_AT = "Y";
 
     </select>
@@ -67,7 +68,7 @@
                 tb_celebrity_main tcm
             ON tam.ARTICLE_ID = tcm.ARTICLE_ID
         WHERE
-            tam.ARTICLE_ID = #{articleId};
+            tam.ARTICLE_ID = #{param.articleId};
     </select>
 
     <select id="findReviewListByArticleId" parameterType="hashmap" resultType="articleReviewDTO">
@@ -84,7 +85,7 @@
             ON tar.REVIEW_ID = tari.REVIEW_ID
             AND tari.REPRE = true
         WHERE
-            tam.ARTICLE_ID = #{articleId};
+            tam.ARTICLE_ID = #{param.articleId};
     </select>
 
 </mapper>

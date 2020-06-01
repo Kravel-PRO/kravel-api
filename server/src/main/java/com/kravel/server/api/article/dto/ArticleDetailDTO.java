@@ -31,6 +31,7 @@ public class ArticleDetailDTO {
     private long mediaId;
     private String mediaName;
 
+    private int reviewCnt;
     private List<ArticleReviewDTO> reviewList;
     private List<CelebrityDTO> celebrityList;
 
