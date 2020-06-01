@@ -13,6 +13,7 @@ public class Member {
     private String loginEmail;
     private String loginPw;
     private String comparedCurPw;
+    private String language;
 
     private String nickName;
 

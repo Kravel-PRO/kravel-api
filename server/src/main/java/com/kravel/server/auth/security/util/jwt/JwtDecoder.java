@@ -4,7 +4,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.model.MemberContext;
+import com.kravel.server.auth.model.Role;
 import com.kravel.server.auth.security.util.exception.InvalidJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +29,15 @@ public class JwtDecoder {
         String loginEmail = decodedJWT.getClaim("LOGIN_EMAIL").asString();
         String role = decodedJWT.getClaim("ROLE").asString();
 
-        return new MemberContext(loginEmail, "UNUSED_CREDENTIALS", role);
+        Member member = new Member();
+        String language = decodedJWT.getClaim("LANGUAGE").asString();
+
+        member.setLoginEmail(loginEmail);
+        member.setLoginPw("UNUSED_CREDENTIALS");
+        member.setLanguage(language);
+        member.setRole(Role.getRoleByName(role));
+
+        return MemberContext.fromMemberModel(member);
     }
 
     private Optional<DecodedJWT> isValideToken(String token) {
