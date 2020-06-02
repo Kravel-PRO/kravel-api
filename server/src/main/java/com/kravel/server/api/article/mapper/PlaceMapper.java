@@ -22,4 +22,8 @@ public interface PlaceMapper {
     public List<CelebrityDTO> findCelebrityListByArticleId(@Param("param") Map<String, Object> param);
 
     public List<ArticleReviewDTO> findReviewListByArticleId(@Param("param") Map<String, Object> param);
+
+    public List<String> findReviewDetailImgByReviewId(@Param("param") Map<String, Object> param);
+
+    public ArticleReviewDTO findReviewLikeCntByReviewId(@Param("param") Map<String, Object> param);
 }

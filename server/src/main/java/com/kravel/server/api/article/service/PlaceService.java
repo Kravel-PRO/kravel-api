@@ -35,7 +35,7 @@ public class PlaceService {
 
         ArticleDetailDTO articleDetailDTO = placeMapper.findPlaceByArticleId(param);
         if (articleDetailDTO.getSubject().isEmpty()) {
-            throw new NotFoundException("IS not exist Article");
+            throw new NotFoundException("Is not exist Article");
         }
 
         List<CelebrityDTO> celebrityDTOList = placeMapper.findCelebrityListByArticleId(param);
@@ -47,6 +47,25 @@ public class PlaceService {
         articleDetailDTO.setReviewList(articleReviewDTOList);
 
         return articleDetailDTO;
+    }
+
+    public List<ArticleReviewDTO> findReviewListByArticleId(Map<String, Object> param) throws Exception {
+        List<ArticleReviewDTO> articleReviewDTOList = placeMapper.findReviewListByArticleId(param);
+        if (articleReviewDTOList.isEmpty()) {
+            throw new NotFoundException("Is not exist review");
+        }
+        return articleReviewDTOList;
+    }
+
+    public ArticleReviewDTO findReviewDetailByReviewId(Map<String, Object> param) throws Exception {
+
+        ArticleReviewDTO articleReviewDTO = placeMapper.findReviewLikeCntByReviewId(param);
+        articleReviewDTO.setRwImg(placeMapper.findReviewDetailImgByReviewId(param));
+        if (articleReviewDTO.getRepreRwImg().isEmpty()) {
+            throw new NotFoundException("Is ot exist review");
+        }
+
+        return articleReviewDTO;
     }
 
 }

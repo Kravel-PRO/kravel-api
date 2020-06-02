@@ -90,7 +90,7 @@
             ${param.offset}, ${param.max};
     </select>
 
-    <select id="findReviewDetailImgByReviewId" parameterType="hashmap" resultType="articleReviewDTO">
+    <select id="findReviewDetailImgByReviewId" parameterType="hashmap" resultType="string">
         SELECT
             tari.RW_IMG rwImg
         FROM
@@ -100,6 +100,7 @@
             ON tar.REVIEW_ID = tari.REVIEW_ID
         WHERE
             tar.ARTICLE_ID = #{param.articleId}
+            AND tar.REVIEW_ID = #{param.reviewId
             AND tar.USE_AT = 'Y';
     </select>
     
@@ -127,6 +128,7 @@
                 ) b
         WHERE
             tar.ARTICLE_ID = #{param.articleId}
+            AND tar.REVIEW_ID = #{param.reviewId}
             AND tar.USE_AT = 'Y';
     </select>
 </mapper>

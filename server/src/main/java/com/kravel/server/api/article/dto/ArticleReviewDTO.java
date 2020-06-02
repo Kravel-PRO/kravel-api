@@ -15,7 +15,7 @@ public class ArticleReviewDTO {
 
     private long reviewId;
     private String repreRwImg;
-    private List<String> rwImgList;
+    private List<String> rwImg;
     private int likeCnt;
     private int likeState;
 }
