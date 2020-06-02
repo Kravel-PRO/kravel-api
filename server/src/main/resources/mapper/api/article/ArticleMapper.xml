@@ -89,7 +89,7 @@
             ${param.offset}, ${param.max};
     </select>
 
-    <select id="findReviewDetailImgByReviewId" parameterType="hashmap" resultType="string">
+    <select id="findReviewDetailImgByReviewId" parameterType="hashmap" resultType="rwImgDTO">
         SELECT
             tari.IMG_ID imgId,
             tari.IMG_URL imgUrl,

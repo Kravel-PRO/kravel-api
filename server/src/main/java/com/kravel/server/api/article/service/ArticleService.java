@@ -1,10 +1,7 @@
 package com.kravel.server.api.article.service;
 
 import com.kravel.server.api.article.Model.Article;
-import com.kravel.server.api.article.dto.ArticleDetailDTO;
-import com.kravel.server.api.article.dto.ArticleReviewDTO;
-import com.kravel.server.api.article.dto.ArticleReviewListDTO;
-import com.kravel.server.api.article.dto.CelebrityDTO;
+import com.kravel.server.api.article.dto.*;
 import com.kravel.server.api.article.mapper.ArticleMapper;
 import com.kravel.server.common.util.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
