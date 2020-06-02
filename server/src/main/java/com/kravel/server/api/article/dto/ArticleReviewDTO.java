@@ -17,5 +17,5 @@ public class ArticleReviewDTO {
     private List<RwImgDTO> rwImg;
 
     private int likeCnt;
-    private int likeState;
+    private boolean likeState;
 }
