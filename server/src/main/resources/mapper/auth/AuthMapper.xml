@@ -7,6 +7,8 @@
 			tmm.MEMBER_ID memberId,
 			tmm.LOGIN_EMAIL loginEmail,
 			tmm.LOGIN_PW loginPw,
+			tmm.GENDER gender,
+			tmm.LANGU langu,
 			tmm.ROLE role
 		FROM
 			tb_member_main tmm

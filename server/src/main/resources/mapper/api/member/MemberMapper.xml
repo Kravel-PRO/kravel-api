@@ -5,7 +5,7 @@
 
     <update id="modifyMemberLoginPw">
 		UPDATE
-			tb_member_main
+			tb_member_main tmm
 		SET
 			LOGIN_PW = #{member.loginPw}
 		WHERE
@@ -14,7 +14,7 @@
 
     <update id="modifyMemberNickName">
 		UPDATE
-			tb_member_main
+			tb_member_main tmm
 		SET
 			NICK_NAME = #{member.nickName}
 		WHERE
