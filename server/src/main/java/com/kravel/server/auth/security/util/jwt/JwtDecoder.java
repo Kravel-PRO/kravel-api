@@ -30,6 +30,7 @@ public class JwtDecoder {
         String role = decodedJWT.getClaim("ROLE").asString();
         String langu = decodedJWT.getClaim("LANGU").asString();
         String gender = decodedJWT.getClaim("GENDER").asString();
+        long memberId = decodedJWT.getClaim("MEMBER_ID").asLong();
 
         Member member = new Member();
 
@@ -38,6 +39,7 @@ public class JwtDecoder {
         member.setLangu(langu);
         member.setGender(gender);
         member.setRole(Role.getRoleByName(role));
+        member.setMemberId(memberId);
 
         return MemberContext.fromMemberModel(member);
     }

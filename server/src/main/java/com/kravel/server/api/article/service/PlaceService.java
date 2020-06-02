@@ -39,15 +39,12 @@ public class PlaceService {
         }
 
         List<CelebrityDTO> celebrityDTOList = placeMapper.findCelebrityListByArticleId(param);
-        System.out.println(celebrityDTOList.toString());
 
+        param.put("max", 6);
         List<ArticleReviewDTO> articleReviewDTOList = placeMapper.findReviewListByArticleId(param);
-        System.out.println(articleReviewDTOList.toString());
 
         articleDetailDTO.setCelebrityList(celebrityDTOList);
         articleDetailDTO.setReviewList(articleReviewDTOList);
-
-        log.info(articleDetailDTO.toString());
 
         return articleDetailDTO;
     }

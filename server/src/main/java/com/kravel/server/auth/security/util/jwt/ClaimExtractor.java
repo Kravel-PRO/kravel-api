@@ -31,4 +31,11 @@ public class ClaimExtractor {
 
         return member.getGender();
     }
+
+    public long getMemberId(Authentication authentication) {
+        PostAuthorizationToken token = (PostAuthorizationToken) authentication;
+        Member member = token.getMemberContext().getMember();
+
+        return member.getMemberId();
+    }
 }
