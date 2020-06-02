@@ -3,7 +3,8 @@ package com.kravel.server.api.article.controller;
 import com.kravel.server.api.article.Model.Article;
 import com.kravel.server.api.article.dto.ArticleDetailDTO;
 import com.kravel.server.api.article.dto.ArticleReviewDTO;
-import com.kravel.server.api.article.service.PlaceService;
+import com.kravel.server.api.article.dto.ArticleReviewListDTO;
+import com.kravel.server.api.article.service.ArticleService;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;
@@ -19,15 +20,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/articles")
-public class PlaceController {
+public class ArticleController {
 
     @Autowired
-    private PlaceService placeService;
+    private ArticleService articleService;
 
     @Autowired
     private ClaimExtractor claimExtractor;
 
-    @GetMapping("/places")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllPlaces(@RequestParam(value = "offset", defaultValue = "0") int offset,
@@ -48,11 +49,11 @@ public class PlaceController {
 
         PostAuthorizationToken postAuthorizationToken = (PostAuthorizationToken) authentication;
 
-        List<Article> articleList = placeService.findAllPlaces(param);
+        List<Article> articleList = articleService.findAllPlaces(param);
         return new ResponseMessage(HttpStatus.OK, articleList);
     }
 
-    @GetMapping("/places/{articleId}")
+    @GetMapping("/{articleId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findPlaceByArticleId(@PathVariable("articleId") long articleId,
@@ -63,11 +64,11 @@ public class PlaceController {
         param.put("articleId", articleId);
         param.put("langu", claimExtractor.getLangu(authentication));
 
-        ArticleDetailDTO articleDetailDTO = placeService.findPlaceByArticleId(param);
+        ArticleDetailDTO articleDetailDTO = articleService.findPlaceByArticleId(param);
         return new ResponseMessage(HttpStatus.OK, articleDetailDTO);
     }
 
-    @GetMapping("/places/{articleId}/reviews")
+    @GetMapping("/{articleId}/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findReviewListByArticleId(@PathVariable("articleId") long articleId,
@@ -83,12 +84,13 @@ public class PlaceController {
         param.put("max", max);
         param.put("sort", sort);
         param.put("order", order);
+        param.put("articleId", articleId);
 
-        List<ArticleReviewDTO> articleReviewDTOList = placeService.findReviewListByArticleId(param);
-        return new ResponseMessage(HttpStatus.OK, articleReviewDTOList);
+        List<ArticleReviewListDTO> articleReviewListDTOList = articleService.findReviewListByArticleId(param);
+        return new ResponseMessage(HttpStatus.OK, articleReviewListDTOList);
     }
 
-    @GetMapping("/places/{articleId}/reviews/{reviewId}")
+    @GetMapping("/{articleId}/reviews/{reviewId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findReviewDetailByReviewId(@PathVariable("articleId") long articleId,
@@ -101,7 +103,7 @@ public class PlaceController {
         param.put("reviewId", reviewId);
         param.put("memberId", claimExtractor.getMemberId(authentication));
 
-        ArticleReviewDTO articleReviewDTO = placeService.findReviewDetailByReviewId(param);
+        ArticleReviewDTO articleReviewDTO = articleService.findReviewDetailByReviewId(param);
         return new ResponseMessage(HttpStatus.OK, articleReviewDTO);
     }
 

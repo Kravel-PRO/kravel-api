@@ -32,7 +32,7 @@ public class ArticleDetailDTO {
     private String mediaName;
 
     private int reviewCnt;
-    private List<ArticleReviewDTO> reviewList;
+    private List<ArticleReviewListDTO> reviewList;
     private List<CelebrityDTO> celebrityList;
 
 }

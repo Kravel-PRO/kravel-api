@@ -29,7 +29,7 @@ public class JwtFactory {
                     .withClaim("ROLE", context.getMember().getRole().getRoleName())
                     .withClaim("LANGU", context.getMember().getLangu())
                     .withClaim("GENDER", context.getMember().getGender())
-                    .withClaim("MEMBER_ID", context.getMember().getGender())
+                    .withClaim("MEMBER_ID", context.getMember().getMemberId())
                     .sign(generateAlgorithm());
 
         } catch (Exception e) {

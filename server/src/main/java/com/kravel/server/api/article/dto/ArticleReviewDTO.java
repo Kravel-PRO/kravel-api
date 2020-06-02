@@ -14,8 +14,8 @@ import java.util.List;
 public class ArticleReviewDTO {
 
     private long reviewId;
-    private String repreRwImg;
-    private List<String> rwImg;
+    private List<RwImgDTO> rwImg;
+
     private int likeCnt;
     private int likeState;
 }

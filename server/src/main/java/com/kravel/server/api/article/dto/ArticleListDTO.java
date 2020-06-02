@@ -12,7 +12,7 @@ import org.apache.ibatis.type.Alias;
 public class ArticleListDTO {
     private long articleId;
     private String subject;
-    private String img;
+    private String imgUrl;
     private int mediaCnt;
     private int celebrityCnt;
 }
