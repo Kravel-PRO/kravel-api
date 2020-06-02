@@ -15,13 +15,11 @@ public interface ArticleMapper {
 
     public List<Article> findAllPlaces(@Param("param") Map<String, Object> param);
 
-    public ArticleDetailDTO findPlaceByArticleId(@Param("param") Map<String, Object> param);
+    public ArticleDetailDTO findPlaceById(@Param("param") Map<String, Object> param);
 
-    public List<CelebrityDTO> findCelebrityListByArticleId(@Param("param") Map<String, Object> param);
+    public List<CelebrityDTO> findAllCelebrities(@Param("param") Map<String, Object> param);
 
-    public List<ArticleReviewListDTO> findReviewListByArticleId(@Param("param") Map<String, Object> param);
+    public List<ArticleReviewListDTO> findAllReviews(@Param("param") Map<String, Object> param);
 
-    public List<RwImgDTO> findReviewDetailImgByReviewId(@Param("param") Map<String, Object> param);
 
-    public ArticleReviewDTO findReviewLikeCntByReviewId(@Param("param") Map<String, Object> param);
 }

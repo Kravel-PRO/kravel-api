@@ -29,7 +29,7 @@
             ${param.offset}, ${param.max};
     </select>
 
-    <select id="findPlaceByArticleId" parameterType="hashmap" resultType="articleDetailDTO">
+    <select id="findPlaceById" parameterType="hashmap" resultType="articleDetailDTO">
         SELECT
             tam.ARTICLE_ID articleId,
             tai.SUBJECT subject,
@@ -57,7 +57,7 @@
             AND tam.USE_AT = "Y";
     </select>
 
-    <select id="findCelebrityListByArticleId" parameterType="hashmap" resultType="celebrityDTO">
+    <select id="findAllCelebrities" parameterType="hashmap" resultType="celebrityDTO">
         SELECT
             tcm.CELEBRITY_ID celebrityId,
             tcm.CELEBRITY_NAME celebrityName
@@ -70,7 +70,7 @@
             tam.ARTICLE_ID = #{param.articleId};
     </select>
 
-    <select id="findReviewListByArticleId" parameterType="hashmap" resultType="articleReviewListDTO">
+    <select id="findAllReviews" parameterType="hashmap" resultType="articleReviewListDTO">
         SELECT
             tar.REVIEW_ID reviewId,
             tari.IMG_URL representImgUrl
@@ -89,47 +89,4 @@
             ${param.offset}, ${param.max};
     </select>
 
-    <select id="findReviewDetailImgByReviewId" parameterType="hashmap" resultType="rwImgDTO">
-        SELECT
-            tari.IMG_ID imgId,
-            tari.IMG_URL imgUrl,
-            tari.REPRESENT repesent
-        FROM
-            tb_article_review tar
-            INNER JOIN
-                tb_article_review_img tari
-            ON tar.REVIEW_ID = tari.REVIEW_ID
-        WHERE
-            tar.ARTICLE_ID = #{param.articleId}
-            AND tar.REVIEW_ID = #{param.reviewId}
-            AND tar.USE_AT = "Y";
-    </select>
-    
-    <select id="findReviewLikeCntByReviewId" parameterType="hashmap" resultType="articleReviewDTO">
-        SELECT
-            tar.REVIEW_ID reviewId,
-            COUNT(trl.LIKE_ID) likeCnt,
-            b.likeState likeState
-        FROM
-            tb_article_review tar
-            LEFT JOIN
-                tb_review_like trl
-            ON tar.REVIEW_ID = trl.REVIEW_ID,
-            (
-                SELECT
-                    COUNT(trl2.MEMBER_ID) likeState
-                FROM
-                    tb_article_review tar2
-                    LEFT JOIN
-                        tb_review_like trl2
-                    ON tar2.REVIEW_ID = trl2.REVIEW_ID
-                WHERE
-                    trl2.REVIEW_ID = tar2.REVIEW_ID
-                    AND trl2.MEMBER_ID = #{param.memberId}
-                ) b
-        WHERE
-            tar.ARTICLE_ID = #{param.articleId}
-            AND tar.REVIEW_ID = #{param.reviewId}
-            AND tar.USE_AT = "Y";
-    </select>
 </mapper>

@@ -28,48 +28,21 @@ public class ArticleService {
         return articleList;
     }
 
-    public ArticleDetailDTO findPlaceByArticleId(Map<String, Object> param) throws Exception {
+    public ArticleDetailDTO findPlaceById(Map<String, Object> param) throws Exception {
 
-        ArticleDetailDTO articleDetailDTO = articleMapper.findPlaceByArticleId(param);
+        ArticleDetailDTO articleDetailDTO = articleMapper.findPlaceById(param);
         if (articleDetailDTO.getSubject().isEmpty()) {
             throw new NotFoundException("Is not exist Article");
         }
 
-        List<CelebrityDTO> celebrityDTOList = articleMapper.findCelebrityListByArticleId(param);
+        List<CelebrityDTO> celebrityDTOList = articleMapper.findAllCelebrities(param);
         articleDetailDTO.setCelebrityList(celebrityDTOList);
 
         param.put("max", 6);
-        List<ArticleReviewListDTO> articleReviewListDTOList = articleMapper.findReviewListByArticleId(param);
+        List<ArticleReviewListDTO> articleReviewListDTOList = articleMapper.findAllReviews(param);
         articleDetailDTO.setReviewList(articleReviewListDTOList);
 
         return articleDetailDTO;
-    }
-
-    /**
-     * 리뷰 리스트 버튼 눌렀을 때
-     * @param param
-     * @return
-     * @throws Exception
-     */
-    public List<ArticleReviewListDTO> findReviewListByArticleId(Map<String, Object> param) throws Exception {
-
-        List<ArticleReviewListDTO> articleReviewListDTOList = articleMapper.findReviewListByArticleId(param);
-        if (articleReviewListDTOList.isEmpty()) {
-            throw new NotFoundException("Is not exist review");
-        }
-        return articleReviewListDTOList;
-    }
-
-    public ArticleReviewDTO findReviewDetailByReviewId(Map<String, Object> param) throws Exception {
-
-        ArticleReviewDTO articleReviewDTO = articleMapper.findReviewLikeCntByReviewId(param);
-        articleReviewDTO.setRwImg(articleMapper.findReviewDetailImgByReviewId(param));
-
-        if (articleReviewDTO.getRwImg().isEmpty()) {
-            throw new NotFoundException("Is ot exist review");
-        }
-
-        return articleReviewDTO;
     }
 
 }
