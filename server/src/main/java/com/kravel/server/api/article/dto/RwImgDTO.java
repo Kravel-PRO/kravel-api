@@ -5,7 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.ibatis.type.Alias;
 
-@ToString
+@Setter
+@Getter
 @Alias("rwImgDTO")
 public class RwImgDTO {
     private long imgId;
