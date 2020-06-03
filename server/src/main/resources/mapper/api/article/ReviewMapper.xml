@@ -3,7 +3,6 @@
 
 <mapper namespace="com.kravel.server.api.article.mapper.ReviewMapper">
 
-
     <select id="findReviewDetailImgById" parameterType="hashmap" resultType="rwImgDTO">
         SELECT
             tari.IMG_ID imgId,
@@ -47,4 +46,42 @@
             AND tar.REVIEW_ID = #{param.reviewId}
             AND tar.USE_AT = "Y";
     </select>
+
+    <insert id="saveReview" parameterType="hashmap" useGeneratedKeys="true" keyProperty="REVIEW_ID">
+        INSERT INTO
+            tb_article_review(
+                MEMBER_ID,
+                ARTICLE_ID
+            )
+        VALUES (
+            #{param.memberId},
+            #{param.articleId}
+        );
+    </insert>
+
+    <insert id="saveReviewImg" parameterType="hashmap">
+        INSERT INTO
+            tb_article_review_img(
+                REVIEW_ID,
+                IMG_URL,
+                REPRESENT
+            )
+        VALUES (
+            <foreach item="item" index="index" collection="#{param.imgUrlList}"
+                     open="(" separator="," close=")">
+
+                #{param.reviewId},
+                #{item},
+                <choose>
+                    <when test="#{param.represent} == #{index}">
+                        true
+                    </when>
+                    <otherwise>
+                        false
+                    </otherwise>
+                </choose>
+            </foreach>
+        )
+
+    </insert>
 </mapper>
