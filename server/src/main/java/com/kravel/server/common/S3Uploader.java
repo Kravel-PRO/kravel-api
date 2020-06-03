@@ -12,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -31,8 +34,8 @@ public class S3Uploader {
     }
 
     private String upload(File uploadFile, String dirName) {
-        String fileName = dirName + "/" + uploadFile.getName();
-        String uploadImgUrl = putS3(uploadFile, dirName);
+        String fileName = dirName + "/" + convertDateFormat(new Date()) + "_" + uploadFile.getName();
+        String uploadImgUrl = putS3(uploadFile, fileName);
 
         removeNewFile(uploadFile);
         return uploadImgUrl;
@@ -62,4 +65,8 @@ public class S3Uploader {
         return Optional.empty();
     }
 
+    private String convertDateFormat(Date date) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(date);
+    }
 }

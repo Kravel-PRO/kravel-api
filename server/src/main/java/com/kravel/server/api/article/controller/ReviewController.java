@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,13 +72,17 @@ public class ReviewController {
         return new ResponseMessage(HttpStatus.OK, articleReviewDTO);
     }
 
-    @PostMapping("")
+    @PostMapping("/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage saveReview(@RequestParam("file") List<MultipartFile> files) throws IOException {
+    @Transactional
+    public ResponseMessage saveReview(@RequestParam("files") List<MultipartFile> files,
+                                      @RequestParam(value = "represent", defaultValue = "0") int represent) throws Exception {
 
+        List<String> imgUrlList = reviewService.saveReviewToS3(files);
 
+        System.out.println(represent);
 
-        return null;
+        return new ResponseMessage(HttpStatus.OK, imgUrlList);
     }
 }

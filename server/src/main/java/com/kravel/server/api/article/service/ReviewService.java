@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,11 +49,21 @@ public class ReviewService {
         return articleReviewDTO;
     }
 
-    public String saveReview(List<MultipartFile> files, int represent) throws Exception {
+    public List<String> saveReviewToS3(List<MultipartFile> files) throws Exception {
+        List<String> imgUrlList = new ArrayList<>();
 
-        List<String> imgUrlList = (List<String>) files.stream().map(file -> s3Uploader.upload(file, "review"));
+        for (MultipartFile file : files) {
+            imgUrlList.add(s3Uploader.upload(file, "review"));
+        }
+        if (imgUrlList.isEmpty()) {
+            throw new IOException("Af");
+        }
 
-        return "adsf";
+        return imgUrlList;
+    }
+
+    public boolean saveReviewToDatabase(List<String> imgUrls, Map<String, Object> param) throws Exception {
+        return true;
     }
 
 }
