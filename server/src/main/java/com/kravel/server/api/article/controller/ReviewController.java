@@ -3,18 +3,23 @@ package com.kravel.server.api.article.controller;
 import com.auth0.jwt.interfaces.Claim;
 import com.kravel.server.api.article.dto.ArticleReviewDTO;
 import com.kravel.server.api.article.dto.ArticleReviewListDTO;
+import com.kravel.server.api.article.dto.RwImgDTO;
 import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
+import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.message.ResponseMessage;
+import com.sun.org.apache.xerces.internal.xs.StringList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/articles")
@@ -30,11 +35,11 @@ public class ReviewController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllReviews(@PathVariable("articleId") long articleId,
-                                                     @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                     @RequestParam(value = "max", defaultValue = "5") int max,
-                                                     @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
-                                                     @RequestParam(value = "order", defaultValue = "desc") String order,
-                                                     Authentication authentication) throws Exception {
+                                          @RequestParam(value = "offset", defaultValue = "0") int offset,
+                                          @RequestParam(value = "max", defaultValue = "5") int max,
+                                          @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
+                                          @RequestParam(value = "order", defaultValue = "desc") String order,
+                                          Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<String, Object>();
 
@@ -52,8 +57,8 @@ public class ReviewController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findReviewDetailById(@PathVariable("articleId") long articleId,
-                                                      @PathVariable("reviewId") long reviewId,
-                                                      Authentication authentication) throws Exception {
+                                                @PathVariable("reviewId") long reviewId,
+                                                Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<String, Object>();
 
@@ -65,4 +70,38 @@ public class ReviewController {
         return new ResponseMessage(HttpStatus.OK, articleReviewDTO);
     }
 
+    @PostMapping("/{articleId}/reviews")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @Transactional
+    public ResponseMessage saveReview(@PathVariable("articleId") int articleId,
+                                      @RequestParam("files") List<MultipartFile> files,
+                                      @RequestParam(value = "represent", defaultValue = "0") int represent,
+                                      Authentication authentication) throws Exception {
+
+        List<String> imgUrlList = reviewService.saveReviewToS3(files);
+
+        List<RwImgDTO> rwImgDTOList = new ArrayList<RwImgDTO>();
+
+        for (int i=0; i<imgUrlList.size(); i++) {
+            RwImgDTO rwImgDTO = new RwImgDTO();
+            rwImgDTO.setImgUrl(imgUrlList.get(i));
+
+            if (i == represent) {
+                rwImgDTO.setRepresent(true);
+            } else {
+                rwImgDTO.setRepresent(false);
+            }
+            rwImgDTOList.add(rwImgDTO);
+        }
+
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("articleId", articleId);
+        param.put("memberId", claimExtractor.getMemberId(authentication));
+        param.put("rwImgDTOList", rwImgDTOList);
+        param.put("represent", represent);
+
+        boolean result = reviewService.saveReviewToDatabase(param);
+        return new ResponseMessage(HttpStatus.OK, result);
+    }
 }

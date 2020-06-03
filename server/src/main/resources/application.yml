@@ -1,0 +1,6 @@
+cloud:
+  aws:
+    s3:
+      bucket: kravel
+    region:
+      static: ap-northeast-2
