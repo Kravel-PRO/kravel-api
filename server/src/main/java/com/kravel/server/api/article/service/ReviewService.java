@@ -1,5 +1,6 @@
 package com.kravel.server.api.article.service;
 
+import com.kravel.server.api.article.Model.ArticleReview;
 import com.kravel.server.api.article.dto.ArticleReviewDTO;
 import com.kravel.server.api.article.dto.ArticleReviewListDTO;
 import com.kravel.server.api.article.mapper.ArticleMapper;
@@ -63,6 +64,11 @@ public class ReviewService {
     }
 
     public boolean saveReviewToDatabase(Map<String, Object> param) throws Exception {
+
+        ArticleReview articleReview = reviewMapper.findArticleReviewById(param);
+
+        param.put("mediaId", articleReview.getMediaId());
+        param.put("celebrityId", articleReview.getCelebrityId());
 
         reviewMapper.saveReview(param);
         return reviewMapper.saveReviewImg(param) != 0;

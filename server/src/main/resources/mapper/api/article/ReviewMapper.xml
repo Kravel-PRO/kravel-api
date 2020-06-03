@@ -66,14 +66,22 @@
             tb_article_review(
                 MEMBER_ID,
                 ARTICLE_ID,
-                MEDIA_ID,
-                CELEBRITY_ID
+                <if test="param.mediaId != null and param.mediaId != ''">
+                    MEDIA_ID,
+                </if>
+                <if test="param.celebrityId != null and param.celebrityId != ''">
+                    CELEBRITY_ID
+                </if>
             )
         VALUES (
             #{param.memberId},
-            #{param.articleId},
-            #{before.mediaId},
-            #{before.celebrityId}
+            #{param.articleId}
+            <if test="param.mediaId != null and param.mediaId != ''">
+                ,#{param.mediaId}
+            </if>
+            <if test="param.celebrityId != null and param.celebrityId != ''">
+                ,#{param.celebrityId}
+            </if>
         );
     </insert>
 
