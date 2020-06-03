@@ -1,7 +1,5 @@
 package com.kravel.server.api.article.service;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.kravel.server.api.article.dto.ArticleReviewDTO;
 import com.kravel.server.api.article.dto.ArticleReviewListDTO;
 import com.kravel.server.api.article.mapper.ArticleMapper;
@@ -46,9 +44,7 @@ public class ReviewService {
     }
 
     public String saveReview(MultipartFile file) throws Exception {
-        AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                .withRegion(clientRegion)
-                .build();
+        return "adsf";
     }
 
 }
