@@ -62,11 +62,9 @@ public class ReviewService {
         return imgUrlList;
     }
 
-    public boolean saveReviewToDatabase(List<String> imgUrls, Map<String, Object> param) throws Exception {
+    public boolean saveReviewToDatabase(Map<String, Object> param) throws Exception {
 
-        int reviewId = reviewMapper.saveReview(param);
-        param.put("reviewId", reviewId);
-
+        reviewMapper.saveReview(param);
         return reviewMapper.saveReviewImg(param) != 0;
     }
 

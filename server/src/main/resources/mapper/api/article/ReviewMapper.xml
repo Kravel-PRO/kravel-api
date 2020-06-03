@@ -47,15 +47,33 @@
             AND tar.USE_AT = "Y";
     </select>
 
-    <insert id="saveReview" parameterType="hashmap" useGeneratedKeys="true" keyProperty="REVIEW_ID">
+    <select id="findArticleReviewById" parameterType="hashmap" resultType="articleReview">
+        SELECT
+            tam.MEDIA_ID mediaId,
+            tcm.CELEBRITY_ID celebrityId
+        FROM
+            tb_article_main tam
+        INNER JOIN
+            tb_celebrity_main tcm
+        ON tam.ARTICLE_ID = tcm.ARTICLE_ID
+        WHERE
+            tam.ARTICLE_ID = #{param.articleId};
+
+    </select>
+
+    <insert id="saveReview" parameterType="hashmap" useGeneratedKeys="true" keyProperty="reviewId">
         INSERT INTO
             tb_article_review(
                 MEMBER_ID,
-                ARTICLE_ID
+                ARTICLE_ID,
+                MEDIA_ID,
+                CELEBRITY_ID
             )
         VALUES (
             #{param.memberId},
-            #{param.articleId}
+            #{param.articleId},
+            #{before.mediaId},
+            #{before.celebrityId}
         );
     </insert>
 
@@ -66,22 +84,13 @@
                 IMG_URL,
                 REPRESENT
             )
-        VALUES (
-            <foreach item="item" index="index" collection="#{param.imgUrlList}"
-                     open="(" separator="," close=")">
-
+        VALUES
+            <foreach item="item" index="index" collection="param.rwImgDTOList" separator=",">
+                (
                 #{param.reviewId},
-                #{item},
-                <choose>
-                    <when test="#{param.represent} == #{index}">
-                        true
-                    </when>
-                    <otherwise>
-                        false
-                    </otherwise>
-                </choose>
+                #{item.imgUrl},
+                #{item.represent}
+                )
             </foreach>
-        )
-
     </insert>
 </mapper>
