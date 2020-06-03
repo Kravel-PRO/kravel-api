@@ -20,6 +20,12 @@ repositories {
 }
 
 dependencies {
+//    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.X')
+//    implementation 'com.amazonaws:aws-java-sdk-s3'
+
+    compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.792'
+
+
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
     compile('org.springframework.security:spring-security-oauth2-client')

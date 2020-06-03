@@ -1,5 +1,7 @@
 package com.kravel.server.api.article.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.kravel.server.api.article.dto.ArticleReviewDTO;
 import com.kravel.server.api.article.dto.ArticleReviewListDTO;
 import com.kravel.server.api.article.mapper.ArticleMapper;
@@ -7,6 +9,7 @@ import com.kravel.server.api.article.mapper.ReviewMapper;
 import com.kravel.server.common.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -40,6 +43,12 @@ public class ReviewService {
         }
 
         return articleReviewDTO;
+    }
+
+    public String saveReview(MultipartFile file) throws Exception {
+        AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+                .withRegion(clientRegion)
+                .build();
     }
 
 }
