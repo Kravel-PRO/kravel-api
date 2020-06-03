@@ -4,6 +4,7 @@ import com.kravel.server.api.article.dto.ArticleReviewDTO;
 import com.kravel.server.api.article.dto.ArticleReviewListDTO;
 import com.kravel.server.api.article.mapper.ArticleMapper;
 import com.kravel.server.api.article.mapper.ReviewMapper;
+import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ public class ReviewService {
 
     @Autowired
     private ReviewMapper reviewMapper;
+
+    @Autowired
+    private S3Uploader s3Uploader;
 
     // 리뷰 리스트 눌렀을 때
     public List<ArticleReviewListDTO> findAllReviews(Map<String, Object> param) throws Exception {
@@ -43,7 +47,10 @@ public class ReviewService {
         return articleReviewDTO;
     }
 
-    public String saveReview(MultipartFile file) throws Exception {
+    public String saveReview(List<MultipartFile> files, int represent) throws Exception {
+
+        List<String> imgUrlList = (List<String>) files.stream().map(file -> s3Uploader.upload(file, "review"));
+
         return "adsf";
     }
 

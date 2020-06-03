@@ -5,7 +5,9 @@ import com.kravel.server.api.article.dto.ArticleReviewDTO;
 import com.kravel.server.api.article.dto.ArticleReviewListDTO;
 import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
+import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.message.ResponseMessage;
+import com.sun.org.apache.xerces.internal.xs.StringList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +74,10 @@ public class ReviewController {
     @PostMapping("")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage saveReview(@RequestParam("file") MultipartFile file) throws Exception {
+    public ResponseMessage saveReview(@RequestParam("file") List<MultipartFile> files) throws IOException {
+
+
+
         return null;
     }
 }
