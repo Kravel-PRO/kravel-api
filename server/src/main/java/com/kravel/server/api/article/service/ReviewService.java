@@ -77,12 +77,12 @@ public class ReviewService {
     }
 
     public boolean handleReviewLike(Map<String, Object> param) throws Exception {
-        int savedLike = reviewMapper.checkReviewLike(param);
+        int savedLike = reviewMapper.checkExistReviewLike(param);
 
         if ((boolean) param.get("likeState") && savedLike == 0) {
             return reviewMapper.saveReviewLike(param) != 0;
 
-        } else if (savedLike > 1) {
+        } else if (savedLike >= 1) {
             return reviewMapper.removeReviewLike(param) != 0;
 
         } else  {

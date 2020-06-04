@@ -2,6 +2,7 @@ package com.kravel.server.api.article.controller;
 
 import com.kravel.server.api.article.Model.Article;
 import com.kravel.server.api.article.dto.ArticleDetailDTO;
+import com.kravel.server.api.article.dto.ArticleScrapDTO;
 import com.kravel.server.api.article.service.ArticleService;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
@@ -64,5 +65,23 @@ public class ArticleController {
 
         ArticleDetailDTO articleDetailDTO = articleService.findPlaceById(param);
         return new ResponseMessage(HttpStatus.OK, articleDetailDTO);
+    }
+
+    @PostMapping("/{articleId}/scrap")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseMessage handleScrape(@PathVariable("articleId") long articleId,
+                                        @RequestBody ArticleScrapDTO articleScrapDTO,
+                                        Authentication authentication) throws Exception {
+
+        Map<String, Object> param = new HashMap<String, Object>();
+
+        param.put("scrapState", articleScrapDTO.isScrapState());
+        param.put("articleId", articleId);
+        param.put("memberId", claimExtractor.getMemberId(authentication));
+
+        boolean result = articleService.handleArticleScrap(param);
+
+        return new ResponseMessage(HttpStatus.OK, result);
     }
 }

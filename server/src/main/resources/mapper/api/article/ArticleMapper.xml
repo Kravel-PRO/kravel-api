@@ -88,5 +88,35 @@
         LIMIT
             ${param.offset}, ${param.max};
     </select>
+    
+    <select id="checkExistArticleScrap" parameterType="hashmap" resultType="int">
+        SELECT
+            COUNT(tcm.SCRAP_ID) scrapId
+        FROM
+            tb_scrap_main tcm
+        WHERE
+            tcm.MEMBER_ID = #{param.memberId}
+            AND tcm.ARTICLE_ID = #{param.articleId}
+    </select>
+
+    <insert id="saveArticleScrap" parameterType="hashmap">
+        INSERT INTO
+            tb_scrap_main (
+                MEMBER_ID,
+                ARTICLE_ID
+            )
+        VALUES (
+            #{param.memberId},
+            #{param.articleId}
+        );
+    </insert>
+
+    <delete id="removeArticleScrap" parameterType="hashmap">
+        DELETE FROM
+            tb_scrap_main
+        WHERE
+            MEMBER_ID = #{param.memberId}
+            AND ARTICLE_ID = #{param.articleId};
+    </delete>
 
 </mapper>

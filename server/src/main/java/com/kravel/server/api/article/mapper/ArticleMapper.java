@@ -21,5 +21,11 @@ public interface ArticleMapper {
 
     public List<ArticleReviewListDTO> findAllReviews(@Param("param") Map<String, Object> param);
 
+    public int checkExistArticleScrap(@Param("param") Map<String, Object> param);
+
+    public int saveArticleScrap(@Param("param") Map<String, Object> param);
+
+    public int removeArticleScrap(@Param("param") Map<String, Object> param);
+
 
 }

@@ -102,7 +102,7 @@
             </foreach>
     </insert>
 
-    <select id="checkReviewLike" parameterType="hashmap" resultType="int">
+    <select id="checkExistReviewLike" parameterType="hashmap" resultType="int">
         SELECT
             COUNT(trl.LIKE_ID) likeId
         FROM
