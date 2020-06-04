@@ -55,7 +55,7 @@ public class ArticleController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findPlaceById(@PathVariable("articleId") long articleId,
-                                                Authentication authentication) throws Exception {
+                                         Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<String, Object>();
 

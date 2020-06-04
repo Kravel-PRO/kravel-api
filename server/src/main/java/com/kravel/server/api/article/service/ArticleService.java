@@ -38,6 +38,9 @@ public class ArticleService {
         List<CelebrityDTO> celebrityDTOList = articleMapper.findAllCelebrities(param);
         articleDetailDTO.setCelebrityList(celebrityDTOList);
 
+        param.put("sort", "CREATE_DE");
+        param.put("order", "DESC");
+        param.put("offset", 0);
         param.put("max", 6);
         List<ArticleReviewListDTO> articleReviewListDTOList = articleMapper.findAllReviews(param);
         articleDetailDTO.setReviewList(articleReviewListDTOList);
