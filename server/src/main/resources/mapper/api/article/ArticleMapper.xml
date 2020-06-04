@@ -125,5 +125,4 @@
             MEMBER_ID = #{param.memberId}
             AND ARTICLE_ID = #{param.articleId};
     </delete>
-
 </mapper>
