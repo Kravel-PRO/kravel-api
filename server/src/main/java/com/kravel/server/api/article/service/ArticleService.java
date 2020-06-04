@@ -19,14 +19,19 @@ public class ArticleService {
     @Autowired
     private ArticleMapper articleMapper;
 
-    public List<Article> findAllPlaces(Map<String,Object> param) throws Exception {
+    public List<ArticleMapDTO> findAllPlaces(Map<String,Object> param) throws Exception {
 
-        List<Article> articleList = articleMapper.findAllPlaces(param);
-        if (articleList.isEmpty()) {
+        List<ArticleMapDTO> articleMapDTOList = articleMapper.findAllPlaces(param);
+        if (articleMapDTOList.isEmpty()) {
             throw new NotFoundException("IS not exist Article List");
         }
 
-        return articleList;
+        for (int i=0; i<articleMapDTOList.size(); i++) {
+            param.put("articleId", articleMapDTOList.get(i).getArticleId());
+            articleMapDTOList.get(i).setCelebrities(articleMapper.findAllCelebrities(param));
+        }
+
+        return articleMapDTOList;
     }
 
     public ArticleDetailDTO findPlaceById(Map<String, Object> param) throws Exception {

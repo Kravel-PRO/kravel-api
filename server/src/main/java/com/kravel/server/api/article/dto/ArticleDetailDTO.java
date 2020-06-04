@@ -1,14 +1,10 @@
 package com.kravel.server.api.article.dto;
 
-import com.kravel.server.api.article.Model.ArticleInfo;
-import com.kravel.server.api.article.Model.ArticleReview;
-import com.kravel.server.api.article.Model.ArticleSub;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.ibatis.type.Alias;
 
-import java.util.Date;
 import java.util.List;
 
 @Getter

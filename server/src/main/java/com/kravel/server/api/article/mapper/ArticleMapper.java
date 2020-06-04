@@ -13,7 +13,7 @@ import java.util.Map;
 @Repository
 public interface ArticleMapper {
 
-    public List<Article> findAllPlaces(@Param("param") Map<String, Object> param);
+    public List<ArticleMapDTO> findAllPlaces(@Param("param") Map<String, Object> param);
 
     public ArticleDetailDTO findPlaceById(@Param("param") Map<String, Object> param);
 

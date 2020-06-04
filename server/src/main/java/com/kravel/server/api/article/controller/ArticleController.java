@@ -2,6 +2,7 @@ package com.kravel.server.api.article.controller;
 
 import com.kravel.server.api.article.Model.Article;
 import com.kravel.server.api.article.dto.ArticleDetailDTO;
+import com.kravel.server.api.article.dto.ArticleMapDTO;
 import com.kravel.server.api.article.dto.ArticleScrapDTO;
 import com.kravel.server.api.article.service.ArticleService;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
@@ -34,7 +35,9 @@ public class ArticleController {
                                          @RequestParam(value = "max", defaultValue = "5") int max,
                                          @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
                                          @RequestParam(value = "order", defaultValue = "desc") String order,
-                                         @RequestParam(value = "search", defaultValue = "") String search,
+                                         @RequestParam(value = "latitude", required = true) double latitude,
+                                         @RequestParam(value = "longitude", required = true) double longitude,
+                                         @RequestParam(value = "scale", required = true) double scale,
                                          Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<String, Object>();
@@ -43,13 +46,13 @@ public class ArticleController {
         param.put("max", max);
         param.put("sort", sort);
         param.put("order", order);
-        param.put("search", search);
+        param.put("latitude", latitude);
+        param.put("longitude", longitude);
+        param.put("scale", scale);
         param.put("langu", claimExtractor.getLangu(authentication));
 
-        PostAuthorizationToken postAuthorizationToken = (PostAuthorizationToken) authentication;
-
-        List<Article> articleList = articleService.findAllPlaces(param);
-        return new ResponseMessage(HttpStatus.OK, articleList);
+        List<ArticleMapDTO> articleMapDTOList = articleService.findAllPlaces(param);
+        return new ResponseMessage(HttpStatus.OK, articleMapDTOList);
     }
 
     @GetMapping("/{articleId}")

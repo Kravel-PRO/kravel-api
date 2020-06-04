@@ -17,14 +17,13 @@ public class Article {
     private String location;
     private String creator;
 
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
     private float grade;
     private float weight;
 
     private List<ArticleReview> articleReviewList;
     private ArticleInfo articleInfo;
-    private List<ArticleSub> articleSubList;
 
     private Date createDe;
     private Date updateDe;
