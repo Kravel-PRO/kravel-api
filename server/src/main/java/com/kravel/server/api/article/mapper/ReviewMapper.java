@@ -23,4 +23,10 @@ public interface ReviewMapper {
     public int saveReview(@Param("param") Map<String, Object> param);
 
     public int saveReviewImg(@Param("param") Map<String, Object> param);
+
+    public int checkExistReviewLike(@Param("param") Map<String, Object> param);
+
+    public int saveReviewLike(@Param("param") Map<String, Object> param);
+
+    public int removeReviewLike(@Param("param") Map<String, Object> param);
 }

@@ -2,26 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kravel.server.api.article.mapper.ArticleMapper">
-    <select id="findAllPlaces" parameterType="hashmap" resultType="articleListDTO">
+    <select id="findAllPlaces" parameterType="hashmap" resultType="articleMapDTO">
         SELECT
             tam.ARTICLE_ID articleId,
-            tai.SUBJECT subejct,
+            tai.SUBJECT subject,
             t.IMG_URL imgUrl,
-            COUNT(tmm.MEDIA_ID) mediaCnt,
-            COUNT(tcm.CELEBRITY_ID) celebrityCnt
+            tmm.MEDIA_ID mediaId,
+            tmm.MEDIA_NAME mediaName
         FROM
             tb_article_main tam
-            INNER JOIN
-                tb_article_info tai on tam.ARTICLE_ID = tai.ARTICLE_ID
-            LEFT JOIN
-                tb_article_img t on tam.ARTICLE_ID = t.ARTICLE_ID
-            LEFT JOIN
-                tb_media_main tmm ON tam.ARTICLE_ID = tmm.MEDIA_ID
-            LEFT JOIN
-                tb_celebrity_main tcm ON tam.ARTICLE_ID = tcm.ARTICLE_ID
+        INNER JOIN
+            tb_article_info tai
+        ON tam.ARTICLE_ID = tai.ARTICLE_ID
+        LEFT JOIN
+            tb_article_img t
+        ON tam.ARTICLE_ID = t.ARTICLE_ID
+        LEFT JOIN
+            tb_media_main tmm
+        ON tam.MEDIA_ID = tmm.MEDIA_ID
+
         WHERE
-            tai.SUBJECT LIKE CONCAT("%", #{param.search}, "%")
-            AND tai.INFO_LANGU = #{param.langu}
+            tam.LATITUDE > #{param.latitude} - #{param.height}
+            AND #{param.latitude} + #{param.height} > tam.LATITUDE
+
+            AND tam.LONGITUDE > #{param.longitude} - #{param.width}
+            AND #{param.longitude} + #{param.width} > tam.LONGITUDE
+
+            AND tai.INFO_LANGU = "KOR"
             AND tam.USE_AT = "Y"
         ORDER BY
             tam.${param.sort} ${param.order}
@@ -88,5 +95,35 @@
         LIMIT
             ${param.offset}, ${param.max};
     </select>
+    
+    <select id="checkExistArticleScrap" parameterType="hashmap" resultType="int">
+        SELECT
+            COUNT(tcm.SCRAP_ID) scrapId
+        FROM
+            tb_scrap_main tcm
+        WHERE
+            tcm.MEMBER_ID = #{param.memberId}
+            AND tcm.ARTICLE_ID = #{param.articleId}
+    </select>
+
+    <insert id="saveArticleScrap" parameterType="hashmap">
+        INSERT INTO
+            tb_scrap_main (
+                MEMBER_ID,
+                ARTICLE_ID
+            )
+        VALUES (
+            #{param.memberId},
+            #{param.articleId}
+        );
+    </insert>
+
+    <delete id="removeArticleScrap" parameterType="hashmap">
+        DELETE FROM
+            tb_scrap_main
+        WHERE
+            MEMBER_ID = #{param.memberId}
+            AND ARTICLE_ID = #{param.articleId};
+    </delete>
 
 </mapper>

@@ -5,14 +5,19 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.ibatis.type.Alias;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
-@Alias("articleListDTO")
-public class ArticleListDTO {
+@Alias("articleMapDTO")
+public class ArticleMapDTO {
     private long articleId;
     private String subject;
     private String imgUrl;
-    private int mediaCnt;
-    private int celebrityCnt;
+
+    private long mediaId;
+    private String mediaName;
+
+    private List<CelebrityDTO> celebrities;
 }

@@ -101,4 +101,34 @@
                 )
             </foreach>
     </insert>
+
+    <select id="checkExistReviewLike" parameterType="hashmap" resultType="int">
+        SELECT
+            COUNT(trl.LIKE_ID) likeId
+        FROM
+            tb_review_like trl
+        WHERE
+            trl.REVIEW_ID = #{param.reviewId}
+            AND trl.MEMBER_ID = #{param.memberId}
+    </select>
+
+    <insert id="saveReviewLike" parameterType="hashmap">
+        INSERT INTO
+            tb_review_like(
+                REVIEW_ID,
+                MEMBER_ID
+            )
+        VALUES (
+            #{param.reviewId},
+            #{param.memberId}
+        );
+    </insert>
+
+    <delete id="removeReviewLike" parameterType="hashmap">
+        DELETE FROM
+            tb_review_like
+        WHERE
+            REVIEW_ID = #{param.reviewId}
+            AND MEMBER_ID = #{param.memberId};
+    </delete>
 </mapper>

@@ -3,6 +3,7 @@ package com.kravel.server.api.article.controller;
 import com.auth0.jwt.interfaces.Claim;
 import com.kravel.server.api.article.dto.ArticleReviewDTO;
 import com.kravel.server.api.article.dto.ArticleReviewListDTO;
+import com.kravel.server.api.article.dto.ReviewLikeDTO;
 import com.kravel.server.api.article.dto.RwImgDTO;
 import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
@@ -104,4 +105,26 @@ public class ReviewController {
         boolean result = reviewService.saveReviewToDatabase(param);
         return new ResponseMessage(HttpStatus.OK, result);
     }
+
+    @PostMapping("/{articleId}/reviews/{reviewId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseMessage handleReviewLike(@PathVariable("articleId") long articleId,
+                                            @PathVariable("reviewId") long reviewId,
+                                            @RequestBody ReviewLikeDTO reviewLikeDTO,
+                                            Authentication authentication) throws Exception{
+
+        Map<String, Object> param = new HashMap<String, Object>();
+
+        param.put("articleId", articleId);
+        param.put("reviewId", reviewId);
+        param.put("likeState", reviewLikeDTO.isLikeState());
+        param.put("memberId", claimExtractor.getMemberId(authentication));
+
+        boolean result = reviewService.handleReviewLike(param);
+
+        return new ResponseMessage(HttpStatus.OK, result);
+
+    }
+
 }

@@ -25,7 +25,7 @@
 		DELETE FROM
 			tb_member_main
 		WHERE
-			tmm.LOGIN_EMAIL = #{loginEmail};
+			LOGIN_EMAIL = #{loginEmail};
 	</delete>
 
 </mapper>
