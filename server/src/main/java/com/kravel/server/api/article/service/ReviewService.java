@@ -6,7 +6,9 @@ import com.kravel.server.api.article.dto.ArticleReviewListDTO;
 import com.kravel.server.api.article.mapper.ArticleMapper;
 import com.kravel.server.api.article.mapper.ReviewMapper;
 import com.kravel.server.common.S3Uploader;
+import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
+import org.apache.ibatis.javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -72,6 +74,20 @@ public class ReviewService {
 
         reviewMapper.saveReview(param);
         return reviewMapper.saveReviewImg(param) != 0;
+    }
+
+    public boolean handleReviewLike(Map<String, Object> param) throws Exception {
+        int savedLike = reviewMapper.checkReviewLike(param);
+
+        if ((boolean) param.get("likeState") && savedLike == 0) {
+            return reviewMapper.saveReviewLike(param) != 0;
+
+        } else if (savedLike > 1) {
+            return reviewMapper.removeReviewLike(param) != 0;
+
+        } else  {
+            throw new InvalidRequestException("It is not valid likeState");
+        }
     }
 
 }
