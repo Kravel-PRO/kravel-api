@@ -37,7 +37,8 @@ public class ArticleController {
                                          @RequestParam(value = "order", defaultValue = "desc") String order,
                                          @RequestParam(value = "latitude", required = true) double latitude,
                                          @RequestParam(value = "longitude", required = true) double longitude,
-                                         @RequestParam(value = "scale", required = true) double scale,
+                                         @RequestParam(value = "height", defaultValue = "0.25") double height,
+                                         @RequestParam(value = "width", defaultValue = "0.25") double width,
                                          Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<String, Object>();
@@ -48,7 +49,8 @@ public class ArticleController {
         param.put("order", order);
         param.put("latitude", latitude);
         param.put("longitude", longitude);
-        param.put("scale", scale);
+        param.put("height", height);
+        param.put("width", width);
         param.put("langu", claimExtractor.getLangu(authentication));
 
         List<ArticleMapDTO> articleMapDTOList = articleService.findAllPlaces(param);

@@ -22,11 +22,11 @@
         ON tam.MEDIA_ID = tmm.MEDIA_ID
 
         WHERE
-            tam.LATITUDE > #{param.latitude} - #{param.scale}
-            AND #{param.latitude} + #{param.scale} > tam.LATITUDE
+            tam.LATITUDE > #{param.latitude} - #{param.height}
+            AND #{param.latitude} + #{param.height} > tam.LATITUDE
 
-            AND tam.LONGITUDE > #{param.longitude} - #{param.scale}
-            AND #{param.longitude} + #{param.scale} > tam.LONGITUDE
+            AND tam.LONGITUDE > #{param.longitude} - #{param.width}
+            AND #{param.longitude} + #{param.width} > tam.LONGITUDE
 
             AND tai.INFO_LANGU = "KOR"
             AND tam.USE_AT = "Y"
