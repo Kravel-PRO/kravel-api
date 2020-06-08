@@ -1,15 +1,12 @@
 package com.kravel.server.api.article.controller;
 
-import com.auth0.jwt.interfaces.Claim;
 import com.kravel.server.api.article.dto.ArticleReviewDTO;
 import com.kravel.server.api.article.dto.ArticleReviewListDTO;
 import com.kravel.server.api.article.dto.ReviewLikeDTO;
 import com.kravel.server.api.article.dto.RwImgDTO;
 import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
-import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.message.ResponseMessage;
-import com.sun.org.apache.xerces.internal.xs.StringList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 @RestController

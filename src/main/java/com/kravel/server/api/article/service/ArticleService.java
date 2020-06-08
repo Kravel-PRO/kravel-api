@@ -1,6 +1,5 @@
 package com.kravel.server.api.article.service;
 
-import com.kravel.server.api.article.Model.Article;
 import com.kravel.server.api.article.dto.*;
 import com.kravel.server.api.article.mapper.ArticleMapper;
 import com.kravel.server.common.util.exception.InvalidRequestException;

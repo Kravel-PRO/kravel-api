@@ -1,11 +1,9 @@
 package com.kravel.server.api.article.controller;
 
-import com.kravel.server.api.article.Model.Article;
 import com.kravel.server.api.article.dto.ArticleDetailDTO;
 import com.kravel.server.api.article.dto.ArticleMapDTO;
 import com.kravel.server.api.article.dto.ArticleScrapDTO;
 import com.kravel.server.api.article.service.ArticleService;
-import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
