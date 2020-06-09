@@ -20,8 +20,6 @@ repositories {
 }
 
 dependencies {
-//    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.X')
-//    implementation 'com.amazonaws:aws-java-sdk-s3'
 
     compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.792'
 
@@ -39,7 +37,6 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-//    runtimeOnly 'mysql:mysql-connector-java'
     implementation 'mysql:mysql-connector-java'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
