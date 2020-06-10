@@ -1,6 +1,6 @@
 package com.kravel.server.api.article.controller;
 
-import com.kravel.server.api.article.Model.Celebrity;
+import com.kravel.server.api.article.dto.CelebrityDTO;
 import com.kravel.server.api.article.service.CelebrityService;
 import com.kravel.server.common.util.message.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class CelebrityController {
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    private ResponseMessage findAllCelebrities(@RequestParam(value = "offset", defaultValue = "0") int offset,
+    public ResponseMessage findAllCelebrities(@RequestParam(value = "offset", defaultValue = "0") int offset,
                                                @RequestParam(value = "max", defaultValue = "10") int max,
                                                @RequestParam(value = "order", defaultValue = "DESC") String order,
                                                @RequestParam(value = "search", defaultValue = "") String search,
@@ -35,8 +35,7 @@ public class CelebrityController {
         param.put("order", order);
         param.put("search", search);
 
-        List<Celebrity> celebrityList = celebrityService.findAllCelebrities(param);
-        System.out.println(celebrityList.toString());
+        List<CelebrityDTO> celebrityList = celebrityService.findAllCelebrities(param);
 
         return new ResponseMessage(HttpStatus.OK, celebrityList);
     }
