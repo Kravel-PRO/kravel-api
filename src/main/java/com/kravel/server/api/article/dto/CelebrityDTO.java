@@ -9,6 +9,7 @@ import org.apache.ibatis.type.Alias;
 @Setter
 @Alias("celebrityDTO")
 public class CelebrityDTO {
-    private String celebrityId;
+    private long celebrityId;
     private String celebrityName;
+    private String imgUrl;
 }
