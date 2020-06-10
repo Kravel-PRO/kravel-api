@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/celebrities")
+@RequestMapping("/api/articles/celebrities")
 public class CelebrityController {
 
     @Autowired
@@ -24,20 +24,19 @@ public class CelebrityController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     private ResponseMessage findAllCelebrities(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                               @RequestParam(value = "max", defaultValue = "5") int max,
-                                               @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
-                                               @RequestParam(value = "order", defaultValue = "desc") String order,
+                                               @RequestParam(value = "max", defaultValue = "10") int max,
+                                               @RequestParam(value = "order", defaultValue = "DESC") String order,
                                                @RequestParam(value = "search", defaultValue = "") String search,
                                                Authentication authentication) throws Exception {
 
-        Map<String, Object> param = new HashMap<>();
+        Map<String, Object> param = new HashMap<String, Object>();
         param.put("offset", offset);
         param.put("max", max);
-        param.put("sort", sort);
         param.put("order", order);
         param.put("search", search);
 
         List<Celebrity> celebrityList = celebrityService.findAllCelebrities(param);
+        System.out.println(celebrityList.toString());
 
         return new ResponseMessage(HttpStatus.OK, celebrityList);
     }
