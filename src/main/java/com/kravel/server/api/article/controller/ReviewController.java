@@ -1,6 +1,6 @@
 package com.kravel.server.api.article.controller;
 
-import com.kravel.server.api.article.dto.ArticleReviewDTO;
+import com.kravel.server.api.article.dto.ReviewDTO;
 import com.kravel.server.api.article.dto.ArticleReviewListDTO;
 import com.kravel.server.api.article.dto.ReviewLikeDTO;
 import com.kravel.server.api.article.dto.RwImgDTO;
@@ -62,7 +62,7 @@ public class ReviewController {
         param.put("reviewId", reviewId);
         param.put("memberId", claimExtractor.getMemberId(authentication));
 
-        ArticleReviewDTO articleReviewDTO = reviewService.findReviewDetailById(param);
+        ReviewDTO articleReviewDTO = reviewService.findReviewDetailById(param);
         return new ResponseMessage(HttpStatus.OK, articleReviewDTO);
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @ToString
 @Alias("articleReviewDTO")
-public class ArticleReviewDTO {
+public class ReviewDTO {
 
     private long reviewId;
     private List<RwImgDTO> rwImg;
