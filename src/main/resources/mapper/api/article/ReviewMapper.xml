@@ -3,6 +3,33 @@
 
 <mapper namespace="com.kravel.server.api.article.mapper.ReviewMapper">
 
+    <select id="findAllReviews" parameterType="hashmap" resultType="articleReviewListDTO">
+        SELECT
+            tar.REVIEW_ID reviewId,
+            tari.IMG_URL representImgUrl
+        FROM
+            tb_article_review tar
+            INNER JOIN
+                tb_article_review_img tari
+            ON tar.REVIEW_ID = tari.REVIEW_ID
+            AND tari.REPRESENT = true
+        WHERE
+            <choose>
+                <when test="param.articleId != null">
+                    tar.ARTICLE_ID = #{param.articleId}
+                </when>
+
+                <when test="param.celebrityId != null">
+                    tar.CELEBRITY_ID = #{param.celebrityId}
+                </when>
+            </choose>
+            AND tar.USE_AT = "Y"
+        ORDER BY
+            tar.${param.sort} ${param.order}
+        LIMIT
+            ${param.offset}, ${param.max};
+    </select>
+
     <select id="findReviewDetailImgById" parameterType="hashmap" resultType="rwImgDTO">
         SELECT
             tari.IMG_ID imgId,

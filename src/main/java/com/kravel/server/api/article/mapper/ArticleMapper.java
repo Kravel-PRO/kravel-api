@@ -19,7 +19,6 @@ public interface ArticleMapper {
 
     public List<CelebrityDTO> findAllCelebrities(@Param("param") Map<String, Object> param);
 
-    public List<ArticleReviewListDTO> findAllReviews(@Param("param") Map<String, Object> param);
 
     public int checkExistArticleScrap(@Param("param") Map<String, Object> param);
 

@@ -2,6 +2,7 @@ package com.kravel.server.api.article.service;
 
 import com.kravel.server.api.article.dto.*;
 import com.kravel.server.api.article.mapper.ArticleMapper;
+import com.kravel.server.api.article.mapper.ReviewMapper;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,9 @@ public class ArticleService {
 
     @Autowired
     private ArticleMapper articleMapper;
+
+    @Autowired
+    private ReviewMapper reviewMapper;
 
     public List<ArticleMapDTO> findAllPlaces(Map<String,Object> param) throws Exception {
 
@@ -47,7 +51,7 @@ public class ArticleService {
         param.put("order", "DESC");
         param.put("offset", 0);
         param.put("max", 6);
-        List<ArticleReviewListDTO> articleReviewListDTOList = articleMapper.findAllReviews(param);
+        List<ArticleReviewListDTO> articleReviewListDTOList = reviewMapper.findAllReviews(param);
         articleDetailDTO.setReviewList(articleReviewListDTOList);
 
         return articleDetailDTO;

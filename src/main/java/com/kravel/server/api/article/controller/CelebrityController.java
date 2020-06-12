@@ -24,10 +24,10 @@ public class CelebrityController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllCelebrities(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                               @RequestParam(value = "max", defaultValue = "10") int max,
-                                               @RequestParam(value = "order", defaultValue = "DESC") String order,
-                                               @RequestParam(value = "search", defaultValue = "") String search,
-                                               Authentication authentication) throws Exception {
+                                              @RequestParam(value = "max", defaultValue = "10") int max,
+                                              @RequestParam(value = "order", defaultValue = "DESC") String order,
+                                              @RequestParam(value = "search", defaultValue = "") String search,
+                                              Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("offset", offset);
@@ -38,6 +38,24 @@ public class CelebrityController {
         List<CelebrityDTO> celebrityList = celebrityService.findAllCelebrities(param);
 
         return new ResponseMessage(HttpStatus.OK, celebrityList);
+    }
+
+    @GetMapping("/{celebrityId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseMessage findCelebrityById(@PathVariable("celebrityId") long celebrityId,
+                                             @RequestParam(value = "offset", defaultValue = "0") int offset,
+                                             @RequestParam(value = "max", defaultValue = "10") int max,
+                                             @RequestParam(value = "order", defaultValue = "DESC") String order,
+                                             Authentication authentication) throws Exception {
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("celebrityId", celebrityId);
+        param.put("offset", offset);
+        param.put("max", max);
+        param.put("order", order);
+
+        return new ResponseMessage();
     }
 
 }

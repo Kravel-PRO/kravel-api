@@ -1,7 +1,8 @@
 package com.kravel.server.api.article.mapper;
 
 import com.kravel.server.api.article.Model.ArticleReview;
-import com.kravel.server.api.article.dto.ArticleReviewDTO;
+import com.kravel.server.api.article.dto.ReviewDTO;
+import com.kravel.server.api.article.dto.ArticleReviewListDTO;
 import com.kravel.server.api.article.dto.RwImgDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -14,9 +15,11 @@ import java.util.Map;
 @Mapper
 public interface ReviewMapper {
 
+    public List<ArticleReviewListDTO> findAllReviews(@Param("param") Map<String, Object> param);
+
     public List<RwImgDTO> findReviewDetailImgById(@Param("param") Map<String, Object> param);
 
-    public ArticleReviewDTO findReviewLikeCntById(@Param("param") Map<String, Object> param);
+    public ReviewDTO findReviewLikeCntById(@Param("param") Map<String, Object> param);
 
     public ArticleReview findArticleReviewById(@Param("param") Map<String, Object> param);
 
