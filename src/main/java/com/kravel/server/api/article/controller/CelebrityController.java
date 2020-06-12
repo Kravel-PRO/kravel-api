@@ -55,7 +55,8 @@ public class CelebrityController {
         param.put("max", max);
         param.put("order", order);
 
-        return new ResponseMessage();
+        Map<String, Object> result = celebrityService.findCelebrityById(param);
+        return new ResponseMessage(HttpStatus.OK, result);
     }
 
 }
