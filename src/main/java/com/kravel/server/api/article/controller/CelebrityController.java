@@ -1,6 +1,6 @@
 package com.kravel.server.api.article.controller;
 
-import com.kravel.server.api.article.dto.CelebrityDTO;
+import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.article.service.CelebrityService;
 import com.kravel.server.common.util.message.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;

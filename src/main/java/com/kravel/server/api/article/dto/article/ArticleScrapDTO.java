@@ -1,4 +1,4 @@
-package com.kravel.server.api.article.dto;
+package com.kravel.server.api.article.dto.article;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,8 @@
 package com.kravel.server.api.article.mapper;
 
-import com.kravel.server.api.article.Model.Article;
-import com.kravel.server.api.article.dto.*;
+import com.kravel.server.api.article.dto.article.ArticleDetailDTO;
+import com.kravel.server.api.article.dto.article.ArticleMapDTO;
+import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

@@ -15,7 +15,7 @@
         LIMIT #{param.offset}, #{param.max};
     </select>
 
-    <select id="findCelebrityById" parameterType="hashmap">
+    <select id="findCelebrityById" parameterType="hashmap" resultType="celebrityDTO">
         SELECT tcm.CELEBRITY_NAME celebrityName,
                tcm.IMG_URL imgUrl,
                tcm.CELEBRITY_ID
@@ -24,7 +24,7 @@
         AND tcm.USE_AT = 'Y';
     </select>
     
-    <select id="findAllArticleByCelebrity" parameterType="hashmap" resultType="">
+    <select id="findAllArticleByCelebrity" parameterType="hashmap" resultType="celebrityArticleDTO">
         SELECT b.*,
                GROUP_CONCAT(tcm2.CELEBRITY_NAME) celebrities
         FROM

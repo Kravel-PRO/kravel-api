@@ -1,9 +1,7 @@
 package com.kravel.server.api.article.service;
 
-import com.kravel.server.api.article.Model.Celebrity;
-import com.kravel.server.api.article.dto.ArticleReviewListDTO;
-import com.kravel.server.api.article.dto.CelebrityDTO;
-import com.kravel.server.api.article.dto.ReviewDTO;
+import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
+import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.article.mapper.CelebrityMapper;
 import com.kravel.server.api.article.mapper.ReviewMapper;
 import org.springframework.beans.factory.annotation.Autowired;

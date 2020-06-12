@@ -1,9 +1,9 @@
 package com.kravel.server.api.article.mapper;
 
-import com.kravel.server.api.article.Model.ArticleReview;
-import com.kravel.server.api.article.dto.ReviewDTO;
-import com.kravel.server.api.article.dto.ArticleReviewListDTO;
-import com.kravel.server.api.article.dto.RwImgDTO;
+import com.kravel.server.api.article.model.ArticleReview;
+import com.kravel.server.api.article.dto.review.ReviewDTO;
+import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
+import com.kravel.server.api.article.dto.review.RwImgDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
