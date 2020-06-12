@@ -13,4 +13,5 @@ import java.util.Map;
 public interface CelebrityMapper {
 
     public List<CelebrityDTO> findAllCelebrities(@Param("param") Map<String, Object> param);
+
 }
