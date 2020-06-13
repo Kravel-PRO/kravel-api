@@ -46,12 +46,14 @@ public class CelebrityController {
     public ResponseMessage findCelebrityById(@PathVariable("celebrityId") long celebrityId,
                                              @RequestParam(value = "offset", defaultValue = "0") int offset,
                                              @RequestParam(value = "max", defaultValue = "10") int max,
+                                             @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
                                              @RequestParam(value = "order", defaultValue = "DESC") String order,
                                              Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<>();
         param.put("celebrityId", celebrityId);
         param.put("offset", offset);
+        param.put("sort", sort);
         param.put("max", max);
         param.put("order", order);
 

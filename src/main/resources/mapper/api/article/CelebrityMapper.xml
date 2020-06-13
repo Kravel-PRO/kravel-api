@@ -56,7 +56,7 @@
 
             LEFT JOIN tb_celebrity_main tcm2
             ON tac2.CELEBRITY_ID = tcm2.CELEBRITY_ID
-                AND tcm2.USE_AT = 'Y';
+                AND tcm2.USE_AT = 'Y'
         LIMIT ${param.offset}, ${param.max};
     </select>
 
