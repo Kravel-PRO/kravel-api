@@ -1,4 +1,18 @@
 # Kravel
+2020 SK 관광 앱 공모전- K문화와 함께하는 색다른 한국여행
+
+### Using Tech
+* Spring Boot(Spring Security, JWT, MyBatis)
+* MariaDB
+* AWS(EC2, RDS, EBS)
+* Docker
+* Elastic Search
+* Swagger
+
+### Database ERD
+![image](etc/img/erd.png)
+
+---
 
 ![image](etc/img/1.jpg)
 ![image](etc/img/2.jpg)
