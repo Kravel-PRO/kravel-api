@@ -1,8 +1,8 @@
 package com.kravel.server.api.article.controller;
 
-import com.kravel.server.api.article.dto.ArticleDetailDTO;
-import com.kravel.server.api.article.dto.ArticleMapDTO;
-import com.kravel.server.api.article.dto.ArticleScrapDTO;
+import com.kravel.server.api.article.dto.article.ArticleDetailDTO;
+import com.kravel.server.api.article.dto.article.ArticleMapDTO;
+import com.kravel.server.api.article.dto.article.ArticleScrapDTO;
 import com.kravel.server.api.article.service.ArticleService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;

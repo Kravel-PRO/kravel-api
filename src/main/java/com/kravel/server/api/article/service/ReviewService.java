@@ -1,8 +1,8 @@
 package com.kravel.server.api.article.service;
 
-import com.kravel.server.api.article.Model.ArticleReview;
-import com.kravel.server.api.article.dto.ReviewDTO;
-import com.kravel.server.api.article.dto.ArticleReviewListDTO;
+import com.kravel.server.api.article.model.ArticleReview;
+import com.kravel.server.api.article.dto.review.ReviewDTO;
+import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
 import com.kravel.server.api.article.mapper.ArticleMapper;
 import com.kravel.server.api.article.mapper.ReviewMapper;
 import com.kravel.server.common.S3Uploader;

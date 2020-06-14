@@ -1,9 +1,9 @@
 package com.kravel.server.api.article.controller;
 
-import com.kravel.server.api.article.dto.ReviewDTO;
-import com.kravel.server.api.article.dto.ArticleReviewListDTO;
-import com.kravel.server.api.article.dto.ReviewLikeDTO;
-import com.kravel.server.api.article.dto.RwImgDTO;
+import com.kravel.server.api.article.dto.review.ReviewDTO;
+import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
+import com.kravel.server.api.article.dto.review.ReviewLikeDTO;
+import com.kravel.server.api.article.dto.review.RwImgDTO;
 import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;

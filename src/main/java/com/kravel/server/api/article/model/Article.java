@@ -1,4 +1,4 @@
-package com.kravel.server.api.article.Model;
+package com.kravel.server.api.article.model;
 
 import lombok.Getter;
 import lombok.Setter;

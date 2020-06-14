@@ -3,21 +3,61 @@
 
 <mapper namespace="com.kravel.server.api.article.mapper.CelebrityMapper">
     <select id="findAllCelebrities" parameterType="hashmap" resultType="celebrityDTO">
-        SELECT
-            tcm.CELEBRITY_ID celebrityId,
-            tcm.CELEBRITY_NAME celebrityName,
-            tcm.IMG_URL imgUrl
-        FROM
-            tb_celebrity_main tcm
-            LEFT JOIN
-                tb_article_celebrity tac
+        SELECT tcm.CELEBRITY_ID celebrityId,
+               tcm.CELEBRITY_NAME celebrityName,
+               tcm.IMG_URL imgUrl
+        FROM tb_celebrity_main tcm
+            LEFT JOIN tb_article_celebrity tac
             ON tcm.CELEBRITY_ID = tac.CELEBRITY_ID
         WHERE
             tcm.CELEBRITY_NAME LIKE CONCAT(#{param.search}, "%")
-        ORDER BY
-            COUNT(tac.ARTICLE_ID) ${param.order}
-        LIMIT
-            #{param.offset}, #{param.max};
+        ORDER BY COUNT(tac.ARTICLE_ID) ${param.order}
+        LIMIT #{param.offset}, #{param.max};
+    </select>
+
+    <select id="findCelebrityById" parameterType="hashmap" resultType="celebrityDTO">
+        SELECT tcm.CELEBRITY_NAME celebrityName,
+               tcm.IMG_URL imgUrl,
+               tcm.CELEBRITY_ID
+        FROM tb_celebrity_main tcm
+        WHERE tcm.CELEBRITY_ID = #{param.celebrityId}
+        AND tcm.USE_AT = 'Y';
+    </select>
+    
+    <select id="findAllArticleByCelebrity" parameterType="hashmap" resultType="celebrityArticleDTO">
+        SELECT b.*,
+               GROUP_CONCAT(tcm2.CELEBRITY_NAME) celebrities
+        FROM
+            (
+                SELECT tai.ARTICLE_ID articleId,
+                       tai.SUBJECT subject,
+                       taimg.IMG_URL imgUrl
+                FROM tb_celebrity_main tcm
+                    INNER JOIN tb_article_celebrity tac
+                    ON tcm.CELEBRITY_ID = tac.CELEBRITY_ID
+
+                    INNER JOIN tb_article_main tam
+                    ON tac.ARTICLE_ID = tam.ARTICLE_ID
+                        AND tam.USE_AT = 'Y'
+
+                    LEFT JOIN tb_article_img taimg
+                    ON tam.ARTICLE_ID = taimg.ARTICLE_ID
+                        AND taimg.REPRESENT = '1'
+
+                    LEFT JOIN tb_article_info tai
+                    ON tam.ARTICLE_ID = tai.ARTICLE_ID
+                        AND tai.INFO_LANGU = 'KOR'
+                WHERE tcm.CELEBRITY_ID = #{param.celebrityId}
+                AND tcm.USE_AT = 'Y'
+            ) b
+
+            LEFT JOIN tb_article_celebrity tac2
+            ON b.articleId = tac2.ARTICLE_ID
+
+            LEFT JOIN tb_celebrity_main tcm2
+            ON tac2.CELEBRITY_ID = tcm2.CELEBRITY_ID
+                AND tcm2.USE_AT = 'Y'
+        LIMIT ${param.offset}, ${param.max};
     </select>
 
 </mapper>
