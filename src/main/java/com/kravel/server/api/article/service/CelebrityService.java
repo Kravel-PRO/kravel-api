@@ -1,6 +1,7 @@
 package com.kravel.server.api.article.service;
 
 import com.kravel.server.api.article.dto.celebrity.CelebrityArticleDTO;
+import com.kravel.server.api.article.dto.celebrity.ExCelebrityArticleDTO;
 import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.article.mapper.CelebrityMapper;
@@ -35,7 +36,9 @@ public class CelebrityService {
         List<ArticleReviewListDTO> articleReviewListDTOList = reviewMapper.findAllReviews(param);
         result.put("reviewList", articleReviewListDTOList);
 
-        CelebrityArticleDTO celebrityArticleDTO = celebrityMapper.findAllArticleByCelebrity(param);
+        ExCelebrityArticleDTO exCelebrityArticleDTO = celebrityMapper.findAllArticleByCelebrity(param);
+        CelebrityArticleDTO celebrityArticleDTO = new CelebrityArticleDTO(celebrityDTO, exCelebrityArticleDTO);
+
         result.put("articleList", celebrityArticleDTO);
 
         return result;

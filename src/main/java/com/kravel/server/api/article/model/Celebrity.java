@@ -14,7 +14,6 @@ import java.util.Date;
 public class Celebrity {
 
     private long celebrityId;
-    private long mediaId;
     private long creator;
     private String celebrityName;
     private Date createDe;
