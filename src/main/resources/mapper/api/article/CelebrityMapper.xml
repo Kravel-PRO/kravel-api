@@ -24,14 +24,15 @@
         AND tcm.USE_AT = 'Y';
     </select>
     
-    <select id="findAllArticleByCelebrity" parameterType="hashmap" resultType="celebrityArticleDTO">
+    <select id="findAllArticleByCelebrity" parameterType="hashmap" resultType="exCelebrityArticleDTO">
         SELECT b.*,
                GROUP_CONCAT(tcm2.CELEBRITY_NAME) celebrities
         FROM
             (
                 SELECT tai.ARTICLE_ID articleId,
                        tai.SUBJECT subject,
-                       taimg.IMG_URL imgUrl
+                       taimg.IMG_URL imgUrl,
+                       tmm.MEDIA_NAME mediaName
                 FROM tb_celebrity_main tcm
                     INNER JOIN tb_article_celebrity tac
                     ON tcm.CELEBRITY_ID = tac.CELEBRITY_ID
@@ -47,6 +48,12 @@
                     LEFT JOIN tb_article_info tai
                     ON tam.ARTICLE_ID = tai.ARTICLE_ID
                         AND tai.INFO_LANGU = 'KOR'
+
+                    LEFT JOIN tb_celebrity_media tcm3
+                    ON tcm.CELEBRITY_ID = tcm3.CELEBRITY_ID
+
+                    LEFT JOIN tb_media_main tmm
+                    ON tcm3.MEDIA_ID = tmm.MEDIA_ID
                 WHERE tcm.CELEBRITY_ID = #{param.celebrityId}
                 AND tcm.USE_AT = 'Y'
             ) b

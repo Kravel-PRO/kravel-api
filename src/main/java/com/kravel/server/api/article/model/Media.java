@@ -2,23 +2,21 @@ package com.kravel.server.api.article.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.apache.ibatis.type.Alias;
 
 import java.util.Date;
 
 @Getter
 @Setter
-@Alias("celebrity")
-@ToString
-public class Celebrity {
-
-    private long celebrityId;
+@Alias("media")
+public class Media {
+    private long mediaId;
     private long creator;
-    private String celebrityName;
+    private String mediaName;
+    private String explain;
+    private String imgUrl;
+    private String openYear;
     private Date createDe;
     private Date updateDe;
     private String useAt;
-    private String imgUrl;
-
 }
