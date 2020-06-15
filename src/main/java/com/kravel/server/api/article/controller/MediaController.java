@@ -23,11 +23,11 @@ public class MediaController {
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    private ResponseMessage findAllMedia(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                         @RequestParam(value = "max", defaultValue = "5") int max,
-                                         @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
-                                         @RequestParam(value = "order", defaultValue = "desc") String order,
-                                         Authentication authentication) throws Exception {
+    public ResponseMessage findAllMedia(@RequestParam(value = "offset", defaultValue = "0") int offset,
+                                        @RequestParam(value = "max", defaultValue = "5") int max,
+                                        @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
+                                        @RequestParam(value = "order", defaultValue = "DESC") String order,
+                                        Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<>();
         param.put("offset", offset);

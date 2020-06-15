@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kravel.server.api.article.mapper.MediaMapper">
-    <select id="findAllMedia" parameterType="hashmap">
+    <select id="findAllMedia" parameterType="hashmap" resultType="mediaListDTO">
         SELECT tmm.MEDIA_ID mediaId,
                tmm.MEDIA_NAME mediaName,
                tmm.OPEN_YEAR openYear
         FROM tb_media_main tmm
         ORDER BY tmm.${param.sort} ${param.order}
-        LIMIT #{offset}, #{max};
+        LIMIT #{param.offset}, #{param.max};
     </select>
 </mapper>
