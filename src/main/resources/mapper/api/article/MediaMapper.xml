@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kravel.server.api.article.mapper.ReviewMapper">
+<mapper namespace="com.kravel.server.api.article.mapper.MediaMapper">
     <select id="findAllMedia" parameterType="hashmap">
         SELECT tmm.MEDIA_ID mediaId,
                tmm.MEDIA_NAME mediaName,
