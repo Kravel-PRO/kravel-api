@@ -3,7 +3,6 @@ package com.kravel.server.api.article.service;
 import com.kravel.server.api.article.dto.article.ArticleDetailDTO;
 import com.kravel.server.api.article.dto.article.ArticleMapDTO;
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
-import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
 import com.kravel.server.api.article.mapper.ArticleMapper;
 import com.kravel.server.api.article.mapper.ReviewMapper;
 import com.kravel.server.common.util.exception.InvalidRequestException;
@@ -47,15 +46,10 @@ public class ArticleService {
             throw new NotFoundException("Is not exist Article");
         }
 
-        List<CelebrityDTO> celebrityDTOList = articleMapper.findAllCelebrities(param);
-        articleDetailDTO.setCelebrityList(celebrityDTOList);
+        List<CelebrityDTO> celebrityDTOs = articleMapper.findAllCelebrities(param);
+        articleDetailDTO.setCelebrities(celebrityDTOs);
 
-        param.put("sort", "CREATE_DE");
-        param.put("order", "DESC");
-        param.put("offset", 0);
-        param.put("max", 6);
-        List<ArticleReviewListDTO> articleReviewListDTOList = reviewMapper.findAllReviews(param);
-        articleDetailDTO.setReviewList(articleReviewListDTOList);
+        articleDetailDTO.setImgs(articleMapper.findAllArticleImg(param));
 
         return articleDetailDTO;
     }

@@ -1,7 +1,7 @@
 package com.kravel.server.api.article.dto.article;
 
-import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
+import com.kravel.server.api.article.dto.review.ImgDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -30,7 +30,6 @@ public class ArticleDetailDTO {
     private String mediaName;
 
     private int reviewCnt;
-    private List<ArticleReviewListDTO> reviewList;
-    private List<CelebrityDTO> celebrityList;
-
+    private List<CelebrityDTO> celebrities;
+    private List<ImgDTO> imgs;
 }

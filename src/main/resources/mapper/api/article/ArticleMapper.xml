@@ -37,31 +37,25 @@
     </select>
 
     <select id="findPlaceById" parameterType="hashmap" resultType="articleDetailDTO">
-        SELECT
-            tam.ARTICLE_ID articleId,
-            tai.SUBJECT subject,
-            tai.CONTENTS contents,
-            tai.LOCATION location,
-            tam.LATITUDE latitud,
-            tam.LONGITUDE longitude,
-            tmm.MEDIA_ID mediaId,
-            tmm.MEDIA_NAME mediaName,
-            COUNT(tar.REVIEW_ID) reviewCnt
-        FROM
-            tb_article_main tam
-            INNER JOIN
-                tb_article_info tai
+        SELECT tam.ARTICLE_ID articleId,
+               tai.SUBJECT subject,
+               tai.CONTENTS contents,
+               tai.LOCATION location,
+               tam.LATITUDE latitude,
+               tam.LONGITUDE longitude,
+               tmm.MEDIA_ID mediaId,
+               tmm.MEDIA_NAME mediaName
+
+        FROM tb_article_main tam
+            INNER JOIN tb_article_info tai
             ON tam.ARTICLE_ID = tai.ARTICLE_ID
-            INNER JOIN
-                tb_article_review tar
-            ON tai.ARTICLE_ID = tar.ARTICLE_ID
-            LEFT JOIN
-                tb_media_main tmm
-            ON tar.MEDIA_ID = tmm.MEDIA_ID
-        WHERE
-            tam.ARTICLE_ID = #{param.articleId}
-            AND tai.INFO_LANGU = #{param.langu}
-            AND tam.USE_AT = "Y";
+
+            LEFT JOIN tb_media_main tmm
+            ON tam.MEDIA_ID = tmm.MEDIA_ID
+
+        WHERE tam.ARTICLE_ID = #{param.articleId}
+          AND tai.INFO_LANGU = #{param.langu}
+          AND tam.USE_AT = 'Y';
     </select>
 
     <select id="findAllCelebrities" parameterType="hashmap" resultType="celebrityDTO">
@@ -107,4 +101,15 @@
             MEMBER_ID = #{param.memberId}
             AND ARTICLE_ID = #{param.articleId};
     </delete>
+
+    <select id="findAllArticleImg" parameterType="hashmap" resultType="imgDTO">
+        SELECT tai.IMG_ID imgId,
+               tai.IMG_URL imgUrl,
+               tai.REPRESENT represent
+
+        FROM tb_article_img tai
+            RIGHT JOIN tb_article_main tam
+            ON tai.ARTICLE_ID = tam.ARTICLE_ID
+        WHERE tam.ARTICLE_ID = #{param.articleId};
+    </select>
 </mapper>

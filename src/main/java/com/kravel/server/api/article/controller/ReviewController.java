@@ -1,9 +1,9 @@
 package com.kravel.server.api.article.controller;
 
+import com.kravel.server.api.article.dto.review.ImgDTO;
 import com.kravel.server.api.article.dto.review.ReviewDTO;
 import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
 import com.kravel.server.api.article.dto.review.ReviewLikeDTO;
-import com.kravel.server.api.article.dto.review.RwImgDTO;
 import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;
@@ -45,8 +45,8 @@ public class ReviewController {
         param.put("order", order);
         param.put("articleId", articleId);
 
-        List<ArticleReviewListDTO> articleReviewListDTOList = reviewService.findAllReviews(param);
-        return new ResponseMessage(HttpStatus.OK, articleReviewListDTOList);
+        List<ArticleReviewListDTO> articleReviewListDTOs = reviewService.findAllReviews(param);
+        return new ResponseMessage(HttpStatus.OK, articleReviewListDTOs);
     }
 
     @GetMapping("/{articleId}/reviews/{reviewId}")
@@ -75,26 +75,26 @@ public class ReviewController {
                                       @RequestParam(value = "represent", defaultValue = "0") int represent,
                                       Authentication authentication) throws Exception {
 
-        List<String> imgUrlList = reviewService.saveReviewToS3(files);
+        List<String> imgUrls = reviewService.saveReviewToS3(files);
 
-        List<RwImgDTO> rwImgDTOList = new ArrayList<RwImgDTO>();
+        List<ImgDTO> imgDTOs = new ArrayList<ImgDTO>();
 
-        for (int i=0; i<imgUrlList.size(); i++) {
-            RwImgDTO rwImgDTO = new RwImgDTO();
-            rwImgDTO.setImgUrl(imgUrlList.get(i));
+        for (int i=0; i<imgUrls.size(); i++) {
+            ImgDTO imgDTO = new ImgDTO();
+            imgDTO.setImgUrl(imgUrls.get(i));
 
             if (i == represent) {
-                rwImgDTO.setRepresent(true);
+                imgDTO.setRepresent(true);
             } else {
-                rwImgDTO.setRepresent(false);
+                imgDTO.setRepresent(false);
             }
-            rwImgDTOList.add(rwImgDTO);
+            imgDTOs.add(imgDTO);
         }
 
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("articleId", articleId);
         param.put("memberId", claimExtractor.getMemberId(authentication));
-        param.put("rwImgDTOList", rwImgDTOList);
+        param.put("imgDTOs", imgDTOs);
         param.put("represent", represent);
 
         boolean result = reviewService.saveReviewToDatabase(param);

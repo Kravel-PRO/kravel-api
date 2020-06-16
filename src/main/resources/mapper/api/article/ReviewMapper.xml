@@ -30,7 +30,7 @@
             ${param.offset}, ${param.max};
     </select>
 
-    <select id="findReviewDetailImgById" parameterType="hashmap" resultType="rwImgDTO">
+    <select id="findReviewDetailImgById" parameterType="hashmap" resultType="imgDTO">
         SELECT
             tari.IMG_ID imgId,
             tari.IMG_URL imgUrl,
@@ -120,7 +120,7 @@
                 REPRESENT
             )
         VALUES
-            <foreach item="item" index="index" collection="param.rwImgDTOList" separator=",">
+            <foreach item="item" index="index" collection="param.imgDTOs" separator=",">
                 (
                 #{param.reviewId},
                 #{item.imgUrl},

@@ -42,9 +42,9 @@ public class ReviewService {
     public ReviewDTO findReviewDetailById(Map<String, Object> param) throws Exception {
 
         ReviewDTO articleReviewDTO = reviewMapper.findReviewLikeCntById(param);
-        articleReviewDTO.setRwImg(reviewMapper.findReviewDetailImgById(param));
+        articleReviewDTO.setImgDTOs(reviewMapper.findReviewDetailImgById(param));
 
-        if (articleReviewDTO.getRwImg().isEmpty()) {
+        if (articleReviewDTO.getImgDTOs().isEmpty()) {
             throw new NotFoundException("Is ot exist review");
         }
 
