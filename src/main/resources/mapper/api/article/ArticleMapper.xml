@@ -112,4 +112,20 @@
             ON tai.ARTICLE_ID = tam.ARTICLE_ID
         WHERE tam.ARTICLE_ID = #{param.articleId};
     </select>
+    
+    <select id="findAllReviewImgs" parameterType="hashmap" resultType="articleReviewImgDTO">
+        SELECT tari.IMG_URL imgUrl,
+               tar.REVIEW_ID reviewId
+        FROM tb_article_main tam
+            INNER JOIN tb_article_review tar
+            ON tam.ARTICLE_ID = tar.ARTICLE_ID
+            AND tar.USE_AT = 'Y'
+
+            INNER JOIN tb_article_review_img tari
+            ON tar.REVIEW_ID = tari.REVIEW_ID
+            AND tari.REPRESENT = '1'
+
+        WHERE tam.ARTICLE_ID = #{param.articleId}
+          AND tam.USE_AT = 'Y';
+    </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.kravel.server.api.article.controller;
 
 import com.kravel.server.api.article.dto.article.ArticleDetailDTO;
 import com.kravel.server.api.article.dto.article.ArticleMapDTO;
+import com.kravel.server.api.article.dto.article.ArticleReviewImgDTO;
 import com.kravel.server.api.article.dto.article.ArticleScrapDTO;
 import com.kravel.server.api.article.service.ArticleService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
@@ -68,6 +69,20 @@ public class ArticleController {
 
         ArticleDetailDTO articleDetailDTO = articleService.findPlaceById(param);
         return new ResponseMessage(HttpStatus.OK, articleDetailDTO);
+    }
+
+    @GetMapping("/{articleId}/reviews")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseMessage findPlaceReviewImgsById(@PathVariable("articleId") long articleId,
+                                               Authentication authentication) throws Exception {
+
+        Map<String, Object> param = new HashMap<>();
+
+        param.put("articleId", articleId);
+
+        List<ArticleReviewImgDTO> articleReviewImgDTOs = articleService.findAllReviewImgs(param);
+        return new ResponseMessage(HttpStatus.OK, articleReviewImgDTOs);
     }
 
     @PostMapping("/{articleId}/scrap")

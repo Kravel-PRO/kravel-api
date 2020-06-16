@@ -2,6 +2,7 @@ package com.kravel.server.api.article.service;
 
 import com.kravel.server.api.article.dto.article.ArticleDetailDTO;
 import com.kravel.server.api.article.dto.article.ArticleMapDTO;
+import com.kravel.server.api.article.dto.article.ArticleReviewImgDTO;
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.article.mapper.ArticleMapper;
 import com.kravel.server.api.article.mapper.ReviewMapper;
@@ -39,6 +40,12 @@ public class ArticleService {
         return articleMapDTOList;
     }
 
+    public List<ArticleReviewImgDTO> findAllReviewImgs(Map<String, Object> param) throws Exception {
+        List<ArticleReviewImgDTO> articleReviewImgDTOs = articleMapper.findAllReviewImgs(param);
+        System.out.println(articleReviewImgDTOs.toString());
+        return articleReviewImgDTOs;
+    }
+
     public ArticleDetailDTO findPlaceById(Map<String, Object> param) throws Exception {
 
         ArticleDetailDTO articleDetailDTO = articleMapper.findPlaceById(param);
@@ -67,5 +74,4 @@ public class ArticleService {
             throw new InvalidRequestException("It is not valid scarp state");
         }
     }
-
 }

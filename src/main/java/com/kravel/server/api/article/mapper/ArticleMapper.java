@@ -2,6 +2,7 @@ package com.kravel.server.api.article.mapper;
 
 import com.kravel.server.api.article.dto.article.ArticleDetailDTO;
 import com.kravel.server.api.article.dto.article.ArticleMapDTO;
+import com.kravel.server.api.article.dto.article.ArticleReviewImgDTO;
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.article.dto.review.ImgDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,4 +30,5 @@ public interface ArticleMapper {
 
     public List<ImgDTO> findAllArticleImg(@Param("param") Map<String, Object> param);
 
+    public List<ArticleReviewImgDTO> findAllReviewImgs(@Param("param") Map<String, Object> param);
 }
