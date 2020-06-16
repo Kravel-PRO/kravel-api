@@ -40,12 +40,6 @@ public class ArticleService {
         return articleMapDTOList;
     }
 
-    public List<ArticleReviewImgDTO> findAllReviewImgs(Map<String, Object> param) throws Exception {
-        List<ArticleReviewImgDTO> articleReviewImgDTOs = articleMapper.findAllReviewImgs(param);
-        System.out.println(articleReviewImgDTOs.toString());
-        return articleReviewImgDTOs;
-    }
-
     public ArticleDetailDTO findPlaceById(Map<String, Object> param) throws Exception {
 
         ArticleDetailDTO articleDetailDTO = articleMapper.findPlaceById(param);

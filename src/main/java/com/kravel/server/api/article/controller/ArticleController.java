@@ -71,20 +71,6 @@ public class ArticleController {
         return new ResponseMessage(HttpStatus.OK, articleDetailDTO);
     }
 
-    @GetMapping("/{articleId}/reviews")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage findPlaceReviewImgsById(@PathVariable("articleId") long articleId,
-                                               Authentication authentication) throws Exception {
-
-        Map<String, Object> param = new HashMap<>();
-
-        param.put("articleId", articleId);
-
-        List<ArticleReviewImgDTO> articleReviewImgDTOs = articleService.findAllReviewImgs(param);
-        return new ResponseMessage(HttpStatus.OK, articleReviewImgDTOs);
-    }
-
     @PostMapping("/{articleId}/scrap")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")

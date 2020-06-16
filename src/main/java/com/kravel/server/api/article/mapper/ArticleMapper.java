@@ -29,6 +29,4 @@ public interface ArticleMapper {
     public int removeArticleScrap(@Param("param") Map<String, Object> param);
 
     public List<ImgDTO> findAllArticleImg(@Param("param") Map<String, Object> param);
-
-    public List<ArticleReviewImgDTO> findAllReviewImgs(@Param("param") Map<String, Object> param);
 }
