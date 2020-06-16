@@ -7,8 +7,8 @@ import org.apache.ibatis.type.Alias;
 
 @Setter
 @Getter
-@Alias("rwImgDTO")
-public class RwImgDTO {
+@Alias("ImgDTO")
+public class ImgDTO {
     private long imgId;
     private String imgUrl;
     private boolean represent;

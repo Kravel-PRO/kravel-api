@@ -2,7 +2,9 @@ package com.kravel.server.api.article.mapper;
 
 import com.kravel.server.api.article.dto.article.ArticleDetailDTO;
 import com.kravel.server.api.article.dto.article.ArticleMapDTO;
+import com.kravel.server.api.article.dto.article.ArticleReviewImgDTO;
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
+import com.kravel.server.api.article.dto.review.ImgDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -20,12 +22,11 @@ public interface ArticleMapper {
 
     public List<CelebrityDTO> findAllCelebrities(@Param("param") Map<String, Object> param);
 
-
     public int checkExistArticleScrap(@Param("param") Map<String, Object> param);
 
     public int saveArticleScrap(@Param("param") Map<String, Object> param);
 
     public int removeArticleScrap(@Param("param") Map<String, Object> param);
 
-
+    public List<ImgDTO> findAllArticleImg(@Param("param") Map<String, Object> param);
 }

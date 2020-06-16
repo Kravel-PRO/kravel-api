@@ -14,7 +14,7 @@ import java.util.List;
 public class ReviewDTO {
 
     private long reviewId;
-    private List<RwImgDTO> rwImg;
+    private List<ImgDTO> imgDTOs;
 
     private int likeCnt;
     private boolean likeState;
