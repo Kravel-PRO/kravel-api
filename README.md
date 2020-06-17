@@ -6,7 +6,7 @@
 * MariaDB
 * AWS(EC2, RDS, EBS)
 * Docker
-* Elastic Search
+* ELK(Elastic Search, Kibana)
 * Swagger
 
 ### Database ERD
