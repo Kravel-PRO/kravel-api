@@ -2,7 +2,6 @@ package com.kravel.server.api.article.mapper;
 
 import com.kravel.server.api.article.dto.article.ArticleDetailDTO;
 import com.kravel.server.api.article.dto.article.ArticleMapDTO;
-import com.kravel.server.api.article.dto.article.ArticleReviewImgDTO;
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.article.dto.review.ImgDTO;
 import org.apache.ibatis.annotations.Mapper;

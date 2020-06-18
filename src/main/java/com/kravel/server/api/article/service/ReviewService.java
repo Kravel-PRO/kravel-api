@@ -4,7 +4,6 @@ import com.kravel.server.api.article.dto.review.ImgDTO;
 import com.kravel.server.api.article.model.ArticleReview;
 import com.kravel.server.api.article.dto.review.ReviewDTO;
 import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
-import com.kravel.server.api.article.mapper.ArticleMapper;
 import com.kravel.server.api.article.mapper.ReviewMapper;
 import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.InvalidRequestException;
@@ -22,15 +21,11 @@ import java.util.Map;
 public class ReviewService {
 
     @Autowired
-    private ArticleMapper articleMapper;
-
-    @Autowired
     private ReviewMapper reviewMapper;
 
     @Autowired
     private S3Uploader s3Uploader;
 
-    // 리뷰 리스트 눌렀을 때
     public List<ArticleReviewListDTO> findAllReviews(Map<String, Object> param) throws Exception {
 
         List<ArticleReviewListDTO> articleReviewListDTOList = reviewMapper.findAllReviews(param);
@@ -52,14 +47,14 @@ public class ReviewService {
         return articleReviewDTO;
     }
 
-    public List<ImgDTO> findAllCelebrityReview(Map<String, Object> param) throws Exception {
+    public List<ArticleReviewListDTO> findAllCelebrityReviews(Map<String, Object> param) throws Exception {
 
-        List<ImgDTO> imgDTOs = reviewMapper.findAllCelebrityReview(param);
-        if (imgDTOs.isEmpty()) {
+        List<ArticleReviewListDTO> articleReviewListDTOs = reviewMapper.findAllCelebrityReviews(param);
+        if (articleReviewListDTOs.isEmpty()) {
             throw new NotFoundException("Is not exist reviews");
         }
 
-        return imgDTOs;
+        return articleReviewListDTOs;
     }
 
     public List<String> saveReviewToS3(List<MultipartFile> files) throws Exception {

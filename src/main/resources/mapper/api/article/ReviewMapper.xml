@@ -87,9 +87,9 @@
             tam.ARTICLE_ID = #{param.articleId};
     </select>
 
-    <select id="findAllCelebrityReview" parameterType="hashmap" resultType="imgDTO">
+    <select id="findAllCelebrityReviews" parameterType="hashmap" resultType="articleReviewListDTO">
         SELECT tar.REVIEW_ID reviewId,
-               tari.IMG_URL
+               tari.IMG_URL representImgUrl
         FROM tb_celebrity_main tcm
             INNER JOIN tb_article_celebrity tac
             ON tcm.CELEBRITY_ID = tac.CELEBRITY_ID

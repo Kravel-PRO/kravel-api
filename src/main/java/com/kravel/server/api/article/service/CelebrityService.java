@@ -6,7 +6,6 @@ import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.article.mapper.CelebrityMapper;
 import com.kravel.server.api.article.mapper.ReviewMapper;
-import com.kravel.server.api.article.model.Celebrity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
