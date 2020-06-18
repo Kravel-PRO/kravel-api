@@ -1,12 +1,11 @@
 package com.kravel.server.api.article.service;
 
 import com.kravel.server.api.article.dto.celebrity.CelebrityArticleDTO;
+import com.kravel.server.api.article.dto.celebrity.CelebrityDetailDTO;
 import com.kravel.server.api.article.dto.celebrity.ExCelebrityArticleDTO;
-import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.article.mapper.CelebrityMapper;
 import com.kravel.server.api.article.mapper.ReviewMapper;
-import com.kravel.server.api.article.model.Celebrity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,19 +26,17 @@ public class CelebrityService {
         return celebrityMapper.findAllCelebrities(param);
     }
 
-    public Map<String, Object> findCelebrityById(Map<String, Object> param) throws Exception {
-        Map<String, Object> result = new HashMap<>();
+    public CelebrityDetailDTO findCelebrityById(Map<String, Object> param) throws Exception {
+
+        CelebrityDetailDTO result = new CelebrityDetailDTO();
 
         CelebrityDTO celebrityDTO = celebrityMapper.findCelebrityById(param);
-        result.put("celebrity", celebrityDTO);
-
-        List<ArticleReviewListDTO> articleReviewListDTOList = reviewMapper.findAllReviews(param);
-        result.put("reviewList", articleReviewListDTOList);
+        result.setCelebrity(celebrityDTO);
 
         ExCelebrityArticleDTO exCelebrityArticleDTO = celebrityMapper.findAllArticleByCelebrity(param);
         CelebrityArticleDTO celebrityArticleDTO = new CelebrityArticleDTO(celebrityDTO, exCelebrityArticleDTO);
 
-        result.put("articleList", celebrityArticleDTO);
+        result.setArticles(celebrityArticleDTO);
 
         return result;
     }

@@ -1,7 +1,12 @@
 package com.kravel.server.api.article.controller;
 
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
+import com.kravel.server.api.article.dto.celebrity.CelebrityDetailDTO;
+import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
+import com.kravel.server.api.article.dto.review.ImgDTO;
+import com.kravel.server.api.article.mapper.ReviewMapper;
 import com.kravel.server.api.article.service.CelebrityService;
+import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.common.util.message.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +24,9 @@ public class CelebrityController {
 
     @Autowired
     private CelebrityService celebrityService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
@@ -53,11 +61,32 @@ public class CelebrityController {
         Map<String, Object> param = new HashMap<>();
         param.put("celebrityId", celebrityId);
         param.put("offset", offset);
-        param.put("sort", sort);
         param.put("max", max);
+        param.put("sort", sort);
         param.put("order", order);
 
-        Map<String, Object> result = celebrityService.findCelebrityById(param);
+        CelebrityDetailDTO result = celebrityService.findCelebrityById(param);
+        return new ResponseMessage(HttpStatus.OK, result);
+    }
+
+    @GetMapping("/{celebrityId}/reviews")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseMessage findAllCelebrityReview(@PathVariable("celebrityId") long celebrityId,
+                                                  @RequestParam(value = "offset", defaultValue = "0") int offset,
+                                                  @RequestParam(value = "max", defaultValue = "6") int max,
+                                                  @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
+                                                  @RequestParam(value = "order", defaultValue = "DESC") String order,
+                                                  Authentication authentication) throws Exception {
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("offset", offset);
+        param.put("max", max);
+        param.put("sort", sort);
+        param.put("order", order);
+        param.put("celebrityId", celebrityId);
+
+        List<ArticleReviewListDTO> result = reviewService.findAllCelebrityReviews(param);
         return new ResponseMessage(HttpStatus.OK, result);
     }
 

@@ -85,7 +85,6 @@
         ON tam.ARTICLE_ID = tcm.ARTICLE_ID
         WHERE
             tam.ARTICLE_ID = #{param.articleId};
-
     </select>
 
     <insert id="saveReview" parameterType="hashmap" useGeneratedKeys="true" keyProperty="reviewId">
