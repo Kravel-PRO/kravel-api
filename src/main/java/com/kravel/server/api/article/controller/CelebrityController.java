@@ -1,6 +1,7 @@
 package com.kravel.server.api.article.controller;
 
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
+import com.kravel.server.api.article.dto.celebrity.CelebrityDetailDTO;
 import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
 import com.kravel.server.api.article.dto.review.ImgDTO;
 import com.kravel.server.api.article.mapper.ReviewMapper;
@@ -64,7 +65,7 @@ public class CelebrityController {
         param.put("sort", sort);
         param.put("order", order);
 
-        Map<String, Object> result = celebrityService.findCelebrityById(param);
+        CelebrityDetailDTO result = celebrityService.findCelebrityById(param);
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
