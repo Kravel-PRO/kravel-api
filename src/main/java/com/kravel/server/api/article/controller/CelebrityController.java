@@ -53,12 +53,31 @@ public class CelebrityController {
         Map<String, Object> param = new HashMap<>();
         param.put("celebrityId", celebrityId);
         param.put("offset", offset);
-        param.put("sort", sort);
         param.put("max", max);
+        param.put("sort", sort);
         param.put("order", order);
 
         Map<String, Object> result = celebrityService.findCelebrityById(param);
         return new ResponseMessage(HttpStatus.OK, result);
+    }
+
+    @GetMapping("/{celebrityId}/reviews")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseMessage findAllCelebrityReview(@PathVariable("celebrityId") long celebrityId,
+                                                  @RequestParam(value = "offset", defaultValue = "0") int offset,
+                                                  @RequestParam(value = "max", defaultValue = "0") int max,
+                                                  @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
+                                                  @RequestParam(value = "order", defaultValue = "DESC") String order,
+                                                  Authentication authentication) throws Exception {
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("offset", offset);
+        param.put("max", max);
+        param.put("sort", sort);
+        param.put("order", order);
+
+        return new ResponseMessage(HttpStatus.OK, null);
     }
 
 }
