@@ -85,7 +85,27 @@
         ON tam.ARTICLE_ID = tcm.ARTICLE_ID
         WHERE
             tam.ARTICLE_ID = #{param.articleId};
+    </select>
 
+    <select id="findAllCelebrityReview" parameterType="hashmap" resultType="imgDTO">
+        SELECT tar.REVIEW_ID reviewId,
+               tari.IMG_URL
+        FROM tb_celebrity_main tcm
+            INNER JOIN tb_article_celebrity tac
+            ON tcm.CELEBRITY_ID = tac.CELEBRITY_ID
+
+            INNER JOIN tb_article_main tam
+            ON tac.ARTICLE_ID = tam.ARTICLE_ID
+
+            INNER JOIN tb_article_review tar
+            ON tam.ARTICLE_ID = tar.ARTICLE_ID
+            AND tar.USE_AT = 'Y'
+
+            INNER JOIN tb_article_review_img tari
+            ON tar.REVIEW_ID = tari.REVIEW_ID
+            AND tari.REPRESENT = 'Y'
+
+        WHERE tcm.CELEBRITY_ID = #{param.celebrityId};
     </select>
 
     <insert id="saveReview" parameterType="hashmap" useGeneratedKeys="true" keyProperty="reviewId">

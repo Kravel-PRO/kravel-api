@@ -19,6 +19,8 @@ public interface ReviewMapper {
 
     public List<ImgDTO> findReviewDetailImgById(@Param("param") Map<String, Object> param);
 
+    public List<ImgDTO> findAllCelebrityReview(@Param("param") Map<String, Object> param);
+
     public ReviewDTO findReviewLikeCntById(@Param("param") Map<String, Object> param);
 
     public ArticleReview findArticleReviewById(@Param("param") Map<String, Object> param);

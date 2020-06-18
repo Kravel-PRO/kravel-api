@@ -1,6 +1,8 @@
 package com.kravel.server.api.article.controller;
 
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
+import com.kravel.server.api.article.dto.review.ImgDTO;
+import com.kravel.server.api.article.mapper.ReviewMapper;
 import com.kravel.server.api.article.service.CelebrityService;
 import com.kravel.server.common.util.message.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class CelebrityController {
 
     @Autowired
     private CelebrityService celebrityService;
+
+    @Autowired
+    private ReviewMapper reviewMapper;
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
@@ -77,7 +82,8 @@ public class CelebrityController {
         param.put("sort", sort);
         param.put("order", order);
 
-        return new ResponseMessage(HttpStatus.OK, null);
+        List<ImgDTO> result = reviewMapper.findAllCelebrityReview(param);
+        return new ResponseMessage(HttpStatus.OK, result);
     }
 
 }

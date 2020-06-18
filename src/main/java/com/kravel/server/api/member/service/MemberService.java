@@ -5,7 +5,6 @@ import com.kravel.server.auth.mapper.AuthMapper;
 import com.kravel.server.auth.model.Member;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ public class MemberService {
     @Autowired
     private AuthMapper authMapper;
 
-    @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
 

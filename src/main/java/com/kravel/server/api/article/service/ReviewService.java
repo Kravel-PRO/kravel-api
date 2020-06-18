@@ -1,5 +1,6 @@
 package com.kravel.server.api.article.service;
 
+import com.kravel.server.api.article.dto.review.ImgDTO;
 import com.kravel.server.api.article.model.ArticleReview;
 import com.kravel.server.api.article.dto.review.ReviewDTO;
 import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
@@ -45,10 +46,20 @@ public class ReviewService {
         articleReviewDTO.setImgDTOs(reviewMapper.findReviewDetailImgById(param));
 
         if (articleReviewDTO.getImgDTOs().isEmpty()) {
-            throw new NotFoundException("Is ot exist review");
+            throw new NotFoundException("Is not exist review");
         }
 
         return articleReviewDTO;
+    }
+
+    public List<ImgDTO> findAllCelebrityReview(Map<String, Object> param) throws Exception {
+
+        List<ImgDTO> imgDTOs = reviewMapper.findAllCelebrityReview(param);
+        if (imgDTOs.isEmpty()) {
+            throw new NotFoundException("Is not exist reviews");
+        }
+
+        return imgDTOs;
     }
 
     public List<String> saveReviewToS3(List<MultipartFile> files) throws Exception {
