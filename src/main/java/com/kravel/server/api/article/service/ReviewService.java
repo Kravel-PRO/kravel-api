@@ -49,7 +49,7 @@ public class ReviewService {
 
     public List<ArticleReviewListDTO> findAllCelebrityReviews(Map<String, Object> param) throws Exception {
 
-        List<ArticleReviewListDTO> articleReviewListDTOs = reviewMapper.findAllCelebrityReviews(param);
+        List<ArticleReviewListDTO> articleReviewListDTOs = reviewMapper.findAllReviews(param);
         if (articleReviewListDTOs.isEmpty()) {
             throw new NotFoundException("Is not exist reviews");
         }

@@ -73,7 +73,7 @@ public class CelebrityController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllCelebrityReview(@PathVariable("celebrityId") long celebrityId,
                                                   @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                  @RequestParam(value = "max", defaultValue = "0") int max,
+                                                  @RequestParam(value = "max", defaultValue = "6") int max,
                                                   @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
                                                   @RequestParam(value = "order", defaultValue = "DESC") String order,
                                                   Authentication authentication) throws Exception {
