@@ -1,5 +1,6 @@
 package com.kravel.server.api.article.controller;
 
+import com.kravel.server.api.article.dto.media.MediaInfoDTO;
 import com.kravel.server.api.article.dto.media.MediaListDTO;
 import com.kravel.server.api.article.service.MediaService;
 import com.kravel.server.common.util.message.ResponseMessage;
@@ -40,7 +41,7 @@ public class MediaController {
         return new ResponseMessage(HttpStatus.OK, mediaListDTOList);
     }
 
-    @PostMapping("/{mediaId}")
+    @GetMapping("/{mediaId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findMediaById(@PathVariable("mediaId") long mediaId,
@@ -49,6 +50,7 @@ public class MediaController {
         Map<String, Object> param = new HashMap<>();
         param.put("mediaId", mediaId);
 
-        return new ResponseMessage(HttpStatus.OK, null);
+        MediaInfoDTO result = mediaService.findMediaInfoById(param);
+        return new ResponseMessage(HttpStatus.OK, result);
     }
 }

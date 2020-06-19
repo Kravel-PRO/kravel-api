@@ -10,4 +10,15 @@
         ORDER BY tmm.${param.sort} ${param.order}
         LIMIT #{param.offset}, #{param.max};
     </select>
+
+    <select id="findMediaInfoById" parameterType="hashmap" resultType="mediaInfoDTO">
+        SELECT tmm.MEDIA_ID mediaId,
+               tmm.MEDIA_NAME mediaName,
+               tmm.IMG_URL imgUrl,
+               tmm.CONTENTS contents,
+               tmm.OPEN_YEAR openYear
+        FROM tb_media_main tmm
+        WHERE tmm.MEDIA_ID = #{param.mediaId}
+          AND tmm.USE_AT = 'Y';
+    </select>
 </mapper>

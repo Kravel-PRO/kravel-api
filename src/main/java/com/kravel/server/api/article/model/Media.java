@@ -13,7 +13,7 @@ public class Media {
     private long mediaId;
     private long creator;
     private String mediaName;
-    private String explain;
+    private String contents;
     private String imgUrl;
     private String openYear;
     private Date createDe;
