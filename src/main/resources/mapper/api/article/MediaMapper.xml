@@ -21,4 +21,30 @@
         WHERE tmm.MEDIA_ID = #{param.mediaId}
           AND tmm.USE_AT = 'Y';
     </select>
+
+    <select id="findMediaArticlesById" parameterType="hashmap" resultType="">
+        SELECT tam.ARTICLE_ID articleId,
+               tai.SUBJECT subject,
+               tai2.IMG_URL imgUrl,
+               GROUP_CONCAT(tcm.CELEBRITY_NAME)
+        FROM tb_media_main tmm
+            LEFT JOIN tb_article_main tam
+            ON tmm.MEDIA_ID = tam.MEDIA_ID
+            AND tam.USE_AT = 'Y'
+
+            LEFT JOIN tb_article_info tai
+            ON tam.ARTICLE_ID = tai.ARTICLE_ID
+            AND tai.INFO_LANGU = #{param.langu}
+
+            LEFT JOIN tb_article_img tai2
+            ON tam.ARTICLE_ID = tai2.ARTICLE_ID
+            AND tai2.REPRESENT = true
+
+            LEFT JOIN tb_celebrity_main tcm
+            ON tam.ARTICLE_ID = tcm.ARTICLE_ID
+
+        WHERE tmm.MEDIA_ID = #{param.mediaId}
+        ORDER BY tam.CREATE_DE
+        LIMIT #{param.offset}, #{param.max};
+    </select>
 </mapper>
