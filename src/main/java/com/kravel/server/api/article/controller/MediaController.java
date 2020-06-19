@@ -39,4 +39,16 @@ public class MediaController {
 
         return new ResponseMessage(HttpStatus.OK, mediaListDTOList);
     }
+
+    @PostMapping("/{mediaId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseMessage findMediaById(@PathVariable("mediaId") long mediaId,
+                                         Authentication authentication) throws Exception {
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("mediaId", mediaId);
+
+        return new ResponseMessage(HttpStatus.OK, null);
+    }
 }
