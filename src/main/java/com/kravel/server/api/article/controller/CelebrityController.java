@@ -3,8 +3,6 @@ package com.kravel.server.api.article.controller;
 import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.article.dto.celebrity.CelebrityDetailDTO;
 import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
-import com.kravel.server.api.article.dto.review.ImgDTO;
-import com.kravel.server.api.article.mapper.ReviewMapper;
 import com.kravel.server.api.article.service.CelebrityService;
 import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.common.util.message.ResponseMessage;

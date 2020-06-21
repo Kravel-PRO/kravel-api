@@ -16,7 +16,8 @@ import javax.sql.DataSource;
 @MapperScan({
         "com.kravel.server.auth.mapper",
         "com.kravel.server.api.member.mapper",
-        "com.kravel.server.api.article.mapper"
+        "com.kravel.server.api.article.mapper",
+        "com.kravel.server.api.admin.mapper"
 })
 @EnableTransactionManagement
 public class MyBatisConfig {

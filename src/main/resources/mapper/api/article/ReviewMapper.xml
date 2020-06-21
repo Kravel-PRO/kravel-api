@@ -22,6 +22,10 @@
                 <when test="param.celebrityId != null">
                     tar.CELEBRITY_ID = #{param.celebrityId}
                 </when>
+
+                <when test="param.mediaId != null">
+                    tar.MEDIA_ID = #{param.mediaId}
+                </when>
             </choose>
             AND tar.USE_AT = "Y"
         ORDER BY

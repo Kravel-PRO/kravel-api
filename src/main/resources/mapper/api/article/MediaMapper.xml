@@ -22,11 +22,11 @@
           AND tmm.USE_AT = 'Y';
     </select>
 
-    <select id="findMediaArticlesById" parameterType="hashmap" resultType="">
+    <select id="findMediaArticlesById" parameterType="hashmap" resultType="exMediaArticleDTO">
         SELECT tam.ARTICLE_ID articleId,
                tai.SUBJECT subject,
                tai2.IMG_URL imgUrl,
-               GROUP_CONCAT(tcm.CELEBRITY_NAME)
+               GROUP_CONCAT(tcm.CELEBRITY_NAME) celebrities
         FROM tb_media_main tmm
             LEFT JOIN tb_article_main tam
             ON tmm.MEDIA_ID = tam.MEDIA_ID
