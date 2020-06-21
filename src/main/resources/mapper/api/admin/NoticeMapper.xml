@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kravel.server.api.article.mapper.ArticleMapper">
+    <select id="findAllNotice" parameterType="hashmap" resultType="">
+        SELECT tnm.NOTICE_ID noticeId,
+               tnm.SUBJECT subject,
+               tnm.CREATE_DE createDe,
+               tni.IMG_URL imgUrl
+        FROM tb_notice_main tnm
+            INNER JOIN tb_notice_img tni
+            ON tnm.NOTICE_ID = tni.NOTICE_ID
+            AND tni.REPRESENT = true
+        WHERE tnm.USE_AT = 'Y'
+        ORDER BY tnm.CREATE_DE DESC
+        LIMIT ${param.offset}, ${param.max};
+    </select>
+</mapper>

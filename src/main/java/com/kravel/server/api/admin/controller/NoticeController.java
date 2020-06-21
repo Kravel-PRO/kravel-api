@@ -30,5 +30,4 @@ public class NoticeController {
 
         return new ResponseMessage(HttpStatus.OK, null);
     }
-
 }
