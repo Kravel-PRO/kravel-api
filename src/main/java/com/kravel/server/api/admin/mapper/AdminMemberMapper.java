@@ -13,4 +13,6 @@ import java.util.Map;
 public interface AdminMemberMapper {
 
     public List<MemberDTO> findAllMembers(@Param("param") Map<String, Object> param);
+
+    public int findAllMembersCount(@Param("param") Map<String, Object> param);
 }

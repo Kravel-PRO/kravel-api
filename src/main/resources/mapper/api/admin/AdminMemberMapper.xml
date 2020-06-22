@@ -29,4 +29,22 @@
         ORDER BY b.idx DESC
         LIMIT ${param.offset}, ${param.max};
     </select>
+
+    <select id="findAllMembersCount" parameterType="hashmap" resultType="membersDTO">
+        SELECT b.*
+        FROM (
+            SELECT COUNT(@rownum:=@rownum+1) totalCount
+            FROM (
+                    (SELECT @rownum:=0) R,
+                    (SELECT tmm.MEMBER_ID memberId,
+                    FROM tb_member_main tmm
+                    WHERE tmm.LOGIN_EMAIL LIKE CONCAT(#{param.loginEmail}, '%')
+                      AND tmm.GENDER LIKE CONCAT(#{param.gender}, '%')
+                      AND tmm.ROLE LIKE CONCAT(#{param.role}, '%')
+                      AND tmm.LANGU LIKE CONCAT(#{param.langu}, '%')
+                      AND tmm.USE_AT LIKE CONCAT(#{param.useAt}, '%')
+                    ) a
+                )
+            ) b
+    </select>
 </mapper>

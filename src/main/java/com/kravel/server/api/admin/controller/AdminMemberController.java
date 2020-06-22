@@ -1,6 +1,7 @@
 package com.kravel.server.api.admin.controller;
 
 import com.kravel.server.api.admin.dto.MemberDTO;
+import com.kravel.server.api.admin.dto.MembersDTO;
 import com.kravel.server.api.admin.service.AdminMemberService;
 import com.kravel.server.common.util.message.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +36,14 @@ public class AdminMemberController {
         Map<String, Object> param = new HashMap<>();
         param.put("offset", offset);
         param.put("max", max);
-
         param.put("loginEmail", loginEmail);
         param.put("gender", gender);
         param.put("role", role);
         param.put("langu", langu);
         param.put("useAt", useAt);
 
-        List<MemberDTO> memberDTOs = adminMemberService.findAllMembers(param);
+        MembersDTO membersDTO = adminMemberService.findAllMembers(param);
 
-        return new ResponseMessage(HttpStatus.OK, memberDTOs);
+        return new ResponseMessage(HttpStatus.OK, membersDTO);
     }
 }
