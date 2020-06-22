@@ -30,13 +30,13 @@
         LIMIT ${param.offset}, ${param.max};
     </select>
 
-    <select id="findAllMembersCount" parameterType="hashmap" resultType="membersDTO">
+    <select id="findAllMembersCount" parameterType="hashmap" resultType="int">
         SELECT b.*
         FROM (
-            SELECT COUNT(@rownum:=@rownum+1) totalCount
+            SELECT COUNT(@rownum:=@rownum+1) count
             FROM (
                     (SELECT @rownum:=0) R,
-                    (SELECT tmm.MEMBER_ID memberId,
+                    (SELECT tmm.MEMBER_ID memberId
                     FROM tb_member_main tmm
                     WHERE tmm.LOGIN_EMAIL LIKE CONCAT(#{param.loginEmail}, '%')
                       AND tmm.GENDER LIKE CONCAT(#{param.gender}, '%')
