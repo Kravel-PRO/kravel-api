@@ -8,6 +8,7 @@ import org.apache.ibatis.type.Alias;
 @Setter
 @Alias("memberDTO")
 public class MemberDTO {
+    private int idx;
     private long memberId;
     private String gender;
     private String role;
