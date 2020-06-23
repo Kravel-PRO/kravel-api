@@ -47,4 +47,17 @@
                 )
             ) b
     </select>
+
+    <select id="findMemberInfoById" parameterType="hashmap" resultType="">
+        SELECT tmm.MEMBER_ID memberId,
+               tmm.LANGU langu,
+               tmm.ROLE role,
+               tmm.GENDER gender,
+               tmm.CREATE_DE createDe,
+               tmm.UPDATE_DE updateDE,
+               tmm.NICK_NAME nickName,
+               tmm.USE_AT useAt
+        FROM tb_member_main tmm
+        WHERE tmm.MEMBER_ID = #{param.memberId};
+    </select>
 </mapper>

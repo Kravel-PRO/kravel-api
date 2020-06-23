@@ -46,4 +46,16 @@ public class AdminMemberController {
 
         return new ResponseMessage(HttpStatus.OK, membersDTO);
     }
+
+    @GetMapping("/{memberId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseMessage findMemberInfoById(@PathVariable("memberId") long memberId,
+                                          Authentication authentication) throws Exception {
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("memberId", memberId);
+
+        return new ResponseMessage(HttpStatus.OK, null);
+    }
 }
