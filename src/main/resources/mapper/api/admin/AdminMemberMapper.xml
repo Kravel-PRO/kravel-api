@@ -48,7 +48,7 @@
             ) b
     </select>
 
-    <select id="findMemberInfoById" parameterType="hashmap" resultType="">
+    <select id="findMemberInfoById" parameterType="hashmap" resultType="int">
         SELECT tmm.MEMBER_ID memberId,
                tmm.LANGU langu,
                tmm.ROLE role,
