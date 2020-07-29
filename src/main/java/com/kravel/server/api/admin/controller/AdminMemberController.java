@@ -1,9 +1,9 @@
 package com.kravel.server.api.admin.controller;
 
-import com.kravel.server.api.admin.dto.MemberDTO;
 import com.kravel.server.api.admin.dto.MembersDTO;
 import com.kravel.server.api.admin.service.AdminMemberService;
 import com.kravel.server.common.util.message.ResponseMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,17 +11,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/admin/members")
 public class AdminMemberController {
 
-    @Autowired
-    private AdminMemberService adminMemberService;
+    private final AdminMemberService adminMemberService;
 
-    @GetMapping("")
+    @GetMapping("/api/admin/members")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllMembers(@RequestParam(value = "offset", defaultValue = "0") int offset,
@@ -47,7 +45,7 @@ public class AdminMemberController {
         return new ResponseMessage(HttpStatus.OK, membersDTO);
     }
 
-    @GetMapping("/{memberId}")
+    @GetMapping("/api/admin/members/{memberId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findMemberInfoById(@PathVariable("memberId") long memberId,

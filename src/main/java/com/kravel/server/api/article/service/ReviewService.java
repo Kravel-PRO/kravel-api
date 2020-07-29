@@ -1,6 +1,5 @@
 package com.kravel.server.api.article.service;
 
-import com.kravel.server.api.article.dto.review.ImgDTO;
 import com.kravel.server.api.article.model.ArticleReview;
 import com.kravel.server.api.article.dto.review.ReviewDTO;
 import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
@@ -9,7 +8,6 @@ import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

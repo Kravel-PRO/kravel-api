@@ -1,6 +1,5 @@
 package com.kravel.server.api.article.controller;
 
-import com.kravel.server.api.article.dto.media.ExMediaArticleDTO;
 import com.kravel.server.api.article.dto.media.MediaArticleDTO;
 import com.kravel.server.api.article.dto.media.MediaInfoDTO;
 import com.kravel.server.api.article.dto.media.MediaListDTO;
@@ -10,8 +9,6 @@ import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.protocol.HTTP;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;

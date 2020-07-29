@@ -2,7 +2,6 @@ package com.kravel.server.api.admin.controller;
 
 import com.kravel.server.api.admin.dto.NoticeDTO;
 import com.kravel.server.api.admin.service.NoticeService;
-import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
 import com.kravel.server.common.util.message.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

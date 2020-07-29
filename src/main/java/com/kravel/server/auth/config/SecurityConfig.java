@@ -26,17 +26,25 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.Arrays;
 
-@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final FormLoginAuthenticationSuccessHandler formLoginAuthenticationSuccessHandler;
-    private final FormLoginAuthenticationProvider provider;
-    private final JwtAuthenticationProvider jwtProvider;
-    private final JwtAuthenticationFailureHandler jwtAuthenticationFailureHandler;
-    private final HeaderTokenExtractor headerTokenExtractor;
+    @Autowired
+    private FormLoginAuthenticationSuccessHandler formLoginAuthenticationSuccessHandler;
+
+    @Autowired
+    private FormLoginAuthenticationProvider provider;
+
+    @Autowired
+    private JwtAuthenticationProvider jwtProvider;
+
+    @Autowired
+    private JwtAuthenticationFailureHandler jwtAuthenticationFailureHandler;
+
+    @Autowired
+    private HeaderTokenExtractor headerTokenExtractor;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {

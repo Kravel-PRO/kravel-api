@@ -5,7 +5,6 @@ import com.kravel.server.api.admin.dto.MembersDTO;
 import com.kravel.server.api.admin.mapper.AdminMemberMapper;
 import com.kravel.server.common.util.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

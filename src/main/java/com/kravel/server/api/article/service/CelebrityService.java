@@ -7,7 +7,6 @@ import com.kravel.server.api.article.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.article.mapper.CelebrityMapper;
 import com.kravel.server.api.article.mapper.ReviewMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

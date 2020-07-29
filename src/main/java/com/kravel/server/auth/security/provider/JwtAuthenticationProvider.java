@@ -5,7 +5,6 @@ import com.kravel.server.auth.security.token.JwtPreProcessingToken;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.security.util.jwt.JwtDecoder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
