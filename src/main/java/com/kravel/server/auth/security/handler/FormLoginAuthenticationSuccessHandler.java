@@ -6,6 +6,7 @@ import com.kravel.server.auth.dto.TokenDTO;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,14 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@RequiredArgsConstructor
 @Component
 public class FormLoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Autowired
-    private JwtFactory factory;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final JwtFactory factory;
+    private final ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException, ServletException {

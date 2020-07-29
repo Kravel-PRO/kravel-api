@@ -6,6 +6,7 @@ import com.kravel.server.api.article.dto.review.ArticleReviewListDTO;
 import com.kravel.server.api.article.service.CelebrityService;
 import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.common.util.message.ResponseMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,17 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/articles/celebrities")
 public class CelebrityController {
 
-    @Autowired
-    private CelebrityService celebrityService;
+    private final CelebrityService celebrityService;
+    private final ReviewService reviewService;
 
-    @Autowired
-    private ReviewService reviewService;
-
-    @GetMapping("")
+    @GetMapping("/api/articles/celebrities")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllCelebrities(@RequestParam(value = "offset", defaultValue = "0") int offset,
@@ -46,7 +44,7 @@ public class CelebrityController {
         return new ResponseMessage(HttpStatus.OK, celebrityList);
     }
 
-    @GetMapping("/{celebrityId}")
+    @GetMapping("/api/articles/celebrities/{celebrityId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findCelebrityById(@PathVariable("celebrityId") long celebrityId,
@@ -67,7 +65,7 @@ public class CelebrityController {
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
-    @GetMapping("/{celebrityId}/reviews")
+    @GetMapping("/api/articles/celebrities/{celebrityId}/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllCelebrityReview(@PathVariable("celebrityId") long celebrityId,

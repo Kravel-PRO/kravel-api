@@ -22,14 +22,13 @@ public class SwaggerConfig {
                 .build();
     }
     @Bean
-    public Docket getDocket() {
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("kravel")
                 .apiInfo(this.apiInfo())
                 .select()
-                .apis(Predicates.not(RequestHandlerSelectors
-                        .basePackage("com.kravel.server")))
-                .paths(PathSelectors.any())
+                .apis(Predicates.not(RequestHandlerSelectors.any()))
+                .paths(PathSelectors.ant("/api/**"))
                 .build();
     }
 }

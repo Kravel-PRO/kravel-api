@@ -4,20 +4,20 @@ import com.kravel.server.api.member.service.MemberService;
 import com.kravel.server.auth.model.Member;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.message.ResponseMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/member")
 public class MemberController {
 
-    @Autowired
-    private MemberService memberService;
+    private final MemberService memberService;
 
-    @PutMapping("/{loginEmail}")
+    @PutMapping("/api/member/{loginEmail}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseMessage modifyMember(HttpServletRequest req,
                                         @PathVariable("loginEmail") String loginEmail,
@@ -40,7 +40,7 @@ public class MemberController {
         return new ResponseMessage(HttpStatus.CREATED, result);
     }
 
-    @DeleteMapping("/{loginEmail}")
+    @DeleteMapping("/api/member/{loginEmail}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseMessage removeMember(@PathVariable("loginEmail") String loginEmail, @RequestBody Member member) throws Exception {
         return new ResponseMessage(HttpStatus.ACCEPTED, memberService.removeMember(loginEmail, member));

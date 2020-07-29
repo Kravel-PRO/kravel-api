@@ -5,6 +5,7 @@ import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.security.token.PreAuthorizationToken;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -15,11 +16,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 
+@RequiredArgsConstructor
 @Component
 public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 
-    @Autowired
-    private AuthMapper authMapper;
+    private final AuthMapper authMapper;
 
     @Lazy
     private PasswordEncoder passwordEncoder;

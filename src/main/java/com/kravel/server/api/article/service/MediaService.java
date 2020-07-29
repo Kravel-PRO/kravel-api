@@ -6,6 +6,7 @@ import com.kravel.server.api.article.dto.media.MediaInfoDTO;
 import com.kravel.server.api.article.dto.media.MediaListDTO;
 import com.kravel.server.api.article.mapper.MediaMapper;
 import com.kravel.server.common.util.exception.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Service
 public class MediaService {
 
-    @Autowired
-    private MediaMapper mediaMapper;
+    private final MediaMapper mediaMapper;
 
     public List<MediaListDTO> findAllMedia(Map<String, Object> param) throws Exception {
         return mediaMapper.findAllMedia(param);

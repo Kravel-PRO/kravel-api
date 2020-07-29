@@ -6,6 +6,7 @@ import com.kravel.server.api.article.dto.article.ArticleScrapDTO;
 import com.kravel.server.api.article.service.ArticleService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,17 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/articles")
 public class ArticleController {
 
-    @Autowired
-    private ArticleService articleService;
+    private final ArticleService articleService;
+    private final ClaimExtractor claimExtractor;
 
-    @Autowired
-    private ClaimExtractor claimExtractor;
-
-    @GetMapping("")
+    @GetMapping("/api/articles")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllPlaces(@RequestParam(value = "offset", defaultValue = "0") int offset,
@@ -55,7 +53,7 @@ public class ArticleController {
         return new ResponseMessage(HttpStatus.OK, articleMapDTOList);
     }
 
-    @GetMapping("/{articleId}")
+    @GetMapping("/api/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findPlaceById(@PathVariable("articleId") long articleId,
@@ -70,7 +68,7 @@ public class ArticleController {
         return new ResponseMessage(HttpStatus.OK, articleDetailDTO);
     }
 
-    @PostMapping("/{articleId}/scrap")
+    @PostMapping("/api/articles/{articleId}/scrap")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage handleScrape(@PathVariable("articleId") long articleId,

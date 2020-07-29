@@ -9,6 +9,7 @@ import com.kravel.server.auth.security.handler.JwtAuthenticationFailureHandler;
 import com.kravel.server.auth.security.provider.FormLoginAuthenticationProvider;
 import com.kravel.server.auth.security.provider.JwtAuthenticationProvider;
 import com.kravel.server.auth.security.util.jwt.HeaderTokenExtractor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,25 +26,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.Arrays;
 
-@Configuration
-@EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private FormLoginAuthenticationSuccessHandler formLoginAuthenticationSuccessHandler;
-
-    @Autowired
-    private FormLoginAuthenticationProvider provider;
-
-    @Autowired
-    private JwtAuthenticationProvider jwtProvider;
-
-    @Autowired
-    private JwtAuthenticationFailureHandler jwtAuthenticationFailureHandler;
-
-    @Autowired
-    private HeaderTokenExtractor headerTokenExtractor;
+    private final FormLoginAuthenticationSuccessHandler formLoginAuthenticationSuccessHandler;
+    private final FormLoginAuthenticationProvider provider;
+    private final JwtAuthenticationProvider jwtProvider;
+    private final JwtAuthenticationFailureHandler jwtAuthenticationFailureHandler;
+    private final HeaderTokenExtractor headerTokenExtractor;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {

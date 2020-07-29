@@ -7,6 +7,7 @@ import com.kravel.server.api.article.dto.review.ReviewLikeDTO;
 import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,17 +18,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/articles")
 public class ReviewController {
 
-    @Autowired
-    private ReviewService reviewService;
+    private final ReviewService reviewService;
+    private final ClaimExtractor claimExtractor;
 
-    @Autowired
-    private ClaimExtractor claimExtractor;
-
-    @GetMapping("/{articleId}/reviews")
+    @GetMapping("/api/articles/{articleId}/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllReviews(@PathVariable("articleId") long articleId,
@@ -49,7 +47,7 @@ public class ReviewController {
         return new ResponseMessage(HttpStatus.OK, articleReviewListDTOs);
     }
 
-    @GetMapping("/{articleId}/reviews/{reviewId}")
+    @GetMapping("/api/articles/{articleId}/reviews/{reviewId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findReviewDetailById(@PathVariable("articleId") long articleId,
@@ -66,7 +64,7 @@ public class ReviewController {
         return new ResponseMessage(HttpStatus.OK, articleReviewDTO);
     }
 
-    @PostMapping("/{articleId}/reviews")
+    @PostMapping("/api/articles/{articleId}/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     @Transactional
@@ -101,7 +99,7 @@ public class ReviewController {
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
-    @PostMapping("/{articleId}/reviews/{reviewId}")
+    @PostMapping("/api/articles/{articleId}/reviews/{reviewId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage handleReviewLike(@PathVariable("articleId") long articleId,

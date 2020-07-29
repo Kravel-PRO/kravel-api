@@ -9,6 +9,7 @@ import com.kravel.server.api.article.service.MediaService;
 import com.kravel.server.api.article.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;
+import lombok.RequiredArgsConstructor;
 import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,20 +21,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/articles/medias")
 public class MediaController {
 
-    @Autowired
-    private MediaService mediaService;
+    private final MediaService mediaService;
+    private final ClaimExtractor claimExtractor;
+    private final ReviewService reviewService;
 
-    @Autowired
-    private ClaimExtractor claimExtractor;
-
-    @Autowired
-    private ReviewService reviewService;
-
-    @GetMapping("")
+    @GetMapping("/api/articles/medias")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllMedia(@RequestParam(value = "offset", defaultValue = "0") int offset,
@@ -53,7 +49,7 @@ public class MediaController {
         return new ResponseMessage(HttpStatus.OK, mediaListDTOList);
     }
 
-    @GetMapping("/{mediaId}")
+    @GetMapping("/api/articles/medias/{mediaId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findMediaById(@PathVariable("mediaId") long mediaId,
@@ -66,7 +62,7 @@ public class MediaController {
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
-    @GetMapping("/{mediaId}/places")
+    @GetMapping("/api/articles/medias/{mediaId}/places")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findMediaArticlesById(@PathVariable("mediaId") long mediaID,
@@ -88,7 +84,7 @@ public class MediaController {
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
-    @GetMapping("/{mediaId}/reviews")
+    @GetMapping("/api/articles/medias/{mediaId}/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findMediaReviewsById(@PathVariable("mediaId") long mediaId,

@@ -4,21 +4,18 @@ import com.kravel.server.api.member.mapper.MemberMapper;
 import com.kravel.server.auth.mapper.AuthMapper;
 import com.kravel.server.auth.model.Member;
 import com.kravel.server.common.util.exception.InvalidRequestException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class MemberService {
 
-    @Autowired
-    private MemberMapper memberMapper;
-
-    @Autowired
-    private AuthMapper authMapper;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final MemberMapper memberMapper;
+    private final AuthMapper authMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public boolean modifyMemberLoginPw(String loginEmail, Member member) throws Exception {
 

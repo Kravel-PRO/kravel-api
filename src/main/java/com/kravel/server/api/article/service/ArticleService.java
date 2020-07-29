@@ -7,6 +7,7 @@ import com.kravel.server.api.article.mapper.ArticleMapper;
 import com.kravel.server.api.article.mapper.ReviewMapper;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,15 +15,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-@Service
 @Slf4j
+@RequiredArgsConstructor
+@Service
 public class ArticleService {
 
-    @Autowired
-    private ArticleMapper articleMapper;
-
-    @Autowired
-    private ReviewMapper reviewMapper;
+    private final ArticleMapper articleMapper;
+    private final ReviewMapper reviewMapper;
 
     public List<ArticleMapDTO> findAllPlaces(Map<String,Object> param) throws Exception {
 

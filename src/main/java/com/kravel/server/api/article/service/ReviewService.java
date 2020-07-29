@@ -8,6 +8,7 @@ import com.kravel.server.api.article.mapper.ReviewMapper;
 import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,14 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Service
 public class ReviewService {
 
-    @Autowired
-    private ReviewMapper reviewMapper;
-
-    @Autowired
-    private S3Uploader s3Uploader;
+    private final ReviewMapper reviewMapper;
+    private final S3Uploader s3Uploader;
 
     public List<ArticleReviewListDTO> findAllReviews(Map<String, Object> param) throws Exception {
 
