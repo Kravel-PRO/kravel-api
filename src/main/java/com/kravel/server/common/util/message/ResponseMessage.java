@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +33,7 @@ public class ResponseMessage {
         this.data = new HashMap<>();
         this.status = (httpStatus.isError())? false:true;
         this.message = httpStatus.getReasonPhrase();
-        this.timestamp = convertDateFormat(new Date());
+        this.timestamp = convertDateFormat(LocalDateTime.now());
     }
 
     public ResponseMessage(AbstractBaseException ex, String referedUrl) {
@@ -41,7 +43,7 @@ public class ResponseMessage {
         this.status = (httpStatus.isError())? false:true;
         this.message = httpStatus.getReasonPhrase();
         this.error = new ErrorMessage(httpStatus.value(), ex.getMessage(), referedUrl);
-        this.timestamp = convertDateFormat(new Date());
+        this.timestamp = convertDateFormat(LocalDateTime.now());
     }
 
     public ResponseMessage(HttpStatus status, Object result) {
@@ -57,9 +59,9 @@ public class ResponseMessage {
         this.data.remove(key);
     }
 
-    private String convertDateFormat(Date date) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return format.format(date);
+    private String convertDateFormat(LocalDateTime now) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return now.format(formatter);
     }
 }
 

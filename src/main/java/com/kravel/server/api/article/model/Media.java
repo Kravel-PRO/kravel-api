@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -16,7 +17,7 @@ public class Media {
     private String contents;
     private String imgUrl;
     private String openYear;
-    private Date createDe;
-    private Date updateDe;
+    private LocalDateTime createDe;
+    private LocalDateTime updateDe;
     private String useAt;
 }

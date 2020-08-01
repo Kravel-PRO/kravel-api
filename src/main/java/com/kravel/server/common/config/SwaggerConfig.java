@@ -21,7 +21,7 @@ public class SwaggerConfig {
                 .description("api document")
                 .build();
     }
-    
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

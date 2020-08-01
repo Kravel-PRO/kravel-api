@@ -3,6 +3,7 @@ package com.kravel.server.api.admin.controller;
 import com.kravel.server.api.admin.dto.NoticeDTO;
 import com.kravel.server.api.admin.service.NoticeService;
 import com.kravel.server.common.util.message.ResponseMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,13 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/admin/notices")
+@RequiredArgsConstructor
 public class NoticeController {
 
-    @Autowired
-    private NoticeService noticeService;
+    private final NoticeService noticeService;
 
-    @GetMapping("")
+    @GetMapping("/api/admin/notices")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllNotice(@RequestParam(value = "offset", defaultValue = "0") int offset,

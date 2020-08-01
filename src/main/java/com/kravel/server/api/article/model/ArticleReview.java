@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -20,8 +21,8 @@ public class ArticleReview {
 
     private float grade;
 
-    private Date createDe;
-    private Date updateDe;
+    private LocalDateTime createDe;
+    private LocalDateTime updateDe;
     private String useAt;
 
 }

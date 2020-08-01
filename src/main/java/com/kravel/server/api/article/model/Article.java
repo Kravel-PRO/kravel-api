@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.ibatis.type.Alias;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class Article {
     private List<ArticleReview> articleReviewList;
     private ArticleInfo articleInfo;
 
-    private Date createDe;
-    private Date updateDe;
+    private LocalDateTime createDe;
+    private LocalDateTime updateDe;
     private String useAt;
 }
