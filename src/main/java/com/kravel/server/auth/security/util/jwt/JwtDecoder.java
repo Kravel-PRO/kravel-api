@@ -32,14 +32,14 @@ public class JwtDecoder {
         String gender = decodedJWT.getClaim("GENDER").asString();
         long memberId = decodedJWT.getClaim("MEMBER_ID").asLong();
 
-        Member member = new Member();
-
-        member.setLoginEmail(loginEmail);
-        member.setLoginPw("UNUSED_CREDENTIALS");
-        member.setLangu(langu);
-        member.setGender(gender);
-        member.setRole(Role.getRoleByName(role));
-        member.setMemberId(memberId);
+        Member member = Member.builder()
+                .loginEmail(loginEmail)
+                .loginPw("UNUSED_CREDENTIALS")
+                .langu(langu)
+                .gender(gender)
+                .role(Role.getRoleByName(role))
+                .memberId(memberId)
+                .build();
 
         return MemberContext.fromMemberModel(member);
     }

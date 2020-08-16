@@ -1,5 +1,6 @@
 package com.kravel.server.auth.controller;
 
+import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.service.AuthService;
 import com.kravel.server.common.util.message.ResponseMessage;
@@ -17,7 +18,7 @@ public class AuthController {
 
     @PostMapping("/auth/sign-up")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseMessage signUpMember(HttpServletRequest req, @RequestBody Member member) throws Exception {
-        return new ResponseMessage(HttpStatus.OK, authService.signUpMember(member));
+    public ResponseMessage signUpMember(HttpServletRequest req, @RequestBody SignUpDTO signUpDTO) throws Exception {
+        return new ResponseMessage(HttpStatus.OK, authService.signUpMember(signUpDTO));
     }
 }
