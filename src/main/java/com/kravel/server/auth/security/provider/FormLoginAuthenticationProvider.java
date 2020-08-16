@@ -6,6 +6,7 @@ import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.security.token.PreAuthorizationToken;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -15,13 +16,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 
     private final AuthMapper authMapper;
 
-    @Lazy
+    @Lazy @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -36,6 +37,7 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
             throw new NoSuchElementException("Member is empty!");
         }
 
+        System.out.println("여긴 바깥!");
         if (isCorrectPassword(password, member)) {
             return PostAuthorizationToken.getTokenFromMemberContext(
                     MemberContext.fromMemberModel(member)

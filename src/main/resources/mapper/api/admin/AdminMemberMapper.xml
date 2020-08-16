@@ -48,13 +48,13 @@
             ) b
     </select>
 
-    <select id="findMemberInfoById" parameterType="hashmap" resultType="int">
+    <select id="findMemberById" parameterType="hashmap" resultType="member">
         SELECT tmm.MEMBER_ID memberId,
                tmm.LANGU langu,
                tmm.ROLE role,
                tmm.GENDER gender,
                tmm.CREATE_DE createDe,
-               tmm.UPDATE_DE updateDE,
+               tmm.UPDATE_DE updateDe,
                tmm.NICK_NAME nickName,
                tmm.USE_AT useAt
         FROM tb_member_main tmm

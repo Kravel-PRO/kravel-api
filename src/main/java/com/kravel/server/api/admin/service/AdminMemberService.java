@@ -3,6 +3,7 @@ package com.kravel.server.api.admin.service;
 import com.kravel.server.api.admin.dto.MemberDTO;
 import com.kravel.server.api.admin.dto.MembersDTO;
 import com.kravel.server.api.admin.mapper.AdminMemberMapper;
+import com.kravel.server.auth.model.Member;
 import com.kravel.server.common.util.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,9 @@ public class AdminMemberService {
         membersDTO.setTotalCount(adminMemberMapper.findAllMembersCount(param));
 
         return membersDTO;
+    }
+
+    public Member findMemberById(Map<String, Object> param) throws Exception {
+        return adminMemberMapper.findMemberById(param);
     }
 }

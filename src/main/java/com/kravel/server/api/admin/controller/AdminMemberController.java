@@ -2,6 +2,7 @@ package com.kravel.server.api.admin.controller;
 
 import com.kravel.server.api.admin.dto.MembersDTO;
 import com.kravel.server.api.admin.service.AdminMemberService;
+import com.kravel.server.auth.model.Member;
 import com.kravel.server.common.util.message.ResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class AdminMemberController {
         Map<String, Object> param = new HashMap<>();
         param.put("memberId", memberId);
 
-        return new ResponseMessage(HttpStatus.OK, null);
+        Member member = adminMemberService.findMemberById(param);
+        return new ResponseMessage(HttpStatus.OK, member);
     }
 }
