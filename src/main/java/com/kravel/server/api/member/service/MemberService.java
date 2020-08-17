@@ -23,7 +23,7 @@ public class MemberService {
             throw new InvalidRequestException("Password is not correct!");
         }
 
-        member.changeLoginPw(passwordEncoder.encode(member.getLoginPw()));
+        member.setLoginPw(passwordEncoder.encode(member.getLoginPw()));
         return memberMapper.modifyMemberLoginPw(loginEmail, member) != 0;
     }
 

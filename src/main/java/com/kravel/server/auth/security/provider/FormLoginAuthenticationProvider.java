@@ -22,7 +22,8 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 
     private final AuthMapper authMapper;
 
-    @Lazy @Autowired
+    @Lazy
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override

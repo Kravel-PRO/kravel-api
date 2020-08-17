@@ -6,9 +6,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.ibatis.type.Alias;
 
-@Getter
+@Getter @Setter
 @Alias("member")
-@Builder
+@ToString
 public class Member {
     private Long memberId;
     private String loginEmail;
@@ -23,11 +23,4 @@ public class Member {
     private Long socialId;
     private String socialProfilePic;
     private String useAt;
-
-    public void changeLoginPw(String loginPw) {
-        this.loginPw = loginPw;
-    }
-    public void changeGender(String gender) {
-        this.gender = gender;
-    }
 }

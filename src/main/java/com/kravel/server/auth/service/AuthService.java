@@ -3,9 +3,9 @@ package com.kravel.server.auth.service;
 import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.auth.mapper.AuthMapper;
 import com.kravel.server.auth.model.Member;
+import com.kravel.server.auth.model.Role;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +22,14 @@ public class AuthService {
             throw new InvalidRequestException("Login Email is already exist");
         }
 
-        Member member = Member.builder()
-                .loginEmail(signUpDTO.getLoginEmail())
-                .loginPw(signUpDTO.getLoginPw())
-                .nickName(signUpDTO.getNickName())
-                .gender(signUpDTO.getGender())
-                .build();
+        Member member = new Member();
+        member.setLoginEmail(signUpDTO.getLoginEmail());
+        member.setLoginPw(signUpDTO.getLoginPw());
+        member.setNickName(signUpDTO.getNickName());
+        member.setGender(signUpDTO.getGender());
 
-        member.changeLoginPw(passwordEncoder.encode(member.getLoginPw()));
-        member.changeGender(member.getGender().toUpperCase());
+        member.setLoginPw(passwordEncoder.encode(member.getLoginPw()));
+        member.setGender(member.getGender().toUpperCase());
 
         return authMapper.saveMember(member) != 0;
     }

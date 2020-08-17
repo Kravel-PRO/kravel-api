@@ -8,17 +8,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
     @PostMapping("/auth/sign-up")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseMessage signUpMember(HttpServletRequest req, @RequestBody SignUpDTO signUpDTO) throws Exception {
+    public ResponseMessage signUpMember(@RequestBody SignUpDTO signUpDTO) throws Exception {
+
         return new ResponseMessage(HttpStatus.OK, authService.signUpMember(signUpDTO));
     }
 }
