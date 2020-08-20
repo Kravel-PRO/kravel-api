@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
