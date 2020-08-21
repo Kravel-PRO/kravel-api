@@ -25,9 +25,13 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
-    compile('org.springframework.security:spring-security-oauth2-client')
-    compile('org.springframework.security:spring-security-oauth2-jose')
-    compile('org.springframework.boot:spring-boot-starter-security')
+//    compile('org.springframework.security:spring-security-oauth2-client')
+//    compile('org.springframework.security:spring-security-oauth2-jose')
+//    compile('org.springframework.boot:spring-boot-starter-security')
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-test'
+
     compile group: 'com.auth0', name: 'java-jwt', version: '3.3.0'
 
     compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4', version: '1.16'
@@ -42,7 +46,6 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    testImplementation 'org.springframework.security:spring-security-test'
 
     compile "io.springfox:springfox-swagger2:2.9.2"
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
