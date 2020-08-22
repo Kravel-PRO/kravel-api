@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 public class AdminMemberController {
 
     private final AdminMemberService adminMemberService;
