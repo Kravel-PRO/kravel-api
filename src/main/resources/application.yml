@@ -4,3 +4,7 @@ cloud:
       bucket: kravel
     region:
       static: ap-northeast-2
+
+spring:
+  mvc:
+    dispatch-options-request: true
