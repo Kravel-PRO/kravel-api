@@ -20,8 +20,8 @@ public class Article {
 
     private double latitude;
     private double longitude;
-    private float grade;
-    private float weight;
+    private double grade;
+    private double weight;
 
     private List<ArticleReview> articleReviewList;
     private ArticleInfo articleInfo;

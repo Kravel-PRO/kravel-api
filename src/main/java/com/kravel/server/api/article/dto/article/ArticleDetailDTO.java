@@ -23,8 +23,8 @@ public class ArticleDetailDTO {
     private String latitude;
     private String longitude;
 
-    private float grade;
-    private float weight;
+    private double grade;
+    private double weight;
 
     private long mediaId;
     private String mediaName;

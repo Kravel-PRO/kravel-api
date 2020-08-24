@@ -19,7 +19,7 @@ public class ArticleReview {
     private long mediaId;
     private long celebrityId;
 
-    private float grade;
+    private double grade;
 
     private LocalDateTime createDe;
     private LocalDateTime updateDe;

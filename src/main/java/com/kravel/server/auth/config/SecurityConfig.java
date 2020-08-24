@@ -5,6 +5,7 @@ import com.kravel.server.auth.security.filter.FilterSkipMatcher;
 import com.kravel.server.auth.security.filter.FormLoginFilter;
 import com.kravel.server.auth.security.filter.JwtAuthenticationFilter;
 import com.kravel.server.auth.security.handler.FormLoginAuthenticationSuccessHandler;
+import com.kravel.server.auth.security.handler.FormLoginFailureHandler;
 import com.kravel.server.auth.security.handler.JwtAuthenticationFailureHandler;
 import com.kravel.server.auth.security.provider.FormLoginAuthenticationProvider;
 import com.kravel.server.auth.security.provider.JwtAuthenticationProvider;
@@ -37,6 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private FormLoginAuthenticationSuccessHandler formLoginAuthenticationSuccessHandler;
+
+    @Autowired
+    private FormLoginFailureHandler formLoginFailureHandler;
 
     @Autowired
     private FormLoginAuthenticationProvider provider;
@@ -78,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected FormLoginFilter formLoginFilter() throws Exception {
-        FormLoginFilter filter = new FormLoginFilter("/auth/sign-in", formLoginAuthenticationSuccessHandler, null);
+        FormLoginFilter filter = new FormLoginFilter("/auth/sign-in", formLoginAuthenticationSuccessHandler, formLoginFailureHandler);
         filter.setAuthenticationManager(super.authenticationManagerBean());
 
         return filter;

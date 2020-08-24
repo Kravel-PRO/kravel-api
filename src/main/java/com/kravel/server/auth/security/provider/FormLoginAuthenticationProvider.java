@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,17 +36,16 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 
         Member member = authMapper.findByLoginEmail(username);
         if (member.getLoginEmail().isEmpty()) {
-            throw new NoSuchElementException("Member is empty!");
+            throw new BadCredentialsException("isNotExistMember");
         }
 
-        System.out.println("여긴 바깥!");
         if (isCorrectPassword(password, member)) {
             return PostAuthorizationToken.getTokenFromMemberContext(
                     MemberContext.fromMemberModel(member)
             );
         }
 
-        throw new NoSuchElementException("is not correct password!");
+        throw new BadCredentialsException("isNotCorrectPassword");
     }
 
     @Override

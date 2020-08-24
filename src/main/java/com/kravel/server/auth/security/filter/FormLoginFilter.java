@@ -58,12 +58,6 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        AuthenticationFailureHandler handler = (req, res, exception) -> {
-            Logger log = LoggerFactory.getLogger("authentication_failure");
-
-            log.error(exception.getMessage());
-        };
-
-        handler.onAuthenticationFailure(request, response, failed);
+        this.authenticationFailureHandler.onAuthenticationFailure(request, response, failed);
     }
 }
