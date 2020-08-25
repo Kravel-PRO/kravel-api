@@ -26,19 +26,19 @@ public class MemberContext extends User {
     }
 
     public static MemberContext fromMemberModel(Member member) {
-        return new MemberContext(member, member.getLoginEmail(), member.getLoginPw(), parseAuthorities(member.getRole()));
+        return new MemberContext(member, member.getLoginEmail(), member.getLoginPw(), parseAuthorities(member.getRoleType()));
     }
 
     public static MemberContext fromJwtPostToken(JwtPostProcessingToken token) {
         return new MemberContext(null, token.getLoginEmail(), token.getLoginPw(), token.getAuthorities());
     }
 
-    private static List<SimpleGrantedAuthority> parseAuthorities(Role role) {
-        return Arrays.asList(role).stream().map(r -> new SimpleGrantedAuthority(r.getRoleName())).collect(Collectors.toList());
+    private static List<SimpleGrantedAuthority> parseAuthorities(RoleType roleType) {
+        return Arrays.asList(roleType).stream().map(r -> new SimpleGrantedAuthority(r.getRoleName())).collect(Collectors.toList());
     }
 
-    private static List<SimpleGrantedAuthority> parseAuthorities(String role) {
-        return parseAuthorities(Role.getRoleByName(role));
+    private static List<SimpleGrantedAuthority> parseAuthorities(String roleType) {
+        return parseAuthorities(RoleType.getRoleByName(roleType));
     }
 
     public Member getMember() {

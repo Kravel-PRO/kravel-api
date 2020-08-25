@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.model.MemberContext;
-import com.kravel.server.auth.model.Role;
+import com.kravel.server.auth.model.RoleType;
 import com.kravel.server.auth.security.util.exception.InvalidJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class JwtDecoder {
         member.setLoginPw("UNUSED_CREDENTIALS");
         member.setLangu(langu);
         member.setGender(gender);
-        member.setRole(Role.getRoleByName(role));
+        member.setRole(RoleType.getRoleByName(role));
         member.setMemberId(memberId);
 
         return MemberContext.fromMemberModel(member);

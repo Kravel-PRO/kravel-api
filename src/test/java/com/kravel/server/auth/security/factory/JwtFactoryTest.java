@@ -2,7 +2,7 @@ package com.kravel.server.auth.security.factory;
 
 import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.model.MemberContext;
-import com.kravel.server.auth.model.Role;
+import com.kravel.server.auth.model.RoleType;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class JwtFactoryTest {
         Member member = new Member();
         member.setLoginEmail("ooeunz@gmail.com");
         member.setLoginPw("1234");
-        member.setRole(Role.USER);
+        member.setRole(RoleType.USER);
 
         this.context = MemberContext.fromMemberModel(member);
     }

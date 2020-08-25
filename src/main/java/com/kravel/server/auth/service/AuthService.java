@@ -3,7 +3,6 @@ package com.kravel.server.auth.service;
 import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.auth.mapper.AuthMapper;
 import com.kravel.server.auth.model.Member;
-import com.kravel.server.auth.model.Role;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

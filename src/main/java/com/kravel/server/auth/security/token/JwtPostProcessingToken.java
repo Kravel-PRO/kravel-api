@@ -1,6 +1,6 @@
 package com.kravel.server.auth.security.token;
 
-import com.kravel.server.auth.model.Role;
+import com.kravel.server.auth.model.RoleType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,12 +15,12 @@ public class JwtPostProcessingToken extends UsernamePasswordAuthenticationToken 
         super(principal, credentials, authorities);
     }
 
-    public JwtPostProcessingToken(String loginEmail, Role role) {
-        super(loginEmail, "UNUSED_CREDENTIALS", parseAuthorities(role));
+    public JwtPostProcessingToken(String loginEmail, RoleType roleType) {
+        super(loginEmail, "UNUSED_CREDENTIALS", parseAuthorities(roleType));
     }
 
-    private static Collection<? extends GrantedAuthority> parseAuthorities(Role role) {
-        return Arrays.asList(role).stream().map(r -> new SimpleGrantedAuthority(r.getRoleName())).collect(Collectors.toList());
+    private static Collection<? extends GrantedAuthority> parseAuthorities(RoleType roleType) {
+        return Arrays.asList(roleType).stream().map(r -> new SimpleGrantedAuthority(r.getRoleName())).collect(Collectors.toList());
     }
 
     public String getLoginEmail() {
