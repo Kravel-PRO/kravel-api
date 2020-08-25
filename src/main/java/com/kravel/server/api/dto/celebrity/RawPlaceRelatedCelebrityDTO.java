@@ -6,11 +6,11 @@ import org.apache.ibatis.type.Alias;
 
 @Getter
 @Setter
-@Alias("exCelebrityArticleDTO")
-public class ExCelebrityArticleDTO {
+@Alias("rawPlaceRelatedCelebrityDTO")
+public class RawPlaceRelatedCelebrityDTO {
     private long articleId;
     private String subject;
-    private String imgUrl;
+    private String imageUrl;
     private String mediaName;
     private String celebrities;
 }

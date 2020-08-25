@@ -8,7 +8,7 @@
                tmm.OPEN_YEAR openYear
         FROM tb_media_main tmm
         ORDER BY tmm.${param.sort} ${param.order}
-        LIMIT #{param.offset}, #{param.max};
+        LIMIT #{param.offset}, #{param.size};
     </select>
 
     <select id="findMediaInfoById" parameterType="hashmap" resultType="mediaInfoDTO">
@@ -23,9 +23,9 @@
     </select>
 
     <select id="findMediaArticlesById" parameterType="hashmap" resultType="exMediaArticleDTO">
-        SELECT tam.ARTICLE_ID articleId,
+        SELECT tam.PLACE_ID placeId,
                tai.SUBJECT subject,
-               tai2.IMG_URL imgUrl,
+               tai2.IMAGE_URL imageUrl,
                GROUP_CONCAT(tcm.CELEBRITY_NAME) celebrities
         FROM tb_media_main tmm
             LEFT JOIN tb_article_main tam
@@ -33,7 +33,7 @@
             AND tam.USE_AT = 'Y'
 
             LEFT JOIN tb_article_info tai
-            ON tam.ARTICLE_ID = tai.ARTICLE_ID
+            ON tam.PLACE_ID = tai.PLACE_ID
             AND tai.INFO_LANGU = #{param.langu}
 
             LEFT JOIN tb_article_img tai2

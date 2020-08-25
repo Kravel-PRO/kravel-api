@@ -5,33 +5,33 @@
     <select id="findAllCelebrities" parameterType="hashmap" resultType="celebrityDTO">
         SELECT tcm.CELEBRITY_ID celebrityId,
                tcm.CELEBRITY_NAME celebrityName,
-               tcm.IMG_URL imgUrl
+               tcm.IMAGE_URL imageUrl
         FROM tb_celebrity_main tcm
             LEFT JOIN tb_article_celebrity tac
             ON tcm.CELEBRITY_ID = tac.CELEBRITY_ID
         WHERE
             tcm.CELEBRITY_NAME LIKE CONCAT(#{param.search}, "%")
         ORDER BY COUNT(tac.ARTICLE_ID) ${param.order}
-        LIMIT #{param.offset}, #{param.max};
+        LIMIT #{param.offset}, #{param.size};
     </select>
 
     <select id="findCelebrityById" parameterType="hashmap" resultType="celebrityDTO">
         SELECT tcm.CELEBRITY_NAME celebrityName,
-               tcm.IMG_URL imgUrl,
+               tcm.IMAGE_URL imageUrl,
                tcm.CELEBRITY_ID
         FROM tb_celebrity_main tcm
         WHERE tcm.CELEBRITY_ID = #{param.celebrityId}
         AND tcm.USE_AT = 'Y';
     </select>
     
-    <select id="findAllArticleByCelebrity" parameterType="hashmap" resultType="exCelebrityArticleDTO">
+    <select id="findAllPlaceByCelebrity" parameterType="hashmap" resultType="rawPlaceRelatedCelebrityDTO">
         SELECT b.*,
                GROUP_CONCAT(tcm2.CELEBRITY_NAME) celebrities
         FROM
             (
                 SELECT tai.ARTICLE_ID articleId,
                        tai.SUBJECT subject,
-                       taimg.IMG_URL imgUrl,
+                       taimg.IMAGE_URL imageUrl,
                        tmm.MEDIA_NAME mediaName
                 FROM tb_celebrity_main tcm
                     INNER JOIN tb_article_celebrity tac
@@ -64,7 +64,7 @@
             LEFT JOIN tb_celebrity_main tcm2
             ON tac2.CELEBRITY_ID = tcm2.CELEBRITY_ID
                 AND tcm2.USE_AT = 'Y'
-        LIMIT ${param.offset}, ${param.max};
+        LIMIT ${param.offset}, ${param.size};
     </select>
 
 </mapper>

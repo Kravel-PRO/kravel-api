@@ -1,7 +1,6 @@
 package com.kravel.server.api.mapper;
 
 import com.kravel.server.api.dto.celebrity.CelebrityDTO;
-import com.kravel.server.api.dto.celebrity.ExCelebrityArticleDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,6 +16,5 @@ public interface CelebrityMapper {
 
     public CelebrityDTO findCelebrityById(@Param("param") Map<String, Object> param);
 
-    public ExCelebrityArticleDTO findAllArticleByCelebrity(@Param("param") Map<String, Object> param);
 
 }

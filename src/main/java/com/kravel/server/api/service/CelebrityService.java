@@ -1,11 +1,11 @@
 package com.kravel.server.api.service;
 
-import com.kravel.server.api.dto.celebrity.CelebrityArticleDTO;
+import com.kravel.server.api.dto.celebrity.PlaceRelatedCelebrityDTO;
 import com.kravel.server.api.dto.celebrity.CelebrityDetailDTO;
-import com.kravel.server.api.dto.celebrity.ExCelebrityArticleDTO;
 import com.kravel.server.api.dto.celebrity.CelebrityDTO;
+import com.kravel.server.api.dto.celebrity.RawPlaceRelatedCelebrityDTO;
 import com.kravel.server.api.mapper.CelebrityMapper;
-import com.kravel.server.api.mapper.ReviewMapper;
+import com.kravel.server.api.mapper.PlaceMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +16,8 @@ import java.util.Map;
 @Service
 public class CelebrityService {
 
-    private final ReviewMapper reviewMapper;
     private final CelebrityMapper celebrityMapper;
+    private final PlaceMapper placeMapper;
 
     public List<CelebrityDTO> findAllCelebrities(Map<String, Object> param) throws Exception {
         return celebrityMapper.findAllCelebrities(param);
@@ -25,16 +25,15 @@ public class CelebrityService {
 
     public CelebrityDetailDTO findCelebrityById(Map<String, Object> param) throws Exception {
 
-        CelebrityDetailDTO result = new CelebrityDetailDTO();
+        CelebrityDetailDTO celebrityDetailDTO = new CelebrityDetailDTO();
 
         CelebrityDTO celebrityDTO = celebrityMapper.findCelebrityById(param);
-        result.setCelebrity(celebrityDTO);
+        celebrityDetailDTO.setCelebrity(celebrityDTO);
 
-        ExCelebrityArticleDTO exCelebrityArticleDTO = celebrityMapper.findAllArticleByCelebrity(param);
-        CelebrityArticleDTO celebrityArticleDTO = new CelebrityArticleDTO(celebrityDTO, exCelebrityArticleDTO);
+        RawPlaceRelatedCelebrityDTO rawPlaceRelatedCelebrityDTO = placeMapper.findAllPlaceByCelebrity(param);
+        PlaceRelatedCelebrityDTO placeRelatedCelebrityDTO = new PlaceRelatedCelebrityDTO(celebrityDTO, rawPlaceRelatedCelebrityDTO);
 
-        result.setArticles(celebrityArticleDTO);
-
-        return result;
+        celebrityDetailDTO.setPlaces(placeRelatedCelebrityDTO);
+        return celebrityDetailDTO;
     }
 }

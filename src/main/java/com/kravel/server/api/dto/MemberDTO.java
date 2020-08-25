@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Alias("memberDTO")
@@ -11,9 +13,9 @@ public class MemberDTO {
     private int idx;
     private long memberId;
     private String gender;
-    private String role;
+    private String roleType;
     private String langu;
-    private String createDe;
-    private String updateDe;
+    private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
     private String useAt;
 }

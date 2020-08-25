@@ -3,6 +3,7 @@ package com.kravel.server.api.mapper;
 import com.kravel.server.api.dto.article.ArticleDetailDTO;
 import com.kravel.server.api.dto.article.ArticleMapDTO;
 import com.kravel.server.api.dto.celebrity.CelebrityDTO;
+import com.kravel.server.api.dto.celebrity.RawPlaceRelatedCelebrityDTO;
 import com.kravel.server.api.dto.review.ImgDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 @Mapper
 @Repository
-public interface ArticleMapper {
+public interface PlaceMapper {
 
     public List<ArticleMapDTO> findAllPlaces(@Param("param") Map<String, Object> param);
 
@@ -28,4 +29,7 @@ public interface ArticleMapper {
     public int removeArticleScrap(@Param("param") Map<String, Object> param);
 
     public List<ImgDTO> findAllArticleImg(@Param("param") Map<String, Object> param);
+
+    public RawPlaceRelatedCelebrityDTO findAllPlaceByCelebrity(@Param("param") Map<String, Object> param);
+
 }

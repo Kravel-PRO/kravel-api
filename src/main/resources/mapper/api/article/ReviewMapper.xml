@@ -15,8 +15,8 @@
             AND tari.REPRESENT = true
         WHERE
             <choose>
-                <when test="param.articleId != null">
-                    tar.ARTICLE_ID = #{param.articleId}
+                <when test="param.placeId != null">
+                    tar.PLACE_ID = #{param.placeId}
                 </when>
 
                 <when test="param.celebrityId != null">
@@ -31,7 +31,7 @@
         ORDER BY
             tar.${param.sort} ${param.order}
         LIMIT
-            ${param.offset}, ${param.max};
+            ${param.offset}, ${param.size};
     </select>
 
     <select id="findReviewDetailImgById" parameterType="hashmap" resultType="imgDTO">
@@ -53,7 +53,7 @@
     <select id="findReviewLikeCntById" parameterType="hashmap" resultType="articleReviewDTO">
         SELECT
             tar.REVIEW_ID reviewId,
-            COUNT(trl.LIKE_ID) likeCnt,
+            COUNT(trl.LIKE_ID) likeCount,
             b.likeState likeState
         FROM
             tb_article_review tar
@@ -88,14 +88,14 @@
             tb_celebrity_main tcm
         ON tam.ARTICLE_ID = tcm.ARTICLE_ID
         WHERE
-            tam.ARTICLE_ID = #{param.articleId};
+            tam.PLACE_ID = #{param.placeId};
     </select>
 
     <insert id="saveReview" parameterType="hashmap" useGeneratedKeys="true" keyProperty="reviewId">
         INSERT INTO
             tb_article_review(
                 MEMBER_ID,
-                ARTICLE_ID,
+                PLACE_ID,
                 <if test="param.mediaId != null and param.mediaId != ''">
                     MEDIA_ID,
                 </if>
@@ -105,7 +105,7 @@
             )
         VALUES (
             #{param.memberId},
-            #{param.articleId}
+            #{param.placeId}
             <if test="param.mediaId != null and param.mediaId != ''">
                 ,#{param.mediaId}
             </if>

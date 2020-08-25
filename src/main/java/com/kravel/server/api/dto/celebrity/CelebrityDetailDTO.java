@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class CelebrityDetailDTO {
     private CelebrityDTO celebrity;
-    private CelebrityArticleDTO articles;
+    private PlaceRelatedCelebrityDTO places;
 }

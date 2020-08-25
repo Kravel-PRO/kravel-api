@@ -3,7 +3,7 @@ package com.kravel.server.api.controller;
 import com.kravel.server.api.dto.article.ArticleDetailDTO;
 import com.kravel.server.api.dto.article.ArticleMapDTO;
 import com.kravel.server.api.dto.article.ArticleScrapDTO;
-import com.kravel.server.api.service.ArticleService;
+import com.kravel.server.api.service.PlaceService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +18,9 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-public class ArticleController {
+public class PlaceController {
 
-    private final ArticleService articleService;
+    private final PlaceService placeService;
     private final ClaimExtractor claimExtractor;
 
     @GetMapping("/api/places")
@@ -48,7 +48,7 @@ public class ArticleController {
         param.put("width", width);
         param.put("langu", claimExtractor.getLangu(authentication));
 
-        List<ArticleMapDTO> articleMapDTOList = articleService.findAllPlaces(param);
+        List<ArticleMapDTO> articleMapDTOList = placeService.findAllPlaces(param);
         return new ResponseMessage(HttpStatus.OK, articleMapDTOList);
     }
 
@@ -63,7 +63,7 @@ public class ArticleController {
         param.put("placeId", placeId);
         param.put("langu", claimExtractor.getLangu(authentication));
 
-        ArticleDetailDTO articleDetailDTO = articleService.findPlaceById(param);
+        ArticleDetailDTO articleDetailDTO = placeService.findPlaceById(param);
         return new ResponseMessage(HttpStatus.OK, articleDetailDTO);
     }
 
@@ -80,7 +80,7 @@ public class ArticleController {
         param.put("placeId", placeId);
         param.put("memberId", claimExtractor.getMemberId(authentication));
 
-        boolean result = articleService.handleArticleScrap(param);
+        boolean result = placeService.handleArticleScrap(param);
 
         return new ResponseMessage(HttpStatus.OK, result);
     }
