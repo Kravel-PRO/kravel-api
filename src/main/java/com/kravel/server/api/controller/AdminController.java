@@ -1,7 +1,9 @@
 package com.kravel.server.api.controller;
 
 import com.kravel.server.api.dto.MembersDTO;
+import com.kravel.server.api.dto.NoticeDTO;
 import com.kravel.server.api.service.AdminMemberService;
+import com.kravel.server.api.service.NoticeService;
 import com.kravel.server.auth.model.Member;
 import com.kravel.server.common.util.message.ResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -11,13 +13,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-public class AdminMemberController {
+public class AdminController {
 
     private final AdminMemberService adminMemberService;
+    private final NoticeService noticeService;
+
 
     @GetMapping("/api/admin/members")
     @ResponseStatus(HttpStatus.OK)
@@ -56,5 +61,24 @@ public class AdminMemberController {
 
         Member member = adminMemberService.findMemberById(param);
         return new ResponseMessage(HttpStatus.OK, member);
+    }
+
+
+    @GetMapping("/api/admin/notices")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseMessage findAllNotice(@RequestParam(value = "offset", defaultValue = "0") int offset,
+                                         @RequestParam(value = "size", defaultValue = "6") int size,
+                                         @RequestParam(value = "category", defaultValue = "NOTICE") String category,
+                                         Authentication authentication) throws Exception {
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("offset", offset);
+        param.put("size", size);
+        param.put("category", category);
+
+        List<NoticeDTO> noticeDTOs = noticeService.findAllNotices(param);
+
+        return new ResponseMessage(HttpStatus.OK, noticeDTOs);
     }
 }

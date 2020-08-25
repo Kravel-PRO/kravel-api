@@ -24,12 +24,12 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final ClaimExtractor claimExtractor;
 
-    @GetMapping("/api/articles/{articleId}/reviews")
+    @GetMapping("/api/places/{placeId}/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage findAllReviews(@PathVariable("articleId") long articleId,
+    public ResponseMessage findAllReviews(@PathVariable("placeId") long placeId,
                                           @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                          @RequestParam(value = "max", defaultValue = "5") int max,
+                                          @RequestParam(value = "size", defaultValue = "5") int size,
                                           @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
                                           @RequestParam(value = "order", defaultValue = "desc") String order,
                                           Authentication authentication) throws Exception {
@@ -37,25 +37,25 @@ public class ReviewController {
         Map<String, Object> param = new HashMap<String, Object>();
 
         param.put("offset", offset);
-        param.put("max", max);
+        param.put("size", size);
         param.put("sort", sort);
         param.put("order", order);
-        param.put("articleId", articleId);
+        param.put("placeId", placeId);
 
         List<ArticleReviewListDTO> articleReviewListDTOs = reviewService.findAllReviews(param);
         return new ResponseMessage(HttpStatus.OK, articleReviewListDTOs);
     }
 
-    @GetMapping("/api/articles/{articleId}/reviews/{reviewId}")
+    @GetMapping("/api/places/{placeId}/reviews/{reviewId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage findReviewDetailById(@PathVariable("articleId") long articleId,
+    public ResponseMessage findReviewDetailById(@PathVariable("placeId") long placeId,
                                                 @PathVariable("reviewId") long reviewId,
                                                 Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<String, Object>();
 
-        param.put("articleId", articleId);
+        param.put("placeId", placeId);
         param.put("reviewId", reviewId);
         param.put("memberId", claimExtractor.getMemberId(authentication));
 
@@ -63,11 +63,11 @@ public class ReviewController {
         return new ResponseMessage(HttpStatus.OK, articleReviewDTO);
     }
 
-    @PostMapping("/api/articles/{articleId}/reviews")
+    @PostMapping("/api/places/{placeId}/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     @Transactional
-    public ResponseMessage saveReview(@PathVariable("articleId") int articleId,
+    public ResponseMessage saveReview(@PathVariable("placeId") int placeId,
                                       @RequestParam("files") List<MultipartFile> files,
                                       @RequestParam(value = "represent", defaultValue = "0") int represent,
                                       Authentication authentication) throws Exception {
@@ -89,7 +89,7 @@ public class ReviewController {
         }
 
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put("articleId", articleId);
+        param.put("placeId", placeId);
         param.put("memberId", claimExtractor.getMemberId(authentication));
         param.put("imgDTOs", imgDTOs);
         param.put("represent", represent);
@@ -98,17 +98,17 @@ public class ReviewController {
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
-    @PostMapping("/api/articles/{articleId}/reviews/{reviewId}")
+    @PostMapping("/api/places/{placeId}/reviews/{reviewId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage handleReviewLike(@PathVariable("articleId") long articleId,
+    public ResponseMessage handleReviewLike(@PathVariable("placeId") long placeId,
                                             @PathVariable("reviewId") long reviewId,
                                             @RequestBody ReviewLikeDTO reviewLikeDTO,
                                             Authentication authentication) throws Exception{
 
         Map<String, Object> param = new HashMap<String, Object>();
 
-        param.put("articleId", articleId);
+        param.put("placeId", placeId);
         param.put("reviewId", reviewId);
         param.put("likeState", reviewLikeDTO.isLikeState());
         param.put("memberId", claimExtractor.getMemberId(authentication));

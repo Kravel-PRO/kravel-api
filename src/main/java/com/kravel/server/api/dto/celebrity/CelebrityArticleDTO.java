@@ -1,6 +1,5 @@
-package com.kravel.server.api.article.dto.celebrity;
+package com.kravel.server.api.dto.celebrity;
 
-import com.kravel.server.api.article.model.Celebrity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

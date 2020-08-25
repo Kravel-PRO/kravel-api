@@ -26,18 +26,18 @@ public class MediaController {
     private final ClaimExtractor claimExtractor;
     private final ReviewService reviewService;
 
-    @GetMapping("/api/articles/medias")
+    @GetMapping("/api/medias")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllMedia(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                        @RequestParam(value = "max", defaultValue = "5") int max,
+                                        @RequestParam(value = "size", defaultValue = "5") int size,
                                         @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
                                         @RequestParam(value = "order", defaultValue = "DESC") String order,
                                         Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<>();
         param.put("offset", offset);
-        param.put("max", max);
+        param.put("size", size);
         param.put("sort", sort);
         param.put("order", order);
 
@@ -46,7 +46,7 @@ public class MediaController {
         return new ResponseMessage(HttpStatus.OK, mediaListDTOList);
     }
 
-    @GetMapping("/api/articles/medias/{mediaId}")
+    @GetMapping("/api/medias/{mediaId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findMediaById(@PathVariable("mediaId") long mediaId,
@@ -59,12 +59,12 @@ public class MediaController {
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
-    @GetMapping("/api/articles/medias/{mediaId}/places")
+    @GetMapping("/api/medias/{mediaId}/places")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findMediaArticlesById(@PathVariable("mediaId") long mediaID,
                                                  @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                 @RequestParam(value = "max", defaultValue = "6") int max,
+                                                 @RequestParam(value = "size", defaultValue = "6") int size,
                                                  @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
                                                  @RequestParam(value = "order", defaultValue = "DESC") String order,
                                                  Authentication authentication) throws Exception {
@@ -72,7 +72,7 @@ public class MediaController {
         Map<String, Object> param = new HashMap<>();
         param.put("mediaId", mediaID);
         param.put("offset", offset);
-        param.put("max", max);
+        param.put("size", size);
         param.put("sort", sort);
         param.put("order", order);
         param.put("langu", claimExtractor.getLangu(authentication));
@@ -81,12 +81,12 @@ public class MediaController {
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
-    @GetMapping("/api/articles/medias/{mediaId}/reviews")
+    @GetMapping("/api/medias/{mediaId}/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findMediaReviewsById(@PathVariable("mediaId") long mediaId,
                                                 @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                @RequestParam(value = "max", defaultValue = "6") int max,
+                                                @RequestParam(value = "size", defaultValue = "6") int size,
                                                 @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
                                                 @RequestParam(value = "order", defaultValue = "DESC") String order,
                                                 Authentication authentication) throws Exception {
@@ -94,7 +94,7 @@ public class MediaController {
         Map<String, Object> param = new HashMap<>();
         param.put("mediaId", mediaId);
         param.put("offset", offset);
-        param.put("max", max);
+        param.put("size", size);
         param.put("sort", sort);
         param.put("order", order);
 

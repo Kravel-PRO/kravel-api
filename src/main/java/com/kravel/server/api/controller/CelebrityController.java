@@ -23,18 +23,18 @@ public class CelebrityController {
     private final CelebrityService celebrityService;
     private final ReviewService reviewService;
 
-    @GetMapping("/api/articles/celebrities")
+    @GetMapping("/api/celebrities")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllCelebrities(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                              @RequestParam(value = "max", defaultValue = "10") int max,
+                                              @RequestParam(value = "size", defaultValue = "10") int size,
                                               @RequestParam(value = "order", defaultValue = "DESC") String order,
                                               @RequestParam(value = "search", defaultValue = "") String search,
                                               Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("offset", offset);
-        param.put("max", max);
+        param.put("size", size);
         param.put("order", order);
         param.put("search", search);
 
@@ -43,12 +43,12 @@ public class CelebrityController {
         return new ResponseMessage(HttpStatus.OK, celebrityList);
     }
 
-    @GetMapping("/api/articles/celebrities/{celebrityId}")
+    @GetMapping("/api/celebrities/{celebrityId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findCelebrityById(@PathVariable("celebrityId") long celebrityId,
                                              @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                             @RequestParam(value = "max", defaultValue = "10") int max,
+                                             @RequestParam(value = "size", defaultValue = "10") int size,
                                              @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
                                              @RequestParam(value = "order", defaultValue = "DESC") String order,
                                              Authentication authentication) throws Exception {
@@ -56,7 +56,7 @@ public class CelebrityController {
         Map<String, Object> param = new HashMap<>();
         param.put("celebrityId", celebrityId);
         param.put("offset", offset);
-        param.put("max", max);
+        param.put("size", size);
         param.put("sort", sort);
         param.put("order", order);
 
@@ -64,19 +64,19 @@ public class CelebrityController {
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
-    @GetMapping("/api/articles/celebrities/{celebrityId}/reviews")
+    @GetMapping("/api/celebrities/{celebrityId}/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllCelebrityReview(@PathVariable("celebrityId") long celebrityId,
                                                   @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                  @RequestParam(value = "max", defaultValue = "6") int max,
+                                                  @RequestParam(value = "size", defaultValue = "6") int size,
                                                   @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
                                                   @RequestParam(value = "order", defaultValue = "DESC") String order,
                                                   Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<>();
         param.put("offset", offset);
-        param.put("max", max);
+        param.put("size", size);
         param.put("sort", sort);
         param.put("order", order);
         param.put("celebrityId", celebrityId);

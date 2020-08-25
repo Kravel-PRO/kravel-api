@@ -1,4 +1,4 @@
-package com.kravel.server.api.article.dto.media;
+package com.kravel.server.api.dto.media;
 
 import lombok.Getter;
 import lombok.Setter;

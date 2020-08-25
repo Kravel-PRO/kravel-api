@@ -23,11 +23,11 @@ public class ArticleController {
     private final ArticleService articleService;
     private final ClaimExtractor claimExtractor;
 
-    @GetMapping("/api/articles")
+    @GetMapping("/api/places")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllPlaces(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                         @RequestParam(value = "max", defaultValue = "5") int max,
+                                         @RequestParam(value = "size", defaultValue = "5") int size,
                                          @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
                                          @RequestParam(value = "order", defaultValue = "desc") String order,
                                          @RequestParam(value = "latitude", required = true) double latitude,
@@ -39,7 +39,7 @@ public class ArticleController {
         Map<String, Object> param = new HashMap<String, Object>();
 
         param.put("offset", offset);
-        param.put("max", max);
+        param.put("size", size);
         param.put("sort", sort);
         param.put("order", order);
         param.put("latitude", latitude);
@@ -52,32 +52,32 @@ public class ArticleController {
         return new ResponseMessage(HttpStatus.OK, articleMapDTOList);
     }
 
-    @GetMapping("/api/articles/{articleId}")
+    @GetMapping("/api/places/{placeId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage findPlaceById(@PathVariable("articleId") long articleId,
+    public ResponseMessage findPlaceById(@PathVariable("placeId") long placeId,
                                          Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<String, Object>();
 
-        param.put("articleId", articleId);
+        param.put("placeId", placeId);
         param.put("langu", claimExtractor.getLangu(authentication));
 
         ArticleDetailDTO articleDetailDTO = articleService.findPlaceById(param);
         return new ResponseMessage(HttpStatus.OK, articleDetailDTO);
     }
 
-    @PostMapping("/api/articles/{articleId}/scrap")
+    @PostMapping("/api/places/{placeId}/scrap")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage handleScrape(@PathVariable("articleId") long articleId,
+    public ResponseMessage handleScrape(@PathVariable("placeId") long placeId,
                                         @RequestBody ArticleScrapDTO articleScrapDTO,
                                         Authentication authentication) throws Exception {
 
         Map<String, Object> param = new HashMap<String, Object>();
 
         param.put("scrapState", articleScrapDTO.isScrapState());
-        param.put("articleId", articleId);
+        param.put("placeId", placeId);
         param.put("memberId", claimExtractor.getMemberId(authentication));
 
         boolean result = articleService.handleArticleScrap(param);

@@ -1,8 +1,7 @@
-package com.kravel.server.api.article.dto.celebrity;
+package com.kravel.server.api.dto.celebrity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.apache.ibatis.type.Alias;
 
 @Getter
