@@ -87,7 +87,7 @@ public class MediaController {
     public ResponseMessage findMediaReviewsById(@PathVariable("mediaId") long mediaId,
                                                 @RequestParam(value = "offset", defaultValue = "0") int offset,
                                                 @RequestParam(value = "size", defaultValue = "6") int size,
-                                                @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
+                                                @RequestParam(value = "sort", defaultValue = "createdDate") String sort,
                                                 @RequestParam(value = "order", defaultValue = "DESC") String order,
                                                 Authentication authentication) throws Exception {
 

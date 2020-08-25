@@ -49,7 +49,7 @@ public class CelebrityController {
     public ResponseMessage findCelebrityById(@PathVariable("celebrityId") long celebrityId,
                                              @RequestParam(value = "offset", defaultValue = "0") int offset,
                                              @RequestParam(value = "size", defaultValue = "10") int size,
-                                             @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
+                                             @RequestParam(value = "sort", defaultValue = "createdDate") String sort,
                                              @RequestParam(value = "order", defaultValue = "DESC") String order,
                                              Authentication authentication) throws Exception {
 
@@ -70,7 +70,7 @@ public class CelebrityController {
     public ResponseMessage findAllCelebrityReview(@PathVariable("celebrityId") long celebrityId,
                                                   @RequestParam(value = "offset", defaultValue = "0") int offset,
                                                   @RequestParam(value = "size", defaultValue = "6") int size,
-                                                  @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
+                                                  @RequestParam(value = "sort", defaultValue = "createdDate") String sort,
                                                   @RequestParam(value = "order", defaultValue = "DESC") String order,
                                                   Authentication authentication) throws Exception {
 

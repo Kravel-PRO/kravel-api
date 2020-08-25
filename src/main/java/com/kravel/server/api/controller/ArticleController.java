@@ -28,7 +28,7 @@ public class ArticleController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllPlaces(@RequestParam(value = "offset", defaultValue = "0") int offset,
                                          @RequestParam(value = "size", defaultValue = "5") int size,
-                                         @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
+                                         @RequestParam(value = "sort", defaultValue = "createdDate") String sort,
                                          @RequestParam(value = "order", defaultValue = "desc") String order,
                                          @RequestParam(value = "latitude", required = true) double latitude,
                                          @RequestParam(value = "longitude", required = true) double longitude,
