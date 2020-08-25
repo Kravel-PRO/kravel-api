@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kravel.server.api.article.mapper.CelebrityMapper">
+<mapper namespace="com.kravel.server.api.mapper.CelebrityMapper">
     <select id="findAllCelebrities" parameterType="hashmap" resultType="celebrityDTO">
         SELECT tcm.CELEBRITY_ID celebrityId,
                tcm.CELEBRITY_NAME celebrityName,

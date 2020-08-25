@@ -1,0 +1,95 @@
+package com.kravel.server.api.service;
+
+import com.kravel.server.api.dto.review.ReviewDTO;
+import com.kravel.server.api.dto.review.ArticleReviewListDTO;
+import com.kravel.server.api.mapper.ReviewMapper;
+import com.kravel.server.api.model.Review;
+import com.kravel.server.common.S3Uploader;
+import com.kravel.server.common.util.exception.InvalidRequestException;
+import com.kravel.server.common.util.exception.NotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@RequiredArgsConstructor
+@Service
+public class ReviewService {
+
+    private final ReviewMapper reviewMapper;
+    private final S3Uploader s3Uploader;
+
+    public List<ArticleReviewListDTO> findAllReviews(Map<String, Object> param) throws Exception {
+
+        List<ArticleReviewListDTO> articleReviewListDTOList = reviewMapper.findAllReviews(param);
+        if (articleReviewListDTOList.isEmpty()) {
+            throw new NotFoundException("Is not exist review");
+        }
+        return articleReviewListDTOList;
+    }
+
+    public ReviewDTO findReviewDetailById(Map<String, Object> param) throws Exception {
+
+        ReviewDTO articleReviewDTO = reviewMapper.findReviewLikeCntById(param);
+        articleReviewDTO.setImgDTOs(reviewMapper.findReviewDetailImgById(param));
+
+        if (articleReviewDTO.getImgDTOs().isEmpty()) {
+            throw new NotFoundException("Is not exist review");
+        }
+
+        return articleReviewDTO;
+    }
+
+    public List<ArticleReviewListDTO> findAllCelebrityReviews(Map<String, Object> param) throws Exception {
+
+        List<ArticleReviewListDTO> articleReviewListDTOs = reviewMapper.findAllReviews(param);
+        if (articleReviewListDTOs.isEmpty()) {
+            throw new NotFoundException("Is not exist reviews");
+        }
+
+        return articleReviewListDTOs;
+    }
+
+    public List<String> saveReviewToS3(List<MultipartFile> files) throws Exception {
+        List<String> imgUrlList = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            imgUrlList.add(s3Uploader.upload(file, "review"));
+        }
+        if (imgUrlList.isEmpty()) {
+            throw new IOException("Af");
+        }
+
+        return imgUrlList;
+    }
+
+    public boolean saveReviewToDatabase(Map<String, Object> param) throws Exception {
+
+        Review review = reviewMapper.findArticleReviewById(param);
+
+        param.put("mediaId", review.getMediaId());
+        param.put("celebrityId", review.getCelebrityId());
+
+        reviewMapper.saveReview(param);
+        return reviewMapper.saveReviewImg(param) != 0;
+    }
+
+    public boolean handleReviewLike(Map<String, Object> param) throws Exception {
+        int savedLike = reviewMapper.checkExistReviewLike(param);
+
+        if ((boolean) param.get("likeState") && savedLike == 0) {
+            return reviewMapper.saveReviewLike(param) != 0;
+
+        } else if (savedLike >= 1) {
+            return reviewMapper.removeReviewLike(param) != 0;
+
+        } else  {
+            throw new InvalidRequestException("It is not valid likeState");
+        }
+    }
+
+}

@@ -32,7 +32,10 @@ public class MyBatisConfig {
         sessionFactory.setMapperLocations(res);
         sessionFactory.setTypeAliasesPackage("com.kravel.server/**");
 
-        return sessionFactory.getObject();
+        SqlSessionFactory factory = sessionFactory.getObject();
+        factory.getConfiguration().setMapUnderscoreToCamelCase(true);
+
+        return factory;
     }
 
     @Bean
