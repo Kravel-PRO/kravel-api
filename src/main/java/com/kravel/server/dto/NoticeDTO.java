@@ -4,12 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 
-@Getter
-@Setter
+import java.time.LocalDateTime;
+
+@Getter @Setter
 @Alias("noticeDTO")
 public class NoticeDTO {
     private long noticeId;
-    private String subject;
-    private String imgUrl;
-    private String createDe;
+    private String title;
+    private String imageUrl;
+    private LocalDateTime createdDate;
 }

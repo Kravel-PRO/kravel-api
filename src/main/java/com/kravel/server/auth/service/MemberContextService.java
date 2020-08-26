@@ -1,10 +1,9 @@
 package com.kravel.server.auth.service;
 
-import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.mapper.AuthMapper;
 import com.kravel.server.auth.model.MemberContext;
+import com.kravel.server.model.member.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

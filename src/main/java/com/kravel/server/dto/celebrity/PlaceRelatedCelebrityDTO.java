@@ -1,12 +1,10 @@
-package com.kravel.server.api.dto.celebrity;
+package com.kravel.server.dto.celebrity;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.ibatis.type.Alias;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Getter

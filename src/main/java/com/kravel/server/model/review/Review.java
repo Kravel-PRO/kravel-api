@@ -1,11 +1,11 @@
 package com.kravel.server.model.review;
 
-import com.kravel.bella.model.BaseTimeEntity;
-import com.kravel.bella.model.celebrity.Celebrity;
-import com.kravel.bella.model.mapping.ReviewLike;
-import com.kravel.bella.model.media.Media;
-import com.kravel.bella.model.member.Member;
-import com.kravel.bella.model.place.Place;
+import com.kravel.server.model.BaseTimeEntity;
+import com.kravel.server.model.celebrity.Celebrity;
+import com.kravel.server.model.mapping.ReviewLike;
+import com.kravel.server.model.media.Media;
+import com.kravel.server.model.member.Member;
+import com.kravel.server.model.place.Place;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;

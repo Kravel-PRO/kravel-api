@@ -1,10 +1,10 @@
 package com.kravel.server.model.place;
 
-import com.kravel.bella.model.BaseEntity;
-import com.kravel.bella.model.mapping.PlaceCelebrity;
-import com.kravel.bella.model.mapping.Scrap;
-import com.kravel.bella.model.media.Media;
-import com.kravel.bella.model.review.Review;
+import com.kravel.server.model.BaseEntity;
+import com.kravel.server.model.mapping.PlaceCelebrity;
+import com.kravel.server.model.mapping.Scrap;
+import com.kravel.server.model.media.Media;
+import com.kravel.server.model.review.Review;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

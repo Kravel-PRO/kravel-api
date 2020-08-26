@@ -1,10 +1,10 @@
 package com.kravel.server.auth.security.provider;
 
 import com.kravel.server.auth.mapper.AuthMapper;
-import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.security.token.PreAuthorizationToken;
+import com.kravel.server.model.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -14,8 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.NoSuchElementException;
 
 @Component
 @RequiredArgsConstructor

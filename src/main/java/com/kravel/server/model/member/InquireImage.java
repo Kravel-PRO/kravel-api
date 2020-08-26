@@ -1,6 +1,6 @@
 package com.kravel.server.model.member;
 
-import com.kravel.bella.model.BaseTimeEntity;
+import com.kravel.server.model.BaseTimeEntity;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;

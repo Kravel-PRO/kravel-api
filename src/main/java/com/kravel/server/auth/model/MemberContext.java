@@ -1,6 +1,7 @@
 package com.kravel.server.auth.model;
 
 import com.kravel.server.auth.security.token.JwtPostProcessingToken;
+import com.kravel.server.model.member.Member;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

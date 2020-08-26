@@ -1,10 +1,10 @@
 package com.kravel.server.model.member;
 
-import com.kravel.bella.model.BaseTimeEntity;
-import com.kravel.bella.model.mapping.ReviewLike;
-import com.kravel.bella.model.mapping.Scrap;
-import com.kravel.bella.model.member.enums.RoleType;
-import com.kravel.bella.model.review.Review;
+import com.kravel.server.auth.model.RoleType;
+import com.kravel.server.model.BaseTimeEntity;
+import com.kravel.server.model.mapping.ReviewLike;
+import com.kravel.server.model.mapping.Scrap;
+import com.kravel.server.model.review.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

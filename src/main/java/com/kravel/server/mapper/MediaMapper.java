@@ -1,6 +1,6 @@
 package com.kravel.server.mapper;
 
-import com.kravel.server.api.model.Media;
+import com.kravel.server.model.media.Media;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

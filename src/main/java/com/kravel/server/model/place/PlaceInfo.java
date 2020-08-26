@@ -1,6 +1,6 @@
 package com.kravel.server.model.place;
 
-import com.kravel.bella.model.BaseEntity;
+import com.kravel.server.model.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

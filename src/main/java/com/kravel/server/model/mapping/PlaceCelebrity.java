@@ -1,8 +1,8 @@
 package com.kravel.server.model.mapping;
 
-import com.kravel.bella.model.BaseEntity;
-import com.kravel.bella.model.celebrity.Celebrity;
-import com.kravel.bella.model.place.Place;
+import com.kravel.server.model.BaseEntity;
+import com.kravel.server.model.celebrity.Celebrity;
+import com.kravel.server.model.place.Place;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

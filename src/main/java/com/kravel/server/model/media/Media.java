@@ -1,8 +1,8 @@
 package com.kravel.server.model.media;
 
-import com.kravel.bella.model.BaseEntity;
-import com.kravel.bella.model.mapping.CelebrityMedia;
-import com.kravel.bella.model.review.Review;
+import com.kravel.server.model.BaseEntity;
+import com.kravel.server.model.mapping.CelebrityMedia;
+import com.kravel.server.model.review.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,13 +19,16 @@ public class Media extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "media_id")
     private long id;
-    private String mediaName;
+
+    @Column(name = "mediaName")
+    private String name;
 
     private String imageUrl;
 
     @Lob
-    private String explain;
+    private String contents;
 
+    @Column(name = "open_year")
     private LocalDate year;
     private String useAt;
 
@@ -36,7 +39,7 @@ public class Media extends BaseEntity {
     private List<Review> reviews = new ArrayList<>();
 
     public void changeMediaName(String mediaName) {
-        this.mediaName = mediaName;
+        this.name = mediaName;
     }
 
 }

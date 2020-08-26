@@ -1,7 +1,7 @@
 package com.kravel.server.model.member;
 
-import com.kravel.bella.model.BaseTimeEntity;
-import com.kravel.bella.model.member.enums.NoticeCategory;
+import com.kravel.server.model.BaseTimeEntity;
+import com.kravel.server.model.member.enums.NoticeCategory;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;

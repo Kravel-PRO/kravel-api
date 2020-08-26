@@ -1,8 +1,8 @@
 package com.kravel.server.model.mapping;
 
-import com.kravel.bella.model.BaseTimeEntity;
-import com.kravel.bella.model.member.Member;
-import com.kravel.bella.model.review.Review;
+import com.kravel.server.model.BaseTimeEntity;
+import com.kravel.server.model.member.Member;
+import com.kravel.server.model.review.Review;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;

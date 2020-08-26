@@ -1,7 +1,7 @@
 package com.kravel.server.model.mapping;
 
-import com.kravel.bella.model.celebrity.Celebrity;
-import com.kravel.bella.model.media.Media;
+import com.kravel.server.model.celebrity.Celebrity;
+import com.kravel.server.model.media.Media;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

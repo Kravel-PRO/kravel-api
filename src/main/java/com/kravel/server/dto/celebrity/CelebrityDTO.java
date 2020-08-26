@@ -1,6 +1,6 @@
-package com.kravel.server.api.dto.celebrity;
+package com.kravel.server.dto.celebrity;
 
-import com.kravel.server.api.model.Celebrity;
+import com.kravel.server.model.celebrity.Celebrity;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
@@ -15,8 +15,8 @@ public class CelebrityDTO {
 
     public static CelebrityDTO fromEntity(Celebrity entity) {
         CelebrityDTO celebrityDTO = new CelebrityDTO();
-        celebrityDTO.setCelebrityId(entity.getCelebrityId());
-        celebrityDTO.setCelebrityName(entity.getCelebrityName());
+        celebrityDTO.setCelebrityId(entity.getId());
+        celebrityDTO.setCelebrityName(entity.getName());
         celebrityDTO.setImageUrl(entity.getImageUrl());
 
         return celebrityDTO;

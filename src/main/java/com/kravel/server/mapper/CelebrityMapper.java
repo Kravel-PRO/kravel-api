@@ -1,6 +1,6 @@
 package com.kravel.server.mapper;
 
-import com.kravel.server.api.model.Celebrity;
+import com.kravel.server.model.celebrity.Celebrity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

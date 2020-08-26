@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.model.RoleType;
 import com.kravel.server.auth.security.util.exception.InvalidJwtException;

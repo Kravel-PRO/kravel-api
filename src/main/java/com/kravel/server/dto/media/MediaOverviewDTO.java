@@ -1,9 +1,11 @@
-package com.kravel.server.api.dto.media;
+package com.kravel.server.dto.media;
 
-import com.kravel.server.api.model.Media;
+import com.kravel.server.model.media.Media;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
+
+import java.time.LocalDate;
 
 @Getter @Setter
 @Alias("mediaOverviewDTO")
@@ -11,13 +13,13 @@ public class MediaOverviewDTO {
 
     private long mediaId;
     private String name;
-    private String openYear;
+    private LocalDate year;
 
     public static MediaOverviewDTO fromEntity(Media entity) {
         MediaOverviewDTO mediaOverviewDTO = new MediaOverviewDTO();
-        mediaOverviewDTO.setMediaId(entity.getMediaId());
+        mediaOverviewDTO.setMediaId(entity.getId());
         mediaOverviewDTO.setName(entity.getName());
-        mediaOverviewDTO.setOpenYear(entity.getOpenYear());
+        mediaOverviewDTO.setYear(entity.getYear());
 
         return mediaOverviewDTO;
     }

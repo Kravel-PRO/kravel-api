@@ -1,4 +1,4 @@
-package com.kravel.server.api.dto.celebrity;
+package com.kravel.server.dto.celebrity;
 
 import lombok.Getter;
 import lombok.Setter;

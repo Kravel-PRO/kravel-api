@@ -1,6 +1,5 @@
 package com.kravel.server.auth.security.factory;
 
-import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.model.RoleType;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;

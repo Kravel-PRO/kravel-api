@@ -5,8 +5,8 @@ import com.kravel.server.dto.celebrity.CelebrityDetailDTO;
 import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.mapper.CelebrityMapper;
 import com.kravel.server.mapper.PlaceMapper;
-import com.kravel.server.api.model.Celebrity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class CelebrityService {
     private final CelebrityMapper celebrityMapper;
     private final PlaceMapper placeMapper;
 
-    public List<CelebrityDTO> findAllCelebrities(Map<String, Object> param) throws Exception {
+    public List<CelebrityDTO> findAllCelebrities(String search, Pageable pageable) throws Exception {
         List<Celebrity> celebrities = celebrityMapper.findAllCelebrities(param);
         return celebrities.stream().map(CelebrityDTO::fromEntity).collect(Collectors.toList());
     }

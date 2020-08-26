@@ -1,6 +1,6 @@
 package com.kravel.server.auth.mapper;
 
-import com.kravel.server.auth.model.Member;
+import com.kravel.server.model.member.Member;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

@@ -1,9 +1,9 @@
 package com.kravel.server.model.celebrity;
 
-import com.kravel.bella.model.BaseEntity;
-import com.kravel.bella.model.mapping.CelebrityMedia;
-import com.kravel.bella.model.mapping.PlaceCelebrity;
-import com.kravel.bella.model.review.Review;
+import com.kravel.server.model.BaseEntity;
+import com.kravel.server.model.mapping.CelebrityMedia;
+import com.kravel.server.model.mapping.PlaceCelebrity;
+import com.kravel.server.model.review.Review;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +21,7 @@ public class Celebrity extends BaseEntity {
     @Column(name = "celebrity_id")
     private long id;
 
+    @Column(name = "celebrityName")
     private String name;
     private String imageUrl;
 
