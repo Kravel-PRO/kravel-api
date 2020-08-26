@@ -14,6 +14,6 @@ public class Media extends BaseEntity {
     private String mediaName;
     private String contents;
     private String imageUrl;
-    private String year;
+    private String openYear;
     private String useAt = "Y";
 }

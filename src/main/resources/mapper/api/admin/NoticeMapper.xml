@@ -3,16 +3,16 @@
 
 <mapper namespace="com.kravel.server.api.mapper.NoticeMapper">
     <select id="findAllNotices" parameterType="hashmap" resultType="noticeDTO">
-        SELECT tnm.NOTICE_ID noticeId,
-               tnm.SUBJECT subject,
-               SUBSTR(tnm.CREATED_DATE, 1, 10) createdDate,
-               tni.IMAGE_URL imageUrl
-        FROM tb_notice_main tnm
-            LEFT JOIN tb_notice_img tni
-            ON tnm.NOTICE_ID = tni.NOTICE_ID
-            AND tni.REPRESENT = true
-        WHERE tnm.USE_AT = 'Y'
-        ORDER BY tnm.CREATE_DE DESC
+        SELECT tnm.notice_id noticeId,
+               tnm.title title,
+               SUBSTR(tnm.cretaed_date, 1, 10) createdDate,
+               tni.image_url imageUrl
+        FROM notice tnm
+            LEFT JOIN notice_image tni
+            ON tnm.notice_id = tni.NOTICE_ID
+            AND tni.represent = true
+        WHERE tnm.use_at = 'Y'
+        ORDER BY tnm.created_date DESC
         LIMIT ${param.offset}, ${param.size};
     </select>
 </mapper>

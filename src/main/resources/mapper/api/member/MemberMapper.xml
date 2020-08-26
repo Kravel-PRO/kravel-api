@@ -5,27 +5,27 @@
 
     <update id="modifyMemberLoginPw">
 		UPDATE
-			tb_member_main tmm
+			member tmm
 		SET
-			LOGIN_PW = #{member.loginPw}
+			login_pw = #{member.loginPw}
 		WHERE
-			tmm.LOGIN_EMAIL = #{loginEmail};
+			tmm.login_email = #{loginEmail};
 	</update>
 
     <update id="modifyMemberNickName">
 		UPDATE
-			tb_member_main tmm
+			member tmm
 		SET
-			NICK_NAME = #{member.nickName}
+			nick_name = #{member.nickName}
 		WHERE
-			tmm.LOGIN_EMAIL = #{loginEmail};
+			tmm.login_email = #{loginEmail};
 	</update>
 
     <delete id="removeMember">
 		DELETE FROM
-			tb_member_main
+			member
 		WHERE
-			LOGIN_EMAIL = #{loginEmail};
+			login_email = #{loginEmail};
 	</delete>
 
 </mapper>

@@ -5,107 +5,90 @@
 
     <select id="findAllReviews" parameterType="hashmap" resultType="articleReviewListDTO">
         SELECT
-            tar.REVIEW_ID reviewId,
-            tari.IMG_URL representImgUrl
+            tar.review_id reviewId,
+            tar.image_url imageUrl
         FROM
-            tb_article_review tar
-            INNER JOIN
-                tb_article_review_img tari
-            ON tar.REVIEW_ID = tari.REVIEW_ID
-            AND tari.REPRESENT = true
+            review tar
         WHERE
             <choose>
                 <when test="param.placeId != null">
-                    tar.PLACE_ID = #{param.placeId}
+                    tar.place_id = #{param.placeId}
                 </when>
 
                 <when test="param.celebrityId != null">
-                    tar.CELEBRITY_ID = #{param.celebrityId}
+                    tar.celebrity_id = #{param.celebrityId}
                 </when>
 
                 <when test="param.mediaId != null">
-                    tar.MEDIA_ID = #{param.mediaId}
+                    tar.media_id = #{param.mediaId}
                 </when>
             </choose>
-            AND tar.USE_AT = "Y"
+            AND tar.use_at = "Y"
         ORDER BY
             tar.${param.sort} ${param.order}
         LIMIT
             ${param.offset}, ${param.size};
     </select>
 
-    <select id="findReviewDetailImgById" parameterType="hashmap" resultType="imgDTO">
+    <select id="findReviewLikeCountById" parameterType="hashmap" resultType="articleReviewDTO">
         SELECT
-            tari.IMG_ID imgId,
-            tari.IMG_URL imgUrl,
-            tari.REPRESENT repesent
-        FROM
-            tb_article_review tar
-            INNER JOIN
-                tb_article_review_img tari
-            ON tar.REVIEW_ID = tari.REVIEW_ID
-        WHERE
-            tar.ARTICLE_ID = #{param.articleId}
-            AND tar.REVIEW_ID = #{param.reviewId}
-            AND tar.USE_AT = "Y";
-    </select>
-
-    <select id="findReviewLikeCntById" parameterType="hashmap" resultType="articleReviewDTO">
-        SELECT
-            tar.REVIEW_ID reviewId,
-            COUNT(trl.LIKE_ID) likeCount,
+            tar.review_id reviewId,
+            COUNT(trl.like_id) likeCount,
             b.likeState likeState
         FROM
-            tb_article_review tar
+            review tar
             LEFT JOIN
-                tb_review_like trl
-            ON tar.REVIEW_ID = trl.REVIEW_ID,
+                review_like trl
+            ON tar.review_id = trl.review_id,
             (
                 SELECT
-                    COUNT(trl2.MEMBER_ID) likeState
+                    COUNT(trl2.member_id) likeState
                 FROM
-                    tb_article_review tar2
+                    review tar2
                     LEFT JOIN
-                        tb_review_like trl2
-                    ON tar2.REVIEW_ID = trl2.REVIEW_ID
+                        review_like trl2
+                    ON tar2.review_id = trl2.review_id
                 WHERE
-                    trl2.REVIEW_ID = tar2.REVIEW_ID
-                    AND trl2.MEMBER_ID = #{param.memberId}
+                    trl2.review_id = tar2.review_id
+                    AND trl2.member_id = #{param.memberId}
                 ) b
         WHERE
-            tar.ARTICLE_ID = #{param.articleId}
-            AND tar.REVIEW_ID = #{param.reviewId}
-            AND tar.USE_AT = "Y";
+            tar.place_id = #{param.place_id}
+            AND tar.review_id = #{param.reviewId}
+            AND tar.use_at = "Y";
     </select>
 
     <select id="findArticleReviewById" parameterType="hashmap" resultType="articleReview">
         SELECT
-            tam.MEDIA_ID mediaId,
-            tcm.CELEBRITY_ID celebrityId
+            tam.media_id mediaId,
+            tcm.celebrity_id celebrityId
         FROM
-            tb_article_main tam
+            place tam
         INNER JOIN
-            tb_celebrity_main tcm
-        ON tam.ARTICLE_ID = tcm.ARTICLE_ID
-        WHERE
-            tam.PLACE_ID = #{param.placeId};
+            celebrity tcm
+        ON tam.place_id = tcm.place_id
+        WHER/E
+            tam.place_id = #{param.placeId};
     </select>
 
     <insert id="saveReview" parameterType="hashmap" useGeneratedKeys="true" keyProperty="reviewId">
         INSERT INTO
-            tb_article_review(
-                MEMBER_ID,
-                PLACE_ID,
+            review(
+                member_id,
+                place_id,
+                image_url
+
                 <if test="param.mediaId != null and param.mediaId != ''">
-                    MEDIA_ID,
+                    , media_id
                 </if>
                 <if test="param.celebrityId != null and param.celebrityId != ''">
-                    CELEBRITY_ID
+                    , celebrity_id
                 </if>
             )
         VALUES (
             #{param.memberId},
-            #{param.placeId}
+            #{param.placeId},
+            #{param.imageUrl}
             <if test="param.mediaId != null and param.mediaId != ''">
                 ,#{param.mediaId}
             </if>
@@ -115,38 +98,21 @@
         );
     </insert>
 
-    <insert id="saveReviewImg" parameterType="hashmap">
-        INSERT INTO
-            tb_article_review_img(
-                REVIEW_ID,
-                IMG_URL,
-                REPRESENT
-            )
-        VALUES
-            <foreach item="item" index="index" collection="param.imgDTOs" separator=",">
-                (
-                #{param.reviewId},
-                #{item.imgUrl},
-                #{item.represent}
-                )
-            </foreach>
-    </insert>
-
     <select id="checkExistReviewLike" parameterType="hashmap" resultType="int">
         SELECT
-            COUNT(trl.LIKE_ID) likeId
+            COUNT(trl.review_like_id) likeId
         FROM
-            tb_review_like trl
+            review_like trl
         WHERE
-            trl.REVIEW_ID = #{param.reviewId}
-            AND trl.MEMBER_ID = #{param.memberId}
+            trl.review_id = #{param.reviewId}
+            AND trl.member_id = #{param.memberId}
     </select>
 
     <insert id="saveReviewLike" parameterType="hashmap">
         INSERT INTO
-            tb_review_like(
-                REVIEW_ID,
-                MEMBER_ID
+            review_like(
+                review_id,
+                member_id
             )
         VALUES (
             #{param.reviewId},
@@ -156,9 +122,9 @@
 
     <delete id="removeReviewLike" parameterType="hashmap">
         DELETE FROM
-            tb_review_like
+            review_like
         WHERE
-            REVIEW_ID = #{param.reviewId}
-            AND MEMBER_ID = #{param.memberId};
+            review_id = #{param.reviewId}
+            AND member_id = #{param.memberId};
     </delete>
 </mapper>

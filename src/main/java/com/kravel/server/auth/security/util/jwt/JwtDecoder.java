@@ -27,17 +27,17 @@ public class JwtDecoder {
         DecodedJWT decodedJWT = isValideToken(token).orElseThrow(() -> new InvalidJwtException("IS NOT VALID TOKEN"));
 
         String loginEmail = decodedJWT.getClaim("LOGIN_EMAIL").asString();
-        String role = decodedJWT.getClaim("ROLE").asString();
-        String langu = decodedJWT.getClaim("LANGU").asString();
+        String role = decodedJWT.getClaim("ROLE_TYPE").asString();
+        String speech = decodedJWT.getClaim("SPEECH").asString();
         String gender = decodedJWT.getClaim("GENDER").asString();
         long memberId = decodedJWT.getClaim("MEMBER_ID").asLong();
 
         Member member = new Member();
         member.setLoginEmail(loginEmail);
         member.setLoginPw("UNUSED_CREDENTIALS");
-        member.setLangu(langu);
+        member.setSpeech(speech);
         member.setGender(gender);
-        member.setRole(RoleType.getRoleByName(role));
+        member.setRoleType(RoleType.getRoleByName(role));
         member.setMemberId(memberId);
 
         return MemberContext.fromMemberModel(member);

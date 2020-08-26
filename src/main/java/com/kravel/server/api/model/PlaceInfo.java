@@ -10,7 +10,7 @@ public class PlaceInfo {
     private long infoId;
     private long placeId;
 
-    private String subject;
+    private String title;
     private String contents;
-    private String langu;
+    private String speech;
 }

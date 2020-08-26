@@ -4,32 +4,29 @@
 <mapper namespace="com.kravel.server.api.mapper.PlaceMapper">
     <select id="findAllPlaces" parameterType="hashmap" resultType="articleMapDTO">
         SELECT
-            tam.PLACE_ID placeID,
-            tai.SUBJECT subject,
-            t.IMAGE_URL imageUrl,
-            tmm.MEDIA_ID mediaId,
-            tmm.MEDIA_NAME mediaName
+            tam.place_id placeID,
+            tai.title subject,
+            tam.image_url imageUrl,
+            tmm.media_id mediaId,
+            tmm.media_name mediaName
         FROM
-            tb_article_main tam
+            place tam
         INNER JOIN
-            tb_article_info tai
-        ON tam.PLACE_ID = tai.PLACE_ID
+            place_info tai
+        ON tam.place_id = tai.place_id
         LEFT JOIN
-            tb_article_img t
-        ON tam.PLACE_ID = t.PLACE_ID
-        LEFT JOIN
-            tb_media_main tmm
-        ON tam.MEDIA_ID = tmm.MEDIA_ID
+            media tmm
+        ON tam.media_id = tmm.media_id
 
         WHERE
-            tam.LATITUDE > #{param.latitude} - #{param.height}
-            AND #{param.latitude} + #{param.height} > tam.LATITUDE
+            tam.latitude > #{param.latitude} - #{param.height}
+            AND #{param.latitude} + #{param.height} > tam.latitude
 
-            AND tam.LONGITUDE > #{param.longitude} - #{param.width}
-            AND #{param.longitude} + #{param.width} > tam.LONGITUDE
+            AND tam.longitude > #{param.longitude} - #{param.width}
+            AND #{param.longitude} + #{param.width} > tam.longitude
 
-            AND tai.INFO_LANGU = "KOR"
-            AND tam.USE_AT = "Y"
+            AND tai.speech = "KOR"
+            AND tam.use_at = "Y"
         ORDER BY
             tam.${param.sort} ${param.order}
         LIMIT
@@ -37,56 +34,56 @@
     </select>
 
     <select id="findPlaceById" parameterType="hashmap" resultType="articleDetailDTO">
-        SELECT tam.PLACE_ID placeId,
-               tai.SUBJECT subject,
-               tai.CONTENTS contents,
-               tai.LOCATION location,
-               tam.LATITUDE latitude,
-               tam.LONGITUDE longitude,
-               tmm.MEDIA_ID mediaId,
-               tmm.MEDIA_NAME mediaName
+        SELECT tam.place_id placeId,
+               tai.title title,
+               tai.contents contents,
+               tai.location location,
+               tam.latitude latitude,
+               tam.longitude longitude,
+               tmm.media_id mediaId,
+               tmm.media_name mediaName
 
-        FROM tb_article_main tam
-            INNER JOIN tb_article_info tai
+        FROM place tam
+            INNER JOIN place_info tai
             ON tam.ARTICLE_ID = tai.ARTICLE_ID
 
-            LEFT JOIN tb_media_main tmm
-            ON tam.MEDIA_ID = tmm.MEDIA_ID
+            LEFT JOIN media tmm
+            ON tam.media_id = tmm.MEDIA_ID
 
-        WHERE tam.PLACE_ID = #{param.placeId}
-          AND tai.INFO_LANGU = #{param.langu}
-          AND tam.USE_AT = 'Y';
+        WHERE tam.place_id = #{param.placeId}
+          AND tai.speech = #{param.langu}
+          AND tam.use_at = 'Y';
     </select>
 
     <select id="findAllCelebrities" parameterType="hashmap" resultType="celebrityDTO">
         SELECT
-            tcm.CELEBRITY_ID celebrityId,
-            tcm.CELEBRITY_NAME celebrityName,
-            tcm.IMAGE_URL imageUrl
+            tcm.celebrity_id celebrityId,
+            tcm.celebrity_name celebrityName,
+            tcm.image_url imageUrl
         FROM
-            tb_article_main tam
+            place tam
             INNER JOIN
-                tb_celebrity_main tcm
-            ON tam.PLACE_ID = tcm.PLACE_ID
+                celebrity tcm
+            ON tam.place_id = tcm.place_id
         WHERE
-            tam.PLACE_ID = #{param.placeId};
+            tam.place_id = #{param.placeId};
     </select>
 
     <select id="checkExistArticleScrap" parameterType="hashmap" resultType="int">
         SELECT
-            COUNT(tcm.SCRAP_ID) scrapId
+            COUNT(tcm.scrap_id) scrapId
         FROM
-            tb_scrap_main tcm
+            scrap tcm
         WHERE
-            tcm.MEMBER_ID = #{param.memberId}
-            AND tcm.PLACE_ID = #{param.placeId}
+            tcm.member_id = #{param.memberId}
+            AND tcm.place_id = #{param.placeId}
     </select>
 
-    <insert id="saveArticleScrap" parameterType="hashmap">
+    <insert id="savePlaceScrap" parameterType="hashmap">
         INSERT INTO
-            tb_scrap_main (
-                MEMBER_ID,
-                PLACE_ID
+            scrap (
+                member_id,
+                place_id
             )
         VALUES (
             #{param.memberId},
@@ -94,65 +91,73 @@
         );
     </insert>
 
-    <delete id="removeArticleScrap" parameterType="hashmap">
+    <delete id="removePlaceScrap" parameterType="hashmap">
         DELETE FROM
-            tb_scrap_main
+            scrap
         WHERE
-            MEMBER_ID = #{param.memberId}
-            AND PLACE_ID = #{param.placeId};
+            member_id = #{param.memberId}
+            AND place_id = #{param.placeId};
     </delete>
-
-    <select id="findAllArticleImg" parameterType="hashmap" resultType="imgDTO">
-        SELECT tai.IMG_ID imgId,
-               tai.IMG_URL imgUrl,
-               tai.REPRESENT represent
-
-        FROM tb_article_img tai
-            RIGHT JOIN tb_article_main tam
-            ON tai.ARTICLE_ID = tam.ARTICLE_ID
-        WHERE tam.ARTICLE_ID = #{param.articleId};
-    </select>
 
     <select id="findAllPlaceByCelebrity" parameterType="hashmap" resultType="rawPlaceRelatedCelebrityDTO">
         SELECT b.*,
-               GROUP_CONCAT(tcm2.CELEBRITY_NAME) celebrities
+               GROUP_CONCAT(tcm2.celebrity_name) celebrities
         FROM
             (
-                SELECT tai.PLACE_ID placeId,
-                       tai.SUBJECT subject,
-                       taimg.IMAGE_URL imageUrl,
-                       tmm.MEDIA_NAME mediaName
-                FROM tb_celebrity_main tcm
-                    INNER JOIN tb_article_celebrity tac
-                    ON tcm.CELEBRITY_ID = tac.CELEBRITY_ID
+                SELECT tai.place_id placeId,
+                       tai.title title,
+                       tam.image_url imageUrl,
+                       tmm.media_name mediaName
+                FROM celebrity tcm
+                    INNER JOIN place_celebrity tac
+                    ON tcm.celebrity_id = tac.celebrity_id
 
-                    INNER JOIN tb_article_main tam
-                    ON tac.PLACE_ID = tam.PLACE_ID
-                        AND tam.USE_AT = 'Y'
+                    INNER JOIN place tam
+                    ON tac.place_id = tam.place_id
+                        AND tam.use_at = 'Y'
 
-                    LEFT JOIN tb_article_img taimg
-                    ON tam.PLACE_ID = taimg.PLACE_ID
-                        AND taimg.REPRESENT = '1'
+                    LEFT JOIN place_info tai
+                    ON tam.placeId = tai.placeId
+                        AND tai.speech = 'KOR'
 
-                    LEFT JOIN tb_article_info tai
-                    ON tam.PLACE_ID = tai.PLACE_ID
-                        AND tai.INFO_LANGU = 'KOR'
+                    LEFT JOIN celebrity_media tcm3
+                    ON tcm.celebrity_id = tcm3.celebrity_id
 
-                    LEFT JOIN tb_celebrity_media tcm3
-                    ON tcm.CELEBRITY_ID = tcm3.CELEBRITY_ID
-
-                    LEFT JOIN tb_media_main tmm
-                    ON tcm3.MEDIA_ID = tmm.MEDIA_ID
-                WHERE tcm.CELEBRITY_ID = #{param.celebrityId}
-                AND tcm.USE_AT = 'Y'
+                    LEFT JOIN media tmm
+                    ON tcm3.media_id = tmm.media_id
+                WHERE tcm.celebrity_id = #{param.celebrityId}
+                AND tcm.use_at = 'Y'
             ) b
 
-            LEFT JOIN tb_article_celebrity tac2
-            ON b.placeId = tac2.PLACE_ID
+            LEFT JOIN place_celebrity tac2
+            ON b.placeId = tac2.place_id
 
-            LEFT JOIN tb_celebrity_main tcm2
-            ON tac2.CELEBRITY_ID = tcm2.CELEBRITY_ID
-                AND tcm2.USE_AT = 'Y'
+            LEFT JOIN celebrity tcm2
+            ON tac2.celebrity_id = tcm2.celebrity_id
+                AND tcm2.use_at = 'Y'
         LIMIT ${param.offset}, ${param.size};
+    </select>
+
+
+    <select id="findAllPlaceByMedia" parameterType="hashmap" resultType="rawPlaceRelatedMedia">
+        SELECT tam.place_id placeId,
+               tai.title title,
+               tam.image_url imageUrl,
+               GROUP_CONCAT(tcm.celebrity_name) celebrities
+        FROM media tmm
+            LEFT JOIN place tam
+            ON tmm.media_id = tam.media_id
+            AND tam.use_at = 'Y'
+
+            LEFT JOIN place_info tai
+            ON tam.place_id = tai.place_id
+            AND tai.speech = #{param.speech}
+
+            LEFT JOIN celebrity tcm
+            ON tam.place_id = tcm.place_id
+
+        WHERE tmm.media_id = #{param.mediaId}
+        ORDER BY tam.created_date
+        LIMIT #{param.offset}, #{param.max};
     </select>
 </mapper>

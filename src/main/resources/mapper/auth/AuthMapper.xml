@@ -9,7 +9,7 @@
 			tmm.LOGIN_PW loginPw,
 			tmm.GENDER gender,
 			tmm.LANGU langu,
-			tmm.ROLE role
+			tmm.ROLE_TYPE roleType
 		FROM
 			tb_member_main tmm
 		WHERE

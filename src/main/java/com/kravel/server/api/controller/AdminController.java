@@ -32,7 +32,7 @@ public class AdminController {
                                           @RequestParam(value = "login-email", defaultValue = "") String loginEmail,
                                           @RequestParam(value = "gender", defaultValue = "") String gender,
                                           @RequestParam(value = "role-type", defaultValue = "") String roleType,
-                                          @RequestParam(value = "langu", defaultValue = "") String langu,
+                                          @RequestParam(value = "speech", defaultValue = "") String speech,
                                           @RequestParam(value = "use-at", defaultValue = "") String useAt,
                                           Authentication authentication) throws Exception {
 
@@ -42,7 +42,7 @@ public class AdminController {
         param.put("loginEmail", loginEmail);
         param.put("gender", gender);
         param.put("roleType", roleType);
-        param.put("langu", langu);
+        param.put("speech", speech);
         param.put("useAt", useAt);
 
         MembersDTO membersDTO = adminMemberService.findAllMembers(param);

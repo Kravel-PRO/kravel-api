@@ -2,49 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kravel.server.api.mapper.MediaMapper">
-    <select id="findAllMedia" parameterType="hashmap" resultType="mediaListDTO">
-        SELECT tmm.MEDIA_ID mediaId,
-               tmm.MEDIA_NAME mediaName,
-               tmm.OPEN_YEAR openYear
-        FROM tb_media_main tmm
+    <select id="findAllMedia" parameterType="hashmap" resultType="media">
+        SELECT tmm.media_id mediaId,
+               tmm.media_name mediaName,
+               tmm.open_year openYear
+        FROM media tmm
         ORDER BY tmm.${param.sort} ${param.order}
         LIMIT #{param.offset}, #{param.size};
     </select>
 
-    <select id="findMediaInfoById" parameterType="hashmap" resultType="mediaInfoDTO">
-        SELECT tmm.MEDIA_ID mediaId,
-               tmm.MEDIA_NAME mediaName,
-               tmm.IMG_URL imgUrl,
-               tmm.CONTENTS contents,
-               tmm.OPEN_YEAR openYear
-        FROM tb_media_main tmm
-        WHERE tmm.MEDIA_ID = #{param.mediaId}
-          AND tmm.USE_AT = 'Y';
+    <select id="findMediaById" parameterType="hashmap" resultType="mediaInfoDTO">
+        SELECT tmm.media_id mediaId,
+               tmm.media_name mediaName,
+               tmm.image_url imageUrl,
+               tmm.contents contents,
+               tmm.open_year openYear
+        FROM media tmm
+        WHERE tmm.media_id = #{param.mediaId}
+          AND tmm.use_at = 'Y';
     </select>
 
-    <select id="findMediaArticlesById" parameterType="hashmap" resultType="exMediaArticleDTO">
-        SELECT tam.PLACE_ID placeId,
-               tai.SUBJECT subject,
-               tai2.IMAGE_URL imageUrl,
-               GROUP_CONCAT(tcm.CELEBRITY_NAME) celebrities
-        FROM tb_media_main tmm
-            LEFT JOIN tb_article_main tam
-            ON tmm.MEDIA_ID = tam.MEDIA_ID
-            AND tam.USE_AT = 'Y'
-
-            LEFT JOIN tb_article_info tai
-            ON tam.PLACE_ID = tai.PLACE_ID
-            AND tai.INFO_LANGU = #{param.langu}
-
-            LEFT JOIN tb_article_img tai2
-            ON tam.ARTICLE_ID = tai2.ARTICLE_ID
-            AND tai2.REPRESENT = true
-
-            LEFT JOIN tb_celebrity_main tcm
-            ON tam.ARTICLE_ID = tcm.ARTICLE_ID
-
-        WHERE tmm.MEDIA_ID = #{param.mediaId}
-        ORDER BY tam.CREATE_DE
-        LIMIT #{param.offset}, #{param.max};
-    </select>
 </mapper>

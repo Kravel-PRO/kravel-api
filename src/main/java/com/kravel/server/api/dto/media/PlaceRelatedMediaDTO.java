@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Getter
-@Setter
-public class MediaArticleDTO {
+@Getter @Setter
+public class PlaceRelatedMediaDTO {
     private long articleId;
     private String subject;
     private String imgUrl;
     private List<String> celebrities;
 
-    public MediaArticleDTO(ExMediaArticleDTO exMediaArticleDTO) {
+    public PlaceRelatedMediaDTO(RawPlaceRelatedMediaDTO exMediaArticleDTO) {
         this.articleId = exMediaArticleDTO.getArticleId();
         this.subject = exMediaArticleDTO.getSubject();
         this.imgUrl = exMediaArticleDTO.getImgUrl();

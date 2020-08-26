@@ -2,68 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kravel.server.api.mapper.CelebrityMapper">
-    <select id="findAllCelebrities" parameterType="hashmap" resultType="celebrityDTO">
-        SELECT tcm.CELEBRITY_ID celebrityId,
-               tcm.CELEBRITY_NAME celebrityName,
-               tcm.IMAGE_URL imageUrl
-        FROM tb_celebrity_main tcm
-            LEFT JOIN tb_article_celebrity tac
-            ON tcm.CELEBRITY_ID = tac.CELEBRITY_ID
+    <select id="findAllCelebrities" parameterType="hashmap" resultType="celebrity">
+        SELECT tcm.celebrity_id celebrityId,
+               tcm.celebrity_name celebrityName,
+               tcm.image_url imageUrl
+        FROM celebrity tcm
+            LEFT JOIN place_celebrity tac
+            ON tcm.celebrity_id = tac.celebrity_id
         WHERE
-            tcm.CELEBRITY_NAME LIKE CONCAT(#{param.search}, "%")
-        ORDER BY COUNT(tac.ARTICLE_ID) ${param.order}
+            tcm.celebrity_name LIKE CONCAT(#{param.search}, "%")
+        ORDER BY COUNT(tac.place_id) ${param.order}
         LIMIT #{param.offset}, #{param.size};
     </select>
 
-    <select id="findCelebrityById" parameterType="hashmap" resultType="celebrityDTO">
-        SELECT tcm.CELEBRITY_NAME celebrityName,
-               tcm.IMAGE_URL imageUrl,
-               tcm.CELEBRITY_ID
-        FROM tb_celebrity_main tcm
-        WHERE tcm.CELEBRITY_ID = #{param.celebrityId}
-        AND tcm.USE_AT = 'Y';
+    <select id="findCelebrityById" parameterType="hashmap" resultType="celebrity">
+        SELECT tcm.celebrity_name celebrityName,
+               tcm.image_url imageUrl,
+               tcm.celebrity_id
+        FROM celebrity tcm
+        WHERE tcm.celebrity_id = #{param.celebrityId}
+        AND tcm.use_at = 'Y';
     </select>
     
     <select id="findAllPlaceByCelebrity" parameterType="hashmap" resultType="rawPlaceRelatedCelebrityDTO">
         SELECT b.*,
-               GROUP_CONCAT(tcm2.CELEBRITY_NAME) celebrities
+               GROUP_CONCAT(tcm2.celebrity_name) celebrities
         FROM
             (
-                SELECT tai.ARTICLE_ID articleId,
-                       tai.SUBJECT subject,
-                       taimg.IMAGE_URL imageUrl,
-                       tmm.MEDIA_NAME mediaName
-                FROM tb_celebrity_main tcm
-                    INNER JOIN tb_article_celebrity tac
-                    ON tcm.CELEBRITY_ID = tac.CELEBRITY_ID
+                SELECT tai.place_id placeId,
+                       tai.title title,
+                       tam.image_url imageUrl,
+                       tmm.media_name mediaName
+                FROM celebrity tcm
+                    INNER JOIN place_celebrity tac
+                    ON tcm.celebrity_id = tac.celebrity_id
 
-                    INNER JOIN tb_article_main tam
-                    ON tac.ARTICLE_ID = tam.ARTICLE_ID
-                        AND tam.USE_AT = 'Y'
+                    INNER JOIN place tam
+                    ON tac.place_id = tam.place_id
+                        AND tam.use_at = 'Y'
 
-                    LEFT JOIN tb_article_img taimg
-                    ON tam.ARTICLE_ID = taimg.ARTICLE_ID
-                        AND taimg.REPRESENT = '1'
+                    LEFT JOIN place_info tai
+                    ON tam.place_id = tai.place_id
+                        AND tai.speech = 'KOR'
 
-                    LEFT JOIN tb_article_info tai
-                    ON tam.ARTICLE_ID = tai.ARTICLE_ID
-                        AND tai.INFO_LANGU = 'KOR'
+                    LEFT JOIN celebrity_media tcm3
+                    ON tcm.celebrity_id = tcm3.celebrity_id
 
-                    LEFT JOIN tb_celebrity_media tcm3
-                    ON tcm.CELEBRITY_ID = tcm3.CELEBRITY_ID
-
-                    LEFT JOIN tb_media_main tmm
-                    ON tcm3.MEDIA_ID = tmm.MEDIA_ID
-                WHERE tcm.CELEBRITY_ID = #{param.celebrityId}
-                AND tcm.USE_AT = 'Y'
+                    LEFT JOIN media tmm
+                    ON tcm3.media_id = tmm.media_id
+                WHERE tcm.celebrity_id = #{param.celebrityId}
+                AND tcm.use_at = 'Y'
             ) b
 
-            LEFT JOIN tb_article_celebrity tac2
-            ON b.articleId = tac2.ARTICLE_ID
+            LEFT JOIN place_celebrity tac2
+            ON b.placeId = tac2.place_id
 
-            LEFT JOIN tb_celebrity_main tcm2
-            ON tac2.CELEBRITY_ID = tcm2.CELEBRITY_ID
-                AND tcm2.USE_AT = 'Y'
+            LEFT JOIN celebrity tcm2
+            ON tac2.celebrity_id = tcm2.celebrity_id
+                AND tcm2.use_at = 'Y'
         LIMIT ${param.offset}, ${param.size};
     </select>
 

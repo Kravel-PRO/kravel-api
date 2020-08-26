@@ -9,20 +9,20 @@
                    a.*
             FROM (
                     (SELECT @rownum:=0) R,
-                    (SELECT tmm.MEMBER_ID memberId,
-                           tmm.LOGIN_EMAIL loginEmail,
-                           tmm.GENDER gender,
-                           tmm.ROLE role,
-                           tmm.LANGU langu,
-                           tmm.CREATED_DATE createdDate,
-                           tmm.MODIFIED_DATE modifiedDate,
-                           tmm.USE_AT useAt
-                    FROM tb_member_main tmm
-                    WHERE tmm.LOGIN_EMAIL LIKE CONCAT(#{param.loginEmail}, '%')
-                      AND tmm.GENDER LIKE CONCAT(#{param.gender}, '%')
-                      AND tmm.ROLE_TYPE LIKE CONCAT(#{param.roleType}, '%')
-                      AND tmm.LANGU LIKE CONCAT(#{param.langu}, '%')
-                      AND tmm.USE_AT LIKE CONCAT(#{param.useAt}, '%')
+                    (SELECT tmm.member_id memberId,
+                           tmm.login_email loginEmail,
+                           tmm.gender gender,
+                           tmm.role_type roleType,
+                           tmm.speech speech,
+                           tmm.created_date createdDate,
+                           tmm.modified_date modifiedDate,
+                           tmm.use_at useAt
+                    FROM member tmm
+                    WHERE tmm.login_email LIKE CONCAT(#{param.loginEmail}, '%')
+                      AND tmm.gener LIKE CONCAT(#{param.gender}, '%')
+                      AND tmm.role_type LIKE CONCAT(#{param.roleType}, '%')
+                      AND tmm.speech LIKE CONCAT(#{param.speech}, '%')
+                      AND tmm.use_at LIKE CONCAT(#{param.useAt}, '%')
                     ) a
                 )
             ) b
@@ -36,28 +36,28 @@
             SELECT COUNT(@rownum:=@rownum+1) count
             FROM (
                     (SELECT @rownum:=0) R,
-                    (SELECT tmm.MEMBER_ID memberId
-                    FROM tb_member_main tmm
-                    WHERE tmm.LOGIN_EMAIL LIKE CONCAT(#{param.loginEmail}, '%')
-                      AND tmm.GENDER LIKE CONCAT(#{param.gender}, '%')
-                      AND tmm.ROLE_TYPE LIKE CONCAT(#{param.roleType}, '%')
-                      AND tmm.LANGU LIKE CONCAT(#{param.langu}, '%')
-                      AND tmm.USE_AT LIKE CONCAT(#{param.useAt}, '%')
+                    (SELECT tmm.member_id memberId
+                    FROM member tmm
+                    WHERE tmm.loginEmail LIKE CONCAT(#{param.loginEmail}, '%')
+                      AND tmm.gener LIKE CONCAT(#{param.gender}, '%')
+                      AND tmm.role_type LIKE CONCAT(#{param.roleType}, '%')
+                      AND tmm.speech LIKE CONCAT(#{param.speech}, '%')
+                      AND tmm.use_at LIKE CONCAT(#{param.useAt}, '%')
                     ) a
                 )
             ) b
     </select>
 
     <select id="findMemberById" parameterType="hashmap" resultType="member">
-        SELECT tmm.MEMBER_ID memberId,
-               tmm.LANGU langu,
-               tmm.ROLE_TYPE roleType,
-               tmm.GENDER gender,
-               tmm.CREATED_DATE createdDate,
-               tmm.MODIFIED_DATE modifiedDate,
-               tmm.NICK_NAME nickName,
-               tmm.USE_AT useAt
-        FROM tb_member_main tmm
-        WHERE tmm.MEMBER_ID = #{param.memberId};
+        SELECT tmm.member_id memberId,
+               tmm.speech speech,
+               tmm.role_type roleType,
+               tmm.gener gender,
+               tmm.created_date createdDate,
+               tmm.modified_date modifiedDate,
+               tmm.nick_name nickName,
+               tmm.use_at useAt
+        FROM member tmm
+        WHERE tmm.member_id = #{param.memberId};
     </select>
 </mapper>

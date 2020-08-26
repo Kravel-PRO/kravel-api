@@ -1,8 +1,7 @@
 package com.kravel.server.api.mapper;
 
-import com.kravel.server.api.dto.media.ExMediaArticleDTO;
-import com.kravel.server.api.dto.media.MediaInfoDTO;
-import com.kravel.server.api.dto.media.MediaListDTO;
+import com.kravel.server.api.dto.media.RawPlaceRelatedMediaDTO;
+import com.kravel.server.api.model.Media;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -14,9 +13,8 @@ import java.util.Map;
 @Mapper
 public interface MediaMapper {
 
-    public List<MediaListDTO> findAllMedia(@Param("param") Map<String, Object> param);
+    public List<Media> findAllMedia(@Param("param") Map<String, Object> param);
 
-    public MediaInfoDTO findMediaInfoById(@Param("param") Map<String, Object> param);
+    public Media findMediaById(@Param("param") Map<String, Object> param);
 
-    public List<ExMediaArticleDTO> findMediaArticlesById(@Param("param") Map<String, Object> param);
 }

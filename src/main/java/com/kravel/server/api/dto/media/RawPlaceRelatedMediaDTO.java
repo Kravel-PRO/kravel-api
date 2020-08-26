@@ -6,8 +6,8 @@ import org.apache.ibatis.type.Alias;
 
 @Getter
 @Setter
-@Alias("exMediaArticleDTO")
-public class ExMediaArticleDTO {
+@Alias("rawPlaceRelatedMedia")
+public class RawPlaceRelatedMediaDTO {
     private long articleId;
     private String subject;
     private String imgUrl;

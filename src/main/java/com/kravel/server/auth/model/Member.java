@@ -15,7 +15,7 @@ public class Member extends BaseTimeEntity {
     private String loginPw;
     private String comparedCurPw;
 
-    private String langu;
+    private String speech;
     private String nickName;
     private String gender;
     private RoleType roleType;

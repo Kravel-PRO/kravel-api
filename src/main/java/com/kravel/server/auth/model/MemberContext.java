@@ -21,8 +21,8 @@ public class MemberContext extends User {
         this.member = member;
     }
 
-    public MemberContext(String loginEmail, String loginPw, String role) {
-        super(loginEmail, loginPw, parseAuthorities(role));
+    public MemberContext(String loginEmail, String loginPw, String roleType) {
+        super(loginEmail, loginPw, parseAuthorities(roleType));
     }
 
     public static MemberContext fromMemberModel(Member member) {

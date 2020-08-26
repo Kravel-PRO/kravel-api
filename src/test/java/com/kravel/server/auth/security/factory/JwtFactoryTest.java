@@ -29,7 +29,7 @@ public class JwtFactoryTest {
         Member member = new Member();
         member.setLoginEmail("ooeunz@gmail.com");
         member.setLoginPw("1234");
-        member.setRole(RoleType.USER);
+        member.setRoleType(RoleType.USER);
 
         this.context = MemberContext.fromMemberModel(member);
     }

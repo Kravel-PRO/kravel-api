@@ -14,7 +14,7 @@ public class MemberDTO {
     private long memberId;
     private String gender;
     private String roleType;
-    private String langu;
+    private String speech;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private String useAt;

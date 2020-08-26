@@ -14,7 +14,7 @@ import java.util.Date;
 public class Celebrity extends BaseEntity {
 
     private long celebrityId;
-    private String name;
+    private String celebrityName;
     private String imageUrl;
 
     private String useAt = "Y";

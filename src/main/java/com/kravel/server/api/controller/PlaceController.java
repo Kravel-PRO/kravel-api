@@ -46,7 +46,7 @@ public class PlaceController {
         param.put("longitude", longitude);
         param.put("height", height);
         param.put("width", width);
-        param.put("langu", claimExtractor.getLangu(authentication));
+        param.put("speech", claimExtractor.getSpeech(authentication));
 
         List<ArticleMapDTO> articleMapDTOList = placeService.findAllPlaces(param);
         return new ResponseMessage(HttpStatus.OK, articleMapDTOList);
@@ -61,7 +61,7 @@ public class PlaceController {
         Map<String, Object> param = new HashMap<String, Object>();
 
         param.put("placeId", placeId);
-        param.put("langu", claimExtractor.getLangu(authentication));
+        param.put("speech", claimExtractor.getSpeech(authentication));
 
         ArticleDetailDTO articleDetailDTO = placeService.findPlaceById(param);
         return new ResponseMessage(HttpStatus.OK, articleDetailDTO);

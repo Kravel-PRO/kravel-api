@@ -1,8 +1,8 @@
 package com.kravel.server.api.controller;
 
-import com.kravel.server.api.dto.media.MediaArticleDTO;
-import com.kravel.server.api.dto.media.MediaInfoDTO;
-import com.kravel.server.api.dto.media.MediaListDTO;
+import com.kravel.server.api.dto.media.PlaceRelatedMediaDTO;
+import com.kravel.server.api.dto.media.MediaDTO;
+import com.kravel.server.api.dto.media.MediaOverviewDTO;
 import com.kravel.server.api.dto.review.ArticleReviewListDTO;
 import com.kravel.server.api.service.MediaService;
 import com.kravel.server.api.service.ReviewService;
@@ -41,9 +41,9 @@ public class MediaController {
         param.put("sort", sort);
         param.put("order", order);
 
-        List<MediaListDTO> mediaListDTOList = mediaService.findAllMedia(param);
+        List<MediaOverviewDTO> mediaListDTO = mediaService.findAllMedia(param);
 
-        return new ResponseMessage(HttpStatus.OK, mediaListDTOList);
+        return new ResponseMessage(HttpStatus.OK, mediaListDTO);
     }
 
     @GetMapping("/api/medias/{mediaId}")
@@ -55,7 +55,7 @@ public class MediaController {
         Map<String, Object> param = new HashMap<>();
         param.put("mediaId", mediaId);
 
-        MediaInfoDTO result = mediaService.findMediaInfoById(param);
+        MediaDTO result = mediaService.findMediaInfoById(param);
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
@@ -75,9 +75,9 @@ public class MediaController {
         param.put("size", size);
         param.put("sort", sort);
         param.put("order", order);
-        param.put("langu", claimExtractor.getLangu(authentication));
+        param.put("speech", claimExtractor.getSpeech(authentication));
 
-        List<MediaArticleDTO> result = mediaService.findMediaArticlesById(param);
+        List<PlaceRelatedMediaDTO> result = mediaService.findMediaArticlesById(param);
         return new ResponseMessage(HttpStatus.OK, result);
     }
 

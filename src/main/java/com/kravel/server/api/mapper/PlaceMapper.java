@@ -4,6 +4,7 @@ import com.kravel.server.api.dto.article.ArticleDetailDTO;
 import com.kravel.server.api.dto.article.ArticleMapDTO;
 import com.kravel.server.api.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.dto.celebrity.RawPlaceRelatedCelebrityDTO;
+import com.kravel.server.api.dto.media.RawPlaceRelatedMediaDTO;
 import com.kravel.server.api.dto.review.ImgDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -24,12 +25,12 @@ public interface PlaceMapper {
 
     public int checkExistArticleScrap(@Param("param") Map<String, Object> param);
 
-    public int saveArticleScrap(@Param("param") Map<String, Object> param);
+    public int savePlaceScrap(@Param("param") Map<String, Object> param);
 
-    public int removeArticleScrap(@Param("param") Map<String, Object> param);
-
-    public List<ImgDTO> findAllArticleImg(@Param("param") Map<String, Object> param);
+    public int removePlaceScrap(@Param("param") Map<String, Object> param);
 
     public RawPlaceRelatedCelebrityDTO findAllPlaceByCelebrity(@Param("param") Map<String, Object> param);
+
+    public List<RawPlaceRelatedMediaDTO> findAllPlaceByMedia(@Param("param") Map<String, Object> param);
 
 }

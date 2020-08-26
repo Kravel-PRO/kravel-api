@@ -9,5 +9,5 @@ import org.apache.ibatis.type.Alias;
 @Alias("articleReviewListDTO")
 public class ArticleReviewListDTO {
     private long reviewId;
-    private String representImgUrl;
+    private String imageUrl;
 }
