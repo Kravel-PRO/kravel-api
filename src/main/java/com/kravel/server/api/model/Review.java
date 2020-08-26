@@ -12,8 +12,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class Review extends BaseTimeEntity{
 
-    private final S3Uploader s3Uploader;
-
     private long reviewId;
 
     private long memberId;
@@ -26,8 +24,7 @@ public class Review extends BaseTimeEntity{
     private String useAt = "Y";
 
     @Builder
-    public Review(S3Uploader s3Uploader, long reviewId, long memberId, long placeId, long mediaId, long celebrityId, double grade, String imageUrl, String useAt) {
-        this.s3Uploader = s3Uploader;
+    public Review(long reviewId, long memberId, long placeId, long mediaId, long celebrityId, double grade, String imageUrl, String useAt) {
         this.reviewId = reviewId;
         this.memberId = memberId;
         this.placeId = placeId;
@@ -38,7 +35,7 @@ public class Review extends BaseTimeEntity{
         this.useAt = useAt;
     }
 
-    public void saveImage(MultipartFile file) throws Exception {
+    public void saveImage(S3Uploader s3Uploader, MultipartFile file) throws Exception {
         this.imageUrl = s3Uploader.upload(file, "review");
     }
 }

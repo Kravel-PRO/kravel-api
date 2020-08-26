@@ -1,6 +1,5 @@
 package com.kravel.server.api.service;
 
-import com.kravel.server.api.dto.review.ReviewDTO;
 import com.kravel.server.api.dto.review.ReviewDetailDTO;
 import com.kravel.server.api.dto.review.ReviewOverviewDTO;
 import com.kravel.server.api.mapper.CelebrityMapper;
@@ -14,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,12 +58,11 @@ public class ReviewService {
         // TODO place랑 관련된 media id 찾아서 review에 넣어주기
 
         Review review = Review.builder()
-                .s3Uploader(s3Uploader)
                 .memberId(memberId)
                 .mediaId(mediaId)
                 .build();
 
-        review.saveImage(file);
+        review.saveImage(s3Uploader, file);
 
         if (review.getImageUrl().isEmpty()) {
             throw new InvalidRequestException("🔥 error: image upload is failed");
