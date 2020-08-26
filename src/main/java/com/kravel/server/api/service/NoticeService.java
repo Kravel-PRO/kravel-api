@@ -19,7 +19,7 @@ public class NoticeService {
 
         List<NoticeDTO> noticeDTOs = noticeMapper.findAllNotices(param);
         if (noticeDTOs.isEmpty()) {
-            throw new NotFoundException("Is not exist notice!");
+            throw new NotFoundException("🔥 error: is not exist notice!");
         }
 
         return noticeDTOs;

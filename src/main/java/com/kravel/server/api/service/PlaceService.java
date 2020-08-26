@@ -1,7 +1,7 @@
 package com.kravel.server.api.service;
 
-import com.kravel.server.api.dto.article.ArticleDetailDTO;
-import com.kravel.server.api.dto.article.ArticleMapDTO;
+import com.kravel.server.api.dto.article.PlaceDTO;
+import com.kravel.server.api.dto.article.PlaceMapDTO;
 import com.kravel.server.api.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.mapper.PlaceMapper;
 import com.kravel.server.api.mapper.ReviewMapper;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,44 +23,48 @@ public class PlaceService {
     private final PlaceMapper placeMapper;
     private final ReviewMapper reviewMapper;
 
-    public List<ArticleMapDTO> findAllPlaces(Map<String,Object> param) throws Exception {
+    public List<PlaceMapDTO> findAllPlaces(Map<String,Object> param) throws Exception {
 
-        List<ArticleMapDTO> articleMapDTOList = placeMapper.findAllPlaces(param);
-        if (articleMapDTOList.isEmpty()) {
-            throw new NotFoundException("IS not exist Article List");
+        List<PlaceMapDTO> placeMapDTOs = placeMapper.findAllPlaces(param);
+        if (placeMapDTOs.isEmpty()) {
+            throw new NotFoundException("🔥 error: is not exist Article List");
         }
 
-        for (int i=0; i<articleMapDTOList.size(); i++) {
-            param.put("articleId", articleMapDTOList.get(i).getArticleId());
-            articleMapDTOList.get(i).setCelebrities(placeMapper.findAllCelebrities(param));
+        for (int i = 0; i< placeMapDTOs.size(); i++) {
+            param.put("articleId", placeMapDTOs.get(i).getArticleId());
+            placeMapDTOs.get(i)
+                    .setCelebrities(placeMapper
+                            .findAllCelebritiesByPlace(param).stream()
+                            .map(CelebrityDTO::fromEntity)
+                            .collect(Collectors.toList()));
         }
 
-        return articleMapDTOList;
+        return placeMapDTOs;
     }
 
-    public ArticleDetailDTO findPlaceById(Map<String, Object> param) throws Exception {
+    public PlaceDTO findPlaceById(Map<String, Object> param) throws Exception {
 
-        ArticleDetailDTO articleDetailDTO = placeMapper.findPlaceById(param);
-        if (articleDetailDTO.getSubject().isEmpty()) {
+        PlaceDTO placeDTO = placeMapper.findPlaceById(param);
+        if (placeDTO.getTitle().isEmpty()) {
             throw new NotFoundException("Is not exist Article");
         }
 
-        List<CelebrityDTO> celebrityDTOs = placeMapper.findAllCelebrities(param);
-        articleDetailDTO.setCelebrities(celebrityDTOs);
+        placeDTO.setCelebrities(placeMapper
+                .findAllCelebritiesByPlace(param).stream()
+                .map(CelebrityDTO::fromEntity)
+                .collect(Collectors.toList()));
 
-        articleDetailDTO.setImgs(placeMapper.findAllArticleImg(param));
-
-        return articleDetailDTO;
+        return placeDTO;
     }
 
     public boolean handleArticleScrap(Map<String, Object> param) throws Exception {
         int savedScrap = placeMapper.checkExistArticleScrap(param);
 
         if((boolean) param.get("scrapState") && savedScrap == 0) {
-            return placeMapper.saveArticleScrap(param) != 0;
+            return placeMapper.savePlaceScrap(param) != 0;
 
         } else if (savedScrap >= 1) {
-            return placeMapper.removeArticleScrap(param) != 0;
+            return placeMapper.removePlaceScrap(param) != 0;
 
         } else {
             throw new InvalidRequestException("It is not valid scarp state");

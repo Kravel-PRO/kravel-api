@@ -2,7 +2,7 @@ package com.kravel.server.api.controller;
 
 import com.kravel.server.api.dto.celebrity.CelebrityDTO;
 import com.kravel.server.api.dto.celebrity.CelebrityDetailDTO;
-import com.kravel.server.api.dto.review.ArticleReviewListDTO;
+import com.kravel.server.api.dto.review.ReviewOverviewDTO;
 import com.kravel.server.api.service.CelebrityService;
 import com.kravel.server.api.service.ReviewService;
 import com.kravel.server.common.util.message.ResponseMessage;
@@ -67,7 +67,7 @@ public class CelebrityController {
     @GetMapping("/api/celebrities/{celebrityId}/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage findAllCelebrityReview(@PathVariable("celebrityId") long celebrityId,
+    public ResponseMessage findAllReviewByCelebrity(@PathVariable("celebrityId") long celebrityId,
                                                   @RequestParam(value = "offset", defaultValue = "0") int offset,
                                                   @RequestParam(value = "size", defaultValue = "6") int size,
                                                   @RequestParam(value = "sort", defaultValue = "createdDate") String sort,
@@ -81,7 +81,7 @@ public class CelebrityController {
         param.put("order", order);
         param.put("celebrityId", celebrityId);
 
-        List<ArticleReviewListDTO> result = reviewService.findAllCelebrityReviews(param);
+        List<ReviewOverviewDTO> result = reviewService.findAllReviewByCelebrity(param);
         return new ResponseMessage(HttpStatus.OK, result);
     }
 

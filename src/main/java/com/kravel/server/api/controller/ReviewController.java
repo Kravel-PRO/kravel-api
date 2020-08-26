@@ -1,8 +1,8 @@
 package com.kravel.server.api.controller;
 
-import com.kravel.server.api.dto.review.ImgDTO;
 import com.kravel.server.api.dto.review.ReviewDTO;
-import com.kravel.server.api.dto.review.ArticleReviewListDTO;
+import com.kravel.server.api.dto.review.ReviewDetailDTO;
+import com.kravel.server.api.dto.review.ReviewOverviewDTO;
 import com.kravel.server.api.dto.review.ReviewLikeDTO;
 import com.kravel.server.api.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
@@ -42,8 +42,8 @@ public class ReviewController {
         param.put("order", order);
         param.put("placeId", placeId);
 
-        List<ArticleReviewListDTO> articleReviewListDTOs = reviewService.findAllReviews(param);
-        return new ResponseMessage(HttpStatus.OK, articleReviewListDTOs);
+        List<ReviewOverviewDTO> reviewOverviewDTOS = reviewService.findAllReviews(param);
+        return new ResponseMessage(HttpStatus.OK, reviewOverviewDTOS);
     }
 
     @GetMapping("/api/places/{placeId}/reviews/{reviewId}")
@@ -59,8 +59,8 @@ public class ReviewController {
         param.put("reviewId", reviewId);
         param.put("memberId", claimExtractor.getMemberId(authentication));
 
-        ReviewDTO articleReviewDTO = reviewService.findReviewDetailById(param);
-        return new ResponseMessage(HttpStatus.OK, articleReviewDTO);
+        ReviewDetailDTO reviewDetailDTO = reviewService.findReviewDetailById(param);
+        return new ResponseMessage(HttpStatus.OK, reviewDetailDTO);
     }
 
     @PostMapping("/api/places/{placeId}/reviews")

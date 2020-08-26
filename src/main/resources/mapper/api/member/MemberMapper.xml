@@ -27,5 +27,4 @@
 		WHERE
 			login_email = #{loginEmail};
 	</delete>
-
 </mapper>

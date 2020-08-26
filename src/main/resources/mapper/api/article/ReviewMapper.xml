@@ -3,7 +3,7 @@
 
 <mapper namespace="com.kravel.server.api.mapper.ReviewMapper">
 
-    <select id="findAllReviews" parameterType="hashmap" resultType="articleReviewListDTO">
+    <select id="findAllReviews" parameterType="hashmap" resultType="reviewOverviewDTO">
         SELECT
             tar.review_id reviewId,
             tar.image_url imageUrl
@@ -30,11 +30,12 @@
             ${param.offset}, ${param.size};
     </select>
 
-    <select id="findReviewLikeCountById" parameterType="hashmap" resultType="articleReviewDTO">
+    <select id="findReviewDetailById" parameterType="hashmap" resultType="reviewDetailDTO">
         SELECT
             tar.review_id reviewId,
             COUNT(trl.like_id) likeCount,
-            b.likeState likeState
+            b.likeState likeState,
+            tar.image_url imageUrl
         FROM
             review tar
             LEFT JOIN
@@ -56,19 +57,6 @@
             tar.place_id = #{param.place_id}
             AND tar.review_id = #{param.reviewId}
             AND tar.use_at = "Y";
-    </select>
-
-    <select id="findArticleReviewById" parameterType="hashmap" resultType="articleReview">
-        SELECT
-            tam.media_id mediaId,
-            tcm.celebrity_id celebrityId
-        FROM
-            place tam
-        INNER JOIN
-            celebrity tcm
-        ON tam.place_id = tcm.place_id
-        WHER/E
-            tam.place_id = #{param.placeId};
     </select>
 
     <insert id="saveReview" parameterType="hashmap" useGeneratedKeys="true" keyProperty="reviewId">

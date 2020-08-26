@@ -1,6 +1,5 @@
 package com.kravel.server.api.mapper;
 
-import com.kravel.server.api.dto.media.RawPlaceRelatedMediaDTO;
 import com.kravel.server.api.model.Media;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

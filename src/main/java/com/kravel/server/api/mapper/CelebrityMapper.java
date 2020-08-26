@@ -17,5 +17,5 @@ public interface CelebrityMapper {
 
     public Celebrity findCelebrityById(@Param("param") Map<String, Object> param);
 
-
+    public List<Celebrity> findAllCelebrityByPlace(@Param("placeId") long placeId);
 }

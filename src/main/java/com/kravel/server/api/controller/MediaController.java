@@ -3,7 +3,7 @@ package com.kravel.server.api.controller;
 import com.kravel.server.api.dto.media.PlaceRelatedMediaDTO;
 import com.kravel.server.api.dto.media.MediaDTO;
 import com.kravel.server.api.dto.media.MediaOverviewDTO;
-import com.kravel.server.api.dto.review.ArticleReviewListDTO;
+import com.kravel.server.api.dto.review.ReviewOverviewDTO;
 import com.kravel.server.api.service.MediaService;
 import com.kravel.server.api.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
@@ -77,7 +77,7 @@ public class MediaController {
         param.put("order", order);
         param.put("speech", claimExtractor.getSpeech(authentication));
 
-        List<PlaceRelatedMediaDTO> result = mediaService.findMediaArticlesById(param);
+        List<PlaceRelatedMediaDTO> result = mediaService.findAllPlaceByMedia(param);
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
@@ -98,7 +98,7 @@ public class MediaController {
         param.put("sort", sort);
         param.put("order", order);
 
-        List<ArticleReviewListDTO> articleReviewListDTOs = reviewService.findAllReviews(param);
-        return new ResponseMessage(HttpStatus.OK, articleReviewListDTOs);
+        List<ReviewOverviewDTO> reviewOverviewDTOS = reviewService.findAllReviews(param);
+        return new ResponseMessage(HttpStatus.OK, reviewOverviewDTOS);
     }
 }

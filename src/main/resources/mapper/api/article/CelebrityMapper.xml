@@ -23,7 +23,16 @@
         WHERE tcm.celebrity_id = #{param.celebrityId}
         AND tcm.use_at = 'Y';
     </select>
-    
+
+    <select id="findAllCelebrityByPlace" parameterType="long" resultType="celebrity">
+        SELECT c.celebrity_name celebrityName,
+               c.image_url imageUrl,
+               c.celebrity_id
+        FROM celebrity c
+        WHERE tcm.celebrity_id = #{param.placeId}
+        AND tcm.use_at = 'Y';
+    </select>
+
     <select id="findAllPlaceByCelebrity" parameterType="hashmap" resultType="rawPlaceRelatedCelebrityDTO">
         SELECT b.*,
                GROUP_CONCAT(tcm2.celebrity_name) celebrities

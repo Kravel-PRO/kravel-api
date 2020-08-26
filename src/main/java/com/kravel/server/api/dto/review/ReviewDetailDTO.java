@@ -10,12 +10,12 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Alias("articleReviewDTO")
-public class ReviewDTO {
+@Alias("reviewDetailDTO")
+public class ReviewDetailDTO {
 
     private long reviewId;
-    private List<ImgDTO> imgDTOs;
+    private String imageUrl;
 
-    private int likeCnt;
+    private int likeCount;
     private boolean likeState;
 }

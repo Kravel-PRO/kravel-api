@@ -14,19 +14,9 @@ import java.util.List;
 @ToString
 @Alias("celebrityArticleDTO")
 public class PlaceRelatedCelebrityDTO {
-    private long articleId;
+    private long placeId;
     private String subject;
     private String imageUrl;
     private String mediaName;
     private List<String> celebrities;
-
-    public PlaceRelatedCelebrityDTO(CelebrityDTO celebrityDTO, RawPlaceRelatedCelebrityDTO rawPlaceRelatedCelebrityDTO) {
-        this.articleId = rawPlaceRelatedCelebrityDTO.getArticleId();
-        this.subject = rawPlaceRelatedCelebrityDTO.getSubject();
-        this.imageUrl = rawPlaceRelatedCelebrityDTO.getImageUrl();
-        this.mediaName = rawPlaceRelatedCelebrityDTO.getMediaName();
-        this.celebrities = new ArrayList<>(Arrays.asList(rawPlaceRelatedCelebrityDTO.getCelebrities().split(",")));
-
-        this.celebrities.remove(celebrityDTO.getCelebrityName());
-    }
 }

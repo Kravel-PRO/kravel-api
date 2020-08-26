@@ -1,7 +1,6 @@
 package com.kravel.server.api.dto.article;
 
 import com.kravel.server.api.dto.celebrity.CelebrityDTO;
-import com.kravel.server.api.dto.review.ImgDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,15 +8,15 @@ import org.apache.ibatis.type.Alias;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Getter @Setter
 @ToString
-@Alias("articleDetailDTO")
-public class ArticleDetailDTO {
+@Alias("placeDTO")
+public class PlaceDTO {
     private long articleId;
 
-    private String subject;
+    private String title;
     private String contents;
+    private String imageUrl;
 
     private String location;
     private String latitude;
@@ -31,5 +30,4 @@ public class ArticleDetailDTO {
 
     private int reviewCnt;
     private List<CelebrityDTO> celebrities;
-    private List<ImgDTO> imgs;
 }

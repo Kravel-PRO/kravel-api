@@ -3,7 +3,6 @@ package com.kravel.server.api.service;
 import com.kravel.server.api.dto.celebrity.PlaceRelatedCelebrityDTO;
 import com.kravel.server.api.dto.celebrity.CelebrityDetailDTO;
 import com.kravel.server.api.dto.celebrity.CelebrityDTO;
-import com.kravel.server.api.dto.celebrity.RawPlaceRelatedCelebrityDTO;
 import com.kravel.server.api.mapper.CelebrityMapper;
 import com.kravel.server.api.mapper.PlaceMapper;
 import com.kravel.server.api.model.Celebrity;
@@ -34,10 +33,15 @@ public class CelebrityService {
         CelebrityDTO celebrityDTO = CelebrityDTO.fromEntity(celebrity);
         celebrityDetailDTO.setCelebrity(celebrityDTO);
 
-        RawPlaceRelatedCelebrityDTO rawPlaceRelatedCelebrityDTO = placeMapper.findAllPlaceByCelebrity(param);
-        PlaceRelatedCelebrityDTO placeRelatedCelebrityDTO = new PlaceRelatedCelebrityDTO(celebrityDTO, rawPlaceRelatedCelebrityDTO);
+        List<PlaceRelatedCelebrityDTO> placeRelatedCelebrityDTOs = placeMapper.findAllPlaceAndPlaceInfoByCelebrity(param);
+        for (PlaceRelatedCelebrityDTO placeRelatedCelebrityDTO : placeRelatedCelebrityDTOs) {
+            placeRelatedCelebrityDTO.setCelebrities(celebrityMapper
+                    .findAllCelebrityByPlace(placeRelatedCelebrityDTO.getPlaceId()).stream()
+                    .map(Celebrity::getCelebrityName)
+                    .collect(Collectors.toList()));
+        }
 
-        celebrityDetailDTO.setPlaces(placeRelatedCelebrityDTO);
+        celebrityDetailDTO.setPlaces(placeRelatedCelebrityDTOs);
         return celebrityDetailDTO;
     }
 }

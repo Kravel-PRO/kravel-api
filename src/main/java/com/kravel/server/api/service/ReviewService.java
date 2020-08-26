@@ -1,7 +1,10 @@
 package com.kravel.server.api.service;
 
 import com.kravel.server.api.dto.review.ReviewDTO;
-import com.kravel.server.api.dto.review.ArticleReviewListDTO;
+import com.kravel.server.api.dto.review.ReviewDetailDTO;
+import com.kravel.server.api.dto.review.ReviewOverviewDTO;
+import com.kravel.server.api.mapper.CelebrityMapper;
+import com.kravel.server.api.mapper.MediaMapper;
 import com.kravel.server.api.mapper.ReviewMapper;
 import com.kravel.server.api.model.Review;
 import com.kravel.server.common.S3Uploader;
@@ -20,51 +23,56 @@ import java.util.Map;
 @Service
 public class ReviewService {
 
-    private final ReviewMapper reviewMapper;
     private final S3Uploader s3Uploader;
+    private final ReviewMapper reviewMapper;
+    private final MediaMapper mediaMapper;
+    private final CelebrityMapper celebrityMapper;
 
-    public List<ArticleReviewListDTO> findAllReviews(Map<String, Object> param) throws Exception {
+    public List<ReviewOverviewDTO> findAllReviews(Map<String, Object> param) throws Exception {
 
-        List<ArticleReviewListDTO> articleReviewListDTOList = reviewMapper.findAllReviews(param);
-        if (articleReviewListDTOList.isEmpty()) {
-            throw new NotFoundException("Is not exist review");
+        List<ReviewOverviewDTO> reviewOverviewDTOs = reviewMapper.findAllReviews(param);
+        if (reviewOverviewDTOs.isEmpty()) {
+            throw new NotFoundException("🔥 error: is not exist review");
         }
-        return articleReviewListDTOList;
+        return reviewOverviewDTOs;
     }
 
-    public ReviewDTO findReviewDetailById(Map<String, Object> param) throws Exception {
+    public ReviewDetailDTO findReviewDetailById(Map<String, Object> param) throws Exception {
 
-        ReviewDTO articleReviewDTO = reviewMapper.findReviewLikeCntById(param);
-        articleReviewDTO.setImgDTOs(reviewMapper.findReviewDetailImgById(param));
-
-        if (articleReviewDTO.getImgDTOs().isEmpty()) {
-            throw new NotFoundException("Is not exist review");
+        ReviewDetailDTO articleReviewDTO = reviewMapper.findReviewDetailById(param);
+        if (articleReviewDTO.getImageUrl().isEmpty()) {
+            throw new NotFoundException("🔥 error: is not exist review");
         }
 
         return articleReviewDTO;
     }
 
-    public List<ArticleReviewListDTO> findAllCelebrityReviews(Map<String, Object> param) throws Exception {
+    public List<ReviewOverviewDTO> findAllReviewByCelebrity(Map<String, Object> param) throws Exception {
 
-        List<ArticleReviewListDTO> articleReviewListDTOs = reviewMapper.findAllReviews(param);
-        if (articleReviewListDTOs.isEmpty()) {
-            throw new NotFoundException("Is not exist reviews");
+        List<ReviewOverviewDTO> reviewOverviewDTOs = reviewMapper.findAllReviews(param);
+        if (reviewOverviewDTOs.isEmpty()) {
+            throw new NotFoundException("🔥 error: is not exist reviews");
         }
 
-        return articleReviewListDTOs;
+        return reviewOverviewDTOs;
     }
 
-    public List<String> saveReviewToS3(List<MultipartFile> files) throws Exception {
-        List<String> imgUrlList = new ArrayList<>();
+    public List<String> saveReview(MultipartFile file, long placeId, long memberId, long mediaId) throws Exception {
+        // TODO place랑 관련된 media id 찾아서 review에 넣어주기
 
-        for (MultipartFile file : files) {
-            imgUrlList.add(s3Uploader.upload(file, "review"));
-        }
-        if (imgUrlList.isEmpty()) {
-            throw new IOException("Af");
+        Review review = Review.builder()
+                .s3Uploader(s3Uploader)
+                .memberId(memberId)
+                .mediaId(mediaId)
+                .build();
+
+        review.saveImage(file);
+
+        if (review.getImageUrl().isEmpty()) {
+            throw new InvalidRequestException("🔥 error: image upload is failed");
         }
 
-        return imgUrlList;
+
     }
 
     public boolean saveReviewToDatabase(Map<String, Object> param) throws Exception {

@@ -4,11 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 
-@Setter
 @Getter
-@Alias("ImgDTO")
-public class ImgDTO {
-    private long imgId;
-    private String imgUrl;
-    private boolean represent;
+@Setter
+@Alias("reviewOverviewDTO")
+public class ReviewOverviewDTO {
+    private long reviewId;
+    private String imageUrl;
 }

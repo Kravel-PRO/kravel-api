@@ -1,7 +1,7 @@
 package com.kravel.server.api.controller;
 
-import com.kravel.server.api.dto.article.ArticleDetailDTO;
-import com.kravel.server.api.dto.article.ArticleMapDTO;
+import com.kravel.server.api.dto.article.ArticleDTO;
+import com.kravel.server.api.dto.article.PlaceMapDTO;
 import com.kravel.server.api.dto.article.ArticleScrapDTO;
 import com.kravel.server.api.service.PlaceService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
@@ -48,8 +48,8 @@ public class PlaceController {
         param.put("width", width);
         param.put("speech", claimExtractor.getSpeech(authentication));
 
-        List<ArticleMapDTO> articleMapDTOList = placeService.findAllPlaces(param);
-        return new ResponseMessage(HttpStatus.OK, articleMapDTOList);
+        List<PlaceMapDTO> placeMapDTOList = placeService.findAllPlaces(param);
+        return new ResponseMessage(HttpStatus.OK, placeMapDTOList);
     }
 
     @GetMapping("/api/places/{placeId}")
@@ -63,8 +63,8 @@ public class PlaceController {
         param.put("placeId", placeId);
         param.put("speech", claimExtractor.getSpeech(authentication));
 
-        ArticleDetailDTO articleDetailDTO = placeService.findPlaceById(param);
-        return new ResponseMessage(HttpStatus.OK, articleDetailDTO);
+        ArticleDTO articleDTO = placeService.findPlaceById(param);
+        return new ResponseMessage(HttpStatus.OK, articleDTO);
     }
 
     @PostMapping("/api/places/{placeId}/scrap")
@@ -84,4 +84,5 @@ public class PlaceController {
 
         return new ResponseMessage(HttpStatus.OK, result);
     }
+
 }

@@ -12,10 +12,10 @@ import java.util.List;
 @Setter
 @ToString
 @Alias("articleMapDTO")
-public class ArticleMapDTO {
+public class PlaceMapDTO {
     private long articleId;
-    private String subject;
-    private String imgUrl;
+    private String title;
+    private String imageUrl;
 
     private long mediaId;
     private String mediaName;

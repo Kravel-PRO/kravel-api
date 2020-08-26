@@ -10,13 +10,13 @@ import org.apache.ibatis.type.Alias;
 @Alias("celebrityDTO")
 public class CelebrityDTO {
     private long celebrityId;
-    private String name;
+    private String celebrityName;
     private String imageUrl;
 
     public static CelebrityDTO fromEntity(Celebrity entity) {
         CelebrityDTO celebrityDTO = new CelebrityDTO();
         celebrityDTO.setCelebrityId(entity.getCelebrityId());
-        celebrityDTO.setName(entity.getName());
+        celebrityDTO.setCelebrityName(entity.getCelebrityName());
         celebrityDTO.setImageUrl(entity.getImageUrl());
 
         return celebrityDTO;

@@ -33,7 +33,7 @@
             ${param.offset}, ${param.size};
     </select>
 
-    <select id="findPlaceById" parameterType="hashmap" resultType="articleDetailDTO">
+    <select id="findPlaceById" parameterType="hashmap" resultType="placeDTO">
         SELECT tam.place_id placeId,
                tai.title title,
                tai.contents contents,
@@ -45,17 +45,17 @@
 
         FROM place tam
             INNER JOIN place_info tai
-            ON tam.ARTICLE_ID = tai.ARTICLE_ID
+            ON tam.ARTICLE_ID = tai.place_id
 
             LEFT JOIN media tmm
-            ON tam.media_id = tmm.MEDIA_ID
+            ON tam.media_id = tmm.media_id
 
         WHERE tam.place_id = #{param.placeId}
-          AND tai.speech = #{param.langu}
+          AND tai.speech = #{param.speech}
           AND tam.use_at = 'Y';
     </select>
 
-    <select id="findAllCelebrities" parameterType="hashmap" resultType="celebrityDTO">
+    <select id="findAllCelebritiesByPlace" parameterType="hashmap" resultType="celebrity">
         SELECT
             tcm.celebrity_id celebrityId,
             tcm.celebrity_name celebrityName,
@@ -139,11 +139,10 @@
     </select>
 
 
-    <select id="findAllPlaceByMedia" parameterType="hashmap" resultType="rawPlaceRelatedMedia">
+    <select id="findAllPlaceAndPlaceInfoByMedia" parameterType="hashmap" resultType="place">
         SELECT tam.place_id placeId,
                tai.title title,
                tam.image_url imageUrl,
-               GROUP_CONCAT(tcm.celebrity_name) celebrities
         FROM media tmm
             LEFT JOIN place tam
             ON tmm.media_id = tam.media_id

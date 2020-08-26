@@ -1,9 +1,7 @@
 package com.kravel.server.api.mapper;
 
-import com.kravel.server.api.dto.review.ImgDTO;
-import com.kravel.server.api.model.Review;
-import com.kravel.server.api.dto.review.ReviewDTO;
-import com.kravel.server.api.dto.review.ArticleReviewListDTO;
+import com.kravel.server.api.dto.review.ReviewDetailDTO;
+import com.kravel.server.api.dto.review.ReviewOverviewDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -15,11 +13,9 @@ import java.util.Map;
 @Mapper
 public interface ReviewMapper {
 
-    public List<ArticleReviewListDTO> findAllReviews(@Param("param") Map<String, Object> param);
+    public List<ReviewOverviewDTO> findAllReviews(@Param("param") Map<String, Object> param);
 
-    public ReviewDTO findReviewLikeCountById(@Param("param") Map<String, Object> param);
-
-    public Review findArticleReviewById(@Param("param") Map<String, Object> param);
+    public ReviewDetailDTO findReviewDetailById(@Param("param") Map<String, Object> param);
 
     public int saveReview(@Param("param") Map<String, Object> param);
 
