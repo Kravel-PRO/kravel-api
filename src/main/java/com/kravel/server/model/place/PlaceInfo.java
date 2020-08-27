@@ -19,8 +19,8 @@ public class PlaceInfo extends BaseEntity {
     @JoinColumn(name = "place_id")
     private Place place;
 
-    private String langu;
-    private String subject;
+    private String speech;
+    private String title;
 
     @Lob
     private String contents;

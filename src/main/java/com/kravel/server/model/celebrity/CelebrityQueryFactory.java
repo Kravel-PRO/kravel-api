@@ -11,8 +11,14 @@ import org.springframework.stereotype.Repository;
 public class CelebrityQueryFactory {
 
     private final JPAQueryFactory queryFactory;
-//
-//    public Page<Celebrity> finaAllCelebrity(String search, Pageable pageable) {
-//        return queryFactory.selectFrom()
-//    }
+
+    QCelebrity celebrity = QCelebrity.celebrity;
+
+    public Page<Celebrity> finaAllCelebrity(String search, Pageable pageable) {
+        return (Page<Celebrity>) queryFactory.selectFrom(celebrity)
+                .where(celebrity.name.eq("%" + search + "5"))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+    }
 }

@@ -1,11 +1,10 @@
 package com.kravel.server.controller;
 
+import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.dto.celebrity.CelebrityDetailDTO;
-import com.kravel.server.dto.review.ReviewOverviewDTO;
-import com.kravel.server.service.CelebrityService;
-import com.kravel.server.service.ReviewService;
 import com.kravel.server.common.util.message.ResponseMessage;
+import com.kravel.server.service.CelebrityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -23,7 +22,7 @@ import java.util.Map;
 public class CelebrityController {
 
     private final CelebrityService celebrityService;
-    private final ReviewService reviewService;
+    private final ClaimExtractor claimExtractor;
 
     @GetMapping("/api/celebrities")
     @ResponseStatus(HttpStatus.OK)
@@ -32,29 +31,19 @@ public class CelebrityController {
                                               @PageableDefault Pageable pageable,
                                               Authentication authentication) throws Exception {
 
-        List<CelebrityDTO> celebrityList = celebrityService.findAllCelebrities(search, pageable);
+        List<CelebrityDTO> celebrities = celebrityService.findAllCelebrities(search, pageable);
 
-        return new ResponseMessage(HttpStatus.OK, celebrityList);
+        return new ResponseMessage(HttpStatus.OK, celebrities);
     }
     // 여기
     @GetMapping("/api/celebrities/{celebrityId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findCelebrityById(@PathVariable("celebrityId") long celebrityId,
-                                             @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                             @RequestParam(value = "size", defaultValue = "10") int size,
-                                             @RequestParam(value = "sort", defaultValue = "createdDate") String sort,
-                                             @RequestParam(value = "order", defaultValue = "DESC") String order,
                                              Authentication authentication) throws Exception {
 
-        Map<String, Object> param = new HashMap<>();
-        param.put("celebrityId", celebrityId);
-        param.put("offset", offset);
-        param.put("size", size);
-        param.put("sort", sort);
-        param.put("order", order);
-
-        CelebrityDetailDTO result = celebrityService.findCelebrityById(param);
+        String speech = claimExtractor.getSpeech(authentication);
+        CelebrityDetailDTO result = celebrityService.findCelebrityById(celebrityId, speech);
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
@@ -75,8 +64,8 @@ public class CelebrityController {
         param.put("order", order);
         param.put("celebrityId", celebrityId);
 
-        List<ReviewOverviewDTO> result = reviewService.findAllReviewByCelebrity(param);
-        return new ResponseMessage(HttpStatus.OK, result);
+//        List<ReviewOverviewDTO> result = reviewService.findAllReviewByCelebrity(param);
+        return new ResponseMessage(HttpStatus.OK, null);
     }
 
 }

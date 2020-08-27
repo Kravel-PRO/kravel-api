@@ -31,12 +31,12 @@ public class QPlaceInfo extends EntityPathBase<PlaceInfo> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath langu = createString("langu");
-
     //inherited
     public final StringPath lastModifiedBy = _super.lastModifiedBy;
 
     public final QPlace place;
+
+    public final StringPath speech = createString("speech");
 
     public final StringPath subject = createString("subject");
 

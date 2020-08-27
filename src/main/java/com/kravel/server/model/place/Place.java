@@ -23,6 +23,7 @@ public class Place extends BaseEntity {
     @Column(name = "place_id")
     private long id;
 
+    private String title;
     private String latitude;
     private String longitude;
     private double grade;
@@ -56,6 +57,6 @@ public class Place extends BaseEntity {
     }
 
     public Optional<PlaceInfo> findPlaceInfoByLangu(String langu) {
-        return placeInfos.stream().filter(info -> info.getLangu().equals(langu)).findFirst();
+        return placeInfos.stream().filter(info -> info.getSpeech().equals(langu)).findFirst();
     }
 }
