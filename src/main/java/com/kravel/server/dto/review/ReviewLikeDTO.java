@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReviewLikeDTO {
-    private boolean likeState;
+    private boolean like;
 }

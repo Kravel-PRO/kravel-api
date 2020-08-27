@@ -1,5 +1,6 @@
 package com.kravel.server.dto.review;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,6 +15,14 @@ public class ReviewDetailDTO {
     private long reviewId;
     private String imageUrl;
 
-    private int likeCount;
-    private boolean likeState;
+    private long likeCount;
+    private boolean like;
+
+    @Builder
+    public ReviewDetailDTO(long reviewId, String imageUrl, long likeCount, boolean like) {
+        this.reviewId = reviewId;
+        this.imageUrl = imageUrl;
+        this.likeCount = likeCount;
+        this.like = like;
+    }
 }

@@ -6,12 +6,14 @@ import com.kravel.server.model.mapping.ReviewLike;
 import com.kravel.server.model.media.Media;
 import com.kravel.server.model.member.Member;
 import com.kravel.server.model.place.Place;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class Review extends BaseTimeEntity {
 
