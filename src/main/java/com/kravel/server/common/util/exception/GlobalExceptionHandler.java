@@ -20,4 +20,11 @@ public class GlobalExceptionHandler {
         log.error(req.getRequestURL().toString());
         return new ResponseMessage(new InvalidRequestException(e.getMessage(), e), req.getRequestURL().toString());
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public ResponseMessage notFoundExceptionHandler(HttpServletRequest req, Exception e) {
+        log.error(req.getRequestURL().toString());
+        return new ResponseMessage(new InvalidRequestException(e.getMessage(), e), req.getRequestURL().toString());
+    }
 }

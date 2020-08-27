@@ -12,8 +12,8 @@ public class ReviewLikeQueryRepository {
 
     QReviewLike reviewLike = QReviewLike.reviewLike;
 
-    public boolean checkReviewLikeExist(long reviewId, long memberId) {
-        return queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId).and(reviewLike.member.id.eq(memberId))).fetchCount() != 0;
+    public ReviewLike checkReviewLikeExist(long reviewId, long memberId) {
+        return queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId).and(reviewLike.member.id.eq(memberId))).fetchOne();
     }
 
     public long findReviewLikeCountById(long reviewId) {

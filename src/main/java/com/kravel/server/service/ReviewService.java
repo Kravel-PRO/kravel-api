@@ -2,14 +2,14 @@ package com.kravel.server.service;
 
 import com.kravel.server.dto.review.ReviewDTO;
 import com.kravel.server.dto.review.ReviewDetailDTO;
+import com.kravel.server.dto.review.ReviewLikeDTO;
 import com.kravel.server.dto.review.ReviewOverviewDTO;
-import com.kravel.server.mapper.CelebrityMapper;
-import com.kravel.server.mapper.MediaMapper;
-import com.kravel.server.mapper.ReviewMapper;
 import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
+import com.kravel.server.model.mapping.ReviewLike;
 import com.kravel.server.model.mapping.ReviewLikeQueryRepository;
+import com.kravel.server.model.mapping.ReviewLikeRepository;
 import com.kravel.server.model.media.Media;
 import com.kravel.server.model.member.Member;
 import com.kravel.server.model.member.MemberRepository;
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,9 +32,6 @@ import java.util.stream.Collectors;
 public class ReviewService {
 
     private final S3Uploader s3Uploader;
-    private final ReviewMapper reviewMapper;
-    private final MediaMapper mediaMapper;
-    private final CelebrityMapper celebrityMapper;
 
     private final ReviewRepository reviewRepository;
     private final ReviewQueryRepository reviewQueryRepository;
@@ -43,6 +39,7 @@ public class ReviewService {
     private final ReviewLikeQueryRepository reviewLikeQueryRepository;
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
+    private final ReviewLikeRepository reviewLikeRepository;
 
     public ReviewOverviewDTO findAllReview(long placeId, Pageable pageable) throws Exception {
 
@@ -58,7 +55,6 @@ public class ReviewService {
                 .totalCount(totalCount)
                 .build();
 
-
         return reviewOverviewDTO;
     }
 
@@ -70,13 +66,13 @@ public class ReviewService {
         }
 
         long likeCount = reviewLikeQueryRepository.findReviewLikeCountById(reviewId);
-        boolean like = reviewLikeQueryRepository.checkReviewLikeExist(reviewId, memberId);
+        ReviewLike reviewLike = reviewLikeQueryRepository.checkReviewLikeExist(reviewId, memberId);
 
         ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.builder()
                 .reviewId(optionalReview.get().getId())
                 .imageUrl(optionalReview.get().getImageUrl())
                 .likeCount(likeCount)
-                .like(like)
+                .like(reviewLike.getId() > 0)
                 .build();
 
         return reviewDetailDTO;
@@ -115,21 +111,33 @@ public class ReviewService {
         if (media.getId() > 0) {
             review.changeMedia(media);
         }
-        
+
         return reviewRepository.save(review).getId();
     }
 
-    public boolean handleReviewLike(Map<String, Object> param) throws Exception {
-        int savedLike = reviewMapper.checkExistReviewLike(param);
+    public long handleReviewLike(long placeId, long reviewId, long memberId, ReviewLikeDTO reviewLikeDTO) throws Exception {
+         ReviewLike savedLike = reviewLikeQueryRepository.checkReviewLikeExist(reviewId, memberId);
 
-        if ((boolean) param.get("likeState") && savedLike == 0) {
-            return reviewMapper.saveReviewLike(param) != 0;
+        if (savedLike.getId() == 0 && reviewLikeDTO.isLike()) {
+            Optional<Member> optionalMember = memberRepository.findById(memberId);
+            Optional<Review> optionalReview = reviewRepository.findById(reviewId);
 
-        } else if (savedLike >= 1) {
-            return reviewMapper.removeReviewLike(param) != 0;
+            if (optionalMember.isEmpty()) throw new NotFoundException("🔥 error: is not exist member");
+            if (optionalReview.isEmpty()) throw new NotFoundException("🔥 error: is not exist review");
+
+            ReviewLike reviewLike = ReviewLike.builder()
+                    .member(optionalMember.get())
+                    .review(optionalReview.get())
+                    .build();
+
+            return reviewLikeRepository.save(reviewLike).getId();
+
+        } else if (savedLike.getId() != 0 && !reviewLikeDTO.isLike()) {
+            reviewLikeRepository.delete(savedLike);
+            return -1;
 
         } else  {
-            throw new InvalidRequestException("It is not valid likeState");
+            throw new InvalidRequestException("🔥 error: it is not valid like state");
         }
     }
 

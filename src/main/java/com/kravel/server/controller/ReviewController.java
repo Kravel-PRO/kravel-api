@@ -73,14 +73,10 @@ public class ReviewController {
 
         Map<String, Object> param = new HashMap<String, Object>();
 
-        param.put("placeId", placeId);
-        param.put("reviewId", reviewId);
-        param.put("likeState", reviewLikeDTO.isLikeState());
-        param.put("memberId", claimExtractor.getMemberId(authentication));
+        long memberId = claimExtractor.getMemberId(authentication);
+        long reviewLikeId = reviewService.handleReviewLike(placeId, reviewId, memberId, reviewLikeDTO);
 
-        boolean result = reviewService.handleReviewLike(param);
-
-        return new ResponseMessage(HttpStatus.OK, result);
+        return new ResponseMessage(HttpStatus.OK, reviewLikeId);
 
     }
 
