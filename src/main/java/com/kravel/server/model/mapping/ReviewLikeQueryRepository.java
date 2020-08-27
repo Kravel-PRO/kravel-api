@@ -16,7 +16,11 @@ public class ReviewLikeQueryRepository {
         return queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId).and(reviewLike.member.id.eq(memberId))).fetchCount() != 0;
     }
 
-    public long findReviewLikeCount(long reviewId) {
+    public long findReviewLikeCountById(long reviewId) {
         return queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId)).fetchCount();
+    }
+
+    public long findReviewLikeCountByCelebrity(long celebrityId) {
+        return queryFactory.selectFrom(reviewLike).where(reviewLike.review.celebrity.id.eq(celebrityId)).fetchCount();
     }
 }

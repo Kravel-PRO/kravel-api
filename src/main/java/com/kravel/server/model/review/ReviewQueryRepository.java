@@ -29,4 +29,10 @@ public class ReviewQueryRepository {
                 .where(review.place.id.eq(placeId))
                 .fetchCount();
     }
+
+    public List<Review> findAllReviewByCelebrity(long celebrityId) throws Exception {
+        return queryFactory.selectFrom(review)
+                .where(review.celebrity.id.eq(celebrityId))
+                .fetch();
+    }
 }

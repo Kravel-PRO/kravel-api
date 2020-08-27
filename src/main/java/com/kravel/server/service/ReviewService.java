@@ -10,6 +10,11 @@ import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.model.mapping.ReviewLikeQueryRepository;
+import com.kravel.server.model.media.Media;
+import com.kravel.server.model.member.Member;
+import com.kravel.server.model.member.MemberRepository;
+import com.kravel.server.model.place.Place;
+import com.kravel.server.model.place.PlaceRepository;
 import com.kravel.server.model.review.Review;
 import com.kravel.server.model.review.ReviewQueryRepository;
 import com.kravel.server.model.review.ReviewRepository;
@@ -36,6 +41,8 @@ public class ReviewService {
     private final ReviewQueryRepository reviewQueryRepository;
 
     private final ReviewLikeQueryRepository reviewLikeQueryRepository;
+    private final MemberRepository memberRepository;
+    private final PlaceRepository placeRepository;
 
     public ReviewOverviewDTO findAllReview(long placeId, Pageable pageable) throws Exception {
 
@@ -62,7 +69,7 @@ public class ReviewService {
             throw new NotFoundException("🔥 error: is not exist review");
         }
 
-        long likeCount = reviewLikeQueryRepository.findReviewLikeCount(reviewId);
+        long likeCount = reviewLikeQueryRepository.findReviewLikeCountById(reviewId);
         boolean like = reviewLikeQueryRepository.checkReviewLikeExist(reviewId, memberId);
 
         ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.builder()
@@ -74,43 +81,42 @@ public class ReviewService {
 
         return reviewDetailDTO;
     }
-//=============================
-    public List<ReviewOverviewDTO> findAllReviewByCelebrity(Map<String, Object> param) throws Exception {
+    public ReviewOverviewDTO findAllReviewByCelebrity(long celebrityId) throws Exception {
 
-        List<ReviewOverviewDTO> reviewOverviewDTOs = reviewMapper.findAllReviews(param);
-        if (reviewOverviewDTOs.isEmpty()) {
-            throw new NotFoundException("🔥 error: is not exist reviews");
+        List<ReviewDTO> reviewDTOs = reviewQueryRepository.findAllReviewByCelebrity(celebrityId).stream().map(ReviewDTO::fromEntity).collect(Collectors.toList());
+        long totalCount = reviewLikeQueryRepository.findReviewLikeCountByCelebrity(celebrityId);
+        if (reviewDTOs.size() == 0 || totalCount == 0) {
+            throw new NotFoundException("🔥 error: is not exist review");
         }
 
-        return reviewOverviewDTOs;
+        ReviewOverviewDTO reviewOverviewDTO = ReviewOverviewDTO.builder()
+                .reviews(reviewDTOs)
+                .totalCount(totalCount)
+                .build();
+
+        return reviewOverviewDTO;
     }
 
-    public List<String> saveReview(MultipartFile file, long placeId, long memberId, long mediaId) throws Exception {
-        // TODO place랑 관련된 media id 찾아서 review에 넣어주기
+    public long saveReview(MultipartFile file, long placeId, long memberId) throws Exception {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Optional<Place> optionalPlace = placeRepository.findById(placeId);
 
+        if (optionalMember.isEmpty() || optionalPlace.isEmpty()) {
+            throw new NotFoundException("🔥 error: not found member or place");
+        }
         Review review = Review.builder()
-                .memberId(memberId)
-                .mediaId(mediaId)
+                .member(optionalMember.get())
+                .place(optionalPlace.get())
                 .build();
 
         review.saveImage(s3Uploader, file);
 
-        if (review.getImageUrl().isEmpty()) {
-            throw new InvalidRequestException("🔥 error: image upload is failed");
+        Media media = optionalPlace.get().getMedia();
+        if (media.getId() > 0) {
+            review.changeMedia(media);
         }
-
-
-    }
-
-    public boolean saveReviewToDatabase(Map<String, Object> param) throws Exception {
-
-        Review review = reviewMapper.findArticleReviewById(param);
-
-        param.put("mediaId", review.getMediaId());
-        param.put("celebrityId", review.getCelebrityId());
-
-        reviewMapper.saveReview(param);
-        return reviewMapper.saveReviewImg(param) != 0;
+        
+        return reviewRepository.save(review).getId();
     }
 
     public boolean handleReviewLike(Map<String, Object> param) throws Exception {

@@ -52,38 +52,17 @@ public class ReviewController {
     @PostMapping("/api/places/{placeId}/reviews")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    @Transactional
     public ResponseMessage saveReview(@PathVariable("placeId") int placeId,
-                                      @RequestParam("files") List<MultipartFile> files,
-                                      @RequestParam(value = "represent", defaultValue = "0") int represent,
+                                      @RequestParam("file") MultipartFile file,
                                       Authentication authentication) throws Exception {
 
-        List<String> imgUrls = reviewService.saveReviewToS3(files);
+        long memberId = claimExtractor.getMemberId(authentication);
+        long reviewId = reviewService.saveReview(file, placeId, memberId);
 
-        List<ImgDTO> imgDTOs = new ArrayList<ImgDTO>();
-
-        for (int i=0; i<imgUrls.size(); i++) {
-            ImgDTO imgDTO = new ImgDTO();
-            imgDTO.setImgUrl(imgUrls.get(i));
-
-            if (i == represent) {
-                imgDTO.setRepresent(true);
-            } else {
-                imgDTO.setRepresent(false);
-            }
-            imgDTOs.add(imgDTO);
-        }
-
-        Map<String, Object> param = new HashMap<String, Object>();
-        param.put("placeId", placeId);
-        param.put("memberId", claimExtractor.getMemberId(authentication));
-        param.put("imgDTOs", imgDTOs);
-        param.put("represent", represent);
-
-        boolean result = reviewService.saveReviewToDatabase(param);
-        return new ResponseMessage(HttpStatus.OK, result);
+        return new ResponseMessage(HttpStatus.OK, reviewId);
     }
 
+    // ====================================
     @PostMapping("/api/places/{placeId}/reviews/{reviewId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
