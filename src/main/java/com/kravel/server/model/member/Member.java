@@ -28,7 +28,7 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    private String langu;
+    private String speech;
     private String useAt;
 
     @OneToOne(mappedBy = "member")

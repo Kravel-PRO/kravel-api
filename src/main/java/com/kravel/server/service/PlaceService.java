@@ -1,73 +1,78 @@
-//package com.kravel.server.service;
-//
-//import com.kravel.server.dto.article.PlaceDTO;
-//import com.kravel.server.dto.article.PlaceMapDTO;
-//import com.kravel.server.dto.celebrity.CelebrityDTO;
-//import com.kravel.server.mapper.PlaceMapper;
-//import com.kravel.server.mapper.ReviewMapper;
-//import com.kravel.server.common.util.exception.InvalidRequestException;
-//import com.kravel.server.common.util.exception.NotFoundException;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//import java.util.Map;
-//import java.util.stream.Collectors;
-//
-//@Slf4j
-//@RequiredArgsConstructor
-//@Service
-//public class PlaceService {
-//
-//    private final PlaceMapper placeMapper;
-//    private final ReviewMapper reviewMapper;
-//
-//    public List<PlaceMapDTO> findAllPlaces(Map<String,Object> param) throws Exception {
-//
-//        List<PlaceMapDTO> placeMapDTOs = placeMapper.findAllPlaces(param);
-//        if (placeMapDTOs.isEmpty()) {
-//            throw new NotFoundException("🔥 error: is not exist Article List");
-//        }
-//
-//        for (int i = 0; i< placeMapDTOs.size(); i++) {
-//            param.put("articleId", placeMapDTOs.get(i).getArticleId());
-//            placeMapDTOs.get(i)
-//                    .setCelebrities(placeMapper
-//                            .findAllCelebritiesByPlace(param).stream()
-//                            .map(CelebrityDTO::fromEntity)
-//                            .collect(Collectors.toList()));
-//        }
-//
-//        return placeMapDTOs;
-//    }
-//
-//    public PlaceDTO findPlaceById(Map<String, Object> param) throws Exception {
-//
-//        PlaceDTO placeDTO = placeMapper.findPlaceById(param);
-//        if (placeDTO.getTitle().isEmpty()) {
-//            throw new NotFoundException("Is not exist Article");
-//        }
-//
-//        placeDTO.setCelebrities(placeMapper
-//                .findAllCelebritiesByPlace(param).stream()
-//                .map(CelebrityDTO::fromEntity)
-//                .collect(Collectors.toList()));
-//
-//        return placeDTO;
-//    }
-//
-//    public boolean handleArticleScrap(Map<String, Object> param) throws Exception {
-//        int savedScrap = placeMapper.checkExistArticleScrap(param);
-//
-//        if((boolean) param.get("scrapState") && savedScrap == 0) {
-//            return placeMapper.savePlaceScrap(param) != 0;
-//
-//        } else if (savedScrap >= 1) {
-//            return placeMapper.removePlaceScrap(param) != 0;
-//
-//        } else {
-//            throw new InvalidRequestException("It is not valid scarp state");
-//        }
-//    }
-//}
+package com.kravel.server.service;
+
+import com.kravel.server.dto.article.PlaceDTO;
+import com.kravel.server.dto.article.PlaceMapDTO;
+import com.kravel.server.dto.article.ScrapDTO;
+import com.kravel.server.dto.celebrity.CelebrityDTO;
+import com.kravel.server.mapper.PlaceMapper;
+import com.kravel.server.mapper.ReviewMapper;
+import com.kravel.server.common.util.exception.InvalidRequestException;
+import com.kravel.server.common.util.exception.NotFoundException;
+import com.kravel.server.model.mapping.Scrap;
+import com.kravel.server.model.mapping.ScrapRepository;
+import com.kravel.server.model.member.MemberRepository;
+import com.kravel.server.model.place.Place;
+import com.kravel.server.model.place.PlaceQueryRepository;
+import com.kravel.server.model.place.PlaceRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Slf4j
+@RequiredArgsConstructor
+@Service
+public class PlaceService {
+
+    private final PlaceMapper placeMapper;
+    private final ReviewMapper reviewMapper;
+
+    private final PlaceQueryRepository placeQueryRepository;
+    private final PlaceRepository placeRepository;
+    private final MemberRepository memberRepository;
+    private final ScrapRepository scrapRepository;
+
+
+    public List<PlaceMapDTO> findAllPlacesByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
+
+        List<PlaceMapDTO> placeMapDTOs = placeQueryRepository.findAllPlacesByLocation(latitude, longitude, height, width, speech, pageable).stream()
+                .map(PlaceMapDTO::fromEntity)
+                .collect(Collectors.toList());
+        if (placeMapDTOs.isEmpty()) {
+            throw new NotFoundException("🔥 error: is not exist Article List");
+        }
+
+        return placeMapDTOs;
+    }
+
+    public PlaceDTO findPlaceById(long placeId, String speech) throws Exception {
+
+        Optional<Place> optionalPlace = placeRepository.findById(placeId);
+        if (optionalPlace.isEmpty()) {
+            throw new NotFoundException("🔥 error: is not exist place");
+        }
+
+        return PlaceDTO.fromEntity(optionalPlace.get());
+    }
+
+    public long handlePlaceScrap(long placeId, long memberId, ScrapDTO scrapDTO) throws Exception {
+        Scrap savedScrap = placeQueryRepository.checkScrapState(placeId, memberId);
+
+        if (savedScrap.getId() == 0 && scrapDTO.isScrap()) {
+            Scrap scrap = Scrap.builder()
+                    .member(memberRepository.findById(memberId).get())
+                    .place(placeRepository.findById(placeId).get())
+                    .build();
+            return scrapRepository.save(scrap).getId();
+        } else if (savedScrap.getId() != 0 && scrapDTO.isScrap() == false) {
+            scrapRepository.delete(savedScrap);
+            return -1;
+        } else {
+            throw new InvalidRequestException("🔥 error: is not valid scarp state");
+        }
+    }
+}

@@ -5,7 +5,6 @@ import com.kravel.server.dto.media.MediaDTO;
 import com.kravel.server.dto.media.MediaOverviewDTO;
 import com.kravel.server.dto.review.ReviewOverviewDTO;
 import com.kravel.server.service.MediaService;
-import com.kravel.server.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -50,43 +49,29 @@ public class MediaController {
     @GetMapping("/api/medias/{mediaId}/places")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage findMediaArticlesById(@PathVariable("mediaId") long mediaID,
+    public ResponseMessage findAllPlaceByMedia(@PathVariable("mediaId") long mediaId,
                                                  @RequestParam(value = "offset", defaultValue = "0") int offset,
                                                  @RequestParam(value = "size", defaultValue = "6") int size,
                                                  @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
                                                  @RequestParam(value = "order", defaultValue = "DESC") String order,
                                                  Authentication authentication) throws Exception {
 
-        Map<String, Object> param = new HashMap<>();
-        param.put("mediaId", mediaID);
-        param.put("offset", offset);
-        param.put("size", size);
-        param.put("sort", sort);
-        param.put("order", order);
-        param.put("speech", claimExtractor.getSpeech(authentication));
+        String speech = claimExtractor.getSpeech(authentication);
+        List<PlaceRelatedMediaDTO> result = mediaService.findAllPlaceByMedia(mediaId, speech);
 
-        List<PlaceRelatedMediaDTO> result = mediaService.findAllPlaceByMedia(param);
         return new ResponseMessage(HttpStatus.OK, result);
     }
 
-    @GetMapping("/api/medias/{mediaId}/reviews")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage findMediaReviewsById(@PathVariable("mediaId") long mediaId,
-                                                @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                @RequestParam(value = "size", defaultValue = "6") int size,
-                                                @RequestParam(value = "sort", defaultValue = "createdDate") String sort,
-                                                @RequestParam(value = "order", defaultValue = "DESC") String order,
-                                                Authentication authentication) throws Exception {
-
-        Map<String, Object> param = new HashMap<>();
-        param.put("mediaId", mediaId);
-        param.put("offset", offset);
-        param.put("size", size);
-        param.put("sort", sort);
-        param.put("order", order);
-
-        List<ReviewOverviewDTO> reviewOverviewDTOS = reviewService.findAllReviews(param);
-        return new ResponseMessage(HttpStatus.OK, reviewOverviewDTOS);
-    }
+    // TODO: review controller로 옮겨야한다.
+//    @GetMapping("/api/medias/{mediaId}/reviews")
+//    @ResponseStatus(HttpStatus.OK)
+//    @PreAuthorize("hasRole('ROLE_USER')")
+//    public ResponseMessage findAllReviewsByMedia(@PathVariable("mediaId") long mediaId,
+//                                                @PageableDefault Pageable pageable,
+//                                                Authentication authentication) throws Exception {
+//
+//
+//        List<ReviewOverviewDTO> reviewOverviewDTOS = reviewService.findAllReviews(param);
+//        return new ResponseMessage(HttpStatus.OK, reviewOverviewDTOS);
+//    }
 }
