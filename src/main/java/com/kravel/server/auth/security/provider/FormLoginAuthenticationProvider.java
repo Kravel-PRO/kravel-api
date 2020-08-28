@@ -32,11 +32,7 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
         String username = token.getUsername();
         String password = token.getPassword();
 
-        Member member = memberQueryRepository.findMemberByLoginEmail(username);
-        if (member.getLoginEmail().isEmpty()) {
-            throw new BadCredentialsException("isNotExistMember");
-        }
-
+        Member member = memberQueryRepository.findMemberByLoginEmail(username).orElseThrow(() -> new BadCredentialsException("isNotExistMember"));
         if (isCorrectPassword(password, member)) {
             return PostAuthorizationToken.getTokenFromMemberContext(
                     MemberContext.fromMemberModel(member)

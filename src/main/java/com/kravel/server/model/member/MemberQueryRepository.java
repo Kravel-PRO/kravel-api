@@ -5,6 +5,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class MemberQueryRepository {
@@ -13,8 +15,8 @@ public class MemberQueryRepository {
 
     QMember member = QMember.member;
 
-    public Member findMemberByLoginEmail(String loginEmail) throws NotFoundException {
-        return queryFactory.selectFrom(member)
-                .where(member.loginEmail.eq(loginEmail)).fetchOne();
+    public Optional<Member> findMemberByLoginEmail(String loginEmail) throws NotFoundException {
+        return Optional.ofNullable(queryFactory.selectFrom(member)
+                .where(member.loginEmail.eq(loginEmail)).fetchOne());
     }
 }

@@ -1,5 +1,6 @@
 package com.kravel.server.controller;
 
+import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.dto.MemberDTO;
 import com.kravel.server.service.MemberService;
 import com.kravel.server.common.util.exception.InvalidRequestException;
@@ -16,6 +17,19 @@ import javax.servlet.http.HttpServletRequest;
 public class MemberController {
 
     private final MemberService memberService;
+
+    @GetMapping("/auth/state")
+    @ResponseStatus(HttpStatus.OK)
+    public String getState() throws Exception {
+        return "SERVER IS RUNNING";
+    }
+
+    @PostMapping("/auth/sign-up")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseMessage signUpMember(@RequestBody SignUpDTO signUpDTO) throws Exception {
+
+        return new ResponseMessage(HttpStatus.OK, memberService.saveMember(signUpDTO));
+    }
 
     @PutMapping("/api/member/{loginEmail}")
     @ResponseStatus(HttpStatus.CREATED)

@@ -24,13 +24,13 @@ public class JwtDecoder {
     private String secretKey;
 
     public MemberContext decodedJwt(String token) {
-        DecodedJWT decodedJWT = isValideToken(token).orElseThrow(() -> new InvalidJwtException("IS NOT VALID TOKEN"));
+        DecodedJWT decodedJWT = isValideToken(token).orElseThrow(() -> new InvalidJwtException("🔥 error: is not invalid token"));
 
-        String loginEmail = decodedJWT.getClaim("LOGIN_EMAIL").asString();
-        String role = decodedJWT.getClaim("ROLE_TYPE").asString();
-        String speech = decodedJWT.getClaim("SPEECH").asString();
-        String gender = decodedJWT.getClaim("GENDER").asString();
-        long memberId = decodedJWT.getClaim("MEMBER_ID").asLong();
+        String loginEmail = decodedJWT.getClaim("login_email").asString();
+        String role = decodedJWT.getClaim("role_type").asString();
+        String speech = decodedJWT.getClaim("speech").asString();
+        String gender = decodedJWT.getClaim("gender").asString();
+        long memberId = decodedJWT.getClaim("member_id").asLong();
 
         Member member = Member.builder()
                 .id(memberId)
