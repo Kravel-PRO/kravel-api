@@ -29,7 +29,7 @@ public class Review extends BaseTimeEntity {
     private float grade;
     private String imageUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
 
@@ -37,11 +37,11 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "media_id")
     private Media media;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "celebrity_id")
     private Celebrity celebrity;
 

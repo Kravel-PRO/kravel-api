@@ -13,7 +13,7 @@ public class InquireImage extends BaseTimeEntity {
     @Column(name = "inquire_image_id")
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquire_id")
     private Inquire inquire;
 

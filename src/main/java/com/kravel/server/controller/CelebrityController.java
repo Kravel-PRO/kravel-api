@@ -4,7 +4,9 @@ import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.dto.celebrity.CelebrityDetailDTO;
 import com.kravel.server.common.util.message.ResponseMessage;
+import com.kravel.server.dto.review.ReviewOverviewDTO;
 import com.kravel.server.service.CelebrityService;
+import com.kravel.server.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,6 +24,7 @@ import java.util.Map;
 public class CelebrityController {
 
     private final CelebrityService celebrityService;
+    private final ReviewService reviewService;
     private final ClaimExtractor claimExtractor;
 
     @GetMapping("/api/celebrities")
@@ -54,21 +57,10 @@ public class CelebrityController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findAllReviewByCelebrity(@PathVariable("celebrityId") long celebrityId,
-                                                  @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                  @RequestParam(value = "size", defaultValue = "6") int size,
-                                                  @RequestParam(value = "sort", defaultValue = "createdDate") String sort,
-                                                  @RequestParam(value = "order", defaultValue = "DESC") String order,
-                                                  Authentication authentication) throws Exception {
+                                                    Authentication authentication) throws Exception {
 
-        Map<String, Object> param = new HashMap<>();
-        param.put("offset", offset);
-        param.put("size", size);
-        param.put("sort", sort);
-        param.put("order", order);
-        param.put("celebrityId", celebrityId);
-
-//        List<ReviewOverviewDTO> result = reviewService.findAllReviewByCelebrity(param);
-        return new ResponseMessage(HttpStatus.OK, null);
+        ReviewOverviewDTO reviewOverviewDTO = reviewService.findAllReviewByCelebrity(celebrityId);
+        return new ResponseMessage(HttpStatus.OK, reviewOverviewDTO);
     }
 
 }

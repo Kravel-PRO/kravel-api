@@ -4,6 +4,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class ReviewLikeQueryRepository {
@@ -12,8 +14,8 @@ public class ReviewLikeQueryRepository {
 
     QReviewLike reviewLike = QReviewLike.reviewLike;
 
-    public ReviewLike checkReviewLikeExist(long reviewId, long memberId) {
-        return queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId).and(reviewLike.member.id.eq(memberId))).fetchOne();
+    public Optional<ReviewLike> checkReviewLikeExist(long reviewId, long memberId) {
+        return Optional.ofNullable(queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId).and(reviewLike.member.id.eq(memberId))).fetchOne());
     }
 
     public long findReviewLikeCountById(long reviewId) {

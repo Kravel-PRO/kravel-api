@@ -33,10 +33,7 @@ public class CelebrityService {
 
     public CelebrityDetailDTO findCelebrityById(long celebrityId, String speech) throws Exception {
 
-
         Celebrity celebrity = celebrityRepository.findById(celebrityId).orElseThrow(() -> new NotFoundException("🔥 error: celebrity is not exist"));
-
-
         CelebrityDTO celebrityDTO = CelebrityDTO.fromEntity(celebrity);
 
         List<Place> places = placeQueryRepository.findAllByCelebrity(celebrityId, speech);

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -55,10 +56,10 @@ public class PlaceQueryRepository {
                 .fetch();
     }
 
-    public Scrap checkScrapState(long placeId, long memberId) throws Exception {
-        return queryFactory.selectFrom(scrap)
+    public Optional<Scrap> checkScrapState(long placeId, long memberId) throws Exception {
+        return Optional.ofNullable(queryFactory.selectFrom(scrap)
                 .where(scrap.member.id.eq(memberId)
                         .and(scrap.place.id.eq(placeId)))
-                .fetchOne();
+                .fetchOne());
     }
 }

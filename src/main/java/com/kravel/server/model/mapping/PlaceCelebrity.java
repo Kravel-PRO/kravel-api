@@ -17,11 +17,11 @@ public class PlaceCelebrity extends BaseEntity {
     @Column(name = "place_celebrity_id")
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "celebrity_id")
     private Celebrity celebrity;
 }

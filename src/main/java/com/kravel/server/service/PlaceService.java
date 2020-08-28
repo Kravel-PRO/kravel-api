@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,17 +50,25 @@ public class PlaceService {
     }
 
     public long handlePlaceScrap(long placeId, long memberId, ScrapDTO scrapDTO) throws Exception {
-        Scrap savedScrap = placeQueryRepository.checkScrapState(placeId, memberId);
+        Optional<Scrap> savedScrap = placeQueryRepository.checkScrapState(placeId, memberId);
 
-        if (savedScrap.getId() == 0 && scrapDTO.isScrap()) {
+        if (scrapDTO.isScrap()) {
+            if (savedScrap.isPresent()) {
+                throw new InvalidRequestException("🔥 error: scrap is already exist");
+            }
+
             Scrap scrap = Scrap.builder()
                     .member(memberRepository.findById(memberId).get())
                     .place(placeRepository.findById(placeId).get())
                     .build();
+
             return scrapRepository.save(scrap).getId();
 
-        } else if (savedScrap.getId() != 0 && scrapDTO.isScrap() == false) {
-            scrapRepository.delete(savedScrap);
+        } else if (!scrapDTO.isScrap()) {
+            if (savedScrap.isEmpty()) {
+                throw new InvalidRequestException("🔥 error: scrap is not exist");
+            }
+            scrapRepository.delete(savedScrap.get());
             return -1;
 
         } else {

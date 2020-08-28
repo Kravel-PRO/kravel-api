@@ -24,7 +24,5 @@ public class CelebrityQueryFactory {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-
-//        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 }

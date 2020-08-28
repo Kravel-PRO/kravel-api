@@ -66,7 +66,7 @@ public class ReviewService {
         }
 
         long likeCount = reviewLikeQueryRepository.findReviewLikeCountById(reviewId);
-        ReviewLike reviewLike = reviewLikeQueryRepository.checkReviewLikeExist(reviewId, memberId);
+        ReviewLike reviewLike = reviewLikeQueryRepository.checkReviewLikeExist(reviewId, memberId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
 
         ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.builder()
                 .reviewId(optionalReview.get().getId())
@@ -116,24 +116,29 @@ public class ReviewService {
     }
 
     public long handleReviewLike(long placeId, long reviewId, long memberId, ReviewLikeDTO reviewLikeDTO) throws Exception {
-         ReviewLike savedLike = reviewLikeQueryRepository.checkReviewLikeExist(reviewId, memberId);
+        Optional<ReviewLike> savedLike = reviewLikeQueryRepository.checkReviewLikeExist(reviewId, memberId);
 
-        if (savedLike.getId() == 0 && reviewLikeDTO.isLike()) {
-            Optional<Member> optionalMember = memberRepository.findById(memberId);
-            Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+        if (reviewLikeDTO.isLike()) {
+            if (savedLike.isPresent()) {
+                throw new InvalidRequestException("🔥 error: like is already exist");
+            }
 
-            if (optionalMember.isEmpty()) throw new NotFoundException("🔥 error: is not exist member");
-            if (optionalReview.isEmpty()) throw new NotFoundException("🔥 error: is not exist review");
+            Member member = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
+            Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist review"));
 
             ReviewLike reviewLike = ReviewLike.builder()
-                    .member(optionalMember.get())
-                    .review(optionalReview.get())
+                    .member(member)
+                    .review(review)
                     .build();
 
             return reviewLikeRepository.save(reviewLike).getId();
 
-        } else if (savedLike.getId() != 0 && !reviewLikeDTO.isLike()) {
-            reviewLikeRepository.delete(savedLike);
+        } else if (!reviewLikeDTO.isLike()) {
+            if (savedLike.isEmpty()) {
+                throw new InvalidRequestException("🔥 error: like is not exist");
+            }
+
+            reviewLikeRepository.delete(savedLike.get());
             return -1;
 
         } else  {

@@ -16,11 +16,11 @@ public class CelebrityMedia {
     @Id @GeneratedValue
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "celebrity_id")
     private Celebrity celebrity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "media_id")
     private Media media;
 
