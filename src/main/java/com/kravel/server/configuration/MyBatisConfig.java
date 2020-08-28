@@ -13,12 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan({
-        "com.kravel.server.auth.mapper",
-        "com.kravel.server.api.member.mapper",
-        "com.kravel.server.api.article.mapper",
-        "com.kravel.server.api.admin.mapper"
-})
+@MapperScan({"com.kravel.server.mapper"})
 @EnableTransactionManagement
 public class MyBatisConfig {
 
@@ -28,7 +23,7 @@ public class MyBatisConfig {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
 
-        Resource[] res = new PathMatchingResourcePatternResolver().getResources("classpath:mapper/**/**/*.xml");
+        Resource[] res = new PathMatchingResourcePatternResolver().getResources("classpath:mapper/**/*.xml");
         sessionFactory.setMapperLocations(res);
         sessionFactory.setTypeAliasesPackage("com.kravel.server/**");
 

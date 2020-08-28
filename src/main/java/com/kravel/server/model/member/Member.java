@@ -1,6 +1,6 @@
 package com.kravel.server.model.member;
 
-import com.kravel.server.auth.model.RoleType;
+import com.kravel.server.enums.RoleType;
 import com.kravel.server.model.BaseTimeEntity;
 import com.kravel.server.model.mapping.ReviewLike;
 import com.kravel.server.model.mapping.Scrap;

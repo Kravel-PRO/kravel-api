@@ -1,8 +1,6 @@
 package com.kravel.server.service;
 
 import com.kravel.server.dto.MemberDTO;
-import com.kravel.server.mapper.MemberMapper;
-import com.kravel.server.auth.mapper.AuthMapper;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.model.member.Member;
 import com.kravel.server.model.member.MemberQueryRepository;
@@ -15,8 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberService {
 
-    private final MemberMapper memberMapper;
-    private final AuthMapper authMapper;
     private final PasswordEncoder passwordEncoder;
 
     private final MemberRepository memberRepository;

@@ -44,7 +44,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public final ListPath<com.kravel.server.model.mapping.ReviewLike, com.kravel.server.model.mapping.QReviewLike> reviewLikes = this.<com.kravel.server.model.mapping.ReviewLike, com.kravel.server.model.mapping.QReviewLike>createList("reviewLikes", com.kravel.server.model.mapping.ReviewLike.class, com.kravel.server.model.mapping.QReviewLike.class, PathInits.DIRECT2);
 
-    public final EnumPath<com.kravel.server.auth.model.RoleType> roleType = createEnum("roleType", com.kravel.server.auth.model.RoleType.class);
+    public final EnumPath<com.kravel.server.enums.RoleType> roleType = createEnum("roleType", com.kravel.server.enums.RoleType.class);
 
     public final ListPath<com.kravel.server.model.mapping.Scrap, com.kravel.server.model.mapping.QScrap> scraps = this.<com.kravel.server.model.mapping.Scrap, com.kravel.server.model.mapping.QScrap>createList("scraps", com.kravel.server.model.mapping.Scrap.class, com.kravel.server.model.mapping.QScrap.class, PathInits.DIRECT2);
 

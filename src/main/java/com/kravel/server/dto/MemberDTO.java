@@ -7,7 +7,6 @@ import org.apache.ibatis.type.Alias;
 import java.time.LocalDateTime;
 
 @Getter @Setter
-@Alias("memberDTO")
 public class MemberDTO {
     private int idx;
     private long memberId;

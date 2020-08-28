@@ -6,10 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.ibatis.type.Alias;
 
-@Getter
-@Setter
-@ToString
-@Alias("reviewDetailDTO")
+@Getter @Setter
 public class ReviewDetailDTO {
 
     private long reviewId;

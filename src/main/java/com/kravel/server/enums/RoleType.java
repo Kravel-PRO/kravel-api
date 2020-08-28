@@ -1,4 +1,4 @@
-package com.kravel.server.auth.model;
+package com.kravel.server.enums;
 
 import lombok.Getter;
 
@@ -21,6 +21,6 @@ public enum RoleType {
     }
 
     public static RoleType getRoleByName(String roleName) {
-        return Arrays.stream(RoleType.values()).filter(r -> r.isCorrectName(roleName)).findFirst().orElseThrow(() -> new NoSuchElementException("No have ROLE"));
+        return Arrays.stream(RoleType.values()).filter(r -> r.isCorrectName(roleName)).findFirst().orElseThrow(() -> new NoSuchElementException("🔥 error: no have ROLE"));
     }
 }

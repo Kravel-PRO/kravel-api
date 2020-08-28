@@ -4,8 +4,6 @@ import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.celebrity.PlaceRelatedCelebrityDTO;
 import com.kravel.server.dto.celebrity.CelebrityDetailDTO;
 import com.kravel.server.dto.celebrity.CelebrityDTO;
-import com.kravel.server.mapper.CelebrityMapper;
-import com.kravel.server.mapper.PlaceMapper;
 import com.kravel.server.model.celebrity.Celebrity;
 import com.kravel.server.model.celebrity.CelebrityQueryFactory;
 import com.kravel.server.model.celebrity.CelebrityRepository;
@@ -17,8 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

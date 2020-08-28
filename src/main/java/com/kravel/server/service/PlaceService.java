@@ -3,8 +3,6 @@ package com.kravel.server.service;
 import com.kravel.server.dto.article.PlaceDTO;
 import com.kravel.server.dto.article.PlaceMapDTO;
 import com.kravel.server.dto.article.ScrapDTO;
-import com.kravel.server.mapper.PlaceMapper;
-import com.kravel.server.mapper.ReviewMapper;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.model.mapping.Scrap;
@@ -25,9 +23,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class PlaceService {
-
-    private final PlaceMapper placeMapper;
-    private final ReviewMapper reviewMapper;
 
     private final PlaceQueryRepository placeQueryRepository;
     private final PlaceRepository placeRepository;

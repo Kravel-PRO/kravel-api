@@ -16,7 +16,6 @@ public class FormLoginFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse res, AuthenticationException exception) throws IOException, ServletException {
-        System.out.println("왔다!!!!!!!!!!!!!!!!!!!!!!!!!");
         switch (exception.getMessage()) {
             case "isNotCorrectPassword":
                 res.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -1,6 +1,7 @@
 package com.kravel.server.auth.security.util.jwt;
 
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
+import com.kravel.server.model.member.Member;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,6 @@ public class ClaimExtractor {
         PostAuthorizationToken token = (PostAuthorizationToken) authentication;
         Member member = token.getMemberContext().getMember();
 
-        return member.getMemberId();
+        return member.getId();
     }
 }

@@ -8,7 +8,6 @@ import org.apache.ibatis.type.Alias;
 import java.time.LocalDate;
 
 @Getter @Setter
-@Alias("mediaDTO")
 public class MediaDTO {
     private long mediaId;
     private String name;

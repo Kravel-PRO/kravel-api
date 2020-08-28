@@ -9,7 +9,6 @@ import org.apache.ibatis.type.Alias;
 import java.util.List;
 
 @Getter @Setter
-@Alias("reviewOverviewDTO")
 public class ReviewOverviewDTO {
 
     private List<ReviewDTO> reviews;

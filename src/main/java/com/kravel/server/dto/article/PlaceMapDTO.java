@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter @Setter
-@ToString
-@Alias("articleMapDTO")
 public class PlaceMapDTO {
     private long placeId;
     private String title;

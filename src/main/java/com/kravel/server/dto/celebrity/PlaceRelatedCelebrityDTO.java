@@ -9,10 +9,7 @@ import org.apache.ibatis.type.Alias;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@ToString
-@Alias("celebrityArticleDTO")
+@Getter @Setter
 public class PlaceRelatedCelebrityDTO {
     private long placeId;
     private String title;

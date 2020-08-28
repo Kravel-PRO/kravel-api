@@ -29,35 +29,4 @@
         ORDER BY b.idx DESC
         LIMIT ${param.offset}, ${param.size};
     </select>
-
-    <select id="findAllMembersCount" parameterType="hashmap" resultType="int">
-        SELECT b.*
-        FROM (
-            SELECT COUNT(@rownum:=@rownum+1) count
-            FROM (
-                    (SELECT @rownum:=0) R,
-                    (SELECT tmm.member_id memberId
-                    FROM member tmm
-                    WHERE tmm.loginEmail LIKE CONCAT(#{param.loginEmail}, '%')
-                      AND tmm.gener LIKE CONCAT(#{param.gender}, '%')
-                      AND tmm.role_type LIKE CONCAT(#{param.roleType}, '%')
-                      AND tmm.speech LIKE CONCAT(#{param.speech}, '%')
-                      AND tmm.use_at LIKE CONCAT(#{param.useAt}, '%')
-                    ) a
-                )
-            ) b
-    </select>
-
-    <select id="findMemberById" parameterType="hashmap" resultType="member">
-        SELECT tmm.member_id memberId,
-               tmm.speech speech,
-               tmm.role_type roleType,
-               tmm.gener gender,
-               tmm.created_date createdDate,
-               tmm.modified_date modifiedDate,
-               tmm.nick_name nickName,
-               tmm.use_at useAt
-        FROM member tmm
-        WHERE tmm.member_id = #{param.memberId};
-    </select>
 </mapper>

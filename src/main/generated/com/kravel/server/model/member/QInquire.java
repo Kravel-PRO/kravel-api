@@ -31,7 +31,7 @@ public class QInquire extends EntityPathBase<Inquire> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final EnumPath<com.kravel.server.model.member.enums.InquireCategory> inquireCategory = createEnum("inquireCategory", com.kravel.server.model.member.enums.InquireCategory.class);
+    public final EnumPath<com.kravel.server.enums.InquireCategory> inquireCategory = createEnum("inquireCategory", com.kravel.server.enums.InquireCategory.class);
 
     public final ListPath<InquireImage, QInquireImage> inquireImages = this.<InquireImage, QInquireImage>createList("inquireImages", InquireImage.class, QInquireImage.class, PathInits.DIRECT2);
 

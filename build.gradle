@@ -33,6 +33,7 @@ dependencies {
     compile group: 'com.auth0', name: 'java-jwt', version: '3.3.0'
 
     // dev
+    annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-web'

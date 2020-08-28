@@ -1,6 +1,6 @@
 package com.kravel.server.auth.security.token;
 
-import com.kravel.server.auth.model.RoleType;
+import com.kravel.server.enums.RoleType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

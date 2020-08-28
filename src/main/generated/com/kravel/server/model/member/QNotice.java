@@ -31,7 +31,7 @@ public class QNotice extends EntityPathBase<Notice> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
-    public final EnumPath<com.kravel.server.model.member.enums.NoticeCategory> noticeCategory = createEnum("noticeCategory", com.kravel.server.model.member.enums.NoticeCategory.class);
+    public final EnumPath<com.kravel.server.enums.NoticeCategory> noticeCategory = createEnum("noticeCategory", com.kravel.server.enums.NoticeCategory.class);
 
     public final StringPath subject = createString("subject");
 
