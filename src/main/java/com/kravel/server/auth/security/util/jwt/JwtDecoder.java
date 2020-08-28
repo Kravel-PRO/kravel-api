@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.model.RoleType;
 import com.kravel.server.auth.security.util.exception.InvalidJwtException;
+import com.kravel.server.model.member.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,13 +32,14 @@ public class JwtDecoder {
         String gender = decodedJWT.getClaim("GENDER").asString();
         long memberId = decodedJWT.getClaim("MEMBER_ID").asLong();
 
-        Member member = new Member();
-        member.setLoginEmail(loginEmail);
-        member.setLoginPw("UNUSED_CREDENTIALS");
-        member.setSpeech(speech);
-        member.setGender(gender);
-        member.setRoleType(RoleType.getRoleByName(role));
-        member.setMemberId(memberId);
+        Member member = Member.builder()
+                .id(memberId)
+                .loginEmail(loginEmail)
+                .loginPw("UNUSED_CREDENTIALS")
+                .speech(speech)
+                .gender(gender)
+                .roleType(RoleType.getRoleByName(role))
+                .build();
 
         return MemberContext.fromMemberModel(member);
     }

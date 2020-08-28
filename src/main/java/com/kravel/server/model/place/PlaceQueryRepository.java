@@ -32,6 +32,14 @@ public class PlaceQueryRepository {
                 .fetch();
     }
 
+    public List<Place> findAllByCelebrity(long celebrityId, String speech) {
+        return queryFactory.selectFrom(place)
+                .leftJoin(place.placeInfos, placeInfo).fetchJoin()
+                .innerJoin(place.placeCelebrities, placeCelebrity)
+                .innerJoin(placeCelebrity.celebrity, celebrity)
+                .where(placeInfo.speech.eq(speech).and(celebrity.id.eq(celebrityId))).fetch();
+    }
+
     public List<Place> findAllPlacesByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
 
         return (List<Place>) queryFactory.selectFrom(place)

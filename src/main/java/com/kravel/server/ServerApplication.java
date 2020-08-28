@@ -2,8 +2,10 @@ package com.kravel.server;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
+@EnableJpaAuditing
 public class ServerApplication {
 
     public static final String APPLICATION_LOCATIONS = "spring.config.location="

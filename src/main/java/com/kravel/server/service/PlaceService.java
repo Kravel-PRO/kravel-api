@@ -3,7 +3,6 @@ package com.kravel.server.service;
 import com.kravel.server.dto.article.PlaceDTO;
 import com.kravel.server.dto.article.PlaceMapDTO;
 import com.kravel.server.dto.article.ScrapDTO;
-import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.mapper.PlaceMapper;
 import com.kravel.server.mapper.ReviewMapper;
 import com.kravel.server.common.util.exception.InvalidRequestException;
@@ -20,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -51,12 +49,8 @@ public class PlaceService {
 
     public PlaceDTO findPlaceById(long placeId, String speech) throws Exception {
 
-        Optional<Place> optionalPlace = placeRepository.findById(placeId);
-        if (optionalPlace.isEmpty()) {
-            throw new NotFoundException("🔥 error: is not exist place");
-        }
-
-        return PlaceDTO.fromEntity(optionalPlace.get());
+        Place place = placeRepository.findById(placeId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist place"));
+        return PlaceDTO.fromEntity(place);
     }
 
     public long handlePlaceScrap(long placeId, long memberId, ScrapDTO scrapDTO) throws Exception {
@@ -68,9 +62,11 @@ public class PlaceService {
                     .place(placeRepository.findById(placeId).get())
                     .build();
             return scrapRepository.save(scrap).getId();
+
         } else if (savedScrap.getId() != 0 && scrapDTO.isScrap() == false) {
             scrapRepository.delete(savedScrap);
             return -1;
+
         } else {
             throw new InvalidRequestException("🔥 error: is not valid scarp state");
         }

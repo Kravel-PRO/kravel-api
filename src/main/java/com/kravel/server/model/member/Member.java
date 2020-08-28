@@ -5,6 +5,7 @@ import com.kravel.server.model.BaseTimeEntity;
 import com.kravel.server.model.mapping.ReviewLike;
 import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.review.Review;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,7 +30,7 @@ public class Member extends BaseTimeEntity {
     private RoleType roleType;
 
     private String speech;
-    private String useAt;
+    private String useAt = "Y";
 
     @OneToOne(mappedBy = "member")
     private Review review;
@@ -45,5 +46,15 @@ public class Member extends BaseTimeEntity {
     }
     public void changeNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    @Builder
+    public Member(long id, String loginEmail, String loginPw, String gender, RoleType roleType, String speech) {
+        this.id = id;
+        this.loginEmail = loginEmail;
+        this.loginPw = loginPw;
+        this.gender = gender;
+        this.roleType = roleType;
+        this.speech = speech;
     }
 }

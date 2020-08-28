@@ -5,8 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 
-@Getter
-@Setter
+@Getter @Setter
 @Alias("celebrityDTO")
 public class CelebrityDTO {
     private long celebrityId;

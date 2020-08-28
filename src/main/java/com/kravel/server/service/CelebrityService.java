@@ -38,14 +38,12 @@ public class CelebrityService {
     public CelebrityDetailDTO findCelebrityById(long celebrityId, String speech) throws Exception {
 
 
-        Optional<Celebrity> optionalCelebrity = celebrityRepository.findById(celebrityId);
-        if (optionalCelebrity.isEmpty()) {
-            throw new NotFoundException("🔥 error: celebrity is not exist");
-        }
+        Celebrity celebrity = celebrityRepository.findById(celebrityId).orElseThrow(() -> new NotFoundException("🔥 error: celebrity is not exist"));
 
-        CelebrityDTO celebrityDTO = CelebrityDTO.fromEntity(optionalCelebrity.get());
 
-        List<Place> places = placeQueryRepository.findAllPlaceAndPlaceInfoByCelebrity(celebrityId, speech);
+        CelebrityDTO celebrityDTO = CelebrityDTO.fromEntity(celebrity);
+
+        List<Place> places = placeQueryRepository.findAllByCelebrity(celebrityId, speech);
         List<PlaceRelatedCelebrityDTO> placeRelatedCelebrityDTOs = places.stream().map(PlaceRelatedCelebrityDTO::fromEntity).collect(Collectors.toList());;
 
         CelebrityDetailDTO celebrityDetailDTO = CelebrityDetailDTO.builder()
