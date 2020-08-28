@@ -24,6 +24,8 @@ public class QPlace extends EntityPathBase<Place> {
 
     public final com.kravel.server.model.QBaseEntity _super = new com.kravel.server.model.QBaseEntity(this);
 
+    public final StringPath bus = createString("bus");
+
     //inherited
     public final StringPath createdBy = _super.createdBy;
 
@@ -38,6 +40,8 @@ public class QPlace extends EntityPathBase<Place> {
 
     public final StringPath latitude = createString("latitude");
 
+    public final StringPath location = createString("location");
+
     public final StringPath longitude = createString("longitude");
 
     public final com.kravel.server.model.media.QMedia media;
@@ -49,6 +53,10 @@ public class QPlace extends EntityPathBase<Place> {
     public final ListPath<com.kravel.server.model.review.Review, com.kravel.server.model.review.QReview> reviews = this.<com.kravel.server.model.review.Review, com.kravel.server.model.review.QReview>createList("reviews", com.kravel.server.model.review.Review.class, com.kravel.server.model.review.QReview.class, PathInits.DIRECT2);
 
     public final ListPath<com.kravel.server.model.mapping.Scrap, com.kravel.server.model.mapping.QScrap> scraps = this.<com.kravel.server.model.mapping.Scrap, com.kravel.server.model.mapping.QScrap>createList("scraps", com.kravel.server.model.mapping.Scrap.class, com.kravel.server.model.mapping.QScrap.class, PathInits.DIRECT2);
+
+    public final StringPath subway = createString("subway");
+
+    public final StringPath title = createString("title");
 
     public final StringPath useAt = createString("useAt");
 

@@ -38,7 +38,7 @@ public class QPlaceInfo extends EntityPathBase<PlaceInfo> {
 
     public final StringPath speech = createString("speech");
 
-    public final StringPath subject = createString("subject");
+    public final StringPath title = createString("title");
 
     public QPlaceInfo(String variable) {
         this(PlaceInfo.class, forVariable(variable), INITS);

@@ -39,4 +39,11 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "member")
     private List<Scrap> scraps = new ArrayList<>();
+
+    public void changeLoginPw(String loginPw) {
+        this.loginPw = loginPw;
+    }
+    public void changeNickName(String nickName) {
+        this.nickName = nickName;
+    }
 }

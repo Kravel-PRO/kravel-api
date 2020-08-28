@@ -31,8 +31,6 @@ public class QMember extends EntityPathBase<Member> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath langu = createString("langu");
-
     public final StringPath loginEmail = createString("loginEmail");
 
     public final StringPath loginPw = createString("loginPw");
@@ -49,6 +47,8 @@ public class QMember extends EntityPathBase<Member> {
     public final EnumPath<com.kravel.server.auth.model.RoleType> roleType = createEnum("roleType", com.kravel.server.auth.model.RoleType.class);
 
     public final ListPath<com.kravel.server.model.mapping.Scrap, com.kravel.server.model.mapping.QScrap> scraps = this.<com.kravel.server.model.mapping.Scrap, com.kravel.server.model.mapping.QScrap>createList("scraps", com.kravel.server.model.mapping.Scrap.class, com.kravel.server.model.mapping.QScrap.class, PathInits.DIRECT2);
+
+    public final StringPath speech = createString("speech");
 
     public final StringPath useAt = createString("useAt");
 
