@@ -10,23 +10,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity @Getter
 @NoArgsConstructor
 public class RememberMe {
 
-    @Id @GeneratedValue
-    @Column(name = "remember_me_id")
-    private long id;
-
+    @Id
     private String series;
     private String loginEmail;
     private String token;
-    private LocalDateTime lastUsed;
+    private Date lastUsed;
+
+    public void updateToken(String token, Date lastUsed) {
+        this.token = token;
+        this.lastUsed = lastUsed;
+    }
 
     @Builder
-    public RememberMe(long id, String series, String loginEmail, String token, LocalDateTime lastUsed) {
-        this.id = id;
+    public RememberMe(String series, String loginEmail, String token, Date lastUsed) {
         this.series = series;
         this.loginEmail = loginEmail;
         this.token = token;
