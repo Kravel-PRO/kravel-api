@@ -22,7 +22,6 @@ public class JwtDecoder {
         Jws<Claims> decodedJWT = isValideToken(token);
 
         String loginEmail = decodedJWT.getBody().get("login_email", String.class);
-
         String role = decodedJWT.getBody().get("role_type", String.class);
         String speech = decodedJWT.getBody().get("speech", String.class);
         String gender = decodedJWT.getBody().get("gender", String.class);

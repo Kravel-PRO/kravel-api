@@ -12,35 +12,62 @@ import com.kravel.server.model.member.MemberRepository;
 import com.kravel.server.model.place.Place;
 import com.kravel.server.model.place.PlaceQueryRepository;
 import com.kravel.server.model.place.PlaceRepository;
+import com.kravel.server.model.review.ReviewQueryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class PlaceService {
 
     private final PlaceQueryRepository placeQueryRepository;
     private final PlaceRepository placeRepository;
     private final MemberRepository memberRepository;
     private final ScrapRepository scrapRepository;
+    private final ReviewQueryRepository reviewQueryRepository;
 
+    @Transactional(readOnly = true)
+    public Page<PlaceMapDTO> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable, boolean reviewCount) throws Exception {
 
-    public List<PlaceMapDTO> findAllPlacesByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
+        Page<PlaceMapDTO> placeMapDTOs = null;
+        if (latitude != 0 && longitude != 0) {
+            Page<Place> places = placeQueryRepository.findAllByLocation(latitude, longitude, height, width, speech, pageable);
+            placeMapDTOs = (Page<PlaceMapDTO>) places.map(new Function<Place, PlaceMapDTO>() {
+                @Override
+                public PlaceMapDTO apply(Place source) {
+                    return PlaceMapDTO.fromEntity(source);
+                }
+            });
 
-        List<PlaceMapDTO> placeMapDTOs = placeQueryRepository.findAllPlacesByLocation(latitude, longitude, height, width, speech, pageable).stream()
-                .map(PlaceMapDTO::fromEntity)
-                .collect(Collectors.toList());
-        if (placeMapDTOs.isEmpty()) {
-            throw new NotFoundException("🔥 error: is not exist Article List");
+        } else {
+            Page<Place> places = placeQueryRepository.findAll(speech, pageable);
+            placeMapDTOs = (Page<PlaceMapDTO>) places.map(new Function<Place, PlaceMapDTO>() {
+                @Override
+                public PlaceMapDTO apply(Place source) {
+                    return PlaceMapDTO.fromEntity(source);
+                }
+            });
         }
 
+        if (reviewCount) {
+            placeMapDTOs.forEach(dto -> {
+                try {
+                    dto.setReviewCount(reviewQueryRepository.findCountByPlace(dto.getPlaceId()));
+                } catch (Exception exception) {
+                    throw new InvalidRequestException("🔥 error: " + exception.getMessage());
+                }
+            });
+        }
+
+        if (placeMapDTOs.isEmpty()) throw new NotFoundException("🔥 error: is not exist place list");
         return placeMapDTOs;
     }
 

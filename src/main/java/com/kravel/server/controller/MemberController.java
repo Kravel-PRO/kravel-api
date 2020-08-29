@@ -2,8 +2,6 @@ package com.kravel.server.controller;
 
 import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.dto.MemberDTO;
-import com.kravel.server.dto.response.SaveResponseDTO;
-import com.kravel.server.model.member.Member;
 import com.kravel.server.service.MemberService;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.message.ResponseMessage;
@@ -12,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

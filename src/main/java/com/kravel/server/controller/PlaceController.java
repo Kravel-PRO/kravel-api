@@ -8,6 +8,8 @@ import com.kravel.server.dto.article.ScrapDTO;
 import com.kravel.server.dto.update.PlaceUpdateDTO;
 import com.kravel.server.service.PlaceService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -17,8 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 public class PlaceController {
 
     private final PlaceService placeService;
@@ -27,18 +30,20 @@ public class PlaceController {
     @GetMapping("/api/places")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseMessage findAllPlacesByLocation(@RequestParam(value = "latitude", required = true) double latitude,
-                                                   @RequestParam(value = "longitude", required = true) double longitude,
-                                                   @RequestParam(value = "height", defaultValue = "0.25") double height,
-                                                   @RequestParam(value = "width", defaultValue = "0.25") double width,
-                                                   @PageableDefault Pageable pageable,
-                                                   Authentication authentication) throws Exception {
+    public ResponseMessage findAllByLocation(@RequestParam(value = "latitude", defaultValue = "0") double latitude,
+                                             @RequestParam(value = "longitude", defaultValue = "0") double longitude,
+                                             @RequestParam(value = "height", defaultValue = "0.25") double height,
+                                             @RequestParam(value = "width", defaultValue = "0.25") double width,
+                                             @RequestParam(value = "review-count", defaultValue = "false") boolean reviewCount,
+                                             @PageableDefault Pageable pageable,
+                                             Authentication authentication) throws Exception {
 
+        log.info("🎉 GET /api/places");
 
         String speech = claimExtractor.getSpeech(authentication);
 
-        List<PlaceMapDTO> placeMapDTOList = placeService.findAllPlacesByLocation(latitude, longitude, height, width, speech, pageable);
-        return new ResponseMessage(HttpStatus.OK, placeMapDTOList);
+        Page<PlaceMapDTO> placeMapDTOs = placeService.findAllByLocation(latitude, longitude, height, width, speech, pageable, reviewCount);
+        return new ResponseMessage(HttpStatus.OK, placeMapDTOs);
     }
 
     @GetMapping("/api/places/{placeId}")
@@ -46,6 +51,8 @@ public class PlaceController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage findPlaceById(@PathVariable("placeId") long placeId,
                                          Authentication authentication) throws Exception {
+
+        log.info("🎉 GET /api/places/{placeId}");
 
         String speech = claimExtractor.getSpeech(authentication);
 
@@ -60,6 +67,8 @@ public class PlaceController {
                                         @RequestBody ScrapDTO scrapDTO,
                                         Authentication authentication) throws Exception {
 
+        log.info("🎉 GET /api/places/{placeId}/scrap");
+
         long memberId = claimExtractor.getMemberId(authentication);
         long scrapId = placeService.handlePlaceScrap(placeId, memberId, scrapDTO);
 
@@ -70,6 +79,8 @@ public class PlaceController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseMessage savePlaceInfo(@RequestBody PlaceUpdateDTO placeUpdateDTO) throws Exception {
+
+        log.info("🎉 POST /api/places");
 
         long placeId = placeService.savePlace(placeUpdateDTO);
         return new ResponseMessage(HttpStatus.OK, placeId);

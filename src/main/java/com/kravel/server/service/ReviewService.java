@@ -44,7 +44,7 @@ public class ReviewService {
     public ReviewOverviewDTO findAllReview(long placeId, Pageable pageable) throws Exception {
 
         List<Review> reviews = reviewQueryRepository.findAllReview(placeId, pageable);
-        long totalCount = reviewQueryRepository.findAllReviewCount(placeId);
+        long totalCount = reviewQueryRepository.findCountByPlace(placeId);
 
         if (reviews.isEmpty() || totalCount == 0) {
             throw new NotFoundException("🔥 error: is not exist review");

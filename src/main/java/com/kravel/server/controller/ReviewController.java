@@ -7,6 +7,7 @@ import com.kravel.server.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@Slf4j
 public class ReviewController {
 
     private final ReviewService reviewService;
@@ -32,6 +34,8 @@ public class ReviewController {
                                           @PageableDefault Pageable pageable,
                                           Authentication authentication) throws Exception {
 
+        log.info("🎉 GET /api/places/{placeId}/reviews");
+
         ReviewOverviewDTO reviewOverviewDTO = reviewService.findAllReview(placeId, pageable);
         return new ResponseMessage(HttpStatus.OK, reviewOverviewDTO);
     }
@@ -43,6 +47,7 @@ public class ReviewController {
                                                 @PathVariable("reviewId") long reviewId,
                                                 Authentication authentication) throws Exception {
 
+        log.info("🎉 GET /api/places/{placeId}/reviews/{reviewId}");
         long memberId = claimExtractor.getMemberId(authentication);
 
         ReviewDetailDTO reviewDetailDTO = reviewService.findReviewDetailById(reviewId, memberId);
@@ -55,6 +60,8 @@ public class ReviewController {
     public ResponseMessage saveReview(@PathVariable("placeId") int placeId,
                                       @RequestParam("file") MultipartFile file,
                                       Authentication authentication) throws Exception {
+        log.info("🎉 GET /api/places/{placeId}/reviews");
+
 
         long memberId = claimExtractor.getMemberId(authentication);
         long reviewId = reviewService.saveReview(file, placeId, memberId);
@@ -70,6 +77,8 @@ public class ReviewController {
                                             @PathVariable("reviewId") long reviewId,
                                             @RequestBody ReviewLikeDTO reviewLikeDTO,
                                             Authentication authentication) throws Exception{
+
+        log.info("🎉 GET /api/places/{placeId}/reviews/{reviewId}");
 
         Map<String, Object> param = new HashMap<String, Object>();
 

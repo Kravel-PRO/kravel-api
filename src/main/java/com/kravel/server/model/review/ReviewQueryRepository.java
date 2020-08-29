@@ -24,7 +24,7 @@ public class ReviewQueryRepository {
                 .fetch();
     }
 
-    public long findAllReviewCount(long placeId) throws Exception {
+    public long findCountByPlace(long placeId) throws Exception {
         return queryFactory.selectFrom(review)
                 .where(review.place.id.eq(placeId))
                 .fetchCount();

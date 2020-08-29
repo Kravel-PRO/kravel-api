@@ -5,8 +5,13 @@ import com.kravel.server.model.mapping.QPlaceCelebrity;
 import com.kravel.server.model.mapping.QScrap;
 import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.media.QMedia;
+import com.kravel.server.model.review.QReview;
+import com.querydsl.core.QueryResults;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +30,7 @@ public class PlaceQueryRepository {
     QCelebrity celebrity = QCelebrity.celebrity;
     QMedia media = QMedia.media;
     QScrap scrap = QScrap.scrap;
+    QReview review = QReview.review;
 
     public List<Place> findAllByMedia(long mediaId) {
         return queryFactory.selectFrom(place)
@@ -41,9 +47,26 @@ public class PlaceQueryRepository {
                 .where(placeInfo.speech.eq(speech).and(celebrity.id.eq(celebrityId))).fetch();
     }
 
-    public List<Place> findAllPlacesByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
 
-        return (List<Place>) queryFactory.selectFrom(place)
+    public Page<Place> findAll(String speech, Pageable pageable) throws Exception {
+        QueryResults<Place> placeQueryResults = queryFactory.selectFrom(place)
+                .innerJoin(placeInfo)
+                    .on(place.id.eq(placeInfo.id)
+                    .and(placeInfo.speech.eq(speech)))
+                    .fetchJoin()
+
+                .leftJoin(place.reviews, review)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(review.count().desc())
+                .fetchResults();
+
+        return new PageImpl<>(placeQueryResults.getResults(), pageable, placeQueryResults.getTotal());
+    }
+
+    public Page<Place> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
+
+        QueryResults<Place> placeQueryResults = queryFactory.selectFrom(place)
                 .where(place.latitude.between(
                         String.valueOf(latitude - height),
                         String.valueOf(latitude + height))
@@ -51,9 +74,15 @@ public class PlaceQueryRepository {
                         .and(place.latitude.between(
                                 String.valueOf(longitude - width),
                                 String.valueOf(longitude + width))))
-                .innerJoin(place.placeInfos, placeInfo).fetchJoin()
-                .leftJoin(place.media, media).fetchJoin()
-                .fetch();
+                .innerJoin(placeInfo)
+                    .on(placeInfo.id.eq(place.id)
+                            .and(placeInfo.speech.eq(speech)))
+                    .fetchJoin()
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        return new PageImpl<>(placeQueryResults.getResults(), pageable, placeQueryResults.getTotal());
     }
 
     public Optional<Scrap> checkScrapState(long placeId, long memberId) throws Exception {

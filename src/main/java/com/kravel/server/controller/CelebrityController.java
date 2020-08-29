@@ -36,9 +36,6 @@ public class CelebrityController {
 
         List<CelebrityDTO> celebrities = celebrityService.findAllCelebrities(search, pageable);
 
-        for (var c : celebrities) {
-            System.out.println(c.getCelebrityName());
-        }
         return new ResponseMessage(HttpStatus.OK, celebrities);
     }
 

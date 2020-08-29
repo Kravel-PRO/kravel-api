@@ -14,6 +14,9 @@ public class PlaceUpdateDTO {
     private String latitude;
     private String longitude;
     private String imageUrl;
+    private String subImageUrl;
 
-    List<PlaceInfoUpdateDTO> placeInfos;
+    private PhotoFilterDTO photoFilter;
+    private List<PlaceInfoUpdateDTO> placeInfos;
+    private List<TagDTO> tags;
 }
