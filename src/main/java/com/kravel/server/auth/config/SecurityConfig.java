@@ -128,6 +128,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .httpBasic()
             .and()
+                .rememberMe()
+            .and()
                 .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
