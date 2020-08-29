@@ -5,6 +5,7 @@ import com.kravel.server.dto.article.PlaceMapDTO;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.ResponseMessage;
 import com.kravel.server.dto.article.ScrapDTO;
+import com.kravel.server.dto.update.PlaceUpdateDTO;
 import com.kravel.server.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -65,4 +66,13 @@ public class PlaceController {
         return new ResponseMessage(HttpStatus.OK, scrapId);
     }
 
+    @PostMapping("/api/places")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseMessage savePlaceInfo(@RequestBody PlaceUpdateDTO placeUpdateDTO) throws Exception {
+
+        long placeId = placeService.savePlace(placeUpdateDTO);
+        return new ResponseMessage(HttpStatus.OK, placeId);
+
+    }
 }

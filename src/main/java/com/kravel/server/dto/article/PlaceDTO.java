@@ -34,7 +34,7 @@ public class PlaceDTO {
     public static PlaceDTO fromEntity(Place entity) {
         PlaceDTO placeDTO = new PlaceDTO();
         placeDTO.setPlaceId(entity.getId());
-        placeDTO.setTitle(entity.getTitle());
+        placeDTO.setTitle(entity.getPlaceInfos().stream().filter(placeInfo -> placeInfo.getSpeech().equals("KOR")).findFirst().get().getTitle());
         placeDTO.setContents(entity.getPlaceInfos().stream().filter(placeInfo -> placeInfo.getSpeech().equals("KOR")).findFirst().get().getContents());
         placeDTO.setImageUrl(entity.getImageUrl());
         placeDTO.setLocation(entity.getLocation());

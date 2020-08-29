@@ -5,6 +5,7 @@ import com.kravel.server.dto.article.PlaceMapDTO;
 import com.kravel.server.dto.article.ScrapDTO;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
+import com.kravel.server.dto.update.PlaceUpdateDTO;
 import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.mapping.ScrapRepository;
 import com.kravel.server.model.member.MemberRepository;
@@ -74,5 +75,10 @@ public class PlaceService {
         } else {
             throw new InvalidRequestException("🔥 error: is not valid scarp state");
         }
+    }
+
+    public long savePlace(PlaceUpdateDTO placeUpdateDTO) throws Exception {
+        Place place = new Place(placeUpdateDTO);
+        return placeRepository.save(place).getId();
     }
 }

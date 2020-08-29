@@ -18,7 +18,7 @@ public class PlaceRelatedMediaDTO {
     public static PlaceRelatedMediaDTO fromEntity(Place entity) {
         PlaceRelatedMediaDTO placeRelatedMediaDTO = new PlaceRelatedMediaDTO();
         placeRelatedMediaDTO.setPlaceId(entity.getId());
-        placeRelatedMediaDTO.setTitle(entity.getTitle());
+        placeRelatedMediaDTO.setTitle(entity.getPlaceInfos().stream().filter(info -> info.getSpeech().equals("KOR")).findFirst().get().getTitle());
         placeRelatedMediaDTO.setImageUrl(entity.getImageUrl());
         placeRelatedMediaDTO.setImageUrl(entity.getImageUrl());
         placeRelatedMediaDTO.setCelebrities(entity

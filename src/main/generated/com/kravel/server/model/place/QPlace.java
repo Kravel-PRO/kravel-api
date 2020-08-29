@@ -56,8 +56,6 @@ public class QPlace extends EntityPathBase<Place> {
 
     public final StringPath subway = createString("subway");
 
-    public final StringPath title = createString("title");
-
     public final StringPath useAt = createString("useAt");
 
     public final NumberPath<Double> weight = createNumber("weight", Double.class);

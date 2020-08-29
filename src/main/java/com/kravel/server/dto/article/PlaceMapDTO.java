@@ -23,7 +23,7 @@ public class PlaceMapDTO {
     public static PlaceMapDTO fromEntity(Place entity) {
         PlaceMapDTO placeMapDTO = new PlaceMapDTO();
         placeMapDTO.setPlaceId(entity.getId());
-        placeMapDTO.setTitle(entity.getTitle());
+        placeMapDTO.setTitle(entity.getPlaceInfos().stream().filter(placeInfo -> placeInfo.getSpeech().equals("KOR")).findFirst().get().getTitle());
         placeMapDTO.setImageUrl(entity.getImageUrl());
         placeMapDTO.setMediaId(entity.getMedia().getId());
         placeMapDTO.setMediaName(entity.getMedia().getName());

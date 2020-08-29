@@ -2,6 +2,7 @@ package com.kravel.server.controller;
 
 import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.dto.MemberDTO;
+import com.kravel.server.dto.response.SaveResponseDTO;
 import com.kravel.server.model.member.Member;
 import com.kravel.server.service.MemberService;
 import com.kravel.server.common.util.exception.InvalidRequestException;
@@ -31,8 +32,9 @@ public class MemberController {
     @PostMapping("/auth/sign-up")
     @ResponseStatus(HttpStatus.OK)
     public ResponseMessage signUpMember(@RequestBody SignUpDTO signUpDTO) throws Exception {
+        long memberId = memberService.saveMember(signUpDTO);
 
-        return new ResponseMessage(HttpStatus.OK, memberService.saveMember(signUpDTO));
+        return new ResponseMessage(HttpStatus.OK, memberId);
     }
 
     @GetMapping("/auth/members")

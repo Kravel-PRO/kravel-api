@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final HeaderTokenExtractor headerTokenExtractor;
 
-    private final PersistentTokenRepository persistentTokenRepository;
+//    private final PersistentTokenRepository persistentTokenRepository;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
