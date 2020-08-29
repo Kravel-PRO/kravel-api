@@ -12,7 +12,7 @@ public class HeaderTokenExtractor {
     public String extract(String header) {
 
         if (StringUtils.isEmpty(header) | header.length() < HEADER_PREFIX.length()) {
-            throw new InvalidJwtException("IS NOT VALID JWT");
+            throw new InvalidJwtException("🔥 error: is not valid JWT");
         }
 
         return header.substring(HEADER_PREFIX.length(), header.length());
