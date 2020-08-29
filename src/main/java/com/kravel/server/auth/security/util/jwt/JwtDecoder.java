@@ -4,10 +4,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.model.MemberContext;
-import com.kravel.server.auth.model.Role;
 import com.kravel.server.auth.security.util.exception.InvalidJwtException;
+import com.kravel.server.enums.RoleType;
+import com.kravel.server.model.member.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,21 +24,22 @@ public class JwtDecoder {
     private String secretKey;
 
     public MemberContext decodedJwt(String token) {
-        DecodedJWT decodedJWT = isValideToken(token).orElseThrow(() -> new InvalidJwtException("IS NOT VALID TOKEN"));
+        DecodedJWT decodedJWT = isValideToken(token).orElseThrow(() -> new InvalidJwtException("🔥 error: is not invalid token"));
 
-        String loginEmail = decodedJWT.getClaim("LOGIN_EMAIL").asString();
-        String role = decodedJWT.getClaim("ROLE").asString();
-        String langu = decodedJWT.getClaim("LANGU").asString();
-        String gender = decodedJWT.getClaim("GENDER").asString();
-        long memberId = decodedJWT.getClaim("MEMBER_ID").asLong();
+        String loginEmail = decodedJWT.getClaim("login_email").asString();
+        String role = decodedJWT.getClaim("role_type").asString();
+        String speech = decodedJWT.getClaim("speech").asString();
+        String gender = decodedJWT.getClaim("gender").asString();
+        long memberId = decodedJWT.getClaim("member_id").asLong();
 
-        Member member = new Member();
-        member.setLoginEmail(loginEmail);
-        member.setLoginPw("UNUSED_CREDENTIALS");
-        member.setLangu(langu);
-        member.setGender(gender);
-        member.setRole(Role.getRoleByName(role));
-        member.setMemberId(memberId);
+        Member member = Member.builder()
+                .id(memberId)
+                .loginEmail(loginEmail)
+                .loginPw("UNUSED_CREDENTIALS")
+                .speech(speech)
+                .gender(gender)
+                .roleType(RoleType.getRoleByName(role))
+                .build();
 
         return MemberContext.fromMemberModel(member);
     }

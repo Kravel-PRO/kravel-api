@@ -20,13 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class FormLoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Autowired
-    private JwtFactory factory;
+    private final JwtFactory factory;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException, ServletException {

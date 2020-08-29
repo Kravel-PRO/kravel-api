@@ -25,11 +25,11 @@ public class JwtFactory {
         try {
             token = JWT.create()
                     .withIssuer("ooeunz")
-                    .withClaim("LOGIN_EMAIL", context.getMember().getLoginEmail())
-                    .withClaim("ROLE", context.getMember().getRole().getRoleName())
-                    .withClaim("LANGU", context.getMember().getLangu())
-                    .withClaim("GENDER", context.getMember().getGender())
-                    .withClaim("MEMBER_ID", context.getMember().getMemberId())
+                    .withClaim("login_email", context.getMember().getLoginEmail())
+                    .withClaim("role_type", context.getMember().getRoleType().getRoleName())
+                    .withClaim("speech", context.getMember().getSpeech())
+                    .withClaim("gender", context.getMember().getGender())
+                    .withClaim("member_id", context.getMember().getId())
                     .sign(generateAlgorithm());
 
         } catch (Exception e) {

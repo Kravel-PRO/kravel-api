@@ -1,12 +1,9 @@
 package com.kravel.server.auth.security.util.jwt;
 
-import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
+import com.kravel.server.model.member.Member;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class ClaimExtractor {
@@ -18,11 +15,11 @@ public class ClaimExtractor {
         return member.getLoginEmail();
     }
 
-    public String getLangu(Authentication authentication) {
+    public String getSpeech(Authentication authentication) {
         PostAuthorizationToken token = (PostAuthorizationToken) authentication;
         Member member = token.getMemberContext().getMember();
 
-        return member.getLangu();
+        return member.getSpeech();
     }
 
     public String getGender(Authentication authentication) {
@@ -36,6 +33,6 @@ public class ClaimExtractor {
         PostAuthorizationToken token = (PostAuthorizationToken) authentication;
         Member member = token.getMemberContext().getMember();
 
-        return member.getMemberId();
+        return member.getId();
     }
 }

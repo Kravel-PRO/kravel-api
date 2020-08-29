@@ -3,8 +3,7 @@ package com.kravel.server.common.util.message;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Getter @Setter
 public class ErrorMessage {
 
     private static final long serialVersionUID = 1L;

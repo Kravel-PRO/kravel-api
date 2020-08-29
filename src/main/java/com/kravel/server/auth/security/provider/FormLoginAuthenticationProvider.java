@@ -1,10 +1,10 @@
 package com.kravel.server.auth.security.provider;
 
-import com.kravel.server.auth.mapper.AuthMapper;
-import com.kravel.server.auth.model.Member;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.security.token.PreAuthorizationToken;
+import com.kravel.server.model.member.Member;
+import com.kravel.server.model.member.MemberQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -15,13 +15,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.NoSuchElementException;
-
 @Component
 @RequiredArgsConstructor
 public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 
-    private final AuthMapper authMapper;
+    private final MemberQueryRepository memberQueryRepository;
 
     @Lazy
     @Autowired
@@ -34,11 +32,7 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
         String username = token.getUsername();
         String password = token.getPassword();
 
-        Member member = authMapper.findByLoginEmail(username);
-        if (member.getLoginEmail().isEmpty()) {
-            throw new BadCredentialsException("isNotExistMember");
-        }
-
+        Member member = memberQueryRepository.findMemberByLoginEmail(username).orElseThrow(() -> new BadCredentialsException("isNotExistMember"));
         if (isCorrectPassword(password, member)) {
             return PostAuthorizationToken.getTokenFromMemberContext(
                     MemberContext.fromMemberModel(member)
