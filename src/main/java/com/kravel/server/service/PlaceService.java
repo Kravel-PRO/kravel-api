@@ -73,7 +73,7 @@ public class PlaceService {
 
     public PlaceDTO findPlaceById(long placeId, String speech) throws Exception {
 
-        Place place = placeRepository.findById(placeId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist place"));
+        Place place = placeQueryRepository.findById(placeId, speech).orElseThrow(() -> new NotFoundException("🔥 error: is not exist place"));
         return PlaceDTO.fromEntity(place);
     }
 

@@ -28,14 +28,18 @@ public class PlaceDTO {
     private long mediaId;
     private String mediaName;
 
-    private int reviewCnt;
+    private int reviewCount;
     private List<CelebrityDTO> celebrities;
 
     public static PlaceDTO fromEntity(Place entity) {
+        entity.getPlaceInfos().forEach(info -> {
+            System.out.println("🎉 place speech " + info.getSpeech());
+        });
+
         PlaceDTO placeDTO = new PlaceDTO();
         placeDTO.setPlaceId(entity.getId());
-        placeDTO.setTitle(entity.getPlaceInfos().stream().filter(placeInfo -> placeInfo.getSpeech().equals("KOR")).findFirst().get().getTitle());
-        placeDTO.setContents(entity.getPlaceInfos().stream().filter(placeInfo -> placeInfo.getSpeech().equals("KOR")).findFirst().get().getContents());
+        placeDTO.setTitle(entity.getPlaceInfos().get(0).getTitle());
+        placeDTO.setContents(entity.getPlaceInfos().get(0).getContents());
         placeDTO.setImageUrl(entity.getImageUrl());
         placeDTO.setLocation(entity.getLocation());
         placeDTO.setLatitude(entity.getLatitude());
@@ -44,7 +48,7 @@ public class PlaceDTO {
         placeDTO.setWeight(entity.getWeight());
         placeDTO.setMediaId(entity.getMedia().getId());
         placeDTO.setMediaName(entity.getMedia().getName());
-        placeDTO.setReviewCnt(entity.getReviews().size());
+        placeDTO.setReviewCount(entity.getReviews().size());
         placeDTO.setCelebrities(entity.getPlaceCelebrities().stream()
                 .map(placeCelebrity -> CelebrityDTO.fromEntity(placeCelebrity.getCelebrity()))
                 .collect(Collectors.toList()));

@@ -31,6 +31,26 @@ public class PlaceQueryRepository {
     QMedia media = QMedia.media;
     QScrap scrap = QScrap.scrap;
     QReview review = QReview.review;
+    QPhotoFilter photoFilter = QPhotoFilter.photoFilter;
+
+    public Optional<Place> findById(long placeId, String speech) {
+        return Optional.ofNullable(queryFactory.selectFrom(place)
+                // TODO: fetch join을 했는데도 쿼리가 한번 더 날아가서 ENG, KOR 모든 언어 데이터를 가져온다.
+                .innerJoin(placeInfo)
+                    .on(placeInfo.place.id.eq(placeId)
+                    .and(placeInfo.speech.eq(speech)))
+                    .fetchJoin()
+                .leftJoin(place.placeCelebrities, placeCelebrity)
+                    .fetchJoin()
+                .leftJoin(placeCelebrity.celebrity, celebrity)
+                    .fetchJoin()
+                .leftJoin(place.media, media)
+                    .fetchJoin()
+                .leftJoin(place.photoFilter, photoFilter)
+                    .fetchJoin()
+                .where(place.id.eq(placeId))
+                .fetchOne());
+    }
 
     public List<Place> findAllByMedia(long mediaId) {
         return queryFactory.selectFrom(place)
