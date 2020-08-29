@@ -1,5 +1,7 @@
 package com.kravel.server.dto;
 
+import com.kravel.server.model.member.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
@@ -16,7 +18,21 @@ public class MemberDTO {
     private String gender;
     private String roleType;
     private String speech;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private String createdDate;
+    private String modifiedDate;
     private String useAt;
+
+    public static MemberDTO fromEntity(Member entity) {
+        MemberDTO memberDTO =new MemberDTO();
+        memberDTO.setMemberId(entity.getId());
+        memberDTO.setLoginEmail(entity.getLoginEmail());
+        memberDTO.setNickName(entity.getNickName());
+        memberDTO.setGender(entity.getGender());
+        memberDTO.setRoleType(entity.getRoleType().getRoleName());
+        memberDTO.setSpeech(entity.getSpeech());
+        memberDTO.setCreatedDate(entity.getCreatedDate().toString());
+        memberDTO.setModifiedDate(entity.getModifiedDate().toString());
+
+        return memberDTO;
+    }
 }

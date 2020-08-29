@@ -1,6 +1,5 @@
 package com.kravel.server.auth.service;
 
-import com.kravel.server.auth.mapper.AuthMapper;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.model.member.Member;
 import com.kravel.server.model.member.MemberQueryRepository;

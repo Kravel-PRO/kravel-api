@@ -2,10 +2,14 @@ package com.kravel.server.controller;
 
 import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.dto.MemberDTO;
+import com.kravel.server.model.member.Member;
 import com.kravel.server.service.MemberService;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.message.ResponseMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +33,12 @@ public class MemberController {
     public ResponseMessage signUpMember(@RequestBody SignUpDTO signUpDTO) throws Exception {
 
         return new ResponseMessage(HttpStatus.OK, memberService.saveMember(signUpDTO));
+    }
+
+    @GetMapping("/auth/members")
+    public ResponseMessage findAllMember(@PageableDefault Pageable pageable) throws Exception {
+        Page<MemberDTO> memberPage = memberService.findAllMember(pageable);
+        return new ResponseMessage(HttpStatus.OK, memberPage);
     }
 
     @PutMapping("/api/member/{loginEmail}")

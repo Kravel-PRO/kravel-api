@@ -19,11 +19,11 @@ public class FormLoginFailureHandler implements AuthenticationFailureHandler {
         switch (exception.getMessage()) {
             case "isNotCorrectPassword":
                 res.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                res.sendError(401, "is not correct password!");
+                res.sendError(401, "🔥 error: is not correct password!");
                 break;
             case "isNotExistMember":
                 res.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                res.sendError(402, "is exist Member!");
+                res.sendError(401, "🔥 error: is exist Member!");
                 break;
             default:
                 res.sendError(500);

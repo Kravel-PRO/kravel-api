@@ -9,10 +9,13 @@ import com.kravel.server.model.member.Member;
 import com.kravel.server.model.member.MemberQueryRepository;
 import com.kravel.server.model.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -43,6 +46,12 @@ public class MemberService {
         System.out.println(member.getGender());
         System.out.println(member.getLoginEmail());
         return memberRepository.save(member).getId();
+    }
+
+    public Page<MemberDTO>findAllMember(Pageable pageable) throws Exception {
+        Page<Member> memberPage = memberRepository.findAll(pageable);
+        Page<MemberDTO> memberDTOs = (Page<MemberDTO>) memberPage.stream().map(MemberDTO::fromEntity).collect(Collectors.toList());
+        return memberDTOs;
     }
 
     public long modifyMemberLoginPw(String loginEmail, MemberDTO memberDTO) throws Exception {
