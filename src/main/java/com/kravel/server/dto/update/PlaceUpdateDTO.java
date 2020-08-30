@@ -11,8 +11,8 @@ public class PlaceUpdateDTO {
     private String location;
     private String bus;
     private String subway;
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
     private String imageUrl;
     private String subImageUrl;
 

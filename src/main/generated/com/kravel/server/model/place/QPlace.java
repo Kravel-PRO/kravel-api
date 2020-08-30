@@ -38,11 +38,11 @@ public class QPlace extends EntityPathBase<Place> {
     //inherited
     public final StringPath lastModifiedBy = _super.lastModifiedBy;
 
-    public final StringPath latitude = createString("latitude");
+    public final NumberPath<Double> latitude = createNumber("latitude", Double.class);
 
     public final StringPath location = createString("location");
 
-    public final StringPath longitude = createString("longitude");
+    public final NumberPath<Double> longitude = createNumber("longitude", Double.class);
 
     public final com.kravel.server.model.media.QMedia media;
 

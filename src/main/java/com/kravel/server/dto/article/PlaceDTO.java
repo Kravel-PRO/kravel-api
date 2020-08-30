@@ -19,8 +19,8 @@ public class PlaceDTO {
     private String imageUrl;
 
     private String location;
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
 
     private double grade;
     private double weight;

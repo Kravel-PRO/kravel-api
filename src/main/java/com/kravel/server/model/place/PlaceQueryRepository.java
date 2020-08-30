@@ -35,7 +35,6 @@ public class PlaceQueryRepository {
 
     public Optional<Place> findById(long placeId, String speech) {
         return Optional.ofNullable(queryFactory.selectFrom(place)
-                // TODO: fetch join을 했는데도 쿼리가 한번 더 날아가서 ENG, KOR 모든 언어 데이터를 가져온다.
                 .innerJoin(placeInfo)
                     .on(placeInfo.place.id.eq(placeId)
                     .and(placeInfo.speech.eq(speech)))
@@ -64,20 +63,23 @@ public class PlaceQueryRepository {
                 .leftJoin(place.placeInfos, placeInfo).fetchJoin()
                 .innerJoin(place.placeCelebrities, placeCelebrity)
                 .innerJoin(placeCelebrity.celebrity, celebrity)
-                .where(placeInfo.speech.eq(speech).and(celebrity.id.eq(celebrityId))).fetch();
+                .where(
+                        placeInfo.speech.eq(speech),
+                        celebrity.id.eq(celebrityId)
+                ).fetch();
     }
 
 
     public Page<Place> findAll(String speech, Pageable pageable) throws Exception {
         QueryResults<Place> placeQueryResults = queryFactory.selectFrom(place)
-                .innerJoin(placeInfo)
-                    .on(place.id.eq(placeInfo.id)
-                    .and(placeInfo.speech.eq(speech)))
-                    .fetchJoin()
-
+                .innerJoin(place.placeInfos, placeInfo).fetchJoin()
                 .leftJoin(place.reviews, review)
+
+                .where(placeInfo.speech.eq(speech))
+
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+
                 .orderBy(review.count().desc())
                 .fetchResults();
 
@@ -87,17 +89,12 @@ public class PlaceQueryRepository {
     public Page<Place> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
 
         QueryResults<Place> placeQueryResults = queryFactory.selectFrom(place)
-                .where(place.latitude.between(
-                        String.valueOf(latitude - height),
-                        String.valueOf(latitude + height))
+                .where(place.latitude.between(latitude - height, latitude + height)
 
-                        .and(place.latitude.between(
-                                String.valueOf(longitude - width),
-                                String.valueOf(longitude + width))))
-                .innerJoin(placeInfo)
-                    .on(placeInfo.id.eq(place.id)
-                            .and(placeInfo.speech.eq(speech)))
-                    .fetchJoin()
+                        .and(place.latitude.between(longitude - width, longitude + width)))
+                .innerJoin(place.placeInfos, placeInfo).fetchJoin()
+
+                .where(placeInfo.speech.eq(speech))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();

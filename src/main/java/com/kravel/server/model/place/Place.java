@@ -27,8 +27,8 @@ public class Place extends BaseEntity {
     private String location;
     private String bus;
     private String subway;
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
     private double grade = 0;
     private double weight = 0;
     private String imageUrl;
@@ -58,7 +58,7 @@ public class Place extends BaseEntity {
     private List<Tag> tags = new ArrayList<>();
 
     @Builder
-    public Place(String latitude, String longitude, double grade, double weight, String imageUrl, PhotoFilter photoFilter, String subImageUrl) {
+    public Place(double latitude, double longitude, double grade, double weight, String imageUrl, PhotoFilter photoFilter, String subImageUrl) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.grade = grade;

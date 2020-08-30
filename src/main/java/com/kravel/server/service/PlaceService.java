@@ -34,12 +34,37 @@ public class PlaceService {
     private final ScrapRepository scrapRepository;
     private final ReviewQueryRepository reviewQueryRepository;
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public Page<PlaceMapDTO> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable, boolean reviewCount) throws Exception {
 
         Page<PlaceMapDTO> placeMapDTOs = null;
         if (latitude != 0 && longitude != 0) {
             Page<Place> places = placeQueryRepository.findAllByLocation(latitude, longitude, height, width, speech, pageable);
+
+            System.out.println("🎉 place 객체 위치 상태");
+            places.getContent().forEach(content -> {
+                System.out.println("place 상태: " + content.getLocation());
+            });
+
+            placeMapDTOs = (Page<PlaceMapDTO>) places.map(new Function<Place, PlaceMapDTO>() {
+                @Override
+                public PlaceMapDTO apply(Place source) {
+                    return PlaceMapDTO.fromEntity(source);
+                }
+            });
+            System.out.println("🎉 place dto 객체 위치 상태");
+            placeMapDTOs.getContent().forEach(content -> {
+                System.out.println("place 상태: " + content.getLocation());
+            });
+
+        } else {
+            Page<Place> places = placeQueryRepository.findAll(speech, pageable);
+
+            System.out.println("🎉 위치 없을 때 place 객체 위치 상태");
+            places.getContent().forEach(content -> {
+                System.out.println("place 상태: " + content.getLocation());
+            });
+
             placeMapDTOs = (Page<PlaceMapDTO>) places.map(new Function<Place, PlaceMapDTO>() {
                 @Override
                 public PlaceMapDTO apply(Place source) {
@@ -47,13 +72,9 @@ public class PlaceService {
                 }
             });
 
-        } else {
-            Page<Place> places = placeQueryRepository.findAll(speech, pageable);
-            placeMapDTOs = (Page<PlaceMapDTO>) places.map(new Function<Place, PlaceMapDTO>() {
-                @Override
-                public PlaceMapDTO apply(Place source) {
-                    return PlaceMapDTO.fromEntity(source);
-                }
+            System.out.println("🎉 place dto 객체 위치 상태");
+            placeMapDTOs.getContent().forEach(content -> {
+                System.out.println("place 상태: " + content.getLocation());
             });
         }
 
@@ -67,7 +88,7 @@ public class PlaceService {
             });
         }
 
-        if (placeMapDTOs.isEmpty()) throw new NotFoundException("🔥 error: is not exist place list");
+//        if (placeMapDTOs.isEmpty()) throw new NotFoundException("🔥 error: is not exist place list");
         return placeMapDTOs;
     }
 
