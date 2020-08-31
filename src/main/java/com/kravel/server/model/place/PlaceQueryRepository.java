@@ -89,12 +89,12 @@ public class PlaceQueryRepository {
     public Page<Place> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
 
         QueryResults<Place> placeQueryResults = queryFactory.selectFrom(place)
-                .where(place.latitude.between(latitude - height, latitude + height)
-
-                        .and(place.latitude.between(longitude - width, longitude + width)))
                 .innerJoin(place.placeInfos, placeInfo).fetchJoin()
-
-                .where(placeInfo.speech.eq(speech))
+                .where(
+                        place.latitude.between(latitude - height, latitude + height),
+                        place.latitude.between(longitude - width, longitude + width),
+                        placeInfo.speech.eq(speech)
+                )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();

@@ -43,7 +43,7 @@ public class PlaceController {
         String speech = claimExtractor.getSpeech(authentication);
 
         Page<PlaceMapDTO> placeMapDTOs = placeService.findAllByLocation(latitude, longitude, height, width, speech, pageable, reviewCount);
-        return new ResponseMessage(HttpStatus.OK, placeMapDTOs);
+        return new ResponseMessage(placeMapDTOs);
     }
 
     @GetMapping("/api/places/{placeId}")
@@ -57,7 +57,7 @@ public class PlaceController {
         String speech = claimExtractor.getSpeech(authentication);
 
         PlaceDTO placeDTO = placeService.findPlaceById(placeId, speech);
-        return new ResponseMessage(HttpStatus.OK, placeDTO);
+        return new ResponseMessage(placeDTO);
     }
 
     @PostMapping("/api/places/{placeId}/scrap")
@@ -72,7 +72,7 @@ public class PlaceController {
         long memberId = claimExtractor.getMemberId(authentication);
         long scrapId = placeService.handlePlaceScrap(placeId, memberId, scrapDTO);
 
-        return new ResponseMessage(HttpStatus.OK, scrapId);
+        return new ResponseMessage(scrapId);
     }
 
     @PostMapping("/api/places")
@@ -83,7 +83,7 @@ public class PlaceController {
         log.info("🎉 POST /api/places");
 
         long placeId = placeService.savePlace(placeUpdateDTO);
-        return new ResponseMessage(HttpStatus.OK, placeId);
+        return new ResponseMessage(placeId);
 
     }
 }

@@ -140,18 +140,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .headers().frameOptions().disable()
             .and()
-                .httpBasic()
-//            .and()
-//                .rememberMe()
-//                    .key("uniqueAndSecret") // 리멤버미 인증을 위해 발행되는 토큰을 구별하는 키 이름을 지정
-//                    .tokenValiditySeconds(60 * 60 * 24 * 7)	// 기본 토큰 유효시간 설정(초) - 별도로 설정안하면 기본 2주동안 유효
-//                    .rememberMeParameter("auto_login")	// 로그인 페이지에서 html (input 태그) 자동로그인 파라미터 이름(name 값)
-//                    .rememberMeCookieName("remember-me")
-//                    .tokenRepository(persistentTokenRepository)
-//                    .userDetailsService(userDetailsService())
-//                    .rememberMeServices(persistentTokenBasedRememberMeServices())
-                    //.useSecureCookie(true)		//https 요청만 쿠키사용
-            .and()
                 .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }

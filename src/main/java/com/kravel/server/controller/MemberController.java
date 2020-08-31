@@ -31,13 +31,13 @@ public class MemberController {
     public ResponseMessage signUpMember(@RequestBody SignUpDTO signUpDTO) throws Exception {
         long memberId = memberService.saveMember(signUpDTO);
 
-        return new ResponseMessage(HttpStatus.OK, memberId);
+        return new ResponseMessage(memberId);
     }
 
     @GetMapping("/auth/members")
     public ResponseMessage findAllMember(@PageableDefault Pageable pageable) throws Exception {
         Page<MemberDTO> memberPage = memberService.findAllMember(pageable);
-        return new ResponseMessage(HttpStatus.OK, memberPage);
+        return new ResponseMessage(memberPage);
     }
 
     @PutMapping("/api/member/{loginEmail}")
@@ -60,12 +60,12 @@ public class MemberController {
                         req.getRequestURL().toString());
         }
 
-        return new ResponseMessage(HttpStatus.CREATED, memberId);
+        return new ResponseMessage(memberId);
     }
 
     @DeleteMapping("/api/member/{loginEmail}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseMessage removeMember(@PathVariable("loginEmail") String loginEmail, @RequestBody MemberDTO memberDTO) throws Exception {
-        return new ResponseMessage(HttpStatus.ACCEPTED, memberService.removeMember(loginEmail, memberDTO));
+        return new ResponseMessage(memberService.removeMember(loginEmail, memberDTO));
     }
 }

@@ -8,14 +8,12 @@ public class ErrorMessage {
 
     private static final long serialVersionUID = 1L;
 
-    private int code;
     private String errorMessage;
-    private String referedUrl;
+    private String path;
 
-    public ErrorMessage(int code, String errorMessage, String referedUrl) {
+    public ErrorMessage(String errorMessage, String path) {
         super();
-        this.code = code;
         this.errorMessage = errorMessage;
-        this.referedUrl = referedUrl;
+        this.path = path;
     }
 }

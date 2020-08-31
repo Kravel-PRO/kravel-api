@@ -37,7 +37,7 @@ public class ReviewController {
         log.info("🎉 GET /api/places/{placeId}/reviews");
 
         ReviewOverviewDTO reviewOverviewDTO = reviewService.findAllReview(placeId, pageable);
-        return new ResponseMessage(HttpStatus.OK, reviewOverviewDTO);
+        return new ResponseMessage(reviewOverviewDTO);
     }
 
     @GetMapping("/api/places/{placeId}/reviews/{reviewId}")
@@ -51,7 +51,7 @@ public class ReviewController {
         long memberId = claimExtractor.getMemberId(authentication);
 
         ReviewDetailDTO reviewDetailDTO = reviewService.findReviewDetailById(reviewId, memberId);
-        return new ResponseMessage(HttpStatus.OK, reviewDetailDTO);
+        return new ResponseMessage(reviewDetailDTO);
     }
 
     @PostMapping("/api/places/{placeId}/reviews")
@@ -66,10 +66,9 @@ public class ReviewController {
         long memberId = claimExtractor.getMemberId(authentication);
         long reviewId = reviewService.saveReview(file, placeId, memberId);
 
-        return new ResponseMessage(HttpStatus.OK, reviewId);
+        return new ResponseMessage(reviewId);
     }
 
-    // ====================================
     @PostMapping("/api/places/{placeId}/reviews/{reviewId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -85,8 +84,7 @@ public class ReviewController {
         long memberId = claimExtractor.getMemberId(authentication);
         long reviewLikeId = reviewService.handleReviewLike(placeId, reviewId, memberId, reviewLikeDTO);
 
-        return new ResponseMessage(HttpStatus.OK, reviewLikeId);
-
+        return new ResponseMessage(reviewLikeId);
     }
 
 }

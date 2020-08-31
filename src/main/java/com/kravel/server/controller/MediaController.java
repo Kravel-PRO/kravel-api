@@ -33,7 +33,7 @@ public class MediaController {
                                         Authentication authentication) throws Exception {
 
         List<MediaOverviewDTO> mediaListDTO = mediaService.findAllMedia(pageable);
-        return new ResponseMessage(HttpStatus.OK, mediaListDTO);
+        return new ResponseMessage(mediaListDTO);
     }
 
     @GetMapping("/api/medias/{mediaId}")
@@ -43,7 +43,7 @@ public class MediaController {
                                          Authentication authentication) throws Exception {
 
         MediaDTO result = mediaService.findMediaInfoById(mediaId);
-        return new ResponseMessage(HttpStatus.OK, result);
+        return new ResponseMessage(result);
     }
 
     @GetMapping("/api/medias/{mediaId}/places")
@@ -59,7 +59,7 @@ public class MediaController {
         String speech = claimExtractor.getSpeech(authentication);
         List<PlaceRelatedMediaDTO> result = mediaService.findAllPlaceByMedia(mediaId, speech);
 
-        return new ResponseMessage(HttpStatus.OK, result);
+        return new ResponseMessage(result);
     }
 
     // TODO: review controller로 옮겨야한다.

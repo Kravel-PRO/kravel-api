@@ -21,8 +21,7 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 
     private final MemberQueryRepository memberQueryRepository;
 
-    @Lazy
-    @Autowired
+    @Autowired @Lazy
     private PasswordEncoder passwordEncoder;
 
     @Override

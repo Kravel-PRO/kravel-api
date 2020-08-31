@@ -36,7 +36,7 @@ public class CelebrityController {
 
         List<CelebrityDTO> celebrities = celebrityService.findAllCelebrities(search, pageable);
 
-        return new ResponseMessage(HttpStatus.OK, celebrities);
+        return new ResponseMessage(celebrities);
     }
 
     @GetMapping("/api/celebrities/{celebrityId}")
@@ -47,7 +47,7 @@ public class CelebrityController {
 
         String speech = claimExtractor.getSpeech(authentication);
         CelebrityDetailDTO result = celebrityService.findCelebrityById(celebrityId, speech);
-        return new ResponseMessage(HttpStatus.OK, result);
+        return new ResponseMessage(result);
     }
 
     @GetMapping("/api/celebrities/{celebrityId}/reviews")
@@ -57,7 +57,7 @@ public class CelebrityController {
                                                     Authentication authentication) throws Exception {
 
         ReviewOverviewDTO reviewOverviewDTO = reviewService.findAllReviewByCelebrity(celebrityId);
-        return new ResponseMessage(HttpStatus.OK, reviewOverviewDTO);
+        return new ResponseMessage(reviewOverviewDTO);
     }
 
 }
