@@ -29,7 +29,6 @@ public class PlaceController {
     private final ClaimExtractor claimExtractor;
 
     @GetMapping("/api/places")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Message> findAllByLocation(@RequestParam(value = "latitude", defaultValue = "0") double latitude,
                                                      @RequestParam(value = "longitude", defaultValue = "0") double longitude,
                                                      @RequestParam(value = "height", defaultValue = "0.25") double height,
@@ -47,9 +46,7 @@ public class PlaceController {
     }
 
     @GetMapping("/api/places/{placeId}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Message findPlaceById(@PathVariable("placeId") long placeId,
+    public ResponseEntity<Message> findPlaceById(@PathVariable("placeId") long placeId,
                                          Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/{placeId}");
@@ -57,13 +54,11 @@ public class PlaceController {
         String speech = claimExtractor.getSpeech(authentication);
 
         PlaceDTO placeDTO = placeService.findPlaceById(placeId, speech);
-        return new Message(placeDTO);
+        return ResponseEntity.ok().body(new Message(placeDTO));
     }
 
     @PostMapping("/api/places/{placeId}/scrap")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Message handleScrape(@PathVariable("placeId") long placeId,
+    public ResponseEntity<Message> handleScrape(@PathVariable("placeId") long placeId,
                                         @RequestBody ScrapDTO scrapDTO,
                                         Authentication authentication) throws Exception {
 
@@ -72,18 +67,16 @@ public class PlaceController {
         long memberId = claimExtractor.getMemberId(authentication);
         long scrapId = placeService.handlePlaceScrap(placeId, memberId, scrapDTO);
 
-        return new Message(scrapId);
+        return ResponseEntity.ok().body(new Message(scrapId));
     }
 
     @PostMapping("/api/places")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Message savePlaceInfo(@RequestBody PlaceUpdateDTO placeUpdateDTO) throws Exception {
+    public ResponseEntity<Message> savePlaceInfo(@RequestBody PlaceUpdateDTO placeUpdateDTO) throws Exception {
 
         log.info("🎉 POST /api/places");
 
         long placeId = placeService.savePlace(placeUpdateDTO);
-        return new Message(placeId);
+        return ResponseEntity.ok().body(new Message(placeId));
 
     }
 }

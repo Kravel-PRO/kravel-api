@@ -10,6 +10,7 @@ import com.kravel.server.auth.security.handler.JwtAuthenticationFailureHandler;
 import com.kravel.server.auth.security.provider.FormLoginAuthenticationProvider;
 import com.kravel.server.auth.security.provider.JwtAuthenticationProvider;
 import com.kravel.server.auth.security.util.jwt.HeaderTokenExtractor;
+import com.kravel.server.enums.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -133,6 +134,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/api/**").hasRole(RoleType.USER.name())
+                .antMatchers("/admin/**").hasRole(RoleType.ADMIN.name())
+                .anyRequest().authenticated()
             .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

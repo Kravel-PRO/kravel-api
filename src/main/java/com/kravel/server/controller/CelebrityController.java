@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -28,36 +29,29 @@ public class CelebrityController {
     private final ClaimExtractor claimExtractor;
 
     @GetMapping("/api/celebrities")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Message findAllCelebrities(@RequestParam(value = "search", defaultValue = "") String search,
+    public ResponseEntity<Message> findAllCelebrities(@RequestParam(value = "search", defaultValue = "") String search,
                                       @PageableDefault Pageable pageable,
                                       Authentication authentication) throws Exception {
 
         List<CelebrityDTO> celebrities = celebrityService.findAllCelebrities(search, pageable);
-
-        return new Message(celebrities);
+        return ResponseEntity.ok(new Message(celebrities));
     }
 
     @GetMapping("/api/celebrities/{celebrityId}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Message findCelebrityById(@PathVariable("celebrityId") long celebrityId,
-                                             Authentication authentication) throws Exception {
+    public ResponseEntity<Message> findCelebrityById(@PathVariable("celebrityId") long celebrityId,
+                                            Authentication authentication) throws Exception {
 
         String speech = claimExtractor.getSpeech(authentication);
         CelebrityDetailDTO result = celebrityService.findCelebrityById(celebrityId, speech);
-        return new Message(result);
+        return ResponseEntity.ok(new Message(result));
     }
 
     @GetMapping("/api/celebrities/{celebrityId}/reviews")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Message findAllReviewByCelebrity(@PathVariable("celebrityId") long celebrityId,
+    public ResponseEntity<Message> findAllReviewByCelebrity(@PathVariable("celebrityId") long celebrityId,
                                                     Authentication authentication) throws Exception {
 
         ReviewOverviewDTO reviewOverviewDTO = reviewService.findAllReviewByCelebrity(celebrityId);
-        return new Message(reviewOverviewDTO);
+        return ResponseEntity.ok(new Message(reviewOverviewDTO));
     }
 
 }

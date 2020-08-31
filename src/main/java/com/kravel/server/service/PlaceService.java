@@ -34,7 +34,7 @@ public class PlaceService {
     private final ScrapRepository scrapRepository;
     private final ReviewQueryRepository reviewQueryRepository;
 
-//    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public Page<PlaceMapDTO> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable, boolean reviewCount) throws Exception {
 
         Page<PlaceMapDTO> placeMapDTOs = null;

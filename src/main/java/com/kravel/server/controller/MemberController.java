@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,28 +22,25 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/auth/state")
-    @ResponseStatus(HttpStatus.OK)
     public String getState() throws Exception {
         return "SERVER IS RUNNING";
     }
 
     @PostMapping("/auth/sign-up")
-    @ResponseStatus(HttpStatus.OK)
-    public Message signUpMember(@RequestBody SignUpDTO signUpDTO) throws Exception {
+    public ResponseEntity<Message> signUpMember(@RequestBody SignUpDTO signUpDTO) throws Exception {
         long memberId = memberService.saveMember(signUpDTO);
 
-        return new Message(memberId);
+        return ResponseEntity.ok(new Message(memberId));
     }
 
-    @GetMapping("/auth/members")
-    public Message findAllMember(@PageableDefault Pageable pageable) throws Exception {
+    @GetMapping("/admin/members")
+    public ResponseEntity<Message> findAllMember(@PageableDefault Pageable pageable) throws Exception {
         Page<MemberDTO> memberPage = memberService.findAllMember(pageable);
-        return new Message(memberPage);
+        return ResponseEntity.ok(new Message(memberPage));
     }
 
     @PutMapping("/api/member/{loginEmail}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Message modifyMember(HttpServletRequest req,
+    public ResponseEntity<Message> modifyMember(HttpServletRequest req,
                                         @PathVariable("loginEmail") String loginEmail,
                                         @RequestParam("type") String type,
                                         @RequestBody MemberDTO memberDTO) throws Exception {
@@ -55,17 +53,21 @@ public class MemberController {
                 break;
 
             default:
-                return new Message(
-                        new InvalidRequestException("유효하지 않는 값입니다."),
-                        req.getRequestURL().toString());
+                return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .body(new Message(
+                            new InvalidRequestException("유효하지 않는 값입니다."),
+                            req.getRequestURL().toString()
+                        )
+                );
         }
 
-        return new Message(memberId);
+        return ResponseEntity.ok(new Message(memberId));
     }
 
     @DeleteMapping("/api/member/{loginEmail}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Message removeMember(@PathVariable("loginEmail") String loginEmail, @RequestBody MemberDTO memberDTO) throws Exception {
-        return new Message(memberService.removeMember(loginEmail, memberDTO));
+    public ResponseEntity<Message> removeMember(@PathVariable("loginEmail") String loginEmail, @RequestBody MemberDTO memberDTO) throws Exception {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Message(memberService.removeMember(loginEmail, memberDTO)));
     }
 }

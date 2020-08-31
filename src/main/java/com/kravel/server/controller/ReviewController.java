@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -27,22 +28,18 @@ public class ReviewController {
     private final ClaimExtractor claimExtractor;
 
     @GetMapping("/api/places/{placeId}/reviews")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Message findAllReview(@PathVariable("placeId") long placeId,
-                                 @PageableDefault Pageable pageable,
-                                 Authentication authentication) throws Exception {
+    public ResponseEntity<Message> findAllReview(@PathVariable("placeId") long placeId,
+                                                 @PageableDefault Pageable pageable,
+                                                 Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/{placeId}/reviews");
 
         ReviewOverviewDTO reviewOverviewDTO = reviewService.findAllReview(placeId, pageable);
-        return new Message(reviewOverviewDTO);
+        return ResponseEntity.ok().body(new Message(reviewOverviewDTO));
     }
 
     @GetMapping("/api/places/{placeId}/reviews/{reviewId}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Message findReviewDetailById(@PathVariable("placeId") long placeId,
+    public ResponseEntity<Message> findReviewDetailById(@PathVariable("placeId") long placeId,
                                                 @PathVariable("reviewId") long reviewId,
                                                 Authentication authentication) throws Exception {
 
@@ -50,13 +47,11 @@ public class ReviewController {
         long memberId = claimExtractor.getMemberId(authentication);
 
         ReviewDetailDTO reviewDetailDTO = reviewService.findReviewDetailById(reviewId, memberId);
-        return new Message(reviewDetailDTO);
+        return ResponseEntity.ok(new Message(reviewDetailDTO));
     }
 
     @PostMapping("/api/places/{placeId}/reviews")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Message saveReview(@PathVariable("placeId") int placeId,
+    public ResponseEntity<Message> saveReview(@PathVariable("placeId") int placeId,
                                       @RequestParam("file") MultipartFile file,
                                       Authentication authentication) throws Exception {
         log.info("🎉 GET /api/places/{placeId}/reviews");
@@ -65,13 +60,11 @@ public class ReviewController {
         long memberId = claimExtractor.getMemberId(authentication);
         long reviewId = reviewService.saveReview(file, placeId, memberId);
 
-        return new Message(reviewId);
+        return ResponseEntity.ok(new Message(reviewId));
     }
 
     @PostMapping("/api/places/{placeId}/reviews/{reviewId}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Message handleReviewLike(@PathVariable("placeId") long placeId,
+    public ResponseEntity<Message> handleReviewLike(@PathVariable("placeId") long placeId,
                                             @PathVariable("reviewId") long reviewId,
                                             @RequestBody ReviewLikeDTO reviewLikeDTO,
                                             Authentication authentication) throws Exception{
@@ -83,7 +76,7 @@ public class ReviewController {
         long memberId = claimExtractor.getMemberId(authentication);
         long reviewLikeId = reviewService.handleReviewLike(placeId, reviewId, memberId, reviewLikeDTO);
 
-        return new Message(reviewLikeId);
+        return ResponseEntity.ok(new Message(reviewLikeId));
     }
 
 }
