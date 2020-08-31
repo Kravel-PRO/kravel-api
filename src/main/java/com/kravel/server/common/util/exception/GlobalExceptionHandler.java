@@ -1,12 +1,11 @@
 package com.kravel.server.common.util.exception;
 
-import com.kravel.server.common.util.message.ResponseMessage;
+import com.kravel.server.common.util.message.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpServerErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,15 +15,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseMessage inValidExceptionHandler(HttpServletRequest req, Exception e) {
+    public Message inValidExceptionHandler(HttpServletRequest req, Exception e) {
         log.error(req.getRequestURL().toString());
-        return new ResponseMessage(new InvalidRequestException(e.getMessage(), e), req.getRequestURL().toString());
+        return new Message(new InvalidRequestException(e.getMessage(), e), req.getRequestURL().toString());
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    public ResponseMessage notFoundExceptionHandler(HttpServletRequest req, Exception e) {
+    public Message notFoundExceptionHandler(HttpServletRequest req, Exception e) {
         log.error(req.getRequestURL().toString());
-        return new ResponseMessage(new InvalidRequestException(e.getMessage(), e), req.getRequestURL().toString());
+        return new Message(new InvalidRequestException(e.getMessage(), e), req.getRequestURL().toString());
     }
 }

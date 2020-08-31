@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class ResponseMessage {
+public class Message {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,25 +24,25 @@ public class ResponseMessage {
     private Map<String, Object> data = new HashMap<>();
     private ErrorMessage error;
 
-    public ResponseMessage(AbstractBaseException ex, String referedUrl) {
+    public Message(AbstractBaseException ex, String referedUrl) {
         this.data = new HashMap<>();
         this.message = ex.getHttpStatus().getReasonPhrase();
         this.error = new ErrorMessage(ex.getMessage(), referedUrl);
         this.timestamp = convertDateFormat(LocalDateTime.now());
     }
 
-    public ResponseMessage(String message) {
+    public Message(String message) {
         this.message = message;
         this.timestamp = convertDateFormat(LocalDateTime.now());
     }
 
-    public ResponseMessage(Object result, String message) {
+    public Message(Object result, String message) {
         this.data.put(DEFAULT_KEY, result);
         this.message = message;
         this.timestamp = convertDateFormat(LocalDateTime.now());
     }
 
-    public ResponseMessage(Object result) {
+    public Message(Object result) {
         this.data.put(DEFAULT_KEY, result);
         this.message = "Pengsoo is future";
         this.timestamp = convertDateFormat(LocalDateTime.now());

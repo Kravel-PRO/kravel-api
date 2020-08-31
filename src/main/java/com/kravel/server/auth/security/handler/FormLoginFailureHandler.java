@@ -2,7 +2,7 @@ package com.kravel.server.auth.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kravel.server.common.util.exception.InvalidRequestException;
-import com.kravel.server.common.util.message.ResponseMessage;
+import com.kravel.server.common.util.message.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -26,9 +26,7 @@ public class FormLoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse res, AuthenticationException exception) throws IOException, ServletException {
 
-        ResponseMessage responseMessage = new ResponseMessage(
-                new InvalidRequestException("🔥 error: is not correct login information. please check your principal or credentials"), req.getRequestURL().toString()
-        );
+        Message responseMessage = new Message(new InvalidRequestException("🔥 error: is not correct login information. please check your principal or credentials"), req.getRequestURL().toString());
 
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
         res.getWriter().write(objectMapper.writeValueAsString(responseMessage));

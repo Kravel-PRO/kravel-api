@@ -32,10 +32,6 @@ public class PlaceDTO {
     private List<CelebrityDTO> celebrities;
 
     public static PlaceDTO fromEntity(Place entity) {
-        entity.getPlaceInfos().forEach(info -> {
-            System.out.println("🎉 place speech " + info.getSpeech());
-        });
-
         PlaceDTO placeDTO = new PlaceDTO();
         placeDTO.setPlaceId(entity.getId());
         placeDTO.setTitle(entity.getPlaceInfos().get(0).getTitle());

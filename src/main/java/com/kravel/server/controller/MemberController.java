@@ -1,10 +1,10 @@
 package com.kravel.server.controller;
 
 import com.kravel.server.auth.dto.SignUpDTO;
+import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.MemberDTO;
 import com.kravel.server.service.MemberService;
 import com.kravel.server.common.util.exception.InvalidRequestException;
-import com.kravel.server.common.util.message.ResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,21 +28,21 @@ public class MemberController {
 
     @PostMapping("/auth/sign-up")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseMessage signUpMember(@RequestBody SignUpDTO signUpDTO) throws Exception {
+    public Message signUpMember(@RequestBody SignUpDTO signUpDTO) throws Exception {
         long memberId = memberService.saveMember(signUpDTO);
 
-        return new ResponseMessage(memberId);
+        return new Message(memberId);
     }
 
     @GetMapping("/auth/members")
-    public ResponseMessage findAllMember(@PageableDefault Pageable pageable) throws Exception {
+    public Message findAllMember(@PageableDefault Pageable pageable) throws Exception {
         Page<MemberDTO> memberPage = memberService.findAllMember(pageable);
-        return new ResponseMessage(memberPage);
+        return new Message(memberPage);
     }
 
     @PutMapping("/api/member/{loginEmail}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseMessage modifyMember(HttpServletRequest req,
+    public Message modifyMember(HttpServletRequest req,
                                         @PathVariable("loginEmail") String loginEmail,
                                         @RequestParam("type") String type,
                                         @RequestBody MemberDTO memberDTO) throws Exception {
@@ -55,17 +55,17 @@ public class MemberController {
                 break;
 
             default:
-                return new ResponseMessage(
+                return new Message(
                         new InvalidRequestException("유효하지 않는 값입니다."),
                         req.getRequestURL().toString());
         }
 
-        return new ResponseMessage(memberId);
+        return new Message(memberId);
     }
 
     @DeleteMapping("/api/member/{loginEmail}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseMessage removeMember(@PathVariable("loginEmail") String loginEmail, @RequestBody MemberDTO memberDTO) throws Exception {
-        return new ResponseMessage(memberService.removeMember(loginEmail, memberDTO));
+    public Message removeMember(@PathVariable("loginEmail") String loginEmail, @RequestBody MemberDTO memberDTO) throws Exception {
+        return new Message(memberService.removeMember(loginEmail, memberDTO));
     }
 }

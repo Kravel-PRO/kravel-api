@@ -6,7 +6,7 @@ import com.kravel.server.auth.dto.TokenDTO;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
-import com.kravel.server.common.util.message.ResponseMessage;
+import com.kravel.server.common.util.message.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -20,7 +20,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 
 @Component
 @RequiredArgsConstructor
@@ -46,7 +45,7 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
 
     private void processResponse(HttpServletResponse res, String token) throws JsonProcessingException, IOException {
 
-        ResponseMessage responseMessage = new ResponseMessage("login is succeed");
+        Message responseMessage = new Message("login is succeed");
 
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
         res.setStatus(HttpStatus.OK.value());
