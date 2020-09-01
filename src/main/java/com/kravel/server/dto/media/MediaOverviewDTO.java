@@ -12,13 +12,15 @@ public class MediaOverviewDTO {
 
     private long mediaId;
     private String name;
-    private LocalDate year;
+    private String imageUrl;
+    private int year;
 
     public static MediaOverviewDTO fromEntity(Media entity) {
         MediaOverviewDTO mediaOverviewDTO = new MediaOverviewDTO();
         mediaOverviewDTO.setMediaId(entity.getId());
         mediaOverviewDTO.setName(entity.getName());
-        mediaOverviewDTO.setYear(entity.getYear());
+        mediaOverviewDTO.setYear(entity.getYear().getYear());
+        mediaOverviewDTO.setImageUrl(entity.getImageUrl());
 
         return mediaOverviewDTO;
     }

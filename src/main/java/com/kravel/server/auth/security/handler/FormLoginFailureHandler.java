@@ -1,6 +1,11 @@
 package com.kravel.server.auth.security.handler;
 
-import org.springframework.http.HttpStatus;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kravel.server.common.util.exception.InvalidRequestException;
+import com.kravel.server.common.util.message.Message;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -12,21 +17,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class FormLoginFailureHandler implements AuthenticationFailureHandler {
+
+    @Autowired @Lazy
+    private ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse res, AuthenticationException exception) throws IOException, ServletException {
-        switch (exception.getMessage()) {
-            case "isNotCorrectPassword":
-                res.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                res.sendError(401, "🔥 error: is not correct password!");
-                break;
-            case "isNotExistMember":
-                res.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                res.sendError(401, "🔥 error: is exist Member!");
-                break;
-            default:
-                res.sendError(500);
-        }
+
+        Message responseMessage = new Message(new InvalidRequestException("🔥 error: is not correct login information. please check your principal or credentials"), req.getRequestURL().toString());
+
+        res.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        res.getWriter().write(objectMapper.writeValueAsString(responseMessage));
+        res.setStatus(401);
     }
 }

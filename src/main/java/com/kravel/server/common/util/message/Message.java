@@ -14,41 +14,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class ResponseMessage {
+public class Message {
 
     private static final long serialVersionUID = 1L;
 
     private static final String DEFAULT_KEY = "result";
-    private boolean status;
-    private String message;
-    private String timestamp;
-    private Map<String, Object> data;
+    private String message = "";
+    private String timestamp = "";
+    private Map<String, Object> data = new HashMap<>();
     private ErrorMessage error;
 
-    public ResponseMessage() {
-        this(HttpStatus.OK);
-    }
-
-    public ResponseMessage(HttpStatus httpStatus) {
+    public Message(AbstractBaseException ex, String referedUrl) {
         this.data = new HashMap<>();
-        this.status = (httpStatus.isError())? false:true;
-        this.message = httpStatus.getReasonPhrase();
+        this.message = ex.getHttpStatus().getReasonPhrase();
+        this.error = new ErrorMessage(ex.getMessage(), referedUrl);
         this.timestamp = convertDateFormat(LocalDateTime.now());
     }
 
-    public ResponseMessage(AbstractBaseException ex, String referedUrl) {
-        HttpStatus httpStatus = ex.getHttpStatus();
-
-        this.data = new HashMap<>();
-        this.status = (httpStatus.isError())? false:true;
-        this.message = httpStatus.getReasonPhrase();
-        this.error = new ErrorMessage(httpStatus.value(), ex.getMessage(), referedUrl);
+    public Message(String message) {
+        this.message = message;
         this.timestamp = convertDateFormat(LocalDateTime.now());
     }
 
-    public ResponseMessage(HttpStatus status, Object result) {
-        this(status);
+    public Message(Object result, String message) {
         this.data.put(DEFAULT_KEY, result);
+        this.message = message;
+        this.timestamp = convertDateFormat(LocalDateTime.now());
+    }
+
+    public Message(Object result) {
+        this.data.put(DEFAULT_KEY, result);
+        this.message = "Pengsoo is future";
+        this.timestamp = convertDateFormat(LocalDateTime.now());
     }
 
     public void add(String key, Object result) {

@@ -6,8 +6,10 @@ import com.kravel.server.auth.dto.TokenDTO;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
+import com.kravel.server.common.util.message.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -25,25 +27,29 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
 
     private final JwtFactory factory;
 
-    private final ObjectMapper objectMapper;
+    @Autowired @Lazy
+    private ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException, ServletException {
 
         MemberContext context = ((PostAuthorizationToken) auth).getMemberContext();
 
-        String tokenString = factory.generateToken(context);
-        processResponse(res, writeDTO(tokenString));
+        String token = factory.generateToken(context);
+        processResponse(res, token);
     }
 
     private TokenDTO writeDTO(String token) {
         return new TokenDTO(token);
     }
 
-    private void processResponse(HttpServletResponse res, TokenDTO dto) throws JsonProcessingException, IOException {
+    private void processResponse(HttpServletResponse res, String token) throws JsonProcessingException, IOException {
+
+        Message responseMessage = new Message("login is succeed");
 
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
         res.setStatus(HttpStatus.OK.value());
-        res.getWriter().write(objectMapper.writeValueAsString(dto));
+        res.addHeader("Authorization", "Bearer " + token);
+        res.getWriter().write(objectMapper.writeValueAsString(responseMessage));
     }
 }

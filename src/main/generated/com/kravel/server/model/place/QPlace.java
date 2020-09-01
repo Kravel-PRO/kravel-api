@@ -38,13 +38,15 @@ public class QPlace extends EntityPathBase<Place> {
     //inherited
     public final StringPath lastModifiedBy = _super.lastModifiedBy;
 
-    public final StringPath latitude = createString("latitude");
+    public final NumberPath<Double> latitude = createNumber("latitude", Double.class);
 
     public final StringPath location = createString("location");
 
-    public final StringPath longitude = createString("longitude");
+    public final NumberPath<Double> longitude = createNumber("longitude", Double.class);
 
     public final com.kravel.server.model.media.QMedia media;
+
+    public final QPhotoFilter photoFilter;
 
     public final ListPath<com.kravel.server.model.mapping.PlaceCelebrity, com.kravel.server.model.mapping.QPlaceCelebrity> placeCelebrities = this.<com.kravel.server.model.mapping.PlaceCelebrity, com.kravel.server.model.mapping.QPlaceCelebrity>createList("placeCelebrities", com.kravel.server.model.mapping.PlaceCelebrity.class, com.kravel.server.model.mapping.QPlaceCelebrity.class, PathInits.DIRECT2);
 
@@ -54,9 +56,11 @@ public class QPlace extends EntityPathBase<Place> {
 
     public final ListPath<com.kravel.server.model.mapping.Scrap, com.kravel.server.model.mapping.QScrap> scraps = this.<com.kravel.server.model.mapping.Scrap, com.kravel.server.model.mapping.QScrap>createList("scraps", com.kravel.server.model.mapping.Scrap.class, com.kravel.server.model.mapping.QScrap.class, PathInits.DIRECT2);
 
+    public final StringPath subImageUrl = createString("subImageUrl");
+
     public final StringPath subway = createString("subway");
 
-    public final StringPath title = createString("title");
+    public final ListPath<Tag, QTag> tags = this.<Tag, QTag>createList("tags", Tag.class, QTag.class, PathInits.DIRECT2);
 
     public final StringPath useAt = createString("useAt");
 
@@ -81,6 +85,7 @@ public class QPlace extends EntityPathBase<Place> {
     public QPlace(Class<? extends Place> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.media = inits.isInitialized("media") ? new com.kravel.server.model.media.QMedia(forProperty("media")) : null;
+        this.photoFilter = inits.isInitialized("photoFilter") ? new QPhotoFilter(forProperty("photoFilter"), inits.get("photoFilter")) : null;
     }
 
 }

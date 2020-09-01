@@ -1,5 +1,6 @@
 package com.kravel.server.model.place;
 
+import com.kravel.server.dto.update.PlaceInfoUpdateDTO;
 import com.kravel.server.model.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,4 +25,11 @@ public class PlaceInfo extends BaseEntity {
 
     @Lob
     private String contents;
+
+    public PlaceInfo(PlaceInfoUpdateDTO placeInfoUpdateDTO) {
+        this.speech = placeInfoUpdateDTO.getSpeech();
+        this.title = placeInfoUpdateDTO.getTitle();
+        this.contents = placeInfoUpdateDTO.getContents();
+    }
+
 }

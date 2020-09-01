@@ -1,5 +1,6 @@
 package com.kravel.server.service;
 
+import com.kravel.server.dto.article.PlaceMapDTO;
 import com.kravel.server.dto.review.ReviewDTO;
 import com.kravel.server.dto.review.ReviewDetailDTO;
 import com.kravel.server.dto.review.ReviewLikeDTO;
@@ -19,12 +20,14 @@ import com.kravel.server.model.review.Review;
 import com.kravel.server.model.review.ReviewQueryRepository;
 import com.kravel.server.model.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -41,10 +44,20 @@ public class ReviewService {
     private final PlaceRepository placeRepository;
     private final ReviewLikeRepository reviewLikeRepository;
 
-    public ReviewOverviewDTO findAllReview(long placeId, Pageable pageable) throws Exception {
+    public Page<ReviewDTO> findAll(Pageable pageable) throws Exception {
+        Page<Review> reviews = reviewRepository.findAll(pageable);
+        return (Page<ReviewDTO>) reviews.map(new Function<Review, ReviewDTO>() {
+            @Override
+            public ReviewDTO apply(Review review) {
+                return ReviewDTO.fromEntity(review);
+            }
+        });
+    }
 
-        List<Review> reviews = reviewQueryRepository.findAllReview(placeId, pageable);
-        long totalCount = reviewQueryRepository.findAllReviewCount(placeId);
+    public ReviewOverviewDTO findAllByPlace(long placeId, Pageable pageable) throws Exception {
+
+        List<Review> reviews = reviewQueryRepository.findAllByPlace(placeId, pageable);
+        long totalCount = reviewQueryRepository.findCountByPlace(placeId);
 
         if (reviews.isEmpty() || totalCount == 0) {
             throw new NotFoundException("🔥 error: is not exist review");

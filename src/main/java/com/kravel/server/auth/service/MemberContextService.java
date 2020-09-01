@@ -18,7 +18,7 @@ public class MemberContextService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            Member member = memberQueryRepository.findMemberByLoginEmail(username).orElseThrow(() -> new UsernameNotFoundException("Member is empty!"));
+            Member member = memberQueryRepository.findMemberByLoginEmail(username).orElseThrow(() -> new UsernameNotFoundException("🔥 error: member is not exist"));
             return getMemberContext(member);
 
         } catch (Exception e) {

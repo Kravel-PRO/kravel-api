@@ -1,5 +1,6 @@
 package com.kravel.server.model.place;
 
+import com.kravel.server.dto.update.PlaceUpdateDTO;
 import com.kravel.server.model.BaseEntity;
 import com.kravel.server.model.mapping.PlaceCelebrity;
 import com.kravel.server.model.mapping.Scrap;
@@ -13,9 +14,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Entity
-@Getter
+@Entity @Getter
 @NoArgsConstructor
 public class Place extends BaseEntity {
 
@@ -23,15 +24,15 @@ public class Place extends BaseEntity {
     @Column(name = "place_id")
     private long id;
 
-    private String title;
     private String location;
     private String bus;
     private String subway;
-    private String latitude;
-    private String longitude;
-    private double grade;
-    private double weight;
+    private double latitude;
+    private double longitude;
+    private double grade = 0;
+    private double weight = 0;
     private String imageUrl;
+    private String subImageUrl;
     private String useAt = "Y";
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,16 +51,33 @@ public class Place extends BaseEntity {
     @OneToMany(mappedBy = "place")
     private List<PlaceCelebrity> placeCelebrities = new ArrayList<>();
 
+    @OneToOne(mappedBy = "place")
+    private PhotoFilter photoFilter;
+
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
+    private List<Tag> tags = new ArrayList<>();
+
     @Builder
-    public Place(String latitude, String longitude, double grade, double weight, String imageUrl) {
+    public Place(double latitude, double longitude, double grade, double weight, String imageUrl, PhotoFilter photoFilter, String subImageUrl) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.grade = grade;
         this.weight = weight;
         this.imageUrl = imageUrl;
+        this.photoFilter = photoFilter;
+        this.subImageUrl = subImageUrl;
     }
 
-    public Optional<PlaceInfo> findPlaceInfoByLangu(String langu) {
-        return placeInfos.stream().filter(info -> info.getSpeech().equals(langu)).findFirst();
+    public Place(PlaceUpdateDTO placeUpdateDTO) {
+        this.location = placeUpdateDTO.getLocation();
+        this.bus = placeUpdateDTO.getBus();
+        this.subway = placeUpdateDTO.getSubway();
+        this.latitude = placeUpdateDTO.getLatitude();
+        this.longitude = placeUpdateDTO.getLongitude();
+        this.imageUrl = placeUpdateDTO.getImageUrl();
+        this.subImageUrl = placeUpdateDTO.getSubImageUrl();
+        this.placeInfos = placeUpdateDTO.getPlaceInfos().stream().map(PlaceInfo::new).collect(Collectors.toList());
+        this.photoFilter = Optional.of(placeUpdateDTO.getPhotoFilter()).map(PhotoFilter::new).orElse(new PhotoFilter());
+        this.tags = placeUpdateDTO.getTags().stream().map(Tag::new).collect(Collectors.toList());
     }
 }

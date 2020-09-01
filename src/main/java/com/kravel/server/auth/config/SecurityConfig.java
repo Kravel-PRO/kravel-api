@@ -10,6 +10,7 @@ import com.kravel.server.auth.security.handler.JwtAuthenticationFailureHandler;
 import com.kravel.server.auth.security.provider.FormLoginAuthenticationProvider;
 import com.kravel.server.auth.security.provider.JwtAuthenticationProvider;
 import com.kravel.server.auth.security.util.jwt.HeaderTokenExtractor;
+import com.kravel.server.enums.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,6 +27,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
@@ -52,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationFailureHandler jwtAuthenticationFailureHandler;
 
     private final HeaderTokenExtractor headerTokenExtractor;
+
+//    private final PersistentTokenRepository persistentTokenRepository;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -89,6 +94,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
+//    @Bean
+//    public PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices() {
+//        PersistentTokenBasedRememberMeServices persistenceTokenBasedservice = new PersistentTokenBasedRememberMeServices("uniqueAndSecret", userDetailsService(), persistentTokenRepository);
+//        persistenceTokenBasedservice.setParameter("auto_login");
+//        persistenceTokenBasedservice.setAlwaysRemember(false);
+//        persistenceTokenBasedservice.setCookieName("remember-me");
+//        persistenceTokenBasedservice.setTokenValiditySeconds(60 * 60 * 24 * 7);		// 토큰 유효시간 1주일 설정
+//        return persistenceTokenBasedservice;
+//    }
+
     protected FormLoginFilter formLoginFilter() throws Exception {
         FormLoginFilter filter = new FormLoginFilter("/auth/sign-in", formLoginAuthenticationSuccessHandler, formLoginFailureHandler);
         filter.setAuthenticationManager(super.authenticationManagerBean());
@@ -119,14 +134,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .antMatchers("/auth/**", "/swagger-ui.html").permitAll()
+                .antMatchers("/api/**").hasRole(RoleType.USER.name())
+                .antMatchers("/admin/**").hasRole(RoleType.ADMIN.name())
+                .anyRequest().authenticated()
             .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
                 .csrf().disable()
                 .headers().frameOptions().disable()
-            .and()
-                .httpBasic()
             .and()
                 .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
