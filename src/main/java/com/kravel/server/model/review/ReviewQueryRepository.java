@@ -16,7 +16,7 @@ public class ReviewQueryRepository {
 
     QReview review = QReview.review;
 
-    public List<Review> findAllReview(long placeId, Pageable pageable) throws Exception {
+    public List<Review> findAllByPlace(long placeId, Pageable pageable) throws Exception {
         return queryFactory.selectFrom(review)
                 .where(review.place.id.eq(placeId))
                 .offset(pageable.getOffset())

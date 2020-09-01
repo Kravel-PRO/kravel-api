@@ -1,6 +1,7 @@
 package com.kravel.server.controller;
 
 import com.kravel.server.common.util.message.Message;
+import com.kravel.server.dto.review.ReviewDTO;
 import com.kravel.server.dto.review.ReviewDetailDTO;
 import com.kravel.server.dto.review.ReviewOverviewDTO;
 import com.kravel.server.dto.review.ReviewLikeDTO;
@@ -8,6 +9,7 @@ import com.kravel.server.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -27,14 +29,21 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final ClaimExtractor claimExtractor;
 
+    @GetMapping("/api/reviews")
+    public ResponseEntity<Message> findAll(@PageableDefault Pageable pageable) throws Exception {
+
+        Page<ReviewDTO> reviewDTOs = reviewService.findAll(pageable);
+        return ResponseEntity.ok(new Message(reviewDTOs));
+    }
+
     @GetMapping("/api/places/{placeId}/reviews")
-    public ResponseEntity<Message> findAllReview(@PathVariable("placeId") long placeId,
+    public ResponseEntity<Message> findAllByPlace(@PathVariable("placeId") long placeId,
                                                  @PageableDefault Pageable pageable,
                                                  Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/{placeId}/reviews");
 
-        ReviewOverviewDTO reviewOverviewDTO = reviewService.findAllReview(placeId, pageable);
+        ReviewOverviewDTO reviewOverviewDTO = reviewService.findAllByPlace(placeId, pageable);
         return ResponseEntity.ok().body(new Message(reviewOverviewDTO));
     }
 

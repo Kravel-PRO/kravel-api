@@ -2,6 +2,7 @@ package com.kravel.server.dto.article;
 
 import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.model.place.Place;
+import com.kravel.server.model.place.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,6 +22,9 @@ public class PlaceDTO {
     private String location;
     private double latitude;
     private double longitude;
+    private String bus;
+    private String subway;
+    private List<String> tags;
 
     private double grade;
     private double weight;
@@ -48,7 +52,9 @@ public class PlaceDTO {
         placeDTO.setCelebrities(entity.getPlaceCelebrities().stream()
                 .map(placeCelebrity -> CelebrityDTO.fromEntity(placeCelebrity.getCelebrity()))
                 .collect(Collectors.toList()));
-
+        placeDTO.setBus(entity.getBus());
+        placeDTO.setSubway(entity.getSubway());
+        placeDTO.setTags(entity.getTags().stream().map(Tag::getName).collect(Collectors.toList()));
         return placeDTO;
     }
 }

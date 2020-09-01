@@ -1,4 +1,4 @@
-package com.kravel.server.configuration;
+package com.kravel.server.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;

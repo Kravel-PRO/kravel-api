@@ -1,4 +1,4 @@
-package com.kravel.server.configuration;
+package com.kravel.server.config;
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Regions;

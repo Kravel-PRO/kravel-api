@@ -7,6 +7,7 @@ import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.media.QMedia;
 import com.kravel.server.model.review.QReview;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -70,36 +71,46 @@ public class PlaceQueryRepository {
     }
 
 
-    public Page<Place> findAll(String speech, Pageable pageable) throws Exception {
+//    public Page<Place> findAll(String speech, Pageable pageable) throws Exception {
+//        QueryResults<Place> placeQueryResults = queryFactory.selectFrom(place)
+//                .innerJoin(place.placeInfos, placeInfo).fetchJoin()
+//                .leftJoin(place.reviews, review)
+//
+//                .where(placeInfo.speech.eq(speech))
+//
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPageSize())
+//
+//                .orderBy(review.count().desc())
+//                .fetchResults();
+//
+//        return new PageImpl<>(placeQueryResults.getResults(), pageable, placeQueryResults.getTotal());
+//    }
+
+    public Page<Place> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
+
         QueryResults<Place> placeQueryResults = queryFactory.selectFrom(place)
                 .innerJoin(place.placeInfos, placeInfo).fetchJoin()
                 .leftJoin(place.reviews, review)
-
-                .where(placeInfo.speech.eq(speech))
-
+                .where(
+                        longitudeBetween(latitude, height),
+                        longitudeBetween(longitude, width),
+                        placeInfo.speech.eq(speech)
+                )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-
                 .orderBy(review.count().desc())
                 .fetchResults();
 
         return new PageImpl<>(placeQueryResults.getResults(), pageable, placeQueryResults.getTotal());
     }
 
-    public Page<Place> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
+    private BooleanExpression latitudeBetween(double latitude, double height) {
+        return latitude != 0 ? place.latitude.between(latitude - height, latitude + height) : null;
+    }
 
-        QueryResults<Place> placeQueryResults = queryFactory.selectFrom(place)
-                .innerJoin(place.placeInfos, placeInfo).fetchJoin()
-                .where(
-                        place.latitude.between(latitude - height, latitude + height),
-                        place.latitude.between(longitude - width, longitude + width),
-                        placeInfo.speech.eq(speech)
-                )
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
-
-        return new PageImpl<>(placeQueryResults.getResults(), pageable, placeQueryResults.getTotal());
+    private BooleanExpression longitudeBetween(double longitude, double width) {
+        return longitude != 0 ? place.latitude.between(longitude - width, longitude + width) : null;
     }
 
     public Optional<Scrap> checkScrapState(long placeId, long memberId) throws Exception {

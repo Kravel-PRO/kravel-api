@@ -37,27 +37,13 @@ public class PlaceService {
     @Transactional(readOnly = true)
     public Page<PlaceMapDTO> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable, boolean reviewCount) throws Exception {
 
-        Page<PlaceMapDTO> placeMapDTOs = null;
-        if (latitude != 0 && longitude != 0) {
-            Page<Place> places = placeQueryRepository.findAllByLocation(latitude, longitude, height, width, speech, pageable);
-
-            placeMapDTOs = (Page<PlaceMapDTO>) places.map(new Function<Place, PlaceMapDTO>() {
-                @Override
-                public PlaceMapDTO apply(Place source) {
-                    return PlaceMapDTO.fromEntity(source);
-                }
-            });
-
-        } else {
-            Page<Place> places = placeQueryRepository.findAll(speech, pageable);
-
-            placeMapDTOs = (Page<PlaceMapDTO>) places.map(new Function<Place, PlaceMapDTO>() {
-                @Override
-                public PlaceMapDTO apply(Place source) {
-                    return PlaceMapDTO.fromEntity(source);
-                }
-            });
-        }
+        Page<Place> places = placeQueryRepository.findAllByLocation(latitude, longitude, height, width, speech, pageable);
+        Page<PlaceMapDTO> placeMapDTOs = (Page<PlaceMapDTO>) places.map(new Function<Place, PlaceMapDTO>() {
+            @Override
+            public PlaceMapDTO apply(Place source) {
+                return PlaceMapDTO.fromEntity(source);
+            }
+        });
 
         if (reviewCount) {
             placeMapDTOs.forEach(dto -> {

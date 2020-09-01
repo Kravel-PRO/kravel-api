@@ -134,7 +134,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/auth/**", "/swagger-ui.html").permitAll()
                 .antMatchers("/api/**").hasRole(RoleType.USER.name())
                 .antMatchers("/admin/**").hasRole(RoleType.ADMIN.name())
                 .anyRequest().authenticated()
