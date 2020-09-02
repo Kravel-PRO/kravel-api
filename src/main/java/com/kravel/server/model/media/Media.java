@@ -23,9 +23,9 @@ public class Media extends BaseEntity {
     @Column(name = "mediaName")
     private String name;
 
+    @Lob
     private String imageUrl;
 
-    @Lob
     private String contents;
 
     @Column(name = "open_year")

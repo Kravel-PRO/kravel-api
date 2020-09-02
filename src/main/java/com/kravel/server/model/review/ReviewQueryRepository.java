@@ -38,10 +38,12 @@ public class ReviewQueryRepository {
                 .fetchCount();
     }
 
-    public List<Review> findAllReviewByCelebrity(long celebrityId) throws Exception {
-        return queryFactory.selectFrom(review)
+    public Page<Review> findAllReviewByCelebrity(long celebrityId, Pageable pageable) throws Exception {
+        QueryResults<Review> reviewQueryResults = queryFactory.selectFrom(review)
                 .where(review.celebrity.id.eq(celebrityId))
-                .fetch();
+                .fetchResults();
+
+        return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
     }
 
     public Page<Review> findAllByMedia(long mediaId, Pageable pageable) throws Exception {

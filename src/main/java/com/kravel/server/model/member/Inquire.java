@@ -16,7 +16,9 @@ public class Inquire extends BaseTimeEntity {
     @Column(name = "inquire_id")
     private long id;
 
-    private String subject;
+    private String title;
+
+    @Lob
     private String contents;
 
     @Enumerated(EnumType.STRING)

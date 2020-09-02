@@ -1,10 +1,8 @@
 package com.kravel.server.dto.review;
 
-import com.kravel.server.model.review.Review;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.ibatis.type.Alias;
 
 import java.util.List;
 

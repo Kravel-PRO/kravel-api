@@ -22,8 +22,6 @@ public class PlaceInfo extends BaseEntity {
 
     private String speech;
     private String title;
-
-    @Lob
     private String contents;
 
     public PlaceInfo(PlaceInfoUpdateDTO placeInfoUpdateDTO) {

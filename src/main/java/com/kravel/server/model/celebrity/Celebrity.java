@@ -23,6 +23,8 @@ public class Celebrity extends BaseEntity {
 
     @Column(name = "celebrityName")
     private String name;
+
+    @Lob
     private String imageUrl;
 
     @OneToMany(mappedBy = "celebrity")

@@ -17,5 +17,6 @@ public class InquireImage extends BaseTimeEntity {
     @JoinColumn(name = "inquire_id")
     private Inquire inquire;
 
+    @Lob
     private String imageUrl;
 }

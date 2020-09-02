@@ -94,23 +94,15 @@ public class ReviewService {
 
         return reviewDetailDTO;
     }
-    public ReviewOverviewDTO findAllReviewByCelebrity(long celebrityId) throws Exception {
+    public Page<ReviewDTO> findAllReviewByCelebrity(long celebrityId, Pageable pageable) throws Exception {
 
-        List<ReviewDTO> reviewDTOs = reviewQueryRepository
-                .findAllReviewByCelebrity(celebrityId).stream()
-                .map(ReviewDTO::fromEntity).collect(Collectors.toList());
-
-        long totalCount = reviewLikeQueryRepository.findReviewLikeCountByCelebrity(celebrityId);
-        if (reviewDTOs.size() == 0 || totalCount == 0) {
-            throw new NotFoundException("🔥 error: is not exist review");
-        }
-
-        ReviewOverviewDTO reviewOverviewDTO = ReviewOverviewDTO.builder()
-                .reviews(reviewDTOs)
-                .totalCount(totalCount)
-                .build();
-
-        return reviewOverviewDTO;
+        Page<Review> reviews = reviewQueryRepository.findAllReviewByCelebrity(celebrityId, pageable);
+        return reviews.map(new Function<Review, ReviewDTO>() {
+            @Override
+            public ReviewDTO apply(Review review) {
+                return ReviewDTO.fromEntity(review);
+            }
+        });
     }
 
     public long saveReview(MultipartFile file, long placeId, long memberId) throws Exception {

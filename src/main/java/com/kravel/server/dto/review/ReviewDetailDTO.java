@@ -3,8 +3,6 @@ package com.kravel.server.dto.review;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.apache.ibatis.type.Alias;
 
 @Getter @Setter
 public class ReviewDetailDTO {

@@ -27,6 +27,8 @@ public class Review extends BaseTimeEntity {
     private long id;
 
     private float grade;
+
+    @Lob
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)

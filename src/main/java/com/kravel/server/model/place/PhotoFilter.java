@@ -14,6 +14,8 @@ public class PhotoFilter extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "photo_filter_id")
     private long id;
+
+    @Lob
     private String guideLine;
 
     @OneToOne(fetch = FetchType.LAZY)

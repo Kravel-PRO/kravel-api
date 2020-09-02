@@ -17,6 +17,6 @@ public class Notice extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private NoticeCategory noticeCategory;
 
-    private String subject;
+    private String title;
     private String contents;
 }

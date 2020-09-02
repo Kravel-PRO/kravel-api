@@ -1,12 +1,8 @@
 package com.kravel.server.dto;
 
 import com.kravel.server.model.member.Member;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.ibatis.type.Alias;
-
-import java.time.LocalDateTime;
 
 @Getter @Setter
 public class MemberDTO {

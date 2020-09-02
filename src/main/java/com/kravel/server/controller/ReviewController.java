@@ -50,8 +50,8 @@ public class ReviewController {
 
     @GetMapping("/api/places/{placeId}/reviews/{reviewId}")
     public ResponseEntity<Message> findReviewDetailById(@PathVariable("placeId") long placeId,
-                                                @PathVariable("reviewId") long reviewId,
-                                                Authentication authentication) throws Exception {
+                                                        @PathVariable("reviewId") long reviewId,
+                                                        Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/{placeId}/reviews/{reviewId}");
         long memberId = claimExtractor.getMemberId(authentication);
@@ -100,4 +100,12 @@ public class ReviewController {
         return ResponseEntity.ok(new Message(reviewLikeId));
     }
 
+    @GetMapping("/api/celebrities/{celebrityId}/reviews")
+    public ResponseEntity<Message> findAllReviewByCelebrity(@PathVariable("celebrityId") long celebrityId,
+                                                            @PageableDefault Pageable pageable,
+                                                            Authentication authentication) throws Exception {
+
+        Page<ReviewDTO> reviewDTOs = reviewService.findAllReviewByCelebrity(celebrityId, pageable);
+        return ResponseEntity.ok(new Message(reviewDTOs));
+    }
 }

@@ -46,9 +46,9 @@ dependencies {
 
     // database
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'mysql:mysql-connector-java'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+//    runtimeOnly 'mysql:mysql-connector-java'
+//    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // aws

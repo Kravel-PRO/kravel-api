@@ -31,7 +31,11 @@ public class Place extends BaseEntity {
     private double longitude;
     private double grade = 0;
     private double weight = 0;
+
+    @Lob
     private String imageUrl;
+
+    @Lob
     private String subImageUrl;
     private String useAt = "Y";
 

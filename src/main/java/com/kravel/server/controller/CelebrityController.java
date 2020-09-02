@@ -4,10 +4,12 @@ import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.dto.celebrity.CelebrityDetailDTO;
+import com.kravel.server.dto.review.ReviewDTO;
 import com.kravel.server.dto.review.ReviewOverviewDTO;
 import com.kravel.server.service.CelebrityService;
 import com.kravel.server.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -44,14 +46,6 @@ public class CelebrityController {
         String speech = claimExtractor.getSpeech(authentication);
         CelebrityDetailDTO result = celebrityService.findCelebrityById(celebrityId, speech);
         return ResponseEntity.ok(new Message(result));
-    }
-
-    @GetMapping("/api/celebrities/{celebrityId}/reviews")
-    public ResponseEntity<Message> findAllReviewByCelebrity(@PathVariable("celebrityId") long celebrityId,
-                                                    Authentication authentication) throws Exception {
-
-        ReviewOverviewDTO reviewOverviewDTO = reviewService.findAllReviewByCelebrity(celebrityId);
-        return ResponseEntity.ok(new Message(reviewOverviewDTO));
     }
 
 }

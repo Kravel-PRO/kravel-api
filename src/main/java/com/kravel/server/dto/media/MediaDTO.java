@@ -3,7 +3,6 @@ package com.kravel.server.dto.media;
 import com.kravel.server.model.media.Media;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.ibatis.type.Alias;
 
 import java.time.LocalDate;
 
