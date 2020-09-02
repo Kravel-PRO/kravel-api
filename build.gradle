@@ -52,7 +52,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // aws
-    compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.792'
+//    compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.792'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-bom', version: '1.11.852'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.851'
 
     // swagger
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.5.0'

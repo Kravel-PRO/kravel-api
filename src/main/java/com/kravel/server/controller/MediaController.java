@@ -50,15 +50,4 @@ public class MediaController {
         List<PlaceRelatedMediaDTO> result = mediaService.findAllPlaceByMedia(mediaId, speech);
         return ResponseEntity.ok(new Message(result));
     }
-
-    // TODO: review controller로 옮겨야한다.
-//    @GetMapping("/api/medias/{mediaId}/reviews")
-//    public ResponseEntity<Message> findAllReviewsByMedia(@PathVariable("mediaId") long mediaId,
-//                                                @PageableDefault Pageable pageable,
-//                                                Authentication authentication) throws Exception {
-//
-//
-//        List<ReviewOverviewDTO> reviewOverviewDTOs = reviewService.findAllReviews(param);
-//        return ResponseEntity.ok(new Message(reviewOverviewDTOs));
-//    }
 }

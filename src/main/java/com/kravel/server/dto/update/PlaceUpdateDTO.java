@@ -16,7 +16,7 @@ public class PlaceUpdateDTO {
     private String imageUrl;
     private String subImageUrl;
 
-    private PhotoFilterDTO photoFilter;
+    private PhotoFilterUpdateDTO photoFilter;
     private List<PlaceInfoUpdateDTO> placeInfos;
     private List<TagDTO> tags;
 }

@@ -3,6 +3,7 @@ package com.kravel.server.controller;
 import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.MemberDTO;
+import com.kravel.server.dto.update.MemberUpdateDTO;
 import com.kravel.server.service.MemberService;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import lombok.RequiredArgsConstructor;
@@ -43,13 +44,13 @@ public class MemberController {
     public ResponseEntity<Message> modifyMember(HttpServletRequest req,
                                         @PathVariable("loginEmail") String loginEmail,
                                         @RequestParam("type") String type,
-                                        @RequestBody MemberDTO memberDTO) throws Exception {
+                                        @RequestBody MemberUpdateDTO memberUpdateDTO) throws Exception {
         long memberId;
         switch (type) {
-            case "password": memberId = memberService.modifyMemberLoginPw(loginEmail, memberDTO);
+            case "password": memberId = memberService.modifyMemberLoginPw(loginEmail, memberUpdateDTO);
                 break;
 
-            case "nickname": memberId = memberService.modifyMemberNickName(loginEmail, memberDTO);
+            case "nickNameAndGender": memberId = memberService.modifyMemberNickName(loginEmail, memberUpdateDTO);
                 break;
 
             default:

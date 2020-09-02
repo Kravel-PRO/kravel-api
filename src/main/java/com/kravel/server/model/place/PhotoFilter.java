@@ -1,6 +1,6 @@
 package com.kravel.server.model.place;
 
-import com.kravel.server.dto.update.PhotoFilterDTO;
+import com.kravel.server.dto.update.PhotoFilterUpdateDTO;
 import com.kravel.server.model.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class PhotoFilter extends BaseEntity {
         this.guideLine = guideLine;
     }
 
-    public PhotoFilter(PhotoFilterDTO photoFilterDTO) {
-        this.guideLine = photoFilterDTO.getGuideLine();
+    public PhotoFilter(PhotoFilterUpdateDTO photoFilterUpdateDTO) {
+        this.guideLine = photoFilterUpdateDTO.getGuideLine();
     }
 }

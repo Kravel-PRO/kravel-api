@@ -1,17 +1,16 @@
 package com.kravel.server.service;
 
-import com.kravel.server.dto.article.PlaceDTO;
-import com.kravel.server.dto.article.PlaceMapDTO;
-import com.kravel.server.dto.article.ScrapDTO;
+import com.kravel.server.dto.place.PhotoFilterDTO;
+import com.kravel.server.dto.place.PlaceDTO;
+import com.kravel.server.dto.place.PlaceMapDTO;
+import com.kravel.server.dto.place.ScrapDTO;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.update.PlaceUpdateDTO;
 import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.mapping.ScrapRepository;
 import com.kravel.server.model.member.MemberRepository;
-import com.kravel.server.model.place.Place;
-import com.kravel.server.model.place.PlaceQueryRepository;
-import com.kravel.server.model.place.PlaceRepository;
+import com.kravel.server.model.place.*;
 import com.kravel.server.model.review.ReviewQueryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +32,7 @@ public class PlaceService {
     private final MemberRepository memberRepository;
     private final ScrapRepository scrapRepository;
     private final ReviewQueryRepository reviewQueryRepository;
+    private final PhotoFilterQueryRepository photoFilterQueryRepository;
 
     @Transactional(readOnly = true)
     public Page<PlaceMapDTO> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable, boolean reviewCount) throws Exception {
@@ -94,5 +94,10 @@ public class PlaceService {
     public long savePlace(PlaceUpdateDTO placeUpdateDTO) throws Exception {
         Place place = new Place(placeUpdateDTO);
         return placeRepository.save(place).getId();
+    }
+
+    public PhotoFilterDTO findPhotoFilterByPlace(long placeId) {
+        PhotoFilter photoFilter = photoFilterQueryRepository.findPhotoFilterByPlace(placeId);
+        return PhotoFilterDTO.fromEntity(photoFilter);
     }
 }

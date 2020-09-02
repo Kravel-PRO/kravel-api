@@ -1,4 +1,4 @@
-package com.kravel.server.dto.article;
+package com.kravel.server.dto.place;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -3,6 +3,7 @@ package com.kravel.server.common;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,19 +19,18 @@ import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
-//@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class S3Uploader {
 
-    @Autowired
-    private AmazonS3Client amazonS3Client;
+    private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File convert fail"));
+                .orElseThrow(() -> new IllegalArgumentException("🔥 error: MultipartFile -> File convert fail"));
         return upload(uploadFile, dirName);
     }
 
@@ -57,12 +57,13 @@ public class S3Uploader {
 
     private Optional<File> convert(MultipartFile file) throws IOException {
         File convertFile = new File(file.getOriginalFilename());
-        if (convertFile.createNewFile()) {
+        if(convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
             }
             return Optional.of(convertFile);
         }
+
         return Optional.empty();
     }
 

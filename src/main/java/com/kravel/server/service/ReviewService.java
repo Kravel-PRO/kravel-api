@@ -1,6 +1,5 @@
 package com.kravel.server.service;
 
-import com.kravel.server.dto.article.PlaceMapDTO;
 import com.kravel.server.dto.review.ReviewDTO;
 import com.kravel.server.dto.review.ReviewDetailDTO;
 import com.kravel.server.dto.review.ReviewLikeDTO;
@@ -54,21 +53,24 @@ public class ReviewService {
         });
     }
 
-    public ReviewOverviewDTO findAllByPlace(long placeId, Pageable pageable) throws Exception {
+    public Page<ReviewDTO> findAllByPlace(long placeId, boolean likeCount, Pageable pageable) throws Exception {
 
-        List<Review> reviews = reviewQueryRepository.findAllByPlace(placeId, pageable);
-        long totalCount = reviewQueryRepository.findCountByPlace(placeId);
-
-        if (reviews.isEmpty() || totalCount == 0) {
+        Page<Review> reviews = reviewQueryRepository.findAllByPlace(placeId, pageable);
+        Page<ReviewDTO> reviewDTOs = (Page<ReviewDTO>) reviews.map(new Function<Review, ReviewDTO>() {
+            @Override
+            public ReviewDTO apply(Review review) {
+                return ReviewDTO.fromEntity(review);
+            }
+        });
+        if (reviews.isEmpty()) {
             throw new NotFoundException("🔥 error: is not exist review");
         }
 
-        ReviewOverviewDTO reviewOverviewDTO = ReviewOverviewDTO.builder()
-                .reviews(reviews.stream().map(ReviewDTO::fromEntity).collect(Collectors.toList()))
-                .totalCount(totalCount)
-                .build();
+        if (likeCount) {
+            reviewDTOs.forEach(dto -> dto.setLikeCount(reviewLikeQueryRepository.findCountByReview(dto.getReviewId())));
+        }
 
-        return reviewOverviewDTO;
+        return reviewDTOs;
     }
 
     public ReviewDetailDTO findReviewDetailById(long reviewId, long memberId) throws Exception {
@@ -78,8 +80,10 @@ public class ReviewService {
             throw new NotFoundException("🔥 error: is not exist review");
         }
 
-        long likeCount = reviewLikeQueryRepository.findReviewLikeCountById(reviewId);
-        ReviewLike reviewLike = reviewLikeQueryRepository.checkReviewLikeExist(reviewId, memberId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
+        long likeCount = reviewLikeQueryRepository.findCountByReview(reviewId);
+        ReviewLike reviewLike = reviewLikeQueryRepository
+                .checkReviewLikeExist(reviewId, memberId)
+                .orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
 
         ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.builder()
                 .reviewId(optionalReview.get().getId())
@@ -92,7 +96,10 @@ public class ReviewService {
     }
     public ReviewOverviewDTO findAllReviewByCelebrity(long celebrityId) throws Exception {
 
-        List<ReviewDTO> reviewDTOs = reviewQueryRepository.findAllReviewByCelebrity(celebrityId).stream().map(ReviewDTO::fromEntity).collect(Collectors.toList());
+        List<ReviewDTO> reviewDTOs = reviewQueryRepository
+                .findAllReviewByCelebrity(celebrityId).stream()
+                .map(ReviewDTO::fromEntity).collect(Collectors.toList());
+
         long totalCount = reviewLikeQueryRepository.findReviewLikeCountByCelebrity(celebrityId);
         if (reviewDTOs.size() == 0 || totalCount == 0) {
             throw new NotFoundException("🔥 error: is not exist review");
@@ -107,23 +114,24 @@ public class ReviewService {
     }
 
     public long saveReview(MultipartFile file, long placeId, long memberId) throws Exception {
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
-        Optional<Place> optionalPlace = placeRepository.findById(placeId);
+        Member savedMember = memberRepository
+                .findById(memberId)
+                .orElseThrow(() -> new NotFoundException("🔥 error: not found member"));
+        Place savedPlace = placeRepository
+                .findById(placeId)
+                .orElseThrow(() -> new NotFoundException("🔥 error: not found place"));
 
-        if (optionalMember.isEmpty() || optionalPlace.isEmpty()) {
-            throw new NotFoundException("🔥 error: not found member or place");
-        }
         Review review = Review.builder()
-                .member(optionalMember.get())
-                .place(optionalPlace.get())
+                .member(savedMember)
+                .place(savedPlace)
                 .build();
 
         review.saveImage(s3Uploader, file);
 
-        Media media = optionalPlace.get().getMedia();
-        if (media.getId() > 0) {
-            review.changeMedia(media);
-        }
+//        Media media = savedPlace.getMedia();
+//        if (media.getId() > 0) {
+//            review.changeMedia(media);
+//        }
 
         return reviewRepository.save(review).getId();
     }
@@ -136,8 +144,12 @@ public class ReviewService {
                 throw new InvalidRequestException("🔥 error: like is already exist");
             }
 
-            Member member = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
-            Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist review"));
+            Member member = memberRepository
+                    .findById(memberId)
+                    .orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
+            Review review = reviewRepository
+                    .findById(reviewId)
+                    .orElseThrow(() -> new NotFoundException("🔥 error: is not exist review"));
 
             ReviewLike reviewLike = ReviewLike.builder()
                     .member(member)
@@ -159,4 +171,13 @@ public class ReviewService {
         }
     }
 
+    public Page<ReviewDTO> findAllByMedia(long mediaId, Pageable pageable) throws Exception {
+        Page<Review> reviews = reviewQueryRepository.findAllByMedia(mediaId, pageable);
+        return reviews.map(new Function<Review, ReviewDTO>() {
+            @Override
+            public ReviewDTO apply(Review review) {
+                return ReviewDTO.fromEntity(review);
+            }
+        });
+    }
 }

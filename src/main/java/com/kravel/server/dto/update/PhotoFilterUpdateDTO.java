@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class PhotoFilterDTO {
+public class PhotoFilterUpdateDTO {
 
     private String guideLine;
 

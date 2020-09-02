@@ -1,4 +1,4 @@
-package com.kravel.server.dto.article;
+package com.kravel.server.dto.place;
 
 import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.model.place.Place;
@@ -6,7 +6,6 @@ import com.kravel.server.model.place.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.ibatis.type.Alias;
 
 import java.util.ArrayList;
 import java.util.List;

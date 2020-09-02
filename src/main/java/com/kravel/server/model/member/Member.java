@@ -47,6 +47,9 @@ public class Member extends BaseTimeEntity {
     public void changeNickName(String nickName) {
         this.nickName = nickName;
     }
+    public void changeGender(String gender) {
+        this.gender = gender;
+    }
 
     @Builder
     public Member(long id, String loginEmail, String nickName, String loginPw, String gender, RoleType roleType, String speech) {

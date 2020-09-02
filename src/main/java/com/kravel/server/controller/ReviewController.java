@@ -38,13 +38,14 @@ public class ReviewController {
 
     @GetMapping("/api/places/{placeId}/reviews")
     public ResponseEntity<Message> findAllByPlace(@PathVariable("placeId") long placeId,
+                                                 @RequestParam(value = "like-count", defaultValue = "false") boolean likeCount,
                                                  @PageableDefault Pageable pageable,
                                                  Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/{placeId}/reviews");
 
-        ReviewOverviewDTO reviewOverviewDTO = reviewService.findAllByPlace(placeId, pageable);
-        return ResponseEntity.ok().body(new Message(reviewOverviewDTO));
+        Page<ReviewDTO> reviewDTOs = reviewService.findAllByPlace(placeId, likeCount, pageable);
+        return ResponseEntity.ok().body(new Message(reviewDTOs));
     }
 
     @GetMapping("/api/places/{placeId}/reviews/{reviewId}")
@@ -61,8 +62,8 @@ public class ReviewController {
 
     @PostMapping("/api/places/{placeId}/reviews")
     public ResponseEntity<Message> saveReview(@PathVariable("placeId") int placeId,
-                                      @RequestParam("file") MultipartFile file,
-                                      Authentication authentication) throws Exception {
+                                              @RequestParam("file") MultipartFile file,
+                                              Authentication authentication) throws Exception {
         log.info("🎉 GET /api/places/{placeId}/reviews");
 
 
@@ -70,6 +71,17 @@ public class ReviewController {
         long reviewId = reviewService.saveReview(file, placeId, memberId);
 
         return ResponseEntity.ok(new Message(reviewId));
+    }
+
+
+    @GetMapping("/api/medias/{mediaId}/reviews")
+    public ResponseEntity<Message> findAllReviewsByMedia(@PathVariable("mediaId") long mediaId,
+                                                         @PageableDefault Pageable pageable,
+                                                         Authentication authentication) throws Exception {
+
+
+        Page<ReviewDTO> reviewOverviewDTOs = reviewService.findAllByMedia(mediaId, pageable);
+        return ResponseEntity.ok(new Message(reviewOverviewDTOs));
     }
 
     @PostMapping("/api/places/{placeId}/reviews/{reviewId}")

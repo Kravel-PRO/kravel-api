@@ -4,6 +4,7 @@ import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.MemberDTO;
 import com.kravel.server.common.util.exception.InvalidRequestException;
+import com.kravel.server.dto.update.MemberUpdateDTO;
 import com.kravel.server.enums.RoleType;
 import com.kravel.server.model.member.Member;
 import com.kravel.server.model.member.MemberQueryRepository;
@@ -54,18 +55,19 @@ public class MemberService {
         return memberDTOs;
     }
 
-    public long modifyMemberLoginPw(String loginEmail, MemberDTO memberDTO) throws Exception {
+    public long modifyMemberLoginPw(String loginEmail, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
         Member savedMember = memberQueryRepository.findMemberByLoginEmail(loginEmail).orElseThrow(() -> new InvalidRequestException("🔥 error: is not correct password"));
 
-        savedMember.changeLoginPw(passwordEncoder.encode(memberDTO.getLoginPw()));
+        savedMember.changeLoginPw(passwordEncoder.encode(memberUpdateDTO.getLoginPw()));
         return savedMember.getId();
     }
 
-    public long modifyMemberNickName(String loginEmail, MemberDTO memberDTO) throws Exception {
+    public long modifyMemberNickName(String loginEmail, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
         Member savedMember = memberQueryRepository.findMemberByLoginEmail(loginEmail).orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
-        savedMember.changeNickName(memberDTO.getNickName());
+        savedMember.changeNickName(memberUpdateDTO.getNickName());
+        savedMember.changeGender(memberUpdateDTO.getGender());
         return savedMember.getId();
     }
 
