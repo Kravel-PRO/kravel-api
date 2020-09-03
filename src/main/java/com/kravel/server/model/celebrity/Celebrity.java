@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Celebrity extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "celebrity_id")
     private long id;
 

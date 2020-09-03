@@ -22,7 +22,7 @@ import java.util.List;
 public class Review extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
     private long id;
 

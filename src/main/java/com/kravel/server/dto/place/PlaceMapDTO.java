@@ -33,7 +33,7 @@ public class PlaceMapDTO {
                 .findFirst().get().getTitle());
         placeMapDTO.setImageUrl(entity.getImageUrl());
         placeMapDTO.setSubImageUrl(entity.getSubImageUrl());
-        placeMapDTO.setLocation(entity.getLocation());
+        placeMapDTO.setLocation(entity.getPlaceInfos().stream().findFirst().get().getLocation());
         placeMapDTO.setLongitude(entity.getLongitude());
         placeMapDTO.setLatitude(entity.getLatitude());
         placeMapDTO.setTags(entity.getTags().stream()

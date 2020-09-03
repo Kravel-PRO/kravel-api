@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Media extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "media_id")
     private long id;
 

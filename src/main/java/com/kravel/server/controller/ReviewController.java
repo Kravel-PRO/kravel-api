@@ -66,7 +66,6 @@ public class ReviewController {
                                               Authentication authentication) throws Exception {
         log.info("🎉 GET /api/places/{placeId}/reviews");
 
-
         long memberId = claimExtractor.getMemberId(authentication);
         long reviewId = reviewService.saveReview(file, placeId, memberId);
 

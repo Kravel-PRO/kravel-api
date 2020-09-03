@@ -24,9 +24,6 @@ public class PlaceDTO {
     private String subway;
     private List<String> tags;
 
-    private double grade;
-    private double weight;
-
     private long mediaId;
     private String mediaName;
 
@@ -39,11 +36,9 @@ public class PlaceDTO {
         placeDTO.setTitle(entity.getPlaceInfos().get(0).getTitle());
         placeDTO.setContents(entity.getPlaceInfos().get(0).getContents());
         placeDTO.setImageUrl(entity.getImageUrl());
-        placeDTO.setLocation(entity.getLocation());
+        placeDTO.setLocation(entity.getPlaceInfos().stream().findFirst().get().getLocation());
         placeDTO.setLatitude(entity.getLatitude());
         placeDTO.setLongitude(entity.getLongitude());
-        placeDTO.setGrade(entity.getGrade());
-        placeDTO.setWeight(entity.getWeight());
         placeDTO.setMediaId(entity.getMedia().getId());
         placeDTO.setMediaName(entity.getMedia().getName());
         placeDTO.setReviewCount(entity.getReviews().size());

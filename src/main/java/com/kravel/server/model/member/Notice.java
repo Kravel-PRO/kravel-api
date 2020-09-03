@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Notice extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notice_id")
     private long id;
 

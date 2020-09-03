@@ -32,7 +32,7 @@ public class MemberService {
         if (optionalMember.isPresent()) {
             throw new InvalidRequestException("🔥 error: login email is exist!");
         }
-
+        System.out.println("===================");
         Member member = Member.builder()
                 .loginEmail(signUpDTO.getLoginEmail())
                 .loginPw(passwordEncoder.encode(signUpDTO.getLoginPw()))
@@ -41,6 +41,7 @@ public class MemberService {
                 .gender(signUpDTO.getGender().toUpperCase())
                 .speech(signUpDTO.getSpeech().toUpperCase())
                 .build();
+        System.out.println("===================");
 
         System.out.println(member.getNickName());
         System.out.println(member.getNickName());

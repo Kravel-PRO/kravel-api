@@ -40,7 +40,7 @@ public class QInquire extends EntityPathBase<Inquire> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
-    public final StringPath subject = createString("subject");
+    public final StringPath title = createString("title");
 
     public QInquire(String variable) {
         this(Inquire.class, forVariable(variable), INITS);

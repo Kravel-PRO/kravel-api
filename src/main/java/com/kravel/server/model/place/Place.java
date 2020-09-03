@@ -20,17 +20,14 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class Place extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "place_id")
     private long id;
 
-    private String location;
     private String bus;
     private String subway;
     private double latitude;
     private double longitude;
-    private double grade = 0;
-    private double weight = 0;
 
     @Lob
     private String imageUrl;
@@ -62,18 +59,15 @@ public class Place extends BaseEntity {
     private List<Tag> tags = new ArrayList<>();
 
     @Builder
-    public Place(double latitude, double longitude, double grade, double weight, String imageUrl, PhotoFilter photoFilter, String subImageUrl) {
+    public Place(double latitude, double longitude, String imageUrl, PhotoFilter photoFilter, String subImageUrl) {
         this.latitude = latitude;
         this.longitude = longitude;
-        this.grade = grade;
-        this.weight = weight;
         this.imageUrl = imageUrl;
         this.photoFilter = photoFilter;
         this.subImageUrl = subImageUrl;
     }
 
     public Place(PlaceUpdateDTO placeUpdateDTO) {
-        this.location = placeUpdateDTO.getLocation();
         this.bus = placeUpdateDTO.getBus();
         this.subway = placeUpdateDTO.getSubway();
         this.latitude = placeUpdateDTO.getLatitude();

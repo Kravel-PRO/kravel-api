@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class ReviewLike extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_like_id")
     private long id;
 

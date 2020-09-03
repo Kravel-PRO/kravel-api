@@ -34,6 +34,8 @@ public class QPlaceInfo extends EntityPathBase<PlaceInfo> {
     //inherited
     public final StringPath lastModifiedBy = _super.lastModifiedBy;
 
+    public final StringPath location = createString("location");
+
     public final QPlace place;
 
     public final StringPath speech = createString("speech");

@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class PlaceCelebrity extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "place_celebrity_id")
     private long id;
 

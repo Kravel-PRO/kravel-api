@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Inquire extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "inquire_id")
     private long id;
 

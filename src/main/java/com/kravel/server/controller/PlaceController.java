@@ -10,6 +10,7 @@ import com.kravel.server.dto.update.PlaceUpdateDTO;
 import com.kravel.server.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -34,6 +35,7 @@ public class PlaceController {
                                                      @PageableDefault Pageable pageable,
                                                      Authentication authentication) throws Exception {
 
+        System.out.println(pageable.getOffset());
         log.info("🎉 GET /api/places");
 
         String speech = claimExtractor.getSpeech(authentication);

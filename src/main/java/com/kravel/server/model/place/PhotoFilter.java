@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity @Getter
 @NoArgsConstructor
 public class PhotoFilter extends BaseEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "photo_filter_id")
     private long id;
 

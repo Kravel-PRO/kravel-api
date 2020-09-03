@@ -89,20 +89,33 @@ public class PlaceQueryRepository {
 
     public Page<Place> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
 
-        QueryResults<Place> placeQueryResults = queryFactory.selectFrom(place)
+        List<Place> places = queryFactory.selectFrom(place)
                 .innerJoin(place.placeInfos, placeInfo).fetchJoin()
                 .leftJoin(place.reviews, review)
                 .where(
-                        longitudeBetween(latitude, height),
-                        longitudeBetween(longitude, width),
-                        placeInfo.speech.eq(speech)
+                        placeInfo.speech.eq(speech),
+                        latitudeBetween(latitude, height),
+                        longitudeBetween(longitude, width)
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(review.count().desc())
-                .fetchResults();
+//                .orderBy(review.count().desc())
+                .fetch();
 
-        return new PageImpl<>(placeQueryResults.getResults(), pageable, placeQueryResults.getTotal());
+        long placeCount = queryFactory.selectFrom(place)
+                .innerJoin(place.placeInfos, placeInfo).fetchJoin()
+                .leftJoin(place.reviews, review)
+                .where(
+                        placeInfo.speech.eq(speech),
+                        latitudeBetween(latitude, height),
+                        longitudeBetween(longitude, width)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+//                .orderBy(review.count().desc())
+                .fetchCount();
+
+        return new PageImpl<>(places, pageable, placeCount);
     }
 
     private BooleanExpression latitudeBetween(double latitude, double height) {
@@ -110,7 +123,7 @@ public class PlaceQueryRepository {
     }
 
     private BooleanExpression longitudeBetween(double longitude, double width) {
-        return longitude != 0 ? place.latitude.between(longitude - width, longitude + width) : null;
+        return longitude != 0 ? place.longitude.between(longitude - width, longitude + width) : null;
     }
 
     public Optional<Scrap> checkScrapState(long placeId, long memberId) throws Exception {

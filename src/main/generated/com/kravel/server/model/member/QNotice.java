@@ -33,7 +33,7 @@ public class QNotice extends EntityPathBase<Notice> {
 
     public final EnumPath<com.kravel.server.enums.NoticeCategory> noticeCategory = createEnum("noticeCategory", com.kravel.server.enums.NoticeCategory.class);
 
-    public final StringPath subject = createString("subject");
+    public final StringPath title = createString("title");
 
     public QNotice(String variable) {
         super(Notice.class, forVariable(variable));

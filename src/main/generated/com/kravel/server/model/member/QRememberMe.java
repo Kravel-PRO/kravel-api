@@ -19,11 +19,17 @@ public class QRememberMe extends EntityPathBase<RememberMe> {
 
     public static final QRememberMe rememberMe = new QRememberMe("rememberMe");
 
-    public final DateTimePath<java.util.Date> lastUsed = createDateTime("lastUsed", java.util.Date.class);
+    public final com.kravel.server.model.QBaseTimeEntity _super = new com.kravel.server.model.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
+
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath loginEmail = createString("loginEmail");
 
-    public final StringPath series = createString("series");
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final StringPath token = createString("token");
 

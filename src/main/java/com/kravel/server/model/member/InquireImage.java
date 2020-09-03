@@ -9,7 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class InquireImage extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "inquire_image_id")
     private long id;
 

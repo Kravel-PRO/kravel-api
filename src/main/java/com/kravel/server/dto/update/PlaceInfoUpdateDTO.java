@@ -9,4 +9,5 @@ public class PlaceInfoUpdateDTO {
     private  String speech;
     private String title;
     private String contents;
+    private String location;
 }

@@ -29,8 +29,6 @@ public class QPlace extends EntityPathBase<Place> {
     //inherited
     public final StringPath createdBy = _super.createdBy;
 
-    public final NumberPath<Double> grade = createNumber("grade", Double.class);
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath imageUrl = createString("imageUrl");
@@ -39,8 +37,6 @@ public class QPlace extends EntityPathBase<Place> {
     public final StringPath lastModifiedBy = _super.lastModifiedBy;
 
     public final NumberPath<Double> latitude = createNumber("latitude", Double.class);
-
-    public final StringPath location = createString("location");
 
     public final NumberPath<Double> longitude = createNumber("longitude", Double.class);
 
@@ -63,8 +59,6 @@ public class QPlace extends EntityPathBase<Place> {
     public final ListPath<Tag, QTag> tags = this.<Tag, QTag>createList("tags", Tag.class, QTag.class, PathInits.DIRECT2);
 
     public final StringPath useAt = createString("useAt");
-
-    public final NumberPath<Double> weight = createNumber("weight", Double.class);
 
     public QPlace(String variable) {
         this(Place.class, forVariable(variable), INITS);

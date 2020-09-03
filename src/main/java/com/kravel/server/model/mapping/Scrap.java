@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Scrap extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "scrap_id")
     private long id;
 
