@@ -35,3 +35,5 @@ out/
 aws.yml
 database.yml
 keys.yml
+
+src/main/generated
