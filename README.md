@@ -2,12 +2,12 @@
 2020 SK 관광 앱 공모전- K문화와 함께하는 색다른 한국여행
 
 ### Using Tech
-* Spring Boot(Spring Security, JWT, MyBatis)
+* Spring Boot(Spring Security, JWT, JPA)
 * MariaDB
 * AWS(EC2, RDS, EBS)
-* Docker
+* Docker / Kubernetes
 * ELK(Elastic Search, Kibana)
-* Swagger
+* Swagger2
 
 ### Database ERD
 ![image](etc/img/erd.png)
