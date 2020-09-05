@@ -118,11 +118,6 @@ public class ReviewService {
 
         review.saveImage(s3Uploader, file);
 
-//        Media media = savedPlace.getMedia();
-//        if (media.getId() > 0) {
-//            review.changeMedia(media);
-//        }
-
         return reviewRepository.save(review).getId();
     }
 

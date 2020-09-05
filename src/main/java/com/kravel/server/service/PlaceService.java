@@ -1,5 +1,6 @@
 package com.kravel.server.service;
 
+import com.kravel.server.dto.place.PlaceDetailDTO;
 import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.dto.place.PlaceMapDTO;
 import com.kravel.server.dto.place.ScrapDTO;
@@ -18,8 +19,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -33,14 +36,14 @@ public class PlaceService {
     private final ReviewQueryRepository reviewQueryRepository;
 
     @Transactional(readOnly = true)
-    public Page<PlaceMapDTO> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable, boolean reviewCount) throws Exception {
+    public Page<PlaceDTO> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable, boolean reviewCount) throws Exception {
 
         Page<Place> places = placeQueryRepository.findAllByLocation(latitude, longitude, height, width, speech, pageable);
 
-        Page<PlaceMapDTO> placeMapDTOs = (Page<PlaceMapDTO>) places.map(new Function<Place, PlaceMapDTO>() {
+        Page<PlaceDTO> placeMapDTOs = (Page<PlaceDTO>) places.map(new Function<Place, PlaceDTO>() {
             @Override
-            public PlaceMapDTO apply(Place source) {
-                return PlaceMapDTO.fromEntity(source);
+            public PlaceDTO apply(Place source) {
+                return PlaceDTO.fromEntity(source);
             }
         });
 
@@ -57,10 +60,10 @@ public class PlaceService {
         return placeMapDTOs;
     }
 
-    public PlaceDTO findPlaceById(long placeId, String speech) throws Exception {
+    public PlaceDetailDTO findPlaceById(long placeId, String speech) throws Exception {
 
         Place place = placeQueryRepository.findById(placeId, speech).orElseThrow(() -> new NotFoundException("🔥 error: is not exist place"));
-        return PlaceDTO.fromEntity(place);
+        return PlaceDetailDTO.fromEntity(place);
     }
 
     public long handlePlaceScrap(long placeId, long memberId, ScrapDTO scrapDTO) throws Exception {
@@ -93,5 +96,11 @@ public class PlaceService {
     public long savePlace(PlaceUpdateDTO placeUpdateDTO) throws Exception {
         Place place = new Place(placeUpdateDTO);
         return placeRepository.save(place).getId();
+    }
+
+    public List<PlaceMapDTO> findMapByLocation(double latitude, double longitude, double height, double width) throws Exception {
+        return placeQueryRepository.findMapByLocation(latitude, longitude, height, width).stream()
+                .map(PlaceMapDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 }

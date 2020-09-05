@@ -84,6 +84,17 @@ public class PlaceQueryRepository {
 //        return new PageImpl<>(placeQueryResults.getResults(), pageable, placeQueryResults.getTotal());
 //    }
 
+    public List<Place> findMapByLocation(double latitude, double longitude, double height, double width) throws Exception {
+        return queryFactory.selectFrom(place)
+                .innerJoin(place.placeInfos, placeInfo).fetchJoin()
+                .leftJoin(place.reviews, review)
+                .where(
+                        latitudeBetween(latitude, height),
+                        longitudeBetween(longitude, width)
+                )
+                .fetch();
+    }
+
     public Page<Place> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
 
         List<Place> places = queryFactory.selectFrom(place)
@@ -129,4 +140,6 @@ public class PlaceQueryRepository {
                         .and(scrap.place.id.eq(placeId)))
                 .fetchOne());
     }
+
+
 }
