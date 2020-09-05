@@ -6,6 +6,7 @@ import com.kravel.server.model.place.Place;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,9 +24,16 @@ public class PlaceRelatedCelebrityDTO {
         placeRelatedCelebrityDTO.setPlaceId(entity.getId());
         placeRelatedCelebrityDTO.setTitle(entity.getPlaceInfos().stream().filter(info -> info.getSpeech().equals("KOR")).findFirst().get().getTitle());
         placeRelatedCelebrityDTO.setImageUrl(entity.getImageUrl());
-        placeRelatedCelebrityDTO.setCelebrities(entity.getPlaceCelebrities().stream().map(placeCelebrity -> placeCelebrity.getCelebrity().getName()).collect(Collectors.toList()));
-        placeRelatedCelebrityDTO.setMediaName(Optional.of(entity).map(Place::getMedia).orElse(new Media()).getName());
-
+        placeRelatedCelebrityDTO.setCelebrities(Optional.ofNullable(entity.getPlaceCelebrities())
+                .orElse(new ArrayList<>())
+                .stream()
+                .map(placeCelebrity -> placeCelebrity.getCelebrity().getName())
+                .collect(Collectors.toList())
+        );
+        placeRelatedCelebrityDTO.setMediaName(Optional.ofNullable(entity.getMedia())
+                .orElse(new Media())
+                .getName()
+        );
         return placeRelatedCelebrityDTO;
     }
 }

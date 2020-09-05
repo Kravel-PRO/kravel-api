@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter @Setter
@@ -36,14 +37,17 @@ public class PlaceMapDTO {
         placeMapDTO.setLocation(entity.getPlaceInfos().stream().findFirst().get().getLocation());
         placeMapDTO.setLongitude(entity.getLongitude());
         placeMapDTO.setLatitude(entity.getLatitude());
-        placeMapDTO.setTags(entity.getTags().stream()
+        placeMapDTO.setTags(Optional.ofNullable(entity.getTags())
+                .orElse(new ArrayList<>())
+                .stream()
                 .map(Tag::getName)
                 .collect(Collectors.toList()));
-        placeMapDTO.setCelebrities(entity
-                .getPlaceCelebrities().stream()
+        placeMapDTO.setCelebrities(Optional.of(entity.getPlaceCelebrities())
+                .orElse(new ArrayList<>())
+                .stream()
                 .map(placeCelebrity -> CelebrityDTO.fromEntity(placeCelebrity.getCelebrity()))
-                .collect(Collectors.toList()));
-
+                .collect(Collectors.toList())
+        );
         return placeMapDTO;
     }
 }

@@ -1,12 +1,16 @@
 package com.kravel.server.dto.place;
 
 import com.kravel.server.dto.celebrity.CelebrityDTO;
+import com.kravel.server.model.media.Media;
 import com.kravel.server.model.place.Place;
 import com.kravel.server.model.place.Tag;
+import com.kravel.server.model.review.Review;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter @Setter
@@ -39,15 +43,30 @@ public class PlaceDTO {
         placeDTO.setLocation(entity.getPlaceInfos().stream().findFirst().get().getLocation());
         placeDTO.setLatitude(entity.getLatitude());
         placeDTO.setLongitude(entity.getLongitude());
-        placeDTO.setMediaId(entity.getMedia().getId());
-        placeDTO.setMediaName(entity.getMedia().getName());
-        placeDTO.setReviewCount(entity.getReviews().size());
-        placeDTO.setCelebrities(entity.getPlaceCelebrities().stream()
+        placeDTO.setMediaId(Optional.ofNullable(entity
+                .getMedia())
+                .orElse(new Media()).getId()
+        );
+        placeDTO.setMediaName(Optional.ofNullable(entity.getMedia())
+                .orElse(new Media()).getName()
+        );
+        placeDTO.setReviewCount(Optional.ofNullable(entity.getReviews())
+                .orElse(new ArrayList<>()).size()
+        );
+        placeDTO.setCelebrities(Optional.ofNullable(entity.getPlaceCelebrities())
+                .orElse(new ArrayList<>())
+                .stream()
                 .map(placeCelebrity -> CelebrityDTO.fromEntity(placeCelebrity.getCelebrity()))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()))
+        ;
         placeDTO.setBus(entity.getBus());
         placeDTO.setSubway(entity.getSubway());
-        placeDTO.setTags(entity.getTags().stream().map(Tag::getName).collect(Collectors.toList()));
+        placeDTO.setTags(Optional.ofNullable(entity.getTags())
+                .orElse(new ArrayList<>())
+                .stream()
+                .map(Tag::getName)
+                .collect(Collectors.toList())
+        );
         return placeDTO;
     }
 }

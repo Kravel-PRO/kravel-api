@@ -60,11 +60,12 @@ public class Place extends BaseEntity {
     private List<Tag> tags = new ArrayList<>();
 
     @Builder
-    public Place(double latitude, double longitude, String imageUrl, String subImageUrl) {
+    public Place(double latitude, double longitude, String imageUrl, String subImageUrl, String filterImageUrl) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.imageUrl = imageUrl;
         this.subImageUrl = subImageUrl;
+        this.filterImageUrl = filterImageUrl;
     }
 
     public Place(PlaceUpdateDTO placeUpdateDTO) {
@@ -76,5 +77,6 @@ public class Place extends BaseEntity {
         this.subImageUrl = placeUpdateDTO.getSubImageUrl();
         this.placeInfos = placeUpdateDTO.getPlaceInfos().stream().map(PlaceInfo::new).collect(Collectors.toList());
         this.tags = placeUpdateDTO.getTags().stream().map(Tag::new).collect(Collectors.toList());
+        this.filterImageUrl = placeUpdateDTO.getFilterImageUrl();
     }
 }

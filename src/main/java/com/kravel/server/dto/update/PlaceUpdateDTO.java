@@ -15,6 +15,7 @@ public class PlaceUpdateDTO {
     private double longitude;
     private String imageUrl;
     private String subImageUrl;
+    private String filterImageUrl;
 
     private List<PlaceInfoUpdateDTO> placeInfos;
     private List<TagDTO> tags;
