@@ -1,5 +1,6 @@
 package com.kravel.server.service;
 
+import com.kravel.server.dto.media.PlaceRelatedMediaDTO;
 import com.kravel.server.dto.place.PlaceDetailDTO;
 import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.dto.place.PlaceMapDTO;
@@ -9,6 +10,8 @@ import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.update.PlaceUpdateDTO;
 import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.mapping.ScrapRepository;
+import com.kravel.server.model.media.Media;
+import com.kravel.server.model.media.MediaRepository;
 import com.kravel.server.model.member.MemberRepository;
 import com.kravel.server.model.place.*;
 import com.kravel.server.model.review.ReviewQueryRepository;
@@ -32,6 +35,7 @@ public class PlaceService {
     private final PlaceQueryRepository placeQueryRepository;
     private final PlaceRepository placeRepository;
     private final MemberRepository memberRepository;
+    private final MediaRepository mediaRepository;
     private final ScrapRepository scrapRepository;
     private final ReviewQueryRepository reviewQueryRepository;
 
@@ -101,6 +105,18 @@ public class PlaceService {
     public List<PlaceMapDTO> findMapByLocation(double latitude, double longitude, double height, double width) throws Exception {
         return placeQueryRepository.findMapByLocation(latitude, longitude, height, width).stream()
                 .map(PlaceMapDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlaceRelatedMediaDTO> findAllByMedia(long mediaId, String speech, Pageable pageable) throws Exception {
+
+        Media media = mediaRepository.findById(mediaId).orElseThrow(() -> new NotFoundException("🔥 error: iS not exist media"));
+
+        List<Place> places = placeQueryRepository.findAllByMedia(mediaId, speech, pageable);
+        places.forEach(place -> place.findTagSpeech(speech));
+
+        return places.stream()
+                .map(PlaceRelatedMediaDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 }

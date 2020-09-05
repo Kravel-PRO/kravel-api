@@ -13,7 +13,7 @@ public class MediaDTO {
     private String title;
     private String imageUrl;
     private String contents;
-    private LocalDate year;
+    private String year;
 
     public static MediaDTO fromEntity(Media entity) {
         MediaDTO mediaDTO = new MediaDTO();
@@ -25,7 +25,7 @@ public class MediaDTO {
         mediaDTO.setContents(entity.getMediaInfos().stream()
                 .findFirst()
                 .orElse(new MediaInfo()).getContents());
-        mediaDTO.setYear(entity.getYear());
+        mediaDTO.setYear(entity.getYear().toString());
 
         return mediaDTO;
     }

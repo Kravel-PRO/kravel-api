@@ -25,7 +25,7 @@ public class PlaceDTO {
     private double longitude;
 
     private long reviewCount;
-    private List<String> tags = new ArrayList<>();
+    private String tags;
     private List<CelebrityDTO> celebrities;
 
     public static PlaceDTO fromEntity(Place entity) {
@@ -44,8 +44,9 @@ public class PlaceDTO {
         placeDTO.setTags(Optional.ofNullable(entity.getTags())
                 .orElse(new ArrayList<>())
                 .stream()
-                .map(Tag::getName)
-                .collect(Collectors.toList()));
+                .findFirst()
+                .orElse(new Tag()).getName()
+        );
         placeDTO.setCelebrities(Optional.of(entity.getPlaceCelebrities())
                 .orElse(new ArrayList<>())
                 .stream()

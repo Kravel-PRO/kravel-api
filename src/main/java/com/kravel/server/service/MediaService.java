@@ -38,17 +38,4 @@ public class MediaService {
 
         return MediaDTO.fromEntity(optionalMedia.get());
     }
-
-    public List<PlaceRelatedMediaDTO> findAllPlaceByMedia(long mediaId, String speech) throws Exception {
-
-        Optional<Media> optionalMedia = mediaRepository.findById(mediaId);
-        if (optionalMedia.isEmpty()) {
-            throw new NotFoundException("🔥 error: iS not exist media");
-        }
-
-        List<Place> places = placeQueryRepository.findAllByMedia(mediaId);
-        List<PlaceRelatedMediaDTO> placeRelatedMediaDTOs = places.stream().map(PlaceRelatedMediaDTO::fromEntity).collect(Collectors.toList());
-
-        return placeRelatedMediaDTOs;
-    }
 }

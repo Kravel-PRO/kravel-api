@@ -1,6 +1,7 @@
 package com.kravel.server.controller;
 
 import com.kravel.server.common.util.message.Message;
+import com.kravel.server.dto.media.PlaceRelatedMediaDTO;
 import com.kravel.server.dto.place.PlaceDetailDTO;
 import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
@@ -89,5 +90,15 @@ public class PlaceController {
         long placeId = placeService.savePlace(placeUpdateDTO);
         return ResponseEntity.ok().body(new Message(placeId));
 
+    }
+
+    @GetMapping("/api/medias/{mediaId}/places")
+    public ResponseEntity<Message> findAllByMedia(@PathVariable("mediaId") long mediaId,
+                                                  @PageableDefault Pageable pageable,
+                                                  Authentication authentication) throws Exception {
+
+        String speech = claimExtractor.getSpeech(authentication);
+        List<PlaceRelatedMediaDTO> result = placeService.findAllByMedia(mediaId, speech, pageable);
+        return ResponseEntity.ok(new Message(result));
     }
 }

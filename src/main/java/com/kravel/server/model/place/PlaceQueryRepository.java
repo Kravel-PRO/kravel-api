@@ -36,6 +36,7 @@ public class PlaceQueryRepository {
     QMedia media = QMedia.media;
     QScrap scrap = QScrap.scrap;
     QReview review = QReview.review;
+    QTag tag = QTag.tag;
 
     public Optional<Place> findById(long placeId, String speech) {
         return Optional.ofNullable(queryFactory.selectFrom(place)
@@ -53,10 +54,17 @@ public class PlaceQueryRepository {
                 .fetchOne());
     }
 
-    public List<Place> findAllByMedia(long mediaId) {
+    public List<Place> findAllByMedia(long mediaId, String speech, Pageable pageable) {
         return queryFactory.selectFrom(place)
-                .leftJoin(place.placeInfos, placeInfo)
-                .where(place.media.id.eq(mediaId))
+                .leftJoin(place.placeInfos, placeInfo).fetchJoin()
+                .leftJoin(place.tags, tag)
+                .where(
+                        place.media.id.eq(mediaId),
+                        placeInfo.speech.eq(speech),
+                        tag.speech.eq(speech)
+                        )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 

@@ -1,6 +1,6 @@
 package com.kravel.server.model.place;
 
-import com.kravel.server.dto.update.TagDTO;
+import com.kravel.server.dto.update.TagUpdateDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +28,8 @@ public class Tag {
         this.name = name;
     }
 
-    public Tag(TagDTO tagDTO) {
-        this.speech = tagDTO.getSpeech();
-        this.name = tagDTO.getName();
+    public Tag(TagUpdateDTO tagUpdateDTO) {
+        this.speech = tagUpdateDTO.getSpeech();
+        this.name = tagUpdateDTO.getName();
     }
 }

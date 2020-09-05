@@ -28,7 +28,7 @@ public class PlaceDetailDTO {
     private String bus;
     private String subway;
     private boolean scrap;
-    private List<String> tags;
+    private String tags;
 
     private long mediaId;
     private String mediaTitle;
@@ -74,8 +74,8 @@ public class PlaceDetailDTO {
         placeDetailDTO.setSubway(entity.getSubway());
         placeDetailDTO.setTags(Optional.ofNullable(entity.getTags())
                 .orElse(new ArrayList<>()).stream()
-                .map(Tag::getName)
-                .collect(Collectors.toList())
+                .findFirst()
+                .orElse(new Tag()).getName()
         );
         placeDetailDTO.setScrap(Optional.ofNullable(entity.getScraps())
                 .orElse(new ArrayList<>()).stream()

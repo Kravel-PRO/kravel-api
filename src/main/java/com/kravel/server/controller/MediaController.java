@@ -34,20 +34,7 @@ public class MediaController {
     public ResponseEntity<Message> findMediaById(@PathVariable("mediaId") long mediaId,
                                          Authentication authentication) throws Exception {
 
-        MediaDTO result = mediaService.findMediaInfoById(mediaId);
-        return ResponseEntity.ok(new Message(result));
-    }
-
-    @GetMapping("/api/medias/{mediaId}/places")
-    public ResponseEntity<Message> findAllPlaceByMedia(@PathVariable("mediaId") long mediaId,
-                                                 @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                 @RequestParam(value = "size", defaultValue = "6") int size,
-                                                 @RequestParam(value = "sort", defaultValue = "CREATE_DE") String sort,
-                                                 @RequestParam(value = "order", defaultValue = "DESC") String order,
-                                                 Authentication authentication) throws Exception {
-
-        String speech = claimExtractor.getSpeech(authentication);
-        List<PlaceRelatedMediaDTO> result = mediaService.findAllPlaceByMedia(mediaId, speech);
-        return ResponseEntity.ok(new Message(result));
+        MediaDTO mediaDTO = mediaService.findMediaInfoById(mediaId);
+        return ResponseEntity.ok(new Message(mediaDTO));
     }
 }

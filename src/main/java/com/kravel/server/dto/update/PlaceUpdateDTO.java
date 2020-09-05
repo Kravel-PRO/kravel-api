@@ -18,5 +18,5 @@ public class PlaceUpdateDTO {
     private String filterImageUrl;
 
     private List<PlaceInfoUpdateDTO> placeInfos;
-    private List<TagDTO> tags;
+    private List<TagUpdateDTO> tags;
 }
