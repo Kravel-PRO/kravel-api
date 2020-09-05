@@ -1,21 +1,25 @@
 package com.kravel.server.model.place;
 
+import com.kravel.server.common.OrderUtil;
 import com.kravel.server.model.celebrity.QCelebrity;
 import com.kravel.server.model.mapping.QPlaceCelebrity;
 import com.kravel.server.model.mapping.QScrap;
 import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.media.QMedia;
 import com.kravel.server.model.review.QReview;
-import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,7 +100,6 @@ public class PlaceQueryRepository {
     }
 
     public Page<Place> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
-
         List<Place> places = queryFactory.selectFrom(place)
                 .innerJoin(place.placeInfos, placeInfo).fetchJoin()
                 .leftJoin(place.reviews, review)
@@ -107,7 +110,7 @@ public class PlaceQueryRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-//                .orderBy(review.count().desc())
+                .orderBy(OrderUtil.byLatitude(latitude), OrderUtil.byLongitude(longitude))
                 .fetch();
 
         long placeCount = queryFactory.selectFrom(place)
@@ -120,7 +123,6 @@ public class PlaceQueryRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-//                .orderBy(review.count().desc())
                 .fetchCount();
 
         return new PageImpl<>(places, pageable, placeCount);
