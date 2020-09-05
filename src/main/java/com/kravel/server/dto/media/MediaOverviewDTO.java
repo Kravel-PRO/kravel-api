@@ -1,6 +1,7 @@
 package com.kravel.server.dto.media;
 
 import com.kravel.server.model.media.Media;
+import com.kravel.server.model.media.MediaInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,14 +9,16 @@ import lombok.Setter;
 public class MediaOverviewDTO {
 
     private long mediaId;
-    private String name;
+    private String title;
     private String imageUrl;
     private int year;
 
     public static MediaOverviewDTO fromEntity(Media entity) {
         MediaOverviewDTO mediaOverviewDTO = new MediaOverviewDTO();
         mediaOverviewDTO.setMediaId(entity.getId());
-        mediaOverviewDTO.setName(entity.getName());
+        mediaOverviewDTO.setTitle(entity.getMediaInfos().stream()
+                .findFirst()
+                .orElse(new MediaInfo()).getTitle());
         mediaOverviewDTO.setYear(entity.getYear().getYear());
         mediaOverviewDTO.setImageUrl(entity.getImageUrl());
 

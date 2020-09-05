@@ -20,17 +20,16 @@ public class Media extends BaseEntity {
     @Column(name = "media_id")
     private long id;
 
-    @Column(name = "mediaName")
-    private String name;
-
     @Lob
     private String imageUrl;
 
-    private String contents;
-
     @Column(name = "open_year")
     private LocalDate year;
-    private String useAt;
+
+    private String useAt = "Y";
+
+    @OneToMany(mappedBy = "media")
+    private List<MediaInfo> mediaInfos = new ArrayList<>();
 
     @OneToMany(mappedBy = "media")
     private List<CelebrityMedia> celebrityMedias = new ArrayList<>();
@@ -38,8 +37,5 @@ public class Media extends BaseEntity {
     @OneToMany(mappedBy = "media")
     private List<Review> reviews = new ArrayList<>();
 
-    public void changeMediaName(String mediaName) {
-        this.name = mediaName;
-    }
 
 }

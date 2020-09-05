@@ -14,10 +14,12 @@ public class CelebrityQueryFactory {
     private final JPAQueryFactory queryFactory;
 
     QCelebrity celebrity = QCelebrity.celebrity;
+    QCelebrityInfo celebrityInfo = QCelebrityInfo.celebrityInfo;
 
     public List<Celebrity> finaAllCelebrity(String search, Pageable pageable) {
         return queryFactory.selectFrom(celebrity)
-                .where(celebrity.name.like("%" + search + "%"))
+                .innerJoin(celebrity.celebrityInfos, celebrityInfo)
+                .where(celebrityInfo.name.like("%" + search + "%"))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

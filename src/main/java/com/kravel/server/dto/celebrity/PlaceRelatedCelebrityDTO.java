@@ -1,8 +1,11 @@
 package com.kravel.server.dto.celebrity;
 
+import com.kravel.server.model.celebrity.CelebrityInfo;
 import com.kravel.server.model.media.Media;
+import com.kravel.server.model.media.MediaInfo;
 import com.kravel.server.model.member.Member;
 import com.kravel.server.model.place.Place;
+import com.kravel.server.model.place.PlaceInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,23 +19,27 @@ public class PlaceRelatedCelebrityDTO {
     private long placeId;
     private String title;
     private String imageUrl;
-    private String mediaName;
+    private String mediaTitle;
     private List<String> celebrities;
 
     public static PlaceRelatedCelebrityDTO fromEntity(Place entity) {
         PlaceRelatedCelebrityDTO placeRelatedCelebrityDTO = new PlaceRelatedCelebrityDTO();
         placeRelatedCelebrityDTO.setPlaceId(entity.getId());
-        placeRelatedCelebrityDTO.setTitle(entity.getPlaceInfos().stream().filter(info -> info.getSpeech().equals("KOR")).findFirst().get().getTitle());
+        placeRelatedCelebrityDTO.setTitle(entity.getPlaceInfos().stream()
+                .findFirst()
+                .orElse(new PlaceInfo()).getTitle());
         placeRelatedCelebrityDTO.setImageUrl(entity.getImageUrl());
-        placeRelatedCelebrityDTO.setCelebrities(Optional.ofNullable(entity.getPlaceCelebrities())
-                .orElse(new ArrayList<>())
-                .stream()
-                .map(placeCelebrity -> placeCelebrity.getCelebrity().getName())
+        placeRelatedCelebrityDTO.setCelebrities(entity.getPlaceCelebrities().stream()
+                .map(placeCelebrity -> placeCelebrity.getCelebrity().getCelebrityInfos().stream()
+                        .findFirst()
+                        .orElse(new CelebrityInfo()).getName())
                 .collect(Collectors.toList())
         );
-        placeRelatedCelebrityDTO.setMediaName(Optional.ofNullable(entity.getMedia())
+        placeRelatedCelebrityDTO.setMediaTitle(Optional.ofNullable(entity.getMedia())
                 .orElse(new Media())
-                .getName()
+                .getMediaInfos().stream()
+                .findFirst()
+                .orElse(new MediaInfo()).getTitle()
         );
         return placeRelatedCelebrityDTO;
     }

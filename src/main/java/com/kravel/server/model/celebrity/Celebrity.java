@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -21,11 +22,11 @@ public class Celebrity extends BaseEntity {
     @Column(name = "celebrity_id")
     private long id;
 
-    @Column(name = "celebrityName")
-    private String name;
-
     @Lob
     private String imageUrl;
+
+    @OneToMany(mappedBy = "celebrity", cascade = CascadeType.ALL)
+    private List<CelebrityInfo> celebrityInfos = new ArrayList<>();
 
     @OneToMany(mappedBy = "celebrity")
     private List<CelebrityMedia> celebrityMedias = new ArrayList<>();
@@ -37,8 +38,7 @@ public class Celebrity extends BaseEntity {
     private List<PlaceCelebrity> placeCelebrities = new ArrayList<>();
 
     @Builder
-    public Celebrity(String name, String imageUrl) {
-        this.name = name;
+    public Celebrity(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 }

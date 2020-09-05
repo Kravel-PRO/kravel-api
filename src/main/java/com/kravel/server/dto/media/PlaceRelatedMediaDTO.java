@@ -1,5 +1,6 @@
 package com.kravel.server.dto.media;
 
+import com.kravel.server.model.celebrity.CelebrityInfo;
 import com.kravel.server.model.place.Place;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,9 +24,10 @@ public class PlaceRelatedMediaDTO {
         placeRelatedMediaDTO.setImageUrl(entity.getImageUrl());
         placeRelatedMediaDTO.setImageUrl(entity.getImageUrl());
         placeRelatedMediaDTO.setCelebrities(Optional.ofNullable(entity.getPlaceCelebrities())
-                .orElse(new ArrayList<>())
-                .stream()
-                .map(placeCelebrity -> placeCelebrity.getCelebrity().getName())
+                .orElse(new ArrayList<>()).stream()
+                .map(placeCelebrity -> placeCelebrity.getCelebrity().getCelebrityInfos().stream()
+                        .findFirst()
+                        .orElse(new CelebrityInfo()).getName())
                 .collect(Collectors.toList())
         );
         return placeRelatedMediaDTO;
