@@ -17,6 +17,7 @@ public class MediaInfo {
 
     private String title;
     private String contents;
+    private String speech;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "media_id")

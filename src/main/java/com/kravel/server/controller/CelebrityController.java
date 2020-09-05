@@ -31,11 +31,10 @@ public class CelebrityController {
     private final ClaimExtractor claimExtractor;
 
     @GetMapping("/api/celebrities")
-    public ResponseEntity<Message> findAllCelebrities(@RequestParam(value = "search", defaultValue = "") String search,
-                                      @PageableDefault Pageable pageable,
-                                      Authentication authentication) throws Exception {
+    public ResponseEntity<Message> findAllCelebrities(@PageableDefault Pageable pageable,
+                                                      Authentication authentication) throws Exception {
 
-        List<CelebrityDTO> celebrities = celebrityService.findAllCelebrities(search, pageable);
+        List<CelebrityDTO> celebrities = celebrityService.findAllCelebrities(pageable);
         return ResponseEntity.ok(new Message(celebrities));
     }
 

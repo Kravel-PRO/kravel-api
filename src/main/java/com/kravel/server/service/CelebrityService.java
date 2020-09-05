@@ -26,8 +26,8 @@ public class CelebrityService {
 
     private final PlaceQueryRepository placeQueryRepository;
 
-    public List<CelebrityDTO> findAllCelebrities(String search, Pageable pageable) throws Exception {
-        List<Celebrity> celebrities = celebrityQueryFactory.finaAllCelebrity(search, pageable);
+    public List<CelebrityDTO> findAllCelebrities(Pageable pageable) throws Exception {
+        List<Celebrity> celebrities = celebrityQueryFactory.finaAllCelebrity(pageable);
         return celebrities.stream().map(CelebrityDTO::fromEntity).collect(Collectors.toList());
     }
 

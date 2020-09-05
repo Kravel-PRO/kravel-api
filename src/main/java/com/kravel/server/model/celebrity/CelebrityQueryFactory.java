@@ -1,5 +1,8 @@
 package com.kravel.server.model.celebrity;
 
+import com.kravel.server.model.mapping.QCelebrityMedia;
+import com.kravel.server.model.media.QMedia;
+import com.kravel.server.model.media.QMediaInfo;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -16,12 +19,13 @@ public class CelebrityQueryFactory {
     QCelebrity celebrity = QCelebrity.celebrity;
     QCelebrityInfo celebrityInfo = QCelebrityInfo.celebrityInfo;
 
-    public List<Celebrity> finaAllCelebrity(String search, Pageable pageable) {
+    public List<Celebrity> finaAllCelebrity(Pageable pageable) {
         return queryFactory.selectFrom(celebrity)
                 .innerJoin(celebrity.celebrityInfos, celebrityInfo)
-                .where(celebrityInfo.name.like("%" + search + "%"))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
     }
+
+
 }
