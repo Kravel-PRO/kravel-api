@@ -34,6 +34,10 @@ public class Place extends BaseEntity {
 
     @Lob
     private String subImageUrl;
+
+    @Lob
+    private String filterImageUrl;
+
     private String useAt = "Y";
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,18 +56,14 @@ public class Place extends BaseEntity {
     @OneToMany(mappedBy = "place")
     private List<PlaceCelebrity> placeCelebrities = new ArrayList<>();
 
-    @OneToOne(mappedBy = "place")
-    private PhotoFilter photoFilter;
-
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Tag> tags = new ArrayList<>();
 
     @Builder
-    public Place(double latitude, double longitude, String imageUrl, PhotoFilter photoFilter, String subImageUrl) {
+    public Place(double latitude, double longitude, String imageUrl, String subImageUrl) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.imageUrl = imageUrl;
-        this.photoFilter = photoFilter;
         this.subImageUrl = subImageUrl;
     }
 
@@ -75,7 +75,6 @@ public class Place extends BaseEntity {
         this.imageUrl = placeUpdateDTO.getImageUrl();
         this.subImageUrl = placeUpdateDTO.getSubImageUrl();
         this.placeInfos = placeUpdateDTO.getPlaceInfos().stream().map(PlaceInfo::new).collect(Collectors.toList());
-        this.photoFilter = Optional.of(placeUpdateDTO.getPhotoFilter()).map(PhotoFilter::new).orElse(new PhotoFilter());
         this.tags = placeUpdateDTO.getTags().stream().map(Tag::new).collect(Collectors.toList());
     }
 }

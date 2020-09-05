@@ -1,7 +1,6 @@
 package com.kravel.server.controller;
 
 import com.kravel.server.common.util.message.Message;
-import com.kravel.server.dto.place.PhotoFilterDTO;
 import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.dto.place.PlaceMapDTO;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
@@ -10,7 +9,6 @@ import com.kravel.server.dto.update.PlaceUpdateDTO;
 import com.kravel.server.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -67,15 +65,6 @@ public class PlaceController {
         long scrapId = placeService.handlePlaceScrap(placeId, memberId, scrapDTO);
 
         return ResponseEntity.ok().body(new Message(scrapId));
-    }
-
-    @GetMapping("/api/places/{placeId}/photo-filter")
-    public ResponseEntity<Message> savePlaceInfo(@PathVariable("placeId") long placeId) throws Exception {
-
-        log.info("🎉 GET /api/places/{placeId}/photo-filter");
-        PhotoFilterDTO photoFilterDTO = placeService.findPhotoFilterByPlace(placeId);
-        return ResponseEntity.ok().body(new Message(photoFilterDTO));
-
     }
 
     @PostMapping("/api/places")

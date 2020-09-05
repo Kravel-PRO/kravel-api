@@ -32,7 +32,6 @@ public class PlaceQueryRepository {
     QMedia media = QMedia.media;
     QScrap scrap = QScrap.scrap;
     QReview review = QReview.review;
-    QPhotoFilter photoFilter = QPhotoFilter.photoFilter;
 
     public Optional<Place> findById(long placeId, String speech) {
         return Optional.ofNullable(queryFactory.selectFrom(place)
@@ -45,8 +44,6 @@ public class PlaceQueryRepository {
                 .leftJoin(placeCelebrity.celebrity, celebrity)
                     .fetchJoin()
                 .leftJoin(place.media, media)
-                    .fetchJoin()
-                .leftJoin(place.photoFilter, photoFilter)
                     .fetchJoin()
                 .where(place.id.eq(placeId))
                 .fetchOne());

@@ -1,6 +1,5 @@
 package com.kravel.server.service;
 
-import com.kravel.server.dto.place.PhotoFilterDTO;
 import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.dto.place.PlaceMapDTO;
 import com.kravel.server.dto.place.ScrapDTO;
@@ -15,12 +14,10 @@ import com.kravel.server.model.review.ReviewQueryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -34,7 +31,6 @@ public class PlaceService {
     private final MemberRepository memberRepository;
     private final ScrapRepository scrapRepository;
     private final ReviewQueryRepository reviewQueryRepository;
-    private final PhotoFilterQueryRepository photoFilterQueryRepository;
 
     @Transactional(readOnly = true)
     public Page<PlaceMapDTO> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable, boolean reviewCount) throws Exception {
@@ -97,10 +93,5 @@ public class PlaceService {
     public long savePlace(PlaceUpdateDTO placeUpdateDTO) throws Exception {
         Place place = new Place(placeUpdateDTO);
         return placeRepository.save(place).getId();
-    }
-
-    public PhotoFilterDTO findPhotoFilterByPlace(long placeId) {
-        PhotoFilter photoFilter = photoFilterQueryRepository.findPhotoFilterByPlace(placeId);
-        return PhotoFilterDTO.fromEntity(photoFilter);
     }
 }

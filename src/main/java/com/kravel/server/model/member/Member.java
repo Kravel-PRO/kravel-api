@@ -32,8 +32,8 @@ public class Member extends BaseTimeEntity {
     private String speech;
     private String useAt = "Y";
 
-    @OneToOne(mappedBy = "member")
-    private Review review;
+    @OneToMany(mappedBy = "member")
+    private List<Review> reviews;
 
     @OneToMany(mappedBy = "member")
     private List<ReviewLike> reviewLikes = new ArrayList<>();

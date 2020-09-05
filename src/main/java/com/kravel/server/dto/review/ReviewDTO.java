@@ -17,7 +17,6 @@ public class ReviewDTO {
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setReviewId(entity.getId());
         reviewDTO.setImageURl(entity.getImageUrl());
-        reviewDTO.setGrade(entity.getGrade());
 
         return reviewDTO;
     }

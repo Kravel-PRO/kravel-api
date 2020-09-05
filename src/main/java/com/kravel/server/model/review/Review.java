@@ -16,8 +16,7 @@ import javax.persistence.*;
 import java.io.IOException;
 import java.util.List;
 
-@Entity
-@Getter
+@Entity @Getter
 @NoArgsConstructor
 public class Review extends BaseTimeEntity {
 
@@ -26,8 +25,6 @@ public class Review extends BaseTimeEntity {
     @Column(name = "review_id")
     private long id;
 
-    private float grade;
-
     @Lob
     private String imageUrl;
 
@@ -35,7 +32,7 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "place_id")
     private Place place;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
