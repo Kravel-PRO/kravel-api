@@ -62,9 +62,6 @@ public class ReviewService {
                 return ReviewDTO.fromEntity(review);
             }
         });
-        if (reviews.isEmpty()) {
-            throw new NotFoundException("🔥 error: is not exist review");
-        }
 
         if (likeCount) {
             reviewDTOs.forEach(dto -> dto.setLikeCount(reviewLikeQueryRepository.findCountByReview(dto.getReviewId())));
@@ -94,6 +91,7 @@ public class ReviewService {
 
         return reviewDetailDTO;
     }
+
     public Page<ReviewDTO> findAllReviewByCelebrity(long celebrityId, Pageable pageable) throws Exception {
 
         Page<Review> reviews = reviewQueryRepository.findAllReviewByCelebrity(celebrityId, pageable);

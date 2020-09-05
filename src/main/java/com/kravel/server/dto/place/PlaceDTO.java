@@ -28,6 +28,7 @@ public class PlaceDTO {
     private double longitude;
     private String bus;
     private String subway;
+    private boolean scrap;
     private List<String> tags;
 
     private long mediaId;
@@ -77,6 +78,9 @@ public class PlaceDTO {
                 .map(Tag::getName)
                 .collect(Collectors.toList())
         );
+        placeDTO.setScrap(Optional.ofNullable(entity.getScraps())
+                .orElse(new ArrayList<>()).stream()
+                .findFirst().isPresent());
         return placeDTO;
     }
 }

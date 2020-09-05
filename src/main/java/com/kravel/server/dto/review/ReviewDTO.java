@@ -10,7 +10,6 @@ import lombok.Setter;
 public class ReviewDTO {
     private long reviewId;
     private String imageURl;
-    private double grade;
     private long likeCount;
 
     public static ReviewDTO fromEntity(Review entity) {
