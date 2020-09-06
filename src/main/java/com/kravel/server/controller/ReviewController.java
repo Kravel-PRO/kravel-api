@@ -107,4 +107,25 @@ public class ReviewController {
         Page<ReviewDTO> reviewDTOs = reviewService.findAllReviewByCelebrity(celebrityId, pageable);
         return ResponseEntity.ok(new Message(reviewDTOs));
     }
+
+
+    @GetMapping("/api/member/reviews")
+    public ResponseEntity<Message> findAllByMember(@PageableDefault Pageable pageable,
+                                                   @RequestParam(value = "likeCount", defaultValue = "false") boolean likeCount,
+                                                   Authentication authentication) throws Exception {
+
+        long memberId = claimExtractor.getMemberId(authentication);
+        Page<ReviewDTO> reviewDTOs = reviewService.findAllByMember(memberId, pageable, likeCount);
+        return ResponseEntity.ok(new Message(reviewDTOs));
+    }
+
+    @GetMapping("/api/member/reviews/likes")
+    public ResponseEntity<Message> findAllReviewLikeById(@PageableDefault Pageable pageable,
+                                                         @RequestParam(value = "likeCount", defaultValue = "false") boolean likeCount,
+                                                         Authentication authentication) throws Exception {
+
+        long memberId = claimExtractor.getMemberId(authentication);
+        Page<ReviewDTO> reviewDTOs = reviewService.findAllReviewLikeById(memberId, pageable, likeCount);
+        return ResponseEntity.ok(new Message(reviewDTOs));
+    }
 }

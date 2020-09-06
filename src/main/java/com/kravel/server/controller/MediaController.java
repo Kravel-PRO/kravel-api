@@ -23,11 +23,11 @@ public class MediaController {
     private final ClaimExtractor claimExtractor;
 
     @GetMapping("/api/medias")
-    public ResponseEntity<Message> findAllMedia(@PageableDefault Pageable pageable,
+    public ResponseEntity<Message> findAll(@PageableDefault Pageable pageable,
                                                 Authentication authentication) throws Exception {
 
-        List<MediaOverviewDTO> mediaListDTO = mediaService.findAllMedia(pageable);
-        return ResponseEntity.ok(new Message(mediaListDTO));
+        List<MediaOverviewDTO> mediaOverviewDTOs = mediaService.findAll(pageable);
+        return ResponseEntity.ok(new Message(mediaOverviewDTOs));
     }
 
     @GetMapping("/api/medias/{mediaId}")

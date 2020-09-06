@@ -1,8 +1,10 @@
 package com.kravel.server.controller;
 
 import com.kravel.server.auth.dto.SignUpDTO;
+import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.MemberDTO;
+import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.dto.update.MemberUpdateDTO;
 import com.kravel.server.service.MemberService;
 import com.kravel.server.common.util.exception.InvalidRequestException;
@@ -12,15 +14,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
+    private final ClaimExtractor claimExtractor;
 
     @GetMapping("/auth/state")
     public String getState() throws Exception {
@@ -54,8 +59,7 @@ public class MemberController {
                 break;
 
             default:
-                return ResponseEntity
-                        .status(HttpStatus.FORBIDDEN)
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new Message(
                             new InvalidRequestException("유효하지 않는 값입니다."),
                             req.getRequestURL().toString()
@@ -67,8 +71,18 @@ public class MemberController {
     }
 
     @DeleteMapping("/api/member/{loginEmail}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<Message> removeMember(@PathVariable("loginEmail") String loginEmail, @RequestBody MemberDTO memberDTO) throws Exception {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Message(memberService.removeMember(loginEmail, memberDTO)));
     }
+
+    @GetMapping("/api/member/scraps")
+    public ResponseEntity<Message> findAllScrapById(@PageableDefault Pageable pageable,
+                                                 Authentication authentication) throws Exception {
+
+        long memberId = claimExtractor.getMemberId(authentication);
+        Page<PlaceDTO> placeDTOs = memberService.findAllScrapById(memberId, pageable);
+
+        return ResponseEntity.ok(new Message(placeDTOs));
+    }
+
 }

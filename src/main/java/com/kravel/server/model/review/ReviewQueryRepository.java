@@ -1,8 +1,10 @@
 package com.kravel.server.model.review;
 
 import com.kravel.server.dto.media.MediaDTO;
+import com.kravel.server.model.mapping.QReviewLike;
 import com.kravel.server.model.media.Media;
 import com.kravel.server.model.media.QMedia;
+import com.kravel.server.model.member.QMember;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,8 @@ public class ReviewQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     QReview review = QReview.review;
-    QMedia media = QMedia.media;
+    QMember member = QMember.member;
+    QReviewLike reviewLike = QReviewLike.reviewLike;
 
     public Page<Review> findAllByPlace(long placeId, Pageable pageable) throws Exception {
         QueryResults<Review> reviewQueryResults = queryFactory.selectFrom(review)
@@ -54,5 +57,27 @@ public class ReviewQueryRepository {
                 .fetchResults();
 
         return new PageImpl<>(queryResults.getResults(), pageable, queryResults.getTotal());
+    }
+
+    public Page<Review> findAllByMember(long memberId, Pageable pageable) {
+        QueryResults<Review> queryResults = queryFactory.selectFrom(review)
+                .innerJoin(review.member, member)
+                .where(member.id.eq(memberId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+        return new PageImpl<>(queryResults.getResults(), pageable, queryResults.getTotal());
+    }
+
+    public Page<Review> findAllReviewLikeById(long memberId, Pageable pageable) {
+        QueryResults<Review> reviewQueryResults = queryFactory.selectFrom(review)
+                .innerJoin(review.reviewLikes, reviewLike)
+                .innerJoin(reviewLike.member, member)
+                .where(member.id.eq(memberId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
     }
 }

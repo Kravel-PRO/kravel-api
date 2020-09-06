@@ -1,5 +1,6 @@
 package com.kravel.server.service;
 
+import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.dto.media.PlaceRelatedMediaDTO;
 import com.kravel.server.dto.media.MediaDTO;
 import com.kravel.server.dto.media.MediaOverviewDTO;
@@ -24,18 +25,15 @@ public class MediaService {
     private final MediaRepository mediaRepository;
     private final PlaceQueryRepository placeQueryRepository;
 
-    public List<MediaOverviewDTO> findAllMedia(Pageable pageable) throws Exception {
+    public List<MediaOverviewDTO> findAll(Pageable pageable) throws Exception {
         Page<Media> mediaPage = mediaRepository.findAll(pageable);
         return mediaPage.stream().map(MediaOverviewDTO::fromEntity).collect(Collectors.toList());
     }
 
     public MediaDTO findMediaInfoById(long mediaId) throws Exception {
 
-        Optional<Media> optionalMedia = mediaRepository.findById(mediaId);
-        if (optionalMedia.isEmpty()) {
-            throw new NotFoundException("🔥 error: is not exist media information");
-        }
+        Media media = mediaRepository.findById(mediaId).orElseThrow(() -> new InvalidRequestException("🔥 error: is not exist media information"));
 
-        return MediaDTO.fromEntity(optionalMedia.get());
+        return MediaDTO.fromEntity(media);
     }
 }

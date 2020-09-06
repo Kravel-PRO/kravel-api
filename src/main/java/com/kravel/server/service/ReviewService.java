@@ -64,7 +64,9 @@ public class ReviewService {
         });
 
         if (likeCount) {
-            reviewDTOs.forEach(dto -> dto.setLikeCount(reviewLikeQueryRepository.findCountByReview(dto.getReviewId())));
+            for (var reviewDTO : reviewDTOs) {
+                reviewDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDTO.getReviewId()));
+            }
         }
 
         return reviewDTOs;
@@ -164,5 +166,31 @@ public class ReviewService {
                 return ReviewDTO.fromEntity(review);
             }
         });
+    }
+
+    public Page<ReviewDTO> findAllByMember(long memberId, Pageable pageable, boolean likeCount) {
+        Page<Review> reviews = reviewQueryRepository.findAllByMember(memberId, pageable);
+        return getReviewDTOS(likeCount, reviews);
+    }
+
+    public Page<ReviewDTO> findAllReviewLikeById(long memberId, Pageable pageable, boolean likeCount) {
+        Page<Review> reviews = reviewQueryRepository.findAllReviewLikeById(memberId, pageable);
+        return getReviewDTOS(likeCount, reviews);
+    }
+
+    private Page<ReviewDTO> getReviewDTOS(boolean likeCount, Page<Review> reviews) {
+        Page<ReviewDTO> reviewDTOs = reviews.map(new Function<Review, ReviewDTO>() {
+            @Override
+            public ReviewDTO apply(Review review) {
+                return ReviewDTO.fromEntity(review);
+            }
+        });
+        if (likeCount) {
+            for (var reviewDTO : reviewDTOs) {
+                reviewDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDTO.getReviewId()));
+            }
+        }
+
+        return reviewDTOs;
     }
 }

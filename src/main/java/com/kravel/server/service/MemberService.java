@@ -4,18 +4,23 @@ import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.MemberDTO;
 import com.kravel.server.common.util.exception.InvalidRequestException;
+import com.kravel.server.dto.place.PlaceDTO;
+import com.kravel.server.dto.place.PlaceDetailDTO;
 import com.kravel.server.dto.update.MemberUpdateDTO;
 import com.kravel.server.enums.RoleType;
 import com.kravel.server.model.member.Member;
 import com.kravel.server.model.member.MemberQueryRepository;
 import com.kravel.server.model.member.MemberRepository;
+import com.kravel.server.model.place.Place;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -78,5 +83,15 @@ public class MemberService {
         memberRepository.delete(savedMember);
 
         return 1;
+    }
+
+    public Page<PlaceDTO> findAllScrapById(long memberId, Pageable pageable) {
+        Page<Place> places = memberQueryRepository.findAllScrapById(memberId, pageable);
+        return places.map(new Function<Place, PlaceDTO>() {
+            @Override
+            public PlaceDTO apply(Place place) {
+                return PlaceDTO.fromEntity(place);
+            }
+        });
     }
 }

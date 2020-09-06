@@ -1,7 +1,10 @@
 package com.kravel.server.model.mapping;
 
+import com.kravel.server.model.review.Review;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -20,9 +23,5 @@ public class ReviewLikeQueryRepository {
 
     public long findCountByReview(long reviewId) {
         return queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId)).fetchCount();
-    }
-
-    public long findReviewLikeCountByCelebrity(long celebrityId) {
-        return queryFactory.selectFrom(reviewLike).where(reviewLike.review.celebrity.id.eq(celebrityId)).fetchCount();
     }
 }
