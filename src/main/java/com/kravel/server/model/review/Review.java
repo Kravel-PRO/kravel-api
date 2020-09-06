@@ -66,4 +66,5 @@ public class Review extends BaseTimeEntity {
         this.celebrityReviews = celebrities.stream().map(celebrity -> new CelebrityReview(celebrity, this)).collect(Collectors.toList());
         this.reviewLikes = reviewLikes;
     }
+
 }

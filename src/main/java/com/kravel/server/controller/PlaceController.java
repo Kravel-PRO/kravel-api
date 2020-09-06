@@ -31,8 +31,8 @@ public class PlaceController {
     @GetMapping("/api/places/map")
     public ResponseEntity<Message> findMapByLocation(@RequestParam(value = "latitude", defaultValue = "0") double latitude,
                                                      @RequestParam(value = "longitude", defaultValue = "0") double longitude,
-                                                     @RequestParam(value = "height", defaultValue = "0.25") double height,
-                                                     @RequestParam(value = "width", defaultValue = "0.25") double width,
+                                                     @RequestParam(value = "height", defaultValue = "0.025") double height,
+                                                     @RequestParam(value = "width", defaultValue = "0.03") double width,
                                                      Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/map");
@@ -43,8 +43,8 @@ public class PlaceController {
     @GetMapping("/api/places")
     public ResponseEntity<Message> findAllByLocation(@RequestParam(value = "latitude", defaultValue = "0") double latitude,
                                                      @RequestParam(value = "longitude", defaultValue = "0") double longitude,
-                                                     @RequestParam(value = "height", defaultValue = "0.25") double height,
-                                                     @RequestParam(value = "width", defaultValue = "0.25") double width,
+                                                     @RequestParam(value = "height", defaultValue = "0.025") double height,
+                                                     @RequestParam(value = "width", defaultValue = "0.03") double width,
                                                      @RequestParam(value = "review-count", defaultValue = "false") boolean reviewCount,
                                                      @PageableDefault Pageable pageable,
                                                      Authentication authentication) throws Exception {
@@ -75,7 +75,8 @@ public class PlaceController {
                                         Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/{placeId}/scrap");
-
+        System.out.println("scrapDTO tostirng: " +scrapDTO.toString());
+        System.out.println("placeId: " + placeId);
         long memberId = claimExtractor.getMemberId(authentication);
         long scrapId = placeService.handlePlaceScrap(placeId, memberId, scrapDTO);
 

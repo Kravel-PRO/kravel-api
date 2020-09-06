@@ -114,8 +114,9 @@ public class ReviewController {
                                                    Authentication authentication) throws Exception {
 
         long memberId = claimExtractor.getMemberId(authentication);
-        Page<ReviewDTO> reviewDTOs = reviewService.findAllByMember(memberId, pageable, likeCount);
-        return ResponseEntity.ok(new Message(reviewDTOs));
+        String speech = claimExtractor.getSpeech(authentication);
+        Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMember(memberId, speech, pageable, likeCount);
+        return ResponseEntity.ok(new Message(reviewDetailDTOs));
     }
 
     @GetMapping("/api/member/reviews/likes")
@@ -124,7 +125,7 @@ public class ReviewController {
                                                          Authentication authentication) throws Exception {
 
         long memberId = claimExtractor.getMemberId(authentication);
-        Page<ReviewDTO> reviewDTOs = reviewService.findAllReviewLikeById(memberId, pageable, likeCount);
-        return ResponseEntity.ok(new Message(reviewDTOs));
+        Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllReviewLikeById(memberId, pageable, likeCount);
+        return ResponseEntity.ok(new Message(reviewDetailDTOs));
     }
 }

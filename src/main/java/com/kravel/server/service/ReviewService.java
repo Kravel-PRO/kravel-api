@@ -176,29 +176,32 @@ public class ReviewService {
         });
     }
 
-    public Page<ReviewDTO> findAllByMember(long memberId, Pageable pageable, boolean likeCount) {
+    public Page<ReviewDetailDTO> findAllByMember(long memberId, String speech, Pageable pageable, boolean likeCount) {
         Page<Review> reviews = reviewQueryRepository.findAllByMember(memberId, pageable);
-        return getReviewDTOS(likeCount, reviews);
+        for (var review : reviews) {
+            review.getPlace().getPlaceInfos().stream().filter(placeInfo -> placeInfo.getSpeech().equals(speech)).collect(Collectors.toList());
+        }
+        return getReviewDetailDTOs(likeCount, reviews);
     }
 
-    public Page<ReviewDTO> findAllReviewLikeById(long memberId, Pageable pageable, boolean likeCount) {
+    public Page<ReviewDetailDTO> findAllReviewLikeById(long memberId, Pageable pageable, boolean likeCount) {
         Page<Review> reviews = reviewQueryRepository.findAllReviewLikeById(memberId, pageable);
-        return getReviewDTOS(likeCount, reviews);
+        return getReviewDetailDTOs(likeCount, reviews);
     }
 
-    private Page<ReviewDTO> getReviewDTOS(boolean likeCount, Page<Review> reviews) {
-        Page<ReviewDTO> reviewDTOs = reviews.map(new Function<Review, ReviewDTO>() {
+    private Page<ReviewDetailDTO> getReviewDetailDTOs(boolean likeCount, Page<Review> reviews) {
+        Page<ReviewDetailDTO> reviewDetailDTOs = reviews.map(new Function<Review, ReviewDetailDTO>() {
             @Override
-            public ReviewDTO apply(Review review) {
-                return ReviewDTO.fromEntity(review);
+            public ReviewDetailDTO apply(Review review) {
+                return ReviewDetailDTO.fromEntity(review);
             }
         });
         if (likeCount) {
-            for (var reviewDTO : reviewDTOs) {
-                reviewDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDTO.getReviewId()));
+            for (var reviewDetailDTO : reviewDetailDTOs) {
+                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
             }
         }
 
-        return reviewDTOs;
+        return reviewDetailDTOs;
     }
 }

@@ -72,6 +72,7 @@ public class PlaceService {
 
     public long handlePlaceScrap(long placeId, long memberId, ScrapDTO scrapDTO) throws Exception {
         Optional<Scrap> savedScrap = placeQueryRepository.checkScrapState(placeId, memberId);
+        System.out.println("saved is empty: " + savedScrap.isEmpty());
 
         if (scrapDTO.isScrap()) {
             if (savedScrap.isPresent()) {

@@ -7,6 +7,8 @@ import com.kravel.server.model.mapping.QReviewLike;
 import com.kravel.server.model.media.Media;
 import com.kravel.server.model.media.QMedia;
 import com.kravel.server.model.member.QMember;
+import com.kravel.server.model.place.QPlace;
+import com.kravel.server.model.place.QPlaceInfo;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +25,13 @@ public class ReviewQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
+    QPlace place = QPlace.place;
     QReview review = QReview.review;
     QMember member = QMember.member;
     QReviewLike reviewLike = QReviewLike.reviewLike;
     QCelebrity celebrity = QCelebrity.celebrity;
     QCelebrityReview celebrityReview = QCelebrityReview.celebrityReview;
+    QPlaceInfo placeInfo = QPlaceInfo.placeInfo;
 
     public Page<Review> findAllByPlace(long placeId, Pageable pageable) throws Exception {
         QueryResults<Review> reviewQueryResults = queryFactory.selectFrom(review)
