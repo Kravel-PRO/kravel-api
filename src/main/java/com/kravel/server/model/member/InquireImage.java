@@ -19,4 +19,8 @@ public class InquireImage extends BaseTimeEntity {
 
     @Lob
     private String imageUrl;
+
+    public void changeImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

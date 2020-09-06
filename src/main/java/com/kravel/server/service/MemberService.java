@@ -1,22 +1,23 @@
 package com.kravel.server.service;
 
 import com.kravel.server.auth.dto.SignUpDTO;
+import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.MemberDTO;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.dto.place.PlaceDetailDTO;
+import com.kravel.server.dto.update.InquireUploadDTO;
 import com.kravel.server.dto.update.MemberUpdateDTO;
 import com.kravel.server.enums.RoleType;
-import com.kravel.server.model.member.Member;
-import com.kravel.server.model.member.MemberQueryRepository;
-import com.kravel.server.model.member.MemberRepository;
+import com.kravel.server.model.member.*;
 import com.kravel.server.model.place.Place;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,9 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberQueryRepository memberQueryRepository;
+    private final InquireRepository inquireRepository;
+
+    private final S3Uploader s3Uploader;
 
     public long saveMember(SignUpDTO signUpDTO) throws Exception {
         Optional<Member> optionalMember = memberQueryRepository.findMemberByLoginEmail(signUpDTO.getLoginEmail());
@@ -61,20 +65,22 @@ public class MemberService {
         return memberDTOs;
     }
 
-    public long modifyMemberLoginPw(String loginEmail, MemberUpdateDTO memberUpdateDTO) throws Exception {
+    public MemberDTO modifyMemberLoginPw(String loginEmail, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
         Member savedMember = memberQueryRepository.findMemberByLoginEmail(loginEmail).orElseThrow(() -> new InvalidRequestException("🔥 error: is not correct password"));
 
         savedMember.changeLoginPw(passwordEncoder.encode(memberUpdateDTO.getLoginPw()));
-        return savedMember.getId();
+
+        return MemberDTO.fromEntity(savedMember);
     }
 
-    public long modifyMemberNickName(String loginEmail, MemberUpdateDTO memberUpdateDTO) throws Exception {
+    public MemberDTO modifyMemberNickName(String loginEmail, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
         Member savedMember = memberQueryRepository.findMemberByLoginEmail(loginEmail).orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
         savedMember.changeNickName(memberUpdateDTO.getNickName());
         savedMember.changeGender(memberUpdateDTO.getGender());
-        return savedMember.getId();
+
+        return MemberDTO.fromEntity(savedMember);
     }
 
     public int removeMember(String loginEmail, MemberDTO memberDTO) throws Exception {
@@ -93,5 +99,14 @@ public class MemberService {
                 return PlaceDTO.fromEntity(place);
             }
         });
+    }
+
+    public long saveInquire(List<MultipartFile> files, InquireUploadDTO inquireUploadDTO, long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("is not exist member"));
+        Inquire inquire = new Inquire(inquireUploadDTO, member);
+        inquire.saveImages(s3Uploader, files);
+
+        Inquire savedInquire = inquireRepository.save(inquire);
+        return savedInquire.getId();
     }
 }

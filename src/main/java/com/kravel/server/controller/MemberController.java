@@ -5,7 +5,9 @@ import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.MemberDTO;
 import com.kravel.server.dto.place.PlaceDTO;
+import com.kravel.server.dto.update.InquireUploadDTO;
 import com.kravel.server.dto.update.MemberUpdateDTO;
+import com.kravel.server.enums.InquireCategory;
 import com.kravel.server.service.MemberService;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -50,12 +54,12 @@ public class MemberController {
                                         @PathVariable("loginEmail") String loginEmail,
                                         @RequestParam("type") String type,
                                         @RequestBody MemberUpdateDTO memberUpdateDTO) throws Exception {
-        long memberId;
+        MemberDTO memberDTO;
         switch (type) {
-            case "password": memberId = memberService.modifyMemberLoginPw(loginEmail, memberUpdateDTO);
+            case "password": memberDTO = memberService.modifyMemberLoginPw(loginEmail, memberUpdateDTO);
                 break;
 
-            case "nickNameAndGender": memberId = memberService.modifyMemberNickName(loginEmail, memberUpdateDTO);
+            case "nickNameAndGender": memberDTO = memberService.modifyMemberNickName(loginEmail, memberUpdateDTO);
                 break;
 
             default:
@@ -67,7 +71,7 @@ public class MemberController {
                 );
         }
 
-        return ResponseEntity.ok(new Message(memberId));
+        return ResponseEntity.ok(new Message(memberDTO));
     }
 
     @DeleteMapping("/api/member/{loginEmail}")
@@ -83,6 +87,17 @@ public class MemberController {
         Page<PlaceDTO> placeDTOs = memberService.findAllScrapById(memberId, pageable);
 
         return ResponseEntity.ok(new Message(placeDTOs));
+    }
+
+    @PostMapping("/api/member/inquires")
+    public ResponseEntity<Message> saveInquires(@RequestPart("files") List<MultipartFile> files,
+                                                @RequestPart("inquire") InquireUploadDTO inquireUploadDTO,
+                                                Authentication authentication) throws Exception {
+
+        long memberId = claimExtractor.getMemberId(authentication);
+        long inquireId = memberService.saveInquire(files, inquireUploadDTO, memberId);
+
+        return ResponseEntity.ok(new Message(inquireId));
     }
 
 }

@@ -1,5 +1,5 @@
 package com.kravel.server.enums;
 
 public enum InquireCategory {
-    INFORM
+    PLACE_REPORT, QNA, DECLARE
 }
