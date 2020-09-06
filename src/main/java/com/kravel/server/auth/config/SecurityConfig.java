@@ -56,7 +56,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final HeaderTokenExtractor headerTokenExtractor;
 
-//    private final PersistentTokenRepository persistentTokenRepository;
+    private static final String[] AUTH_WHITELIST = {
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/auth/**",
+    };
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -94,16 +103,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-//    @Bean
-//    public PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices() {
-//        PersistentTokenBasedRememberMeServices persistenceTokenBasedservice = new PersistentTokenBasedRememberMeServices("uniqueAndSecret", userDetailsService(), persistentTokenRepository);
-//        persistenceTokenBasedservice.setParameter("auto_login");
-//        persistenceTokenBasedservice.setAlwaysRemember(false);
-//        persistenceTokenBasedservice.setCookieName("remember-me");
-//        persistenceTokenBasedservice.setTokenValiditySeconds(60 * 60 * 24 * 7);		// 토큰 유효시간 1주일 설정
-//        return persistenceTokenBasedservice;
-//    }
-
     protected FormLoginFilter formLoginFilter() throws Exception {
         FormLoginFilter filter = new FormLoginFilter("/auth/sign-in", formLoginAuthenticationSuccessHandler, formLoginFailureHandler);
         filter.setAuthenticationManager(super.authenticationManagerBean());
@@ -134,7 +133,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/auth/**", "/swagger-ui.html").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/api/**").hasRole(RoleType.USER.name())
                 .antMatchers("/admin/**").hasRole(RoleType.ADMIN.name())
                 .anyRequest().authenticated()
