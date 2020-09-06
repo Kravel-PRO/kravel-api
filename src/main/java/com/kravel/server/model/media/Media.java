@@ -28,10 +28,10 @@ public class Media extends BaseEntity {
 
     private String useAt = "Y";
 
-    @OneToMany(mappedBy = "media")
+    @OneToMany(mappedBy = "media", cascade = CascadeType.ALL)
     private List<MediaInfo> mediaInfos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "media")
+    @OneToMany(mappedBy = "media", cascade = CascadeType.ALL)
     private List<CelebrityMedia> celebrityMedias = new ArrayList<>();
 
     @OneToMany(mappedBy = "media")

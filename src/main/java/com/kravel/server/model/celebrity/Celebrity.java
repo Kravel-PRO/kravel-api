@@ -29,13 +29,13 @@ public class Celebrity extends BaseEntity {
     @OneToMany(mappedBy = "celebrity", cascade = CascadeType.ALL)
     private List<CelebrityInfo> celebrityInfos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "celebrity")
+    @OneToMany(mappedBy = "celebrity", cascade = CascadeType.ALL)
     private List<CelebrityMedia> celebrityMedias = new ArrayList<>();
 
-    @OneToMany(mappedBy = "celebrity")
+    @OneToMany(mappedBy = "celebrity", cascade = CascadeType.ALL)
     private List<CelebrityReview> celebrityReviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "celebrity")
+    @OneToMany(mappedBy = "celebrity", cascade = CascadeType.ALL)
     private List<PlaceCelebrity> placeCelebrities = new ArrayList<>();
 
     @Builder

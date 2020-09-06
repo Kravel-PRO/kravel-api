@@ -2,10 +2,12 @@ package com.kravel.server.model.place;
 
 import com.kravel.server.common.OrderUtil;
 import com.kravel.server.model.celebrity.QCelebrity;
+import com.kravel.server.model.celebrity.QCelebrityInfo;
 import com.kravel.server.model.mapping.QPlaceCelebrity;
 import com.kravel.server.model.mapping.QScrap;
 import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.media.QMedia;
+import com.kravel.server.model.media.QMediaInfo;
 import com.kravel.server.model.review.QReview;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -37,6 +39,8 @@ public class PlaceQueryRepository {
     QScrap scrap = QScrap.scrap;
     QReview review = QReview.review;
     QTag tag = QTag.tag;
+    QCelebrityInfo celebrityInfo = QCelebrityInfo.celebrityInfo;
+    QMediaInfo mediaInfo = QMediaInfo.mediaInfo;
 
     public Optional<Place> findById(long placeId, String speech) {
         return Optional.ofNullable(queryFactory.selectFrom(place)
@@ -48,8 +52,14 @@ public class PlaceQueryRepository {
                     .fetchJoin()
                 .leftJoin(placeCelebrity.celebrity, celebrity)
                     .fetchJoin()
+//                .leftJoin(celebrity.celebrityInfos, celebrityInfo)
+//                    .on(celebrityInfo.speech.eq(speech))
+//                    .fetchJoin()
                 .leftJoin(place.media, media)
                     .fetchJoin()
+//                .leftJoin(media.mediaInfos, mediaInfo)
+//                    .on(mediaInfo.speech.eq(speech))
+//                    .fetchJoin()
                 .where(place.id.eq(placeId))
                 .fetchOne());
     }
@@ -78,23 +88,6 @@ public class PlaceQueryRepository {
                         celebrity.id.eq(celebrityId)
                 ).fetch();
     }
-
-
-//    public Page<Place> findAll(String speech, Pageable pageable) throws Exception {
-//        QueryResults<Place> placeQueryResults = queryFactory.selectFrom(place)
-//                .innerJoin(place.placeInfos, placeInfo).fetchJoin()
-//                .leftJoin(place.reviews, review)
-//
-//                .where(placeInfo.speech.eq(speech))
-//
-//                .offset(pageable.getOffset())
-//                .limit(pageable.getPageSize())
-//
-//                .orderBy(review.count().desc())
-//                .fetchResults();
-//
-//        return new PageImpl<>(placeQueryResults.getResults(), pageable, placeQueryResults.getTotal());
-//    }
 
     public List<Place> findMapByLocation(double latitude, double longitude, double height, double width) throws Exception {
         return queryFactory.selectFrom(place)
@@ -150,6 +143,4 @@ public class PlaceQueryRepository {
                         .and(scrap.place.id.eq(placeId)))
                 .fetchOne());
     }
-
-
 }
