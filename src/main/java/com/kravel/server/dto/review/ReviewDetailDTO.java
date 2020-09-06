@@ -33,7 +33,7 @@ public class ReviewDetailDTO {
         ReviewDetailDTO reviewDetailDTO = new ReviewDetailDTO();
         reviewDetailDTO.setReviewId(entity.getId());
         reviewDetailDTO.setImageUrl(entity.getImageUrl());
-        reviewDetailDTO.setCreatedDate(entity.getCreatedDate().toString());
+        reviewDetailDTO.setCreatedDate(entity.getCreatedDate().toString().substring(0, 10));
         reviewDetailDTO.setLike(Optional.ofNullable(entity.getReviewLikes())
                 .orElse(new ArrayList<>()).stream()
                 .findFirst().isPresent());

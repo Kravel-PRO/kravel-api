@@ -111,7 +111,8 @@ public class PlaceQueryRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(OrderUtil.byLatitude(latitude), OrderUtil.byLongitude(longitude))
+                .orderBy(OrderUtil.byLongitude(longitude, pageable, "place"), OrderUtil.byLatitude(latitude, pageable, "place"))
+//                .orderBy(OrderUtil.sort(pageable, "place"))
                 .fetch();
 
         long placeCount = queryFactory.selectFrom(place)

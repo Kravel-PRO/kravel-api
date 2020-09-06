@@ -22,32 +22,44 @@ public class OrderUtil extends OrderSpecifier {
         super(order, target);
     }
 
-    public static OrderUtil byLatitude(double latitude) {
+    public static OrderUtil byLatitude(double latitude, Pageable pageable, String qclass) {
         QPlace place = QPlace.place;
         QReview review = QReview.review;
 
-        return latitude != 0
-                ? new OrderUtil(Order.ASC, place.latitude.abs().subtract(latitude))
-                : new OrderUtil(Order.DESC, review.count());
+        if (latitude != 0) {
+            return new OrderUtil(Order.ASC, place.latitude.abs().subtract(latitude));
+        } else if (pageable.getSort().isEmpty()) {
+            return new OrderUtil(Order.DESC, review.count());
+        } else {
+            return OrderUtil.sort(pageable, qclass);
+        }
     }
 
-    public static OrderUtil byLongitude(double longitude) {
+    public static OrderUtil byLongitude(double longitude, Pageable pageable, String qclass) {
         QPlace place = QPlace.place;
         QReview review = QReview.review;
 
-        return longitude != 0
-                ? new OrderUtil(Order.ASC, place.latitude.abs().subtract(longitude))
-                : new OrderUtil(Order.DESC, review.count());
+        if (longitude != 0) {
+            return new OrderUtil(Order.ASC, place.longitude.abs().subtract(longitude));
+        } else if (pageable.getSort().isEmpty()) {
+            return new OrderUtil(Order.DESC, review.count());
+        } else {
+            return OrderUtil.sort(pageable, qclass);
+        }
     }
 
-    private static OrderUtil sort(Pageable pageable, String qclass) {
-        PathBuilder orderByExpression = new PathBuilder(Object.class, qclass);
-        return new OrderUtil(pageable.getSort().stream().findFirst().get().isAscending()
-                ? Order.ASC : Order.DESC,
-                orderByExpression.get(pageable.getSort().stream()
-                        .findFirst()
-                        .get()
-                        .getProperty())
-        );
+    public static OrderUtil sort(Pageable pageable, String qclass) {
+        if (pageable.getSort().isEmpty()) {
+            return OrderUtil.DEFAULT;
+        } else {
+            boolean ascending = pageable.getSort().stream().findFirst().get().isAscending();
+            String property = pageable.getSort().stream().findFirst().get().getProperty();
+
+            PathBuilder orderByExpression = new PathBuilder(Object.class, qclass);
+            return new OrderUtil(ascending
+                    ? Order.ASC : Order.DESC,
+                    orderByExpression.get(property)
+            );
+        }
     }
 }
