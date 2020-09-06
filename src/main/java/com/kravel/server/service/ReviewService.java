@@ -7,6 +7,8 @@ import com.kravel.server.dto.review.ReviewOverviewDTO;
 import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
+import com.kravel.server.model.celebrity.Celebrity;
+import com.kravel.server.model.mapping.PlaceCelebrity;
 import com.kravel.server.model.mapping.ReviewLike;
 import com.kravel.server.model.mapping.ReviewLikeQueryRepository;
 import com.kravel.server.model.mapping.ReviewLikeRepository;
@@ -24,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -116,6 +119,11 @@ public class ReviewService {
         Review review = Review.builder()
                 .member(savedMember)
                 .place(savedPlace)
+                .media(Optional.ofNullable(savedPlace.getMedia()).orElse(null))
+                .celebrities(Optional.ofNullable(savedPlace.getPlaceCelebrities())
+                        .orElse(new ArrayList<>()).stream()
+                        .map(PlaceCelebrity::getCelebrity)
+                        .collect(Collectors.toList()))
                 .build();
 
         review.saveImage(s3Uploader, file);

@@ -72,7 +72,6 @@ public class ReviewController {
         return ResponseEntity.ok(new Message(reviewId));
     }
 
-
     @GetMapping("/api/medias/{mediaId}/reviews")
     public ResponseEntity<Message> findAllReviewsByMedia(@PathVariable("mediaId") long mediaId,
                                                          @PageableDefault Pageable pageable,

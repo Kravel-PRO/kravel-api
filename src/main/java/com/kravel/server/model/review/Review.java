@@ -3,6 +3,7 @@ package com.kravel.server.model.review;
 import com.kravel.server.common.S3Uploader;
 import com.kravel.server.model.BaseTimeEntity;
 import com.kravel.server.model.celebrity.Celebrity;
+import com.kravel.server.model.mapping.CelebrityReview;
 import com.kravel.server.model.mapping.ReviewLike;
 import com.kravel.server.model.media.Media;
 import com.kravel.server.model.member.Member;
@@ -14,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity @Getter
 @NoArgsConstructor
@@ -40,9 +43,8 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "media_id")
     private Media media;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "celebrity_id")
-    private Celebrity celebrity;
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    private List<CelebrityReview> celebrityReviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewLike> reviewLikes;
@@ -56,12 +58,12 @@ public class Review extends BaseTimeEntity {
     }
 
     @Builder
-    public Review(long id, Place place, Member member, Media media, Celebrity celebrity, List<ReviewLike> reviewLikes) {
+    public Review(long id, Place place, Member member, Media media, List<Celebrity> celebrities, List<ReviewLike> reviewLikes) {
         this.id = id;
         this.place = place;
         this.member = member;
         this.media = media;
-        this.celebrity = celebrity;
+        this.celebrityReviews = celebrities.stream().map(celebrity -> new CelebrityReview(celebrity, this)).collect(Collectors.toList());
         this.reviewLikes = reviewLikes;
     }
 }

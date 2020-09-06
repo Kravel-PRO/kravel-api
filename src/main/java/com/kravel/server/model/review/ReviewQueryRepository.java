@@ -1,6 +1,8 @@
 package com.kravel.server.model.review;
 
 import com.kravel.server.dto.media.MediaDTO;
+import com.kravel.server.model.celebrity.QCelebrity;
+import com.kravel.server.model.mapping.QCelebrityReview;
 import com.kravel.server.model.mapping.QReviewLike;
 import com.kravel.server.model.media.Media;
 import com.kravel.server.model.media.QMedia;
@@ -24,6 +26,8 @@ public class ReviewQueryRepository {
     QReview review = QReview.review;
     QMember member = QMember.member;
     QReviewLike reviewLike = QReviewLike.reviewLike;
+    QCelebrity celebrity = QCelebrity.celebrity;
+    QCelebrityReview celebrityReview = QCelebrityReview.celebrityReview;
 
     public Page<Review> findAllByPlace(long placeId, Pageable pageable) throws Exception {
         QueryResults<Review> reviewQueryResults = queryFactory.selectFrom(review)
@@ -43,7 +47,9 @@ public class ReviewQueryRepository {
 
     public Page<Review> findAllReviewByCelebrity(long celebrityId, Pageable pageable) throws Exception {
         QueryResults<Review> reviewQueryResults = queryFactory.selectFrom(review)
-                .where(review.celebrity.id.eq(celebrityId))
+                .innerJoin(review.celebrityReviews, celebrityReview)
+                .innerJoin(celebrityReview.celebrity, celebrity)
+                .where(celebrity.id.eq(celebrityId))
                 .fetchResults();
 
         return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
