@@ -1,5 +1,8 @@
 package com.kravel.server.dto.review;
 
+import com.kravel.server.dto.place.PlaceDTO;
+import com.kravel.server.model.place.Place;
+import com.kravel.server.model.place.PlaceInfo;
 import com.kravel.server.model.review.Review;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +11,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Getter @Setter
@@ -19,6 +23,7 @@ public class ReviewDetailDTO {
     private long likeCount;
     private boolean like;
     private String createdDate;
+    private String placeTitle;
 
 
     @Builder
@@ -37,6 +42,7 @@ public class ReviewDetailDTO {
         reviewDetailDTO.setLike(Optional.ofNullable(entity.getReviewLikes())
                 .orElse(new ArrayList<>()).stream()
                 .findFirst().isPresent());
+        reviewDetailDTO.setPlaceTitle(entity.getPlace().getPlaceInfos().stream().findFirst().orElse(new PlaceInfo()).getTitle());
         return reviewDetailDTO;
     }
 }

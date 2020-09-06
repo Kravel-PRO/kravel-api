@@ -31,10 +31,12 @@ public class MediaController {
     }
 
     @GetMapping("/api/medias/{mediaId}")
-    public ResponseEntity<Message> findMediaById(@PathVariable("mediaId") long mediaId,
+    public ResponseEntity<Message> findById(@PathVariable("mediaId") long mediaId,
                                          Authentication authentication) throws Exception {
 
-        MediaDTO mediaDTO = mediaService.findMediaInfoById(mediaId);
+        String speech = claimExtractor.getSpeech(authentication);
+
+        MediaDTO mediaDTO = mediaService.findById(mediaId, speech);
         return ResponseEntity.ok(new Message(mediaDTO));
     }
 }

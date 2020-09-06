@@ -2,6 +2,7 @@ package com.kravel.server.model.media;
 
 import com.kravel.server.model.BaseEntity;
 import com.kravel.server.model.mapping.CelebrityMedia;
+import com.kravel.server.model.place.Place;
 import com.kravel.server.model.review.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +38,6 @@ public class Media extends BaseEntity {
     @OneToMany(mappedBy = "media")
     private List<Review> reviews = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "media")
+    private List<Place> places = new ArrayList<>();
 }

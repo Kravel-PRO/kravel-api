@@ -65,27 +65,27 @@ public class MemberService {
         return memberDTOs;
     }
 
-    public MemberDTO modifyMemberLoginPw(String loginEmail, MemberUpdateDTO memberUpdateDTO) throws Exception {
+    public MemberDTO modifyMemberLoginPw(long memberId, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
-        Member savedMember = memberQueryRepository.findMemberByLoginEmail(loginEmail).orElseThrow(() -> new InvalidRequestException("🔥 error: is not correct password"));
-
+        Member savedMember = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("🔥 error: is not correct password"));
         savedMember.changeLoginPw(passwordEncoder.encode(memberUpdateDTO.getLoginPw()));
 
         return MemberDTO.fromEntity(savedMember);
     }
 
-    public MemberDTO modifyMemberNickName(String loginEmail, MemberUpdateDTO memberUpdateDTO) throws Exception {
+    public MemberDTO modifyMemberNickName(long memberId, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
-        Member savedMember = memberQueryRepository.findMemberByLoginEmail(loginEmail).orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
+        Member savedMember = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
+
         savedMember.changeNickName(memberUpdateDTO.getNickName());
         savedMember.changeGender(memberUpdateDTO.getGender());
 
         return MemberDTO.fromEntity(savedMember);
     }
 
-    public int removeMember(String loginEmail, MemberDTO memberDTO) throws Exception {
+    public int removeMember(long memberId, MemberDTO memberDTO) throws Exception {
 
-        Member savedMember = memberQueryRepository.findMemberByLoginEmail(loginEmail).orElseThrow(() -> new InvalidRequestException("🔥 error: is not correct password"));;
+        Member savedMember = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("🔥 error: is not correct password"));;
         memberRepository.delete(savedMember);
 
         return 1;

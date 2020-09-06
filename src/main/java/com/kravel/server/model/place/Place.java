@@ -80,6 +80,10 @@ public class Place extends BaseEntity {
         this.filterImageUrl = placeUpdateDTO.getFilterImageUrl();
     }
 
+    public void changePlaceInfo(List<PlaceInfo> placeInfos) {
+        this.placeInfos = placeInfos;
+    }
+
     public void findTagSpeech(String speech) {
         this.tags = this.tags.stream().filter(tag -> tag.getSpeech().equals(speech)).collect(Collectors.toList());
     }

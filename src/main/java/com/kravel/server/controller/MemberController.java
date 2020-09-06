@@ -49,17 +49,19 @@ public class MemberController {
         return ResponseEntity.ok(new Message(memberPage));
     }
 
-    @PutMapping("/api/member/{loginEmail}")
+    @PutMapping("/api/member")
     public ResponseEntity<Message> modifyMember(HttpServletRequest req,
-                                        @PathVariable("loginEmail") String loginEmail,
                                         @RequestParam("type") String type,
-                                        @RequestBody MemberUpdateDTO memberUpdateDTO) throws Exception {
+                                        @RequestBody MemberUpdateDTO memberUpdateDTO,
+                                                Authentication authentication) throws Exception {
+
+        long memberId = claimExtractor.getMemberId(authentication);
         MemberDTO memberDTO;
         switch (type) {
-            case "password": memberDTO = memberService.modifyMemberLoginPw(loginEmail, memberUpdateDTO);
+            case "password": memberDTO = memberService.modifyMemberLoginPw(memberId, memberUpdateDTO);
                 break;
 
-            case "nickNameAndGender": memberDTO = memberService.modifyMemberNickName(loginEmail, memberUpdateDTO);
+            case "nickNameAndGender": memberDTO = memberService.modifyMemberNickName(memberId, memberUpdateDTO);
                 break;
 
             default:
@@ -74,9 +76,13 @@ public class MemberController {
         return ResponseEntity.ok(new Message(memberDTO));
     }
 
-    @DeleteMapping("/api/member/{loginEmail}")
-    public ResponseEntity<Message> removeMember(@PathVariable("loginEmail") String loginEmail, @RequestBody MemberDTO memberDTO) throws Exception {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Message(memberService.removeMember(loginEmail, memberDTO)));
+    @DeleteMapping("/api/member")
+    public ResponseEntity<Message> removeMember(@PathVariable("loginEmail") String loginEmail,
+                                                @RequestBody MemberDTO memberDTO,
+                                                Authentication authentication) throws Exception {
+
+        long memberId = claimExtractor.getMemberId(authentication);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Message(memberService.removeMember(memberId, memberDTO)));
     }
 
     @GetMapping("/api/member/scraps")

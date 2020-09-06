@@ -6,6 +6,7 @@ import com.kravel.server.dto.media.MediaDTO;
 import com.kravel.server.dto.media.MediaOverviewDTO;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.model.media.Media;
+import com.kravel.server.model.media.MediaQueryRepository;
 import com.kravel.server.model.media.MediaRepository;
 import com.kravel.server.model.place.Place;
 import com.kravel.server.model.place.PlaceQueryRepository;
@@ -23,16 +24,17 @@ import java.util.stream.Collectors;
 public class MediaService {
 
     private final MediaRepository mediaRepository;
-    private final PlaceQueryRepository placeQueryRepository;
+    private final MediaQueryRepository mediaQueryRepository;
 
     public List<MediaOverviewDTO> findAll(Pageable pageable) throws Exception {
         Page<Media> mediaPage = mediaRepository.findAll(pageable);
         return mediaPage.stream().map(MediaOverviewDTO::fromEntity).collect(Collectors.toList());
     }
 
-    public MediaDTO findMediaInfoById(long mediaId) throws Exception {
+    public MediaDTO findById(long mediaId, String speech) throws Exception {
 
-        Media media = mediaRepository.findById(mediaId).orElseThrow(() -> new InvalidRequestException("🔥 error: is not exist media information"));
+        Media media = mediaQueryRepository.findById(mediaId, speech)
+                .orElseThrow(() -> new InvalidRequestException("🔥 error: is not exist media information"));
 
         return MediaDTO.fromEntity(media);
     }

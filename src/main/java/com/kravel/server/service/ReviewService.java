@@ -16,6 +16,7 @@ import com.kravel.server.model.media.Media;
 import com.kravel.server.model.member.Member;
 import com.kravel.server.model.member.MemberRepository;
 import com.kravel.server.model.place.Place;
+import com.kravel.server.model.place.PlaceInfo;
 import com.kravel.server.model.place.PlaceRepository;
 import com.kravel.server.model.review.Review;
 import com.kravel.server.model.review.ReviewQueryRepository;
@@ -179,8 +180,18 @@ public class ReviewService {
     public Page<ReviewDetailDTO> findAllByMember(long memberId, String speech, Pageable pageable, boolean likeCount) {
         Page<Review> reviews = reviewQueryRepository.findAllByMember(memberId, pageable);
         for (var review : reviews) {
-            review.getPlace().getPlaceInfos().stream().filter(placeInfo -> placeInfo.getSpeech().equals(speech)).collect(Collectors.toList());
+            PlaceInfo placeInfo = review.getPlace().getPlaceInfos().stream()
+                    .filter(info -> info
+                            .getSpeech()
+                            .equals(speech))
+                    .findFirst()
+                    .orElseThrow(() -> new InvalidRequestException("is not exist place info"));
+
+            List<PlaceInfo> placeInfos = new ArrayList<>();
+            placeInfos.add(placeInfo);
+            review.getPlace().changePlaceInfo(placeInfos);
         }
+
         return getReviewDetailDTOs(likeCount, reviews);
     }
 
