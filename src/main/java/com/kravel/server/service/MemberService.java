@@ -103,10 +103,10 @@ public class MemberService {
         });
     }
 
-    public long saveInquire(List<MultipartFile> files, InquireUploadDTO inquireUploadDTO, long memberId) {
+    public long saveInquire(InquireUploadDTO inquireUploadDTO, long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("is not exist member"));
         Inquire inquire = new Inquire(inquireUploadDTO, member);
-        inquire.saveImages(s3Uploader, files);
+        inquire.saveImages(s3Uploader, inquireUploadDTO.getFiles());
 
         Inquire savedInquire = inquireRepository.save(inquire);
         return savedInquire.getId();

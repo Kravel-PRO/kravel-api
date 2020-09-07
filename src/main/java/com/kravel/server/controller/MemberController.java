@@ -104,12 +104,11 @@ public class MemberController {
     }
 
     @PostMapping("/api/member/inquires")
-    public ResponseEntity<Message> saveInquires(@RequestPart("files") List<MultipartFile> files,
-                                                @RequestPart("inquire") InquireUploadDTO inquireUploadDTO,
+    public ResponseEntity<Message> saveInquires(@ModelAttribute InquireUploadDTO inquireUploadDTO,
                                                 Authentication authentication) throws Exception {
 
         long memberId = claimExtractor.getMemberId(authentication);
-        long inquireId = memberService.saveInquire(files, inquireUploadDTO, memberId);
+        long inquireId = memberService.saveInquire(inquireUploadDTO, memberId);
 
         return ResponseEntity.ok(new Message(inquireId));
     }
