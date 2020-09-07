@@ -69,6 +69,7 @@ public class MemberService {
 
         Member savedMember = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("🔥 error: is not correct password"));
         savedMember.changeLoginPw(passwordEncoder.encode(memberUpdateDTO.getLoginPw()));
+        memberRepository.save(savedMember);
 
         return MemberDTO.fromEntity(savedMember);
     }
@@ -79,6 +80,7 @@ public class MemberService {
 
         savedMember.changeNickName(memberUpdateDTO.getNickName());
         savedMember.changeGender(memberUpdateDTO.getGender());
+        memberRepository.save(savedMember);
 
         return MemberDTO.fromEntity(savedMember);
     }
@@ -108,5 +110,10 @@ public class MemberService {
 
         Inquire savedInquire = inquireRepository.save(inquire);
         return savedInquire.getId();
+    }
+
+    public MemberDTO findById(long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("🔥error: is not exist member"));
+        return MemberDTO.fromEntity(member);
     }
 }

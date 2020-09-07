@@ -64,15 +64,16 @@ public class PlaceService {
         return placeMapDTOs;
     }
 
-    public PlaceDetailDTO findPlaceById(long placeId, String speech) throws Exception {
+    public PlaceDetailDTO findPlaceById(long placeId, String speech, long memberId) throws Exception {
 
         Place place = placeQueryRepository.findById(placeId, speech).orElseThrow(() -> new NotFoundException("🔥 error: is not exist place"));
-        return PlaceDetailDTO.fromEntity(place);
+        PlaceDetailDTO placeDetailDTO = PlaceDetailDTO.fromEntity(place);
+        placeDetailDTO.setScrap(placeQueryRepository.checkScrapState(placeId, memberId));
+        return placeDetailDTO;
     }
 
     public long handlePlaceScrap(long placeId, long memberId, ScrapDTO scrapDTO) throws Exception {
-        Optional<Scrap> savedScrap = placeQueryRepository.checkScrapState(placeId, memberId);
-        System.out.println("saved is empty: " + savedScrap.isEmpty());
+        Optional<Scrap> savedScrap = placeQueryRepository.findScrapByPlaceAndMember(placeId, memberId);
 
         if (scrapDTO.isScrap()) {
             if (savedScrap.isPresent()) {

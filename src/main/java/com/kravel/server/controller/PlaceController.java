@@ -12,7 +12,6 @@ import com.kravel.server.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -65,8 +64,9 @@ public class PlaceController {
         log.info("🎉 GET /api/places/{placeId}");
 
         String speech = claimExtractor.getSpeech(authentication);
+        long memberId = claimExtractor.getMemberId(authentication);
 
-        PlaceDetailDTO placeDetailDTO = placeService.findPlaceById(placeId, speech);
+        PlaceDetailDTO placeDetailDTO = placeService.findPlaceById(placeId, speech, memberId);
         return ResponseEntity.ok().body(new Message(placeDetailDTO));
     }
 

@@ -138,7 +138,14 @@ public class PlaceQueryRepository {
         return longitude != 0 ? place.longitude.between(longitude - width, longitude + width) : null;
     }
 
-    public Optional<Scrap> checkScrapState(long placeId, long memberId) throws Exception {
+    public boolean checkScrapState(long placeId, long memberId) throws Exception {
+        return Optional.ofNullable(queryFactory.selectFrom(scrap)
+                .where(scrap.member.id.eq(memberId)
+                        .and(scrap.place.id.eq(placeId)))
+                .fetchOne()).isPresent();
+    }
+
+    public Optional<Scrap> findScrapByPlaceAndMember(long placeId, long memberId) throws Exception {
         return Optional.ofNullable(queryFactory.selectFrom(scrap)
                 .where(scrap.member.id.eq(memberId)
                         .and(scrap.place.id.eq(placeId)))

@@ -77,9 +77,6 @@ public class PlaceDetailDTO {
                 .findFirst()
                 .orElse(new Tag()).getName()
         );
-        placeDetailDTO.setScrap(Optional.ofNullable(entity.getScraps())
-                .orElse(new ArrayList<>()).stream()
-                .findFirst().isPresent());
         return placeDetailDTO;
     }
 }

@@ -43,6 +43,14 @@ public class MemberController {
         return ResponseEntity.ok(new Message(memberId));
     }
 
+    @GetMapping("/api/members/me")
+    public ResponseEntity<Message> findById(Authentication authentication) throws Exception {
+        long memberId = claimExtractor.getMemberId(authentication);
+
+        MemberDTO memberDTO = memberService.findById(memberId);
+        return ResponseEntity.ok(new Message(memberDTO));
+    }
+
     @GetMapping("/admin/members")
     public ResponseEntity<Message> findAllMember(@PageableDefault Pageable pageable) throws Exception {
         Page<MemberDTO> memberPage = memberService.findAllMember(pageable);
