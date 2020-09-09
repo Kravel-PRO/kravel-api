@@ -82,13 +82,13 @@ public class ReviewController {
         return ResponseEntity.ok(new Message(reviewOverviewDTOs));
     }
 
-    @PostMapping("/api/places/{placeId}/reviews/{reviewId}")
+    @PostMapping("/api/places/{placeId}/reviews/{reviewId}/likes")
     public ResponseEntity<Message> handleReviewLike(@PathVariable("placeId") long placeId,
                                             @PathVariable("reviewId") long reviewId,
                                             @RequestBody ReviewLikeDTO reviewLikeDTO,
                                             Authentication authentication) throws Exception{
 
-        log.info("🎉 GET /api/places/{placeId}/reviews/{reviewId}");
+        log.info("🎉 GET /api/places/{placeId}/reviews/{reviewId}/likes");
 
         Map<String, Object> param = new HashMap<String, Object>();
 

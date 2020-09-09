@@ -140,12 +140,8 @@ public class ReviewService {
                 throw new InvalidRequestException("🔥 error: like is already exist");
             }
 
-            Member member = memberRepository
-                    .findById(memberId)
-                    .orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
-            Review review = reviewRepository
-                    .findById(reviewId)
-                    .orElseThrow(() -> new NotFoundException("🔥 error: is not exist review"));
+            Member member = Member.builder().id(memberId).build();
+            Review review = Review.builder().id(reviewId).build();
 
             ReviewLike reviewLike = ReviewLike.builder()
                     .member(member)

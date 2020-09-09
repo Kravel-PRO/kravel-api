@@ -4,6 +4,7 @@ import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.celebrity.PlaceRelatedCelebrityDTO;
 import com.kravel.server.dto.celebrity.CelebrityDetailDTO;
 import com.kravel.server.dto.celebrity.CelebrityDTO;
+import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.model.celebrity.Celebrity;
 import com.kravel.server.model.celebrity.CelebrityQueryFactory;
 import com.kravel.server.model.celebrity.CelebrityRepository;
@@ -37,11 +38,11 @@ public class CelebrityService {
         CelebrityDTO celebrityDTO = CelebrityDTO.fromEntity(celebrity);
 
         List<Place> places = placeQueryRepository.findAllByCelebrity(celebrityId, speech);
-        List<PlaceRelatedCelebrityDTO> placeRelatedCelebrityDTOs = places.stream().map(PlaceRelatedCelebrityDTO::fromEntity).collect(Collectors.toList());;
+        List<PlaceDTO> placeDTOs = places.stream().map(PlaceDTO::fromEntity).collect(Collectors.toList());;
 
         CelebrityDetailDTO celebrityDetailDTO = CelebrityDetailDTO.builder()
                 .celebrity(celebrityDTO)
-                .places(placeRelatedCelebrityDTOs)
+                .places(placeDTOs)
                 .build();
 
         return celebrityDetailDTO;

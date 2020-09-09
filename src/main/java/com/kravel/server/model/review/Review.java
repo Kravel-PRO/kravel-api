@@ -17,6 +17,7 @@ import javax.persistence.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Entity @Getter
@@ -47,7 +48,7 @@ public class Review extends BaseTimeEntity {
     private List<CelebrityReview> celebrityReviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
-    private List<ReviewLike> reviewLikes;
+    private List<ReviewLike> reviewLikes = new ArrayList<>();
 
     public void saveImage(S3Uploader s3Uploader, MultipartFile file) throws IOException {
         this.imageUrl = s3Uploader.upload(file, "review");
@@ -63,7 +64,10 @@ public class Review extends BaseTimeEntity {
         this.place = place;
         this.member = member;
         this.media = media;
-        this.celebrityReviews = celebrities.stream().map(celebrity -> new CelebrityReview(celebrity, this)).collect(Collectors.toList());
+        this.celebrityReviews = Optional.ofNullable(celebrities)
+                .orElse(new ArrayList<>()).stream()
+                .map(celebrity -> new CelebrityReview(celebrity, this))
+                .collect(Collectors.toList());
         this.reviewLikes = reviewLikes;
     }
 

@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter @Setter
 public class MemberUpdateDTO {
     private String loginPw;
-    private String compareLoginPw;
+    private String modifyLoginPw;
     private String gender;
     private String nickName;
 }
