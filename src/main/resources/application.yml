@@ -1,6 +1,3 @@
 spring:
   mvc:
     dispatch-options-request: true
-
-#logging:
-#  config: classpath:log4j2.yml
