@@ -1,5 +1,6 @@
 package com.kravel.server.common;
 
+import com.kravel.server.model.mapping.QReviewLike;
 import com.kravel.server.model.place.QPlace;
 import com.kravel.server.model.review.QReview;
 import com.querydsl.core.types.Expression;
@@ -43,6 +44,22 @@ public class OrderUtil extends OrderSpecifier {
             return new OrderUtil(Order.ASC, place.longitude.abs().subtract(longitude));
         } else if (pageable.getSort().isEmpty()) {
             return new OrderUtil(Order.DESC, review.count());
+        } else {
+            return OrderUtil.sort(pageable, qclass);
+        }
+    }
+
+    public static OrderUtil byReviewLikes(Pageable pageable, String qclass) {
+        QReviewLike reviewLike = QReviewLike.reviewLike;
+
+        boolean ascending = pageable.getSort().stream().findFirst().get().isAscending();
+        String property = pageable.getSort().stream().findFirst().get().getProperty();
+
+        if (property.equals("reviewLikes")) {
+            return new OrderUtil(ascending
+                    ? Order.ASC : Order.DESC,
+                    reviewLike.count()
+            );
         } else {
             return OrderUtil.sort(pageable, qclass);
         }

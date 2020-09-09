@@ -48,7 +48,7 @@ public class ReviewService {
     private final ReviewLikeRepository reviewLikeRepository;
 
     public Page<ReviewDTO> findAll(Pageable pageable) throws Exception {
-        Page<Review> reviews = reviewRepository.findAll(pageable);
+        Page<Review> reviews = reviewQueryRepository.findAll(pageable);
         return (Page<ReviewDTO>) reviews.map(new Function<Review, ReviewDTO>() {
             @Override
             public ReviewDTO apply(Review review) {

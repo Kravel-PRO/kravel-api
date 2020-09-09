@@ -1,5 +1,6 @@
 package com.kravel.server.model.review;
 
+import com.kravel.server.common.OrderUtil;
 import com.kravel.server.dto.media.MediaDTO;
 import com.kravel.server.model.celebrity.QCelebrity;
 import com.kravel.server.model.mapping.QCelebrityReview;
@@ -86,6 +87,17 @@ public class ReviewQueryRepository {
                 .where(member.id.eq(memberId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .fetchResults();
+
+        return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
+    }
+
+    public Page<Review> findAll(Pageable pageable) {
+        QueryResults<Review> reviewQueryResults = queryFactory.selectFrom(review)
+                .leftJoin(review.reviewLikes, reviewLike)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(OrderUtil.byReviewLikes(pageable, "review"))
                 .fetchResults();
 
         return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
