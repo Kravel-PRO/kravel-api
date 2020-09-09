@@ -67,11 +67,18 @@ public class MemberService {
 
     public MemberDTO modifyMemberLoginPw(long memberId, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
-        Member savedMember = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("🔥 error: is not correct password"));
-        savedMember.changeLoginPw(passwordEncoder.encode(memberUpdateDTO.getLoginPw()));
+        Member savedMember = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("🔥 error: is not exist member"));
+        if (!isCorrectPassword(memberUpdateDTO.getLoginPw(), savedMember)) {
+            throw new InvalidRequestException("🔥 error: is not correct password");
+        }
+        savedMember.changeLoginPw(passwordEncoder.encode(memberUpdateDTO.getModifyLoginPw()));
         memberRepository.save(savedMember);
 
         return MemberDTO.fromEntity(savedMember);
+    }
+
+    private boolean isCorrectPassword(String password, Member member) {
+        return passwordEncoder.matches(password, member.getLoginPw());
     }
 
     public MemberDTO modifyMemberNickName(long memberId, MemberUpdateDTO memberUpdateDTO) throws Exception {
