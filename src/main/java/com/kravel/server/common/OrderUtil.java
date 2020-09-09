@@ -27,10 +27,17 @@ public class OrderUtil extends OrderSpecifier {
         QPlace place = QPlace.place;
         QReview review = QReview.review;
 
+        boolean ascending = pageable.getSort().stream().findFirst().isPresent() && pageable.getSort().stream().findFirst().get().isAscending();
+        String property = pageable.getSort().stream().findFirst().isPresent() ? pageable.getSort().stream().findFirst().get().getProperty() : "";
+
         if (latitude != 0) {
             return new OrderUtil(Order.ASC, place.latitude.abs().subtract(latitude));
-        } else if (pageable.getSort().isEmpty()) {
-            return new OrderUtil(Order.DESC, review.count());
+
+        } else if (property.equals("review-count")) {
+            return new OrderUtil(ascending
+                    ? Order.ASC : Order.DESC,
+                    review.count()
+            );
         } else {
             return OrderUtil.sort(pageable, qclass);
         }
@@ -40,10 +47,21 @@ public class OrderUtil extends OrderSpecifier {
         QPlace place = QPlace.place;
         QReview review = QReview.review;
 
-        if (longitude != 0) {
+        boolean ascending = pageable.getSort().stream().findFirst().isPresent() && pageable.getSort().stream().findFirst().get().isAscending();
+        String property = pageable.getSort().stream().findFirst().isPresent() ? pageable.getSort().stream().findFirst().get().getProperty() : "";
+
+        if (property.isEmpty()) {
+            return OrderUtil.DEFAULT;
+
+        } else if (longitude != 0) {
             return new OrderUtil(Order.ASC, place.longitude.abs().subtract(longitude));
-        } else if (pageable.getSort().isEmpty()) {
-            return new OrderUtil(Order.DESC, review.count());
+
+        } else if (property.equals("review-count")) {
+            return new OrderUtil(ascending
+                    ? Order.ASC : Order.DESC,
+                    review.count()
+            );
+
         } else {
             return OrderUtil.sort(pageable, qclass);
         }
@@ -52,10 +70,13 @@ public class OrderUtil extends OrderSpecifier {
     public static OrderUtil byReviewLikes(Pageable pageable, String qclass) {
         QReviewLike reviewLike = QReviewLike.reviewLike;
 
-        boolean ascending = pageable.getSort().stream().findFirst().get().isAscending();
-        String property = pageable.getSort().stream().findFirst().get().getProperty();
+        boolean ascending = pageable.getSort().stream().findFirst().isPresent() && pageable.getSort().stream().findFirst().get().isAscending();
+        String property = pageable.getSort().stream().findFirst().isPresent() ? pageable.getSort().stream().findFirst().get().getProperty() : "";
 
-        if (property.equals("reviewLikes")) {
+        if (property.isEmpty()) {
+            return OrderUtil.DEFAULT;
+
+        } else if (property.equals("reviewLikes-count")) {
             return new OrderUtil(ascending
                     ? Order.ASC : Order.DESC,
                     reviewLike.count()
