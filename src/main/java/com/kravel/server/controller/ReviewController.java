@@ -30,9 +30,12 @@ public class ReviewController {
     private final ClaimExtractor claimExtractor;
 
     @GetMapping("/api/reviews")
-    public ResponseEntity<Message> findAll(@PageableDefault Pageable pageable) throws Exception {
+    public ResponseEntity<Message> findAll(@PageableDefault Pageable pageable,
+                                           Authentication authentication) throws Exception {
 
-        Page<ReviewDTO> reviewDTOs = reviewService.findAll(pageable);
+        String speech = claimExtractor.getSpeech(authentication);
+
+        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAll(pageable, speech);
         return ResponseEntity.ok(new Message(reviewDTOs));
     }
 

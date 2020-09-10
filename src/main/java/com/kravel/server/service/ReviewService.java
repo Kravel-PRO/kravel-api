@@ -47,12 +47,13 @@ public class ReviewService {
     private final PlaceRepository placeRepository;
     private final ReviewLikeRepository reviewLikeRepository;
 
-    public Page<ReviewDTO> findAll(Pageable pageable) throws Exception {
+    public Page<ReviewDetailDTO> findAll(Pageable pageable, String speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAll(pageable);
-        return (Page<ReviewDTO>) reviews.map(new Function<Review, ReviewDTO>() {
+        reviews.forEach(review -> review.getPlace().findTagSpeech(speech));
+        return (Page<ReviewDetailDTO>) reviews.map(new Function<Review, ReviewDetailDTO>() {
             @Override
-            public ReviewDTO apply(Review review) {
-                return ReviewDTO.fromEntity(review);
+            public ReviewDetailDTO apply(Review review) {
+                return ReviewDetailDTO.fromEntity(review);
             }
         });
     }
