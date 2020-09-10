@@ -1,6 +1,7 @@
 package com.kravel.server.dto.review;
 
 import com.kravel.server.dto.place.PlaceDTO;
+import com.kravel.server.dto.place.PlaceTitleDTO;
 import com.kravel.server.model.place.Place;
 import com.kravel.server.model.place.PlaceInfo;
 import com.kravel.server.model.place.Tag;
@@ -25,8 +26,7 @@ public class ReviewDetailDTO {
     private long likeCount;
     private boolean like;
     private String createdDate;
-    private String placeTitle;
-    private String tags;
+    private PlaceTitleDTO place;
 
     @Builder
     public ReviewDetailDTO(long reviewId, String imageUrl, long likeCount, boolean like) {
@@ -44,12 +44,7 @@ public class ReviewDetailDTO {
         reviewDetailDTO.setLike(Optional.ofNullable(entity.getReviewLikes())
                 .orElse(new ArrayList<>()).stream()
                 .findFirst().isPresent());
-        reviewDetailDTO.setPlaceTitle(entity.getPlace().getPlaceInfos().stream().findFirst().orElse(new PlaceInfo()).getTitle());
-        reviewDetailDTO.setTags(Optional.ofNullable(entity.getPlace().getTags())
-                .orElse(new ArrayList<>())
-                .stream()
-                .findFirst().orElse(new Tag())
-                .getName());
+        reviewDetailDTO.setPlace(PlaceTitleDTO.fromEntity(entity.getPlace()));
         return reviewDetailDTO;
     }
 }

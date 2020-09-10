@@ -49,7 +49,10 @@ public class ReviewService {
 
     public Page<ReviewDetailDTO> findAll(Pageable pageable, String speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAll(pageable);
-        reviews.forEach(review -> review.getPlace().findTagSpeech(speech));
+        reviews.forEach(review -> {
+            review.getPlace().findTagSpeech(speech);
+            review.getPlace().findInfoSpeech(speech);
+        });
         return (Page<ReviewDetailDTO>) reviews.map(new Function<Review, ReviewDetailDTO>() {
             @Override
             public ReviewDetailDTO apply(Review review) {

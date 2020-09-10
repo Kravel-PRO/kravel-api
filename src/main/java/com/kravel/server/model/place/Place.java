@@ -89,4 +89,10 @@ public class Place extends BaseEntity {
                 .filter(tag -> tag.getSpeech().equals(speech))
                 .collect(Collectors.toList());
     }
+
+    public void findInfoSpeech(String speech) {
+        this.placeInfos = Optional.ofNullable(this.placeInfos).orElse(new ArrayList<>()).stream()
+                .filter(info -> info.getSpeech().equals(speech))
+                .collect(Collectors.toList());
+    }
 }
