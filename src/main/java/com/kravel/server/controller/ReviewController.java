@@ -45,8 +45,9 @@ public class ReviewController {
                                                  Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/{placeId}/reviews");
+        String speech = claimExtractor.getSpeech(authentication);
 
-        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByPlace(placeId, pageable);
+        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByPlace(placeId, pageable, speech);
         return ResponseEntity.ok().body(new Message(reviewDTOs));
     }
 
@@ -79,8 +80,8 @@ public class ReviewController {
                                                          @PageableDefault Pageable pageable,
                                                          Authentication authentication) throws Exception {
 
-
-        Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMedia(mediaId, pageable);
+        String speech = claimExtractor.getSpeech(authentication);
+        Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMedia(mediaId, pageable, speech);
         return ResponseEntity.ok(new Message(reviewDetailDTOs));
     }
 
@@ -104,7 +105,8 @@ public class ReviewController {
                                                             @PageableDefault Pageable pageable,
                                                             Authentication authentication) throws Exception {
 
-        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllReviewByCelebrity(celebrityId, pageable);
+        String speech = claimExtractor.getSpeech(authentication);
+        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByCelebrity(celebrityId, pageable, speech);
         return ResponseEntity.ok(new Message(reviewDTOs));
     }
 

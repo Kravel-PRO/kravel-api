@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Entity
@@ -41,5 +42,11 @@ public class Celebrity extends BaseEntity {
     @Builder
     public Celebrity(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void findInfoSpeech(String speech) {
+        this.celebrityInfos = Optional.ofNullable(this.celebrityInfos).orElse(new ArrayList<>()).stream()
+                .filter(info -> info.getSpeech().equals(speech))
+                .collect(Collectors.toList());
     }
 }

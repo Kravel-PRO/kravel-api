@@ -8,6 +8,7 @@ import com.kravel.server.dto.place.ScrapDTO;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.update.PlaceUpdateDTO;
+import com.kravel.server.model.mapping.PlaceCelebrity;
 import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.mapping.ScrapRepository;
 import com.kravel.server.model.media.Media;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -47,26 +49,41 @@ public class PlaceService {
         Page<PlaceDTO> placeMapDTOs = (Page<PlaceDTO>) places.map(new Function<Place, PlaceDTO>() {
             @Override
             public PlaceDTO apply(Place source) {
-                return PlaceDTO.fromEntity(source);
-            }
-        });
-
-        if (reviewCount) {
-            placeMapDTOs.forEach(dto -> {
                 try {
-                    dto.setReviewCount(reviewQueryRepository.findCountByPlace(dto.getPlaceId()));
+                    for (int i=0; i<source.getPlaceCelebrities().size(); i++) {
+                        source.getPlaceCelebrities().get(i).getCelebrity().findInfoSpeech(speech);
+                    }
+                    PlaceDTO placeDTO = PlaceDTO.fromEntity(source);
+                    if (reviewCount) {
+                        placeDTO.setReviewCount(reviewQueryRepository.findCountByPlace(placeDTO.getPlaceId()));
+                    }
+
+                    return placeDTO;
+
                 } catch (Exception exception) {
                     throw new InvalidRequestException("🔥 error: " + exception.getMessage());
                 }
-            });
-        }
+            }
+        });
 
         return placeMapDTOs;
     }
 
     public PlaceDetailDTO findPlaceById(long placeId, String speech, long memberId) throws Exception {
 
-        Place place = placeQueryRepository.findById(placeId, speech).orElseThrow(() -> new NotFoundException("🔥 error: is not exist place"));
+        Place place = placeQueryRepository
+                .findById(placeId, speech)
+                .orElseThrow(() -> new NotFoundException("🔥 error: is not exist place"));
+
+        place.findInfoSpeech(speech);
+        place.findTagSpeech(speech);
+        Optional.ofNullable(place.getMedia())
+                .orElse(new Media())
+                .findInfoSpeech(speech);
+        for (int i=0; i<place.getPlaceCelebrities().size(); i++) {
+            place.getPlaceCelebrities().get(i).getCelebrity().findInfoSpeech(speech);
+        }
+
         PlaceDetailDTO placeDetailDTO = PlaceDetailDTO.fromEntity(place);
         placeDetailDTO.setScrap(placeQueryRepository.checkScrapState(placeId, memberId));
         return placeDetailDTO;

@@ -53,30 +53,17 @@ public class ReviewService {
             review.getPlace().findTagSpeech(speech);
             review.getPlace().findInfoSpeech(speech);
         });
-        return (Page<ReviewDetailDTO>) reviews.map(new Function<Review, ReviewDetailDTO>() {
-            @Override
-            public ReviewDetailDTO apply(Review review) {
-                ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.fromEntity(review);
-                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
-                return reviewDetailDTO;
-            }
-        });
+        return getReviewDetailDTOs(reviews);
     }
 
-    public Page<ReviewDetailDTO> findAllByPlace(long placeId, Pageable pageable) throws Exception {
+    public Page<ReviewDetailDTO> findAllByPlace(long placeId, Pageable pageable, String speech) throws Exception {
 
         Page<Review> reviews = reviewQueryRepository.findAllByPlace(placeId, pageable);
-        Page<ReviewDetailDTO> reviewDTOs = (Page<ReviewDetailDTO>) reviews.map(new Function<Review, ReviewDetailDTO>() {
-            @Override
-            public ReviewDetailDTO apply(Review review) {
-                ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.fromEntity(review);
-                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
-                return reviewDetailDTO;
-            }
+        reviews.forEach(review -> {
+            review.getPlace().findTagSpeech(speech);
+            review.getPlace().findInfoSpeech(speech);
         });
-
-
-        return reviewDTOs;
+        return getReviewDetailDTOs(reviews);
     }
 
     public ReviewDetailDTO findReviewDetailById(long reviewId, long memberId) throws Exception {
@@ -101,17 +88,14 @@ public class ReviewService {
         return reviewDetailDTO;
     }
 
-    public Page<ReviewDetailDTO> findAllReviewByCelebrity(long celebrityId, Pageable pageable) throws Exception {
+    public Page<ReviewDetailDTO> findAllByCelebrity(long celebrityId, Pageable pageable, String speech) throws Exception {
 
         Page<Review> reviews = reviewQueryRepository.findAllReviewByCelebrity(celebrityId, pageable);
-        return reviews.map(new Function<Review, ReviewDetailDTO>() {
-            @Override
-            public ReviewDetailDTO apply(Review review) {
-                ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.fromEntity(review);
-                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
-                return reviewDetailDTO;
-            }
+        reviews.forEach(review -> {
+            review.getPlace().findTagSpeech(speech);
+            review.getPlace().findInfoSpeech(speech);
         });
+        return getReviewDetailDTOs(reviews);
     }
 
     public long saveReview(MultipartFile file, long placeId, long memberId) throws Exception {
@@ -167,16 +151,13 @@ public class ReviewService {
         }
     }
 
-    public Page<ReviewDetailDTO> findAllByMedia(long mediaId, Pageable pageable) throws Exception {
+    public Page<ReviewDetailDTO> findAllByMedia(long mediaId, Pageable pageable, String speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAllByMedia(mediaId, pageable);
-        return reviews.map(new Function<Review, ReviewDetailDTO>() {
-            @Override
-            public ReviewDetailDTO apply(Review review) {
-                ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.fromEntity(review);
-                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
-                return reviewDetailDTO;
-            }
+        reviews.forEach(review -> {
+            review.getPlace().findTagSpeech(speech);
+            review.getPlace().findInfoSpeech(speech);
         });
+        return getReviewDetailDTOs(reviews);
     }
 
     public Page<ReviewDetailDTO> findAllByMember(long memberId, String speech, Pageable pageable) {

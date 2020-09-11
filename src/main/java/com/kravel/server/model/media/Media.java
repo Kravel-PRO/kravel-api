@@ -11,6 +11,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -40,4 +42,10 @@ public class Media extends BaseEntity {
 
     @OneToMany(mappedBy = "media")
     private List<Place> places = new ArrayList<>();
+
+    public void findInfoSpeech(String speech) {
+        this.mediaInfos = Optional.ofNullable(this.mediaInfos).orElse(new ArrayList<>()).stream()
+                .filter(info -> info.getSpeech().equals(speech))
+                .collect(Collectors.toList());
+    }
 }
