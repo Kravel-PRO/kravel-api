@@ -56,26 +56,25 @@ public class ReviewService {
         return (Page<ReviewDetailDTO>) reviews.map(new Function<Review, ReviewDetailDTO>() {
             @Override
             public ReviewDetailDTO apply(Review review) {
-                return ReviewDetailDTO.fromEntity(review);
+                ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.fromEntity(review);
+                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
+                return reviewDetailDTO;
             }
         });
     }
 
-    public Page<ReviewDTO> findAllByPlace(long placeId, boolean likeCount, Pageable pageable) throws Exception {
+    public Page<ReviewDetailDTO> findAllByPlace(long placeId, Pageable pageable) throws Exception {
 
         Page<Review> reviews = reviewQueryRepository.findAllByPlace(placeId, pageable);
-        Page<ReviewDTO> reviewDTOs = (Page<ReviewDTO>) reviews.map(new Function<Review, ReviewDTO>() {
+        Page<ReviewDetailDTO> reviewDTOs = (Page<ReviewDetailDTO>) reviews.map(new Function<Review, ReviewDetailDTO>() {
             @Override
-            public ReviewDTO apply(Review review) {
-                return ReviewDTO.fromEntity(review);
+            public ReviewDetailDTO apply(Review review) {
+                ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.fromEntity(review);
+                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
+                return reviewDetailDTO;
             }
         });
 
-        if (likeCount) {
-            for (var reviewDTO : reviewDTOs) {
-                reviewDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDTO.getReviewId()));
-            }
-        }
 
         return reviewDTOs;
     }
@@ -102,13 +101,15 @@ public class ReviewService {
         return reviewDetailDTO;
     }
 
-    public Page<ReviewDTO> findAllReviewByCelebrity(long celebrityId, Pageable pageable) throws Exception {
+    public Page<ReviewDetailDTO> findAllReviewByCelebrity(long celebrityId, Pageable pageable) throws Exception {
 
         Page<Review> reviews = reviewQueryRepository.findAllReviewByCelebrity(celebrityId, pageable);
-        return reviews.map(new Function<Review, ReviewDTO>() {
+        return reviews.map(new Function<Review, ReviewDetailDTO>() {
             @Override
-            public ReviewDTO apply(Review review) {
-                return ReviewDTO.fromEntity(review);
+            public ReviewDetailDTO apply(Review review) {
+                ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.fromEntity(review);
+                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
+                return reviewDetailDTO;
             }
         });
     }
@@ -138,7 +139,6 @@ public class ReviewService {
 
     public long handleReviewLike(long placeId, long reviewId, long memberId, ReviewLikeDTO reviewLikeDTO) throws Exception {
         Optional<ReviewLike> savedLike = reviewLikeQueryRepository.checkReviewLikeExist(reviewId, memberId);
-
         if (reviewLikeDTO.isLike()) {
             if (savedLike.isPresent()) {
                 throw new InvalidRequestException("🔥 error: like is already exist");
@@ -167,17 +167,19 @@ public class ReviewService {
         }
     }
 
-    public Page<ReviewDTO> findAllByMedia(long mediaId, Pageable pageable) throws Exception {
+    public Page<ReviewDetailDTO> findAllByMedia(long mediaId, Pageable pageable) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAllByMedia(mediaId, pageable);
-        return reviews.map(new Function<Review, ReviewDTO>() {
+        return reviews.map(new Function<Review, ReviewDetailDTO>() {
             @Override
-            public ReviewDTO apply(Review review) {
-                return ReviewDTO.fromEntity(review);
+            public ReviewDetailDTO apply(Review review) {
+                ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.fromEntity(review);
+                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
+                return reviewDetailDTO;
             }
         });
     }
 
-    public Page<ReviewDetailDTO> findAllByMember(long memberId, String speech, Pageable pageable, boolean likeCount) {
+    public Page<ReviewDetailDTO> findAllByMember(long memberId, String speech, Pageable pageable) {
         Page<Review> reviews = reviewQueryRepository.findAllByMember(memberId, pageable);
         for (var review : reviews) {
             PlaceInfo placeInfo = review.getPlace().getPlaceInfos().stream()
@@ -192,26 +194,23 @@ public class ReviewService {
             review.getPlace().changePlaceInfo(placeInfos);
         }
 
-        return getReviewDetailDTOs(likeCount, reviews);
+        return getReviewDetailDTOs(reviews);
     }
 
-    public Page<ReviewDetailDTO> findAllReviewLikeById(long memberId, Pageable pageable, boolean likeCount) {
+    public Page<ReviewDetailDTO> findAllReviewLikeById(long memberId, Pageable pageable) {
         Page<Review> reviews = reviewQueryRepository.findAllReviewLikeById(memberId, pageable);
-        return getReviewDetailDTOs(likeCount, reviews);
+        return getReviewDetailDTOs(reviews);
     }
 
-    private Page<ReviewDetailDTO> getReviewDetailDTOs(boolean likeCount, Page<Review> reviews) {
+    private Page<ReviewDetailDTO> getReviewDetailDTOs(Page<Review> reviews) {
         Page<ReviewDetailDTO> reviewDetailDTOs = reviews.map(new Function<Review, ReviewDetailDTO>() {
             @Override
             public ReviewDetailDTO apply(Review review) {
-                return ReviewDetailDTO.fromEntity(review);
+                ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.fromEntity(review);
+                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
+                return reviewDetailDTO;
             }
         });
-        if (likeCount) {
-            for (var reviewDetailDTO : reviewDetailDTOs) {
-                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
-            }
-        }
 
         return reviewDetailDTOs;
     }

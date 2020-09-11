@@ -41,13 +41,12 @@ public class ReviewController {
 
     @GetMapping("/api/places/{placeId}/reviews")
     public ResponseEntity<Message> findAllByPlace(@PathVariable("placeId") long placeId,
-                                                 @RequestParam(value = "like-count", defaultValue = "false") boolean likeCount,
                                                  @PageableDefault Pageable pageable,
                                                  Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/{placeId}/reviews");
 
-        Page<ReviewDTO> reviewDTOs = reviewService.findAllByPlace(placeId, likeCount, pageable);
+        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByPlace(placeId, pageable);
         return ResponseEntity.ok().body(new Message(reviewDTOs));
     }
 
@@ -81,8 +80,8 @@ public class ReviewController {
                                                          Authentication authentication) throws Exception {
 
 
-        Page<ReviewDTO> reviewOverviewDTOs = reviewService.findAllByMedia(mediaId, pageable);
-        return ResponseEntity.ok(new Message(reviewOverviewDTOs));
+        Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMedia(mediaId, pageable);
+        return ResponseEntity.ok(new Message(reviewDetailDTOs));
     }
 
     @PostMapping("/api/places/{placeId}/reviews/{reviewId}/likes")
@@ -93,7 +92,6 @@ public class ReviewController {
 
         log.info("🎉 GET /api/places/{placeId}/reviews/{reviewId}/likes");
 
-        Map<String, Object> param = new HashMap<String, Object>();
 
         long memberId = claimExtractor.getMemberId(authentication);
         long reviewLikeId = reviewService.handleReviewLike(placeId, reviewId, memberId, reviewLikeDTO);
@@ -106,29 +104,27 @@ public class ReviewController {
                                                             @PageableDefault Pageable pageable,
                                                             Authentication authentication) throws Exception {
 
-        Page<ReviewDTO> reviewDTOs = reviewService.findAllReviewByCelebrity(celebrityId, pageable);
+        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllReviewByCelebrity(celebrityId, pageable);
         return ResponseEntity.ok(new Message(reviewDTOs));
     }
 
 
     @GetMapping("/api/member/reviews")
     public ResponseEntity<Message> findAllByMember(@PageableDefault Pageable pageable,
-                                                   @RequestParam(value = "likeCount", defaultValue = "false") boolean likeCount,
                                                    Authentication authentication) throws Exception {
 
         long memberId = claimExtractor.getMemberId(authentication);
         String speech = claimExtractor.getSpeech(authentication);
-        Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMember(memberId, speech, pageable, likeCount);
+        Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMember(memberId, speech, pageable);
         return ResponseEntity.ok(new Message(reviewDetailDTOs));
     }
 
     @GetMapping("/api/member/reviews/likes")
     public ResponseEntity<Message> findAllReviewLikeById(@PageableDefault Pageable pageable,
-                                                         @RequestParam(value = "likeCount", defaultValue = "false") boolean likeCount,
                                                          Authentication authentication) throws Exception {
 
         long memberId = claimExtractor.getMemberId(authentication);
-        Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllReviewLikeById(memberId, pageable, likeCount);
+        Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllReviewLikeById(memberId, pageable);
         return ResponseEntity.ok(new Message(reviewDetailDTOs));
     }
 }

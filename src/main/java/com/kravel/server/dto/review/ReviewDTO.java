@@ -12,13 +12,13 @@ import java.util.Optional;
 @NoArgsConstructor
 public class ReviewDTO {
     private long reviewId;
-    private String imageURl;
+    private String imageUrl;
     private long likeCount;
 
     public static ReviewDTO fromEntity(Review entity) {
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setReviewId(entity.getId());
-        reviewDTO.setImageURl(entity.getImageUrl());
+        reviewDTO.setImageUrl(entity.getImageUrl());
 
         return reviewDTO;
     }

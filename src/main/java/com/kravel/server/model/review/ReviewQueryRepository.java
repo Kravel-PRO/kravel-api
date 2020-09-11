@@ -94,7 +94,7 @@ public class ReviewQueryRepository {
 
     public Page<Review> findAll(Pageable pageable) {
         QueryResults<Review> reviewQueryResults = queryFactory.selectFrom(review)
-                .leftJoin(review.reviewLikes, reviewLike)
+                .leftJoin(review.reviewLikes, reviewLike).fetchJoin()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(OrderUtil.byReviewLikes(pageable, "review"))

@@ -40,7 +40,7 @@ public class CelebrityController {
 
     @GetMapping("/api/celebrities/{celebrityId}")
     public ResponseEntity<Message> findCelebrityById(@PathVariable("celebrityId") long celebrityId,
-                                            Authentication authentication) throws Exception {
+                                                     Authentication authentication) throws Exception {
 
         String speech = claimExtractor.getSpeech(authentication);
         CelebrityDetailDTO result = celebrityService.findCelebrityById(celebrityId, speech);
