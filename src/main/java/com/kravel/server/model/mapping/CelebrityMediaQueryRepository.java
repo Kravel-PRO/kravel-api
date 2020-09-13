@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class CelebrityMediaQueryRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch();
+                .fetch().stream().distinct().collect(Collectors.toList());
     }
 
     public List<Media> findMediaBySearch(String search, String speech, Pageable pageable) {
@@ -46,6 +47,6 @@ public class CelebrityMediaQueryRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch();
+                .fetch().stream().distinct().collect(Collectors.toList());
     }
 }
