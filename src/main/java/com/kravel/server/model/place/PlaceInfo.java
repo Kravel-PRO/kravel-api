@@ -22,13 +22,11 @@ public class PlaceInfo extends BaseEntity {
 
     private String speech;
     private String title;
-    private String contents;
     private String location;
 
     public PlaceInfo(PlaceInfoUpdateDTO placeInfoUpdateDTO) {
         this.speech = placeInfoUpdateDTO.getSpeech();
         this.title = placeInfoUpdateDTO.getTitle();
-        this.contents = placeInfoUpdateDTO.getContents();
         this.location = placeInfoUpdateDTO.getLocation();
     }
 
