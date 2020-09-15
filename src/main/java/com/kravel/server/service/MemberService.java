@@ -86,7 +86,9 @@ public class MemberService {
         savedMember.changeGender(memberUpdateDTO.getGender());
         memberRepository.save(savedMember);
 
-        return MemberDTO.fromEntity(savedMember);
+        MemberDTO memberDTO = MemberDTO.fromEntity(savedMember);
+        memberDTO.setToken(jwtFactory.generateToken(MemberContext.fromMemberModel(savedMember)));
+        return memberDTO;
     }
 
     public MemberDTO modifyMemberSpeech(long memberId, MemberUpdateDTO memberUpdateDTO) {

@@ -41,6 +41,7 @@ public class JwtFactory {
             payloads.put("speech", context.getMember().getSpeech().name());
             payloads.put("gender", context.getMember().getGender());
             payloads.put("member_id", context.getMember().getId());
+            payloads.put("nick_name", context.getMember().getNickName());
 
             token = Jwts.builder()
                     .setHeader(headers)

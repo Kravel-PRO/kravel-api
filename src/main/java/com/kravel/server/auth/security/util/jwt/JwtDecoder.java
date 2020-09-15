@@ -26,6 +26,7 @@ public class JwtDecoder {
         String role = decodedJWT.getBody().get("role_type", String.class);
         String speech = decodedJWT.getBody().get("speech", String.class);
         String gender = decodedJWT.getBody().get("gender", String.class);
+        String nickName = decodedJWT.getBody().get("nick_name", String.class);
         long memberId = decodedJWT.getBody().get("member_id", Long.class);
 
         Member member = Member.builder()
@@ -33,6 +34,7 @@ public class JwtDecoder {
                 .loginEmail(loginEmail)
                 .loginPw("UNUSED_CREDENTIALS")
                 .speech(Speech.valueOf(speech))
+                .nickName(nickName)
                 .gender(gender)
                 .roleType(RoleType.getRoleByName(role))
                 .build();

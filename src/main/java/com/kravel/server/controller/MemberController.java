@@ -72,7 +72,9 @@ public class MemberController {
 
             case "nickNameAndGender":
                 memberDTO = memberService.modifyMemberNickName(memberId, memberUpdateDTO);
-                return ResponseEntity.ok(new Message(memberDTO));
+                return ResponseEntity.status(HttpStatus.OK).header(
+                        "Authorization", "Bearer " + memberDTO.getToken())
+                        .body(new Message(memberDTO));
 
             case "speech":
                 memberDTO = memberService.modifyMemberSpeech(memberId, memberUpdateDTO);
