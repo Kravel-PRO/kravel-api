@@ -1,5 +1,6 @@
 package com.kravel.server.model.mapping;
 
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.celebrity.Celebrity;
 import com.kravel.server.model.celebrity.QCelebrity;
 import com.kravel.server.model.celebrity.QCelebrityInfo;
@@ -25,7 +26,7 @@ public class CelebrityMediaQueryRepository {
     QMediaInfo mediaInfo = QMediaInfo.mediaInfo;
     QCelebrityInfo celebrityInfo = QCelebrityInfo.celebrityInfo;
 
-    public List<Celebrity> findCelebrityBySearch(String search, String speech, Pageable pageable) {
+    public List<Celebrity> findCelebrityBySearch(String search, Speech speech, Pageable pageable) {
 
         return queryFactory.selectFrom(celebrity)
                 .innerJoin(celebrity.celebrityInfos, celebrityInfo).fetchJoin()
@@ -38,7 +39,7 @@ public class CelebrityMediaQueryRepository {
                 .fetch().stream().distinct().collect(Collectors.toList());
     }
 
-    public List<Media> findMediaBySearch(String search, String speech, Pageable pageable) {
+    public List<Media> findMediaBySearch(String search, Speech speech, Pageable pageable) {
         return queryFactory.selectFrom(media)
                 .innerJoin(media.mediaInfos, mediaInfo).fetchJoin()
                 .where(

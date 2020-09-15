@@ -1,6 +1,7 @@
 package com.kravel.server.model.member;
 
 import com.kravel.server.enums.RoleType;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.BaseTimeEntity;
 import com.kravel.server.model.mapping.ReviewLike;
 import com.kravel.server.model.mapping.Scrap;
@@ -29,7 +30,8 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    private String speech;
+    @Enumerated(EnumType.STRING)
+    private Speech speech;
     private String useAt = "Y";
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
@@ -53,9 +55,12 @@ public class Member extends BaseTimeEntity {
     public void changeGender(String gender) {
         this.gender = gender;
     }
+    public void changeSpeech(Speech speech) {
+        this.speech = speech;
+    }
 
     @Builder
-    public Member(long id, String loginEmail, String nickName, String loginPw, String gender, RoleType roleType, String speech) {
+    public Member(long id, String loginEmail, String nickName, String loginPw, String gender, RoleType roleType, Speech speech) {
         this.id = id;
         this.loginEmail = loginEmail;
         this.loginPw = loginPw;

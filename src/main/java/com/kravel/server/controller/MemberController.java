@@ -66,11 +66,19 @@ public class MemberController {
         long memberId = claimExtractor.getMemberId(authentication);
         MemberDTO memberDTO;
         switch (type) {
-            case "password": memberDTO = memberService.modifyMemberLoginPw(memberId, memberUpdateDTO);
-                break;
+            case "password":
+                memberDTO = memberService.modifyMemberLoginPw(memberId, memberUpdateDTO);
+                return ResponseEntity.ok(new Message(memberDTO));
 
-            case "nickNameAndGender": memberDTO = memberService.modifyMemberNickName(memberId, memberUpdateDTO);
-                break;
+            case "nickNameAndGender":
+                memberDTO = memberService.modifyMemberNickName(memberId, memberUpdateDTO);
+                return ResponseEntity.ok(new Message(memberDTO));
+
+            case "speech":
+                memberDTO = memberService.modifyMemberSpeech(memberId, memberUpdateDTO);
+                return ResponseEntity.status(HttpStatus.OK).header(
+                        "Authorization", "Bearer " + memberDTO.getToken())
+                        .body(new Message(memberDTO));
 
             default:
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -81,7 +89,6 @@ public class MemberController {
                 );
         }
 
-        return ResponseEntity.ok(new Message(memberDTO));
     }
 
     @DeleteMapping("/api/member")

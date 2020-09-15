@@ -1,5 +1,7 @@
 package com.kravel.server.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.member.Member;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,10 +15,13 @@ public class MemberDTO {
     private String nickName;
     private String gender;
     private String roleType;
-    private String speech;
+    private Speech speech;
     private String createdDate;
     private String modifiedDate;
     private String useAt;
+
+    @JsonIgnore
+    private String token;
 
     public static MemberDTO fromEntity(Member entity) {
         MemberDTO memberDTO =new MemberDTO();

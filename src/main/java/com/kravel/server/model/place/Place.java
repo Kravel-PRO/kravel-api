@@ -6,6 +6,7 @@ import com.kravel.server.common.S3Uploader;
 import com.kravel.server.dto.update.EngPlaceInfoUpdateDTO;
 import com.kravel.server.dto.update.KorPlaceInfoUpdateDTO;
 import com.kravel.server.dto.update.PlaceUpdateDTO;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.BaseEntity;
 import com.kravel.server.model.mapping.PlaceCelebrity;
 import com.kravel.server.model.mapping.Scrap;
@@ -111,13 +112,13 @@ public class Place extends BaseEntity {
         this.placeInfos = placeInfos;
     }
 
-    public void findTagSpeech(String speech) {
+    public void findTagSpeech(Speech speech) {
         this.tags = Optional.ofNullable(this.tags).orElse(new ArrayList<>()).stream()
                 .filter(tag -> tag.getSpeech().equals(speech))
                 .collect(Collectors.toList());
     }
 
-    public void findInfoSpeech(String speech) {
+    public void findInfoSpeech(Speech speech) {
         this.placeInfos = Optional.ofNullable(this.placeInfos).orElse(new ArrayList<>()).stream()
                 .filter(info -> info.getSpeech().equals(speech))
                 .collect(Collectors.toList());

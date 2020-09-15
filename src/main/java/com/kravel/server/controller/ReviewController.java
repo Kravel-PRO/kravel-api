@@ -5,6 +5,7 @@ import com.kravel.server.dto.review.ReviewDTO;
 import com.kravel.server.dto.review.ReviewDetailDTO;
 import com.kravel.server.dto.review.ReviewOverviewDTO;
 import com.kravel.server.dto.review.ReviewLikeDTO;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.service.ReviewService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class ReviewController {
     public ResponseEntity<Message> findAll(@PageableDefault Pageable pageable,
                                            Authentication authentication) throws Exception {
 
-        String speech = claimExtractor.getSpeech(authentication);
+        Speech speech = claimExtractor.getSpeech(authentication);
 
         Page<ReviewDetailDTO> reviewDTOs = reviewService.findAll(pageable, speech);
         return ResponseEntity.ok(new Message(reviewDTOs));
@@ -45,7 +46,7 @@ public class ReviewController {
                                                   Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/{placeId}/reviews");
-        String speech = claimExtractor.getSpeech(authentication);
+        Speech speech = claimExtractor.getSpeech(authentication);
 
         Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByPlace(placeId, pageable, speech);
         return ResponseEntity.ok().body(new Message(reviewDTOs));
@@ -80,7 +81,7 @@ public class ReviewController {
                                                          @PageableDefault Pageable pageable,
                                                          Authentication authentication) throws Exception {
 
-        String speech = claimExtractor.getSpeech(authentication);
+        Speech speech = claimExtractor.getSpeech(authentication);
         Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMedia(mediaId, pageable, speech);
         return ResponseEntity.ok(new Message(reviewDetailDTOs));
     }
@@ -105,7 +106,7 @@ public class ReviewController {
                                                             @PageableDefault Pageable pageable,
                                                             Authentication authentication) throws Exception {
 
-        String speech = claimExtractor.getSpeech(authentication);
+        Speech speech = claimExtractor.getSpeech(authentication);
         Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByCelebrity(celebrityId, pageable, speech);
         return ResponseEntity.ok(new Message(reviewDTOs));
     }
@@ -115,7 +116,7 @@ public class ReviewController {
                                                    Authentication authentication) throws Exception {
 
         long memberId = claimExtractor.getMemberId(authentication);
-        String speech = claimExtractor.getSpeech(authentication);
+        Speech speech = claimExtractor.getSpeech(authentication);
         Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMember(memberId, speech, pageable);
         return ResponseEntity.ok(new Message(reviewDetailDTOs));
     }

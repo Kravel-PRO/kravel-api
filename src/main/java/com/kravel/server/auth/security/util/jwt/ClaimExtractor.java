@@ -1,6 +1,7 @@
 package com.kravel.server.auth.security.util.jwt;
 
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.member.Member;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ public class ClaimExtractor {
         return member.getLoginEmail();
     }
 
-    public String getSpeech(Authentication authentication) {
+    public Speech getSpeech(Authentication authentication) {
         PostAuthorizationToken token = (PostAuthorizationToken) authentication;
         Member member = token.getMemberContext().getMember();
 

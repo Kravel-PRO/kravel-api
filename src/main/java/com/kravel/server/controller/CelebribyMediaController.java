@@ -3,6 +3,7 @@ package com.kravel.server.controller;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.SearchDTO;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.service.CelebrityMediaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ public class CelebribyMediaController {
     public ResponseEntity<Message> findBySearch(@RequestParam(value = "search", defaultValue = "") String search,
                                                 @PageableDefault Pageable pageable,
                                                 Authentication authentication) throws Exception {
-        String speech = claimExtractor.getSpeech(authentication);
+        Speech speech = claimExtractor.getSpeech(authentication);
         SearchDTO searchDTOs = celebrityMediaService.findBySearch(search, speech, pageable);
 
         return ResponseEntity.ok(new Message(searchDTOs));

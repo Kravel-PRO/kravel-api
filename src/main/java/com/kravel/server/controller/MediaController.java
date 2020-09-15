@@ -4,6 +4,7 @@ import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.media.PlaceRelatedMediaDTO;
 import com.kravel.server.dto.media.MediaDTO;
 import com.kravel.server.dto.media.MediaOverviewDTO;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.service.MediaService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class MediaController {
     public ResponseEntity<Message> findById(@PathVariable("mediaId") long mediaId,
                                          Authentication authentication) throws Exception {
 
-        String speech = claimExtractor.getSpeech(authentication);
+        Speech speech = claimExtractor.getSpeech(authentication);
 
         MediaDTO mediaDTO = mediaService.findById(mediaId, speech);
         return ResponseEntity.ok(new Message(mediaDTO));

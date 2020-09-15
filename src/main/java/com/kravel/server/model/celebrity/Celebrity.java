@@ -1,5 +1,6 @@
 package com.kravel.server.model.celebrity;
 
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.BaseEntity;
 import com.kravel.server.model.mapping.CelebrityMedia;
 import com.kravel.server.model.mapping.CelebrityReview;
@@ -45,7 +46,7 @@ public class Celebrity extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    public void findInfoSpeech(String speech) {
+    public void findInfoSpeech(Speech speech) {
         this.celebrityInfos = Optional.ofNullable(this.celebrityInfos).orElse(new ArrayList<>()).stream()
                 .filter(info -> info.getSpeech().equals(speech))
                 .collect(Collectors.toList());

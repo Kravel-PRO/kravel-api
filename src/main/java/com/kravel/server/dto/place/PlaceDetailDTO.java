@@ -21,6 +21,8 @@ public class PlaceDetailDTO {
     private String title;
     private String contents;
     private String imageUrl;
+    private String subImageUrl;
+    private String filterImageUrl;
 
     private String location;
     private double latitude;
@@ -74,6 +76,8 @@ public class PlaceDetailDTO {
                 .findFirst()
                 .orElse(new Tag()).getName()
         );
+        placeDetailDTO.setSubImageUrl(entity.getSubImageUrl());;
+        placeDetailDTO.setFilterImageUrl(entity.getFilterImageUrl());
         return placeDetailDTO;
     }
 }

@@ -3,6 +3,7 @@ package com.kravel.server.auth.security.util.jwt;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.util.exception.InvalidJwtException;
 import com.kravel.server.enums.RoleType;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.member.Member;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class JwtDecoder {
                 .id(memberId)
                 .loginEmail(loginEmail)
                 .loginPw("UNUSED_CREDENTIALS")
-                .speech(speech)
+                .speech(Speech.valueOf(speech))
                 .gender(gender)
                 .roleType(RoleType.getRoleByName(role))
                 .build();

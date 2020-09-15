@@ -5,6 +5,7 @@ import com.kravel.server.dto.celebrity.PlaceRelatedCelebrityDTO;
 import com.kravel.server.dto.celebrity.CelebrityDetailDTO;
 import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.dto.place.PlaceDTO;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.celebrity.Celebrity;
 import com.kravel.server.model.celebrity.CelebrityQueryFactory;
 import com.kravel.server.model.celebrity.CelebrityRepository;
@@ -32,7 +33,7 @@ public class CelebrityService {
         return celebrities.stream().map(CelebrityDTO::fromEntity).collect(Collectors.toList());
     }
 
-    public CelebrityDetailDTO findCelebrityById(long celebrityId, String speech) throws Exception {
+    public CelebrityDetailDTO findCelebrityById(long celebrityId, Speech speech) throws Exception {
 
         Celebrity celebrity = celebrityRepository.findById(celebrityId).orElseThrow(() -> new NotFoundException("🔥 error: celebrity is not exist"));
         CelebrityDTO celebrityDTO = CelebrityDTO.fromEntity(celebrity);

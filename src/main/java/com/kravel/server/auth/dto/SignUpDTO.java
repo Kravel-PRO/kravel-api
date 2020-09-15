@@ -1,5 +1,6 @@
 package com.kravel.server.auth.dto;
 
+import com.kravel.server.enums.Speech;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,5 +10,5 @@ public class SignUpDTO {
     private String loginPw;
     private String nickName;
     private String gender;
-    private String speech;
+    private Speech speech;
 }

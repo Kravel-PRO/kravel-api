@@ -6,6 +6,7 @@ import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.dto.celebrity.CelebrityDetailDTO;
 import com.kravel.server.dto.review.ReviewDTO;
 import com.kravel.server.dto.review.ReviewOverviewDTO;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.service.CelebrityService;
 import com.kravel.server.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class CelebrityController {
     public ResponseEntity<Message> findCelebrityById(@PathVariable("celebrityId") long celebrityId,
                                                      Authentication authentication) throws Exception {
 
-        String speech = claimExtractor.getSpeech(authentication);
+        Speech speech = claimExtractor.getSpeech(authentication);
         CelebrityDetailDTO result = celebrityService.findCelebrityById(celebrityId, speech);
         return ResponseEntity.ok(new Message(result));
     }

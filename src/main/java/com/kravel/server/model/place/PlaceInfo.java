@@ -2,6 +2,7 @@ package com.kravel.server.model.place;
 
 import com.kravel.server.dto.update.EngPlaceInfoUpdateDTO;
 import com.kravel.server.dto.update.KorPlaceInfoUpdateDTO;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,9 @@ public class PlaceInfo extends BaseEntity {
     @JoinColumn(name = "place_id")
     private Place place;
 
-    private String speech;
+    @Enumerated(EnumType.STRING)
+    private Speech speech;
+
     private String title;
     private String location;
 

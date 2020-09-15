@@ -10,6 +10,7 @@ import com.kravel.server.dto.place.ScrapDTO;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.update.PlaceUpdateDTO;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.mapping.PlaceCelebrity;
 import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.mapping.ScrapRepository;
@@ -46,7 +47,7 @@ public class PlaceService {
     private final ObjectMapper objectMapper;
 
     @Transactional(readOnly = true)
-    public Page<PlaceDTO> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable, boolean reviewCount) throws Exception {
+    public Page<PlaceDTO> findAllByLocation(double latitude, double longitude, double height, double width, Speech speech, Pageable pageable, boolean reviewCount) throws Exception {
 
         Page<Place> places = placeQueryRepository.findAllByLocation(latitude, longitude, height, width, speech, pageable);
 
@@ -73,7 +74,7 @@ public class PlaceService {
         return placeMapDTOs;
     }
 
-    public PlaceDetailDTO findPlaceById(long placeId, String speech, long memberId) throws Exception {
+    public PlaceDetailDTO findPlaceById(long placeId, Speech speech, long memberId) throws Exception {
 
         Place place = placeQueryRepository
                 .findById(placeId, speech)
@@ -131,7 +132,7 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
-    public List<PlaceRelatedMediaDTO> findAllByMedia(long mediaId, String speech, Pageable pageable) throws Exception {
+    public List<PlaceRelatedMediaDTO> findAllByMedia(long mediaId, Speech speech, Pageable pageable) throws Exception {
 
         Media media = mediaRepository.findById(mediaId).orElseThrow(() -> new NotFoundException("🔥 error: iS not exist media"));
 

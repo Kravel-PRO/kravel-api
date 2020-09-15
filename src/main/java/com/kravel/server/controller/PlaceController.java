@@ -10,6 +10,7 @@ import com.kravel.server.dto.place.PlaceMapDTO;
 import com.kravel.server.dto.place.ScrapDTO;
 import com.kravel.server.dto.update.PlaceUpdateDTO;
 import com.kravel.server.dto.update.Test;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,7 @@ public class PlaceController {
 
         log.info("🎉 GET /api/places");
 
-        String speech = claimExtractor.getSpeech(authentication);
+        Speech speech = claimExtractor.getSpeech(authentication);
 
         Page<PlaceDTO> placeMapDTOs = placeService.findAllByLocation(latitude, longitude, height, width, speech, pageable, reviewCount);
         return ResponseEntity.ok().body(new Message(placeMapDTOs));
@@ -65,7 +66,7 @@ public class PlaceController {
 
         log.info("🎉 GET /api/places/{placeId}");
 
-        String speech = claimExtractor.getSpeech(authentication);
+        Speech speech = claimExtractor.getSpeech(authentication);
         long memberId = claimExtractor.getMemberId(authentication);
 
         PlaceDetailDTO placeDetailDTO = placeService.findPlaceById(placeId, speech, memberId);
@@ -78,30 +79,16 @@ public class PlaceController {
                                         Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/{placeId}/scrap");
-        System.out.println("scrapDTO tostirng: " +scrapDTO.toString());
-        System.out.println("placeId: " + placeId);
         long memberId = claimExtractor.getMemberId(authentication);
         long scrapId = placeService.handlePlaceScrap(placeId, memberId, scrapDTO);
 
         return ResponseEntity.ok().body(new Message(scrapId));
     }
 
-    @PostMapping("/api/places/test")
-    public ResponseEntity<Message> test(@ModelAttribute Test test) throws Exception {
-
-
-        System.out.println(test.toString());
-//        System.out.println(loginEmail);
-//        System.out.println(loginPw);
-        return ResponseEntity.ok().body(new Message("succeed!"));
-    }
-
     @PostMapping("/api/places")
     public ResponseEntity<Message> savePlaceInfo(@ModelAttribute PlaceUpdateDTO placeUpdateDTO) throws Exception {
 
         log.info("🎉 POST /api/places");
-
-        System.out.println(placeUpdateDTO.toString());
 
         long placeId = placeService.savePlace(placeUpdateDTO);
         return ResponseEntity.ok().body(new Message(placeId));
@@ -112,7 +99,7 @@ public class PlaceController {
                                                   @PageableDefault Pageable pageable,
                                                   Authentication authentication) throws Exception {
 
-        String speech = claimExtractor.getSpeech(authentication);
+        Speech speech = claimExtractor.getSpeech(authentication);
         List<PlaceRelatedMediaDTO> result = placeService.findAllByMedia(mediaId, speech, pageable);
         return ResponseEntity.ok(new Message(result));
     }

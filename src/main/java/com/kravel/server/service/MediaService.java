@@ -5,6 +5,7 @@ import com.kravel.server.dto.media.PlaceRelatedMediaDTO;
 import com.kravel.server.dto.media.MediaDTO;
 import com.kravel.server.dto.media.MediaOverviewDTO;
 import com.kravel.server.common.util.exception.NotFoundException;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.media.Media;
 import com.kravel.server.model.media.MediaQueryRepository;
 import com.kravel.server.model.media.MediaRepository;
@@ -31,7 +32,7 @@ public class MediaService {
         return mediaPage.stream().map(MediaOverviewDTO::fromEntity).collect(Collectors.toList());
     }
 
-    public MediaDTO findById(long mediaId, String speech) throws Exception {
+    public MediaDTO findById(long mediaId, Speech speech) throws Exception {
 
         Media media = mediaQueryRepository.findById(mediaId, speech)
                 .orElseThrow(() -> new InvalidRequestException("🔥 error: is not exist media information"));

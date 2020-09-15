@@ -7,6 +7,7 @@ import com.kravel.server.dto.review.ReviewOverviewDTO;
 import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.celebrity.Celebrity;
 import com.kravel.server.model.mapping.PlaceCelebrity;
 import com.kravel.server.model.mapping.ReviewLike;
@@ -47,7 +48,7 @@ public class ReviewService {
     private final PlaceRepository placeRepository;
     private final ReviewLikeRepository reviewLikeRepository;
 
-    public Page<ReviewDetailDTO> findAll(Pageable pageable, String speech) throws Exception {
+    public Page<ReviewDetailDTO> findAll(Pageable pageable, Speech speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAll(pageable);
         reviews.forEach(review -> {
             review.getPlace().findTagSpeech(speech);
@@ -56,7 +57,7 @@ public class ReviewService {
         return getReviewDetailDTOs(reviews);
     }
 
-    public Page<ReviewDetailDTO> findAllByPlace(long placeId, Pageable pageable, String speech) throws Exception {
+    public Page<ReviewDetailDTO> findAllByPlace(long placeId, Pageable pageable, Speech speech) throws Exception {
 
         Page<Review> reviews = reviewQueryRepository.findAllByPlace(placeId, pageable);
         reviews.forEach(review -> {
@@ -88,7 +89,7 @@ public class ReviewService {
         return reviewDetailDTO;
     }
 
-    public Page<ReviewDetailDTO> findAllByCelebrity(long celebrityId, Pageable pageable, String speech) throws Exception {
+    public Page<ReviewDetailDTO> findAllByCelebrity(long celebrityId, Pageable pageable, Speech speech) throws Exception {
 
         Page<Review> reviews = reviewQueryRepository.findAllReviewByCelebrity(celebrityId, pageable);
         reviews.forEach(review -> {
@@ -151,7 +152,7 @@ public class ReviewService {
         }
     }
 
-    public Page<ReviewDetailDTO> findAllByMedia(long mediaId, Pageable pageable, String speech) throws Exception {
+    public Page<ReviewDetailDTO> findAllByMedia(long mediaId, Pageable pageable, Speech speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAllByMedia(mediaId, pageable);
         reviews.forEach(review -> {
             review.getPlace().findTagSpeech(speech);
@@ -160,7 +161,7 @@ public class ReviewService {
         return getReviewDetailDTOs(reviews);
     }
 
-    public Page<ReviewDetailDTO> findAllByMember(long memberId, String speech, Pageable pageable) {
+    public Page<ReviewDetailDTO> findAllByMember(long memberId, Speech speech, Pageable pageable) {
         Page<Review> reviews = reviewQueryRepository.findAllByMember(memberId, pageable);
         for (var review : reviews) {
             PlaceInfo placeInfo = review.getPlace().getPlaceInfos().stream()

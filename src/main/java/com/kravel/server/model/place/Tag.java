@@ -2,6 +2,7 @@ package com.kravel.server.model.place;
 
 import com.kravel.server.dto.update.EngPlaceInfoUpdateDTO;
 import com.kravel.server.dto.update.KorPlaceInfoUpdateDTO;
+import com.kravel.server.enums.Speech;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ public class Tag {
     @Id @GeneratedValue
     @Column(name = "tag_id")
     private long id;
-    private String speech;
+    private Speech speech;
 
     @Column(name = "tag_name")
     private String name;
@@ -24,7 +25,7 @@ public class Tag {
     private Place place;
 
     @Builder
-    public Tag(String speech, String name) {
+    public Tag(Speech speech, String name) {
         this.speech = speech;
         this.name = name;
     }

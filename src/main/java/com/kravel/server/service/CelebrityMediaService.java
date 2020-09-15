@@ -4,6 +4,7 @@ import com.kravel.server.dto.SearchDTO;
 import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.dto.celebrity.CelebrityDetailDTO;
 import com.kravel.server.dto.media.MediaOverviewDTO;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.celebrity.Celebrity;
 import com.kravel.server.model.mapping.CelebrityMediaQueryRepository;
 import com.kravel.server.model.media.Media;
@@ -20,7 +21,7 @@ public class CelebrityMediaService {
 
     private final CelebrityMediaQueryRepository celebrityMediaQueryRepository;
 
-    public SearchDTO findBySearch(String search, String speech, Pageable pageable) throws Exception {
+    public SearchDTO findBySearch(String search, Speech speech, Pageable pageable) throws Exception {
         List<Celebrity> searchedCelebrities = celebrityMediaQueryRepository.findCelebrityBySearch(search, speech, pageable);
         List<Media> searchedMedias = celebrityMediaQueryRepository.findMediaBySearch(search, speech, pageable);
 

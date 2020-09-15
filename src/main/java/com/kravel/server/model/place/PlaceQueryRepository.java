@@ -1,6 +1,7 @@
 package com.kravel.server.model.place;
 
 import com.kravel.server.common.OrderUtil;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.celebrity.QCelebrity;
 import com.kravel.server.model.celebrity.QCelebrityInfo;
 import com.kravel.server.model.mapping.QPlaceCelebrity;
@@ -42,7 +43,7 @@ public class PlaceQueryRepository {
     QCelebrityInfo celebrityInfo = QCelebrityInfo.celebrityInfo;
     QMediaInfo mediaInfo = QMediaInfo.mediaInfo;
 
-    public Optional<Place> findById(long placeId, String speech) {
+    public Optional<Place> findById(long placeId, Speech speech) {
         return Optional.ofNullable(queryFactory.selectFrom(place)
                 .innerJoin(place.placeInfos, placeInfo)
                     .fetchJoin()
@@ -62,7 +63,7 @@ public class PlaceQueryRepository {
                 .fetchOne());
     }
 
-    public List<Place> findAllByMedia(long mediaId, String speech, Pageable pageable) {
+    public List<Place> findAllByMedia(long mediaId, Speech speech, Pageable pageable) {
         return queryFactory.selectFrom(place)
                 .leftJoin(place.placeInfos, placeInfo).fetchJoin()
                 .leftJoin(place.tags, tag)
@@ -76,7 +77,7 @@ public class PlaceQueryRepository {
                 .fetch();
     }
 
-    public List<Place> findAllByCelebrity(long celebrityId, String speech) {
+    public List<Place> findAllByCelebrity(long celebrityId, Speech speech) {
         return queryFactory.selectFrom(place)
                 .leftJoin(place.placeInfos, placeInfo).fetchJoin()
                 .innerJoin(place.placeCelebrities, placeCelebrity)
@@ -98,7 +99,7 @@ public class PlaceQueryRepository {
                 .fetch();
     }
 
-    public Page<Place> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable) throws Exception {
+    public Page<Place> findAllByLocation(double latitude, double longitude, double height, double width, Speech speech, Pageable pageable) throws Exception {
         List<Place> places = queryFactory.selectFrom(place)
                 .innerJoin(place.placeInfos, placeInfo).fetchJoin()
                 .leftJoin(place.reviews, review)
@@ -110,7 +111,6 @@ public class PlaceQueryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(OrderUtil.byLongitude(longitude, pageable, "place"), OrderUtil.byLatitude(latitude, pageable, "place"))
-//                .orderBy(OrderUtil.sort(pageable, "place"))
                 .fetch();
 
         long placeCount = queryFactory.selectFrom(place)

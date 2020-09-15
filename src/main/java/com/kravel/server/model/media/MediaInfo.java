@@ -1,5 +1,6 @@
 package com.kravel.server.model.media;
 
+import com.kravel.server.enums.Speech;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,9 @@ public class MediaInfo {
 
     private String title;
     private String contents;
-    private String speech;
+
+    @Enumerated(EnumType.STRING)
+    private Speech speech;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "media_id")

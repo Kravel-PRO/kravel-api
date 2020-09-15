@@ -1,5 +1,6 @@
 package com.kravel.server.model.media;
 
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.BaseEntity;
 import com.kravel.server.model.mapping.CelebrityMedia;
 import com.kravel.server.model.place.Place;
@@ -43,7 +44,7 @@ public class Media extends BaseEntity {
     @OneToMany(mappedBy = "media")
     private List<Place> places = new ArrayList<>();
 
-    public void findInfoSpeech(String speech) {
+    public void findInfoSpeech(Speech speech) {
         this.mediaInfos = Optional.ofNullable(this.mediaInfos).orElse(new ArrayList<>()).stream()
                 .filter(info -> info.getSpeech().equals(speech))
                 .collect(Collectors.toList());

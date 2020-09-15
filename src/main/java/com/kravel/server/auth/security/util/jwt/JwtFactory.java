@@ -38,7 +38,7 @@ public class JwtFactory {
             payloads.put("exp", now);
             payloads.put("login_email", context.getMember().getLoginEmail());
             payloads.put("role_type", context.getMember().getRoleType().getRoleName());
-            payloads.put("speech", context.getMember().getSpeech());
+            payloads.put("speech", context.getMember().getSpeech().name());
             payloads.put("gender", context.getMember().getGender());
             payloads.put("member_id", context.getMember().getId());
 

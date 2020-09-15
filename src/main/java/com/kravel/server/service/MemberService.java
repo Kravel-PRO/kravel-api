@@ -1,6 +1,8 @@
 package com.kravel.server.service;
 
 import com.kravel.server.auth.dto.SignUpDTO;
+import com.kravel.server.auth.model.MemberContext;
+import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.MemberDTO;
@@ -33,6 +35,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberQueryRepository memberQueryRepository;
     private final InquireRepository inquireRepository;
+    private final JwtFactory jwtFactory;
 
     private final S3Uploader s3Uploader;
 
@@ -41,21 +44,15 @@ public class MemberService {
         if (optionalMember.isPresent()) {
             throw new InvalidRequestException("🔥 error: login email is exist!");
         }
-        System.out.println("===================");
         Member member = Member.builder()
                 .loginEmail(signUpDTO.getLoginEmail())
                 .loginPw(passwordEncoder.encode(signUpDTO.getLoginPw()))
                 .nickName(signUpDTO.getNickName())
                 .roleType(RoleType.USER)
                 .gender(signUpDTO.getGender().toUpperCase())
-                .speech(signUpDTO.getSpeech().toUpperCase())
+                .speech(signUpDTO.getSpeech())
                 .build();
-        System.out.println("===================");
 
-        System.out.println(member.getNickName());
-        System.out.println(member.getNickName());
-        System.out.println(member.getGender());
-        System.out.println(member.getLoginEmail());
         return memberRepository.save(member).getId();
     }
 
@@ -92,6 +89,18 @@ public class MemberService {
         return MemberDTO.fromEntity(savedMember);
     }
 
+    public MemberDTO modifyMemberSpeech(long memberId, MemberUpdateDTO memberUpdateDTO) {
+
+        Member savedMember = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
+
+        savedMember.changeSpeech(memberUpdateDTO.getSpeech());
+        memberRepository.save(savedMember);
+
+        MemberDTO memberDTO = MemberDTO.fromEntity(savedMember);
+        memberDTO.setToken(jwtFactory.generateToken(MemberContext.fromMemberModel(savedMember)));
+        return memberDTO;
+    }
+
     public int removeMember(long memberId, MemberDTO memberDTO) throws Exception {
 
         Member savedMember = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("🔥 error: is not correct password"));;
@@ -123,4 +132,6 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("🔥error: is not exist member"));
         return MemberDTO.fromEntity(member);
     }
+
+
 }

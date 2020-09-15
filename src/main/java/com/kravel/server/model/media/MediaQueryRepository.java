@@ -1,5 +1,6 @@
 package com.kravel.server.model.media;
 
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.place.QPlace;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class MediaQueryRepository {
     QMediaInfo mediaInfo = QMediaInfo.mediaInfo;
     QPlace place = QPlace.place;
 
-    public Optional<Media> findById(long mediaId, String speech) {
+    public Optional<Media> findById(long mediaId, Speech speech) {
         Media media = queryFactory.selectFrom(this.media)
                 .innerJoin(this.media.mediaInfos, mediaInfo)
                 .on(mediaInfo.speech.eq(speech))

@@ -1,5 +1,6 @@
 package com.kravel.server.model.celebrity;
 
+import com.kravel.server.enums.Speech;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,8 @@ public class CelebrityInfo {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String speech;
+    @Enumerated(EnumType.STRING)
+    private Speech speech;
 
     @Column(name = "celebrity_name")
     private String name;
