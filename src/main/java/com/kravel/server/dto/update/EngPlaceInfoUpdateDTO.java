@@ -4,10 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class PlaceInfoUpdateDTO {
-
-    private  String speech;
+public class EngPlaceInfoUpdateDTO {
+    private String speech = "ENG";
     private String title;
-    private String contents;
     private String location;
+    private String tags;
 }

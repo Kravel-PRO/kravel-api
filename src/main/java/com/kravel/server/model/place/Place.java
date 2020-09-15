@@ -1,5 +1,10 @@
 package com.kravel.server.model.place;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kravel.server.common.S3Uploader;
+import com.kravel.server.dto.update.EngPlaceInfoUpdateDTO;
+import com.kravel.server.dto.update.KorPlaceInfoUpdateDTO;
 import com.kravel.server.dto.update.PlaceUpdateDTO;
 import com.kravel.server.model.BaseEntity;
 import com.kravel.server.model.mapping.PlaceCelebrity;
@@ -11,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -60,7 +66,8 @@ public class Place extends BaseEntity {
     private List<Tag> tags = new ArrayList<>();
 
     @Builder
-    public Place(double latitude, double longitude, String imageUrl, String subImageUrl, String filterImageUrl) {
+    public Place(long id, double latitude, double longitude, String imageUrl, String subImageUrl, String filterImageUrl) {
+        this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.imageUrl = imageUrl;
@@ -68,16 +75,36 @@ public class Place extends BaseEntity {
         this.filterImageUrl = filterImageUrl;
     }
 
-    public Place(PlaceUpdateDTO placeUpdateDTO) {
+    public Place(PlaceUpdateDTO placeUpdateDTO, S3Uploader s3Uploader, ObjectMapper objectMapper) throws IOException {
         this.bus = placeUpdateDTO.getBus();
         this.subway = placeUpdateDTO.getSubway();
         this.latitude = placeUpdateDTO.getLatitude();
         this.longitude = placeUpdateDTO.getLongitude();
-        this.imageUrl = placeUpdateDTO.getImageUrl();
-        this.subImageUrl = placeUpdateDTO.getSubImageUrl();
-        this.placeInfos = placeUpdateDTO.getPlaceInfos().stream().map(PlaceInfo::new).collect(Collectors.toList());
-        this.tags = placeUpdateDTO.getTags().stream().map(Tag::new).collect(Collectors.toList());
-        this.filterImageUrl = placeUpdateDTO.getFilterImageUrl();
+
+        KorPlaceInfoUpdateDTO korPlaceInfoUpdateDTO = objectMapper.readValue(placeUpdateDTO.getKorInfo(), KorPlaceInfoUpdateDTO.class);
+        EngPlaceInfoUpdateDTO engPlaceInfoUpdateDTO = objectMapper.readValue(placeUpdateDTO.getEngInfo(), EngPlaceInfoUpdateDTO.class);
+        List<Integer> celebrities = objectMapper.readValue(placeUpdateDTO.getCelebrities(), new TypeReference<List<Integer >>(){});
+
+        System.out.println(celebrities.toString());
+
+        this.placeInfos.add(new PlaceInfo(korPlaceInfoUpdateDTO));
+        this.placeInfos.add(new PlaceInfo(engPlaceInfoUpdateDTO));
+        this.tags.add(new Tag(this, korPlaceInfoUpdateDTO));
+        this.tags.add(new Tag(this, engPlaceInfoUpdateDTO));
+
+        if (celebrities.size() != 0) {
+            celebrities.forEach(celebrity -> {
+                PlaceCelebrity placeCelebrity = new PlaceCelebrity(this, celebrity);
+                this.placeCelebrities.add(placeCelebrity);
+            });
+        }
+        if (placeUpdateDTO.getMedia() != 0) {
+            this.media = new Media(placeUpdateDTO.getMedia());
+        }
+
+        this.imageUrl = s3Uploader.upload(placeUpdateDTO.getImage(), "place");
+        this.subImageUrl = s3Uploader.upload(placeUpdateDTO.getSubImage(), "place/sub");
+        this.filterImageUrl = s3Uploader.upload(placeUpdateDTO.getFilterImage(), "place/filter");
     }
 
     public void changePlaceInfo(List<PlaceInfo> placeInfos) {

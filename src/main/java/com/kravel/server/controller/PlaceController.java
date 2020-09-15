@@ -1,5 +1,6 @@
 package com.kravel.server.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.media.PlaceRelatedMediaDTO;
 import com.kravel.server.dto.place.PlaceDetailDTO;
@@ -8,6 +9,7 @@ import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.dto.place.PlaceMapDTO;
 import com.kravel.server.dto.place.ScrapDTO;
 import com.kravel.server.dto.update.PlaceUpdateDTO;
+import com.kravel.server.dto.update.Test;
 import com.kravel.server.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -84,14 +86,25 @@ public class PlaceController {
         return ResponseEntity.ok().body(new Message(scrapId));
     }
 
+    @PostMapping("/api/places/test")
+    public ResponseEntity<Message> test(@ModelAttribute Test test) throws Exception {
+
+
+        System.out.println(test.toString());
+//        System.out.println(loginEmail);
+//        System.out.println(loginPw);
+        return ResponseEntity.ok().body(new Message("succeed!"));
+    }
+
     @PostMapping("/api/places")
-    public ResponseEntity<Message> savePlaceInfo(@RequestBody PlaceUpdateDTO placeUpdateDTO) throws Exception {
+    public ResponseEntity<Message> savePlaceInfo(@ModelAttribute PlaceUpdateDTO placeUpdateDTO) throws Exception {
 
         log.info("🎉 POST /api/places");
 
+        System.out.println(placeUpdateDTO.toString());
+
         long placeId = placeService.savePlace(placeUpdateDTO);
         return ResponseEntity.ok().body(new Message(placeId));
-
     }
 
     @GetMapping("/api/medias/{mediaId}/places")

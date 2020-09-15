@@ -24,4 +24,9 @@ public class PlaceCelebrity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "celebrity_id")
     private Celebrity celebrity;
+
+    public PlaceCelebrity(Place place, long celebrityId) {
+        this.place = place;
+        this.celebrity = Celebrity.builder().id(celebrityId).build();
+    }
 }

@@ -48,4 +48,7 @@ public class Media extends BaseEntity {
                 .filter(info -> info.getSpeech().equals(speech))
                 .collect(Collectors.toList());
     }
+    public Media(long id) {
+        this.id = id;
+    }
 }

@@ -1,5 +1,7 @@
 package com.kravel.server.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kravel.server.common.S3Uploader;
 import com.kravel.server.dto.media.PlaceRelatedMediaDTO;
 import com.kravel.server.dto.place.PlaceDetailDTO;
 import com.kravel.server.dto.place.PlaceDTO;
@@ -40,6 +42,8 @@ public class PlaceService {
     private final MediaRepository mediaRepository;
     private final ScrapRepository scrapRepository;
     private final ReviewQueryRepository reviewQueryRepository;
+    private final S3Uploader s3Uploader;
+    private final ObjectMapper objectMapper;
 
     @Transactional(readOnly = true)
     public Page<PlaceDTO> findAllByLocation(double latitude, double longitude, double height, double width, String speech, Pageable pageable, boolean reviewCount) throws Exception {
@@ -117,7 +121,7 @@ public class PlaceService {
     }
 
     public long savePlace(PlaceUpdateDTO placeUpdateDTO) throws Exception {
-        Place place = new Place(placeUpdateDTO);
+        Place place = new Place(placeUpdateDTO, s3Uploader, objectMapper);
         return placeRepository.save(place).getId();
     }
 

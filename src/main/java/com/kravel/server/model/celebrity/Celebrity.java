@@ -40,7 +40,8 @@ public class Celebrity extends BaseEntity {
     private List<PlaceCelebrity> placeCelebrities = new ArrayList<>();
 
     @Builder
-    public Celebrity(String imageUrl) {
+    public Celebrity(long id, String imageUrl) {
+        this.id = id;
         this.imageUrl = imageUrl;
     }
 

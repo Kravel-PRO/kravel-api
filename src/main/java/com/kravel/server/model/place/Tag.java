@@ -1,6 +1,7 @@
 package com.kravel.server.model.place;
 
-import com.kravel.server.dto.update.TagUpdateDTO;
+import com.kravel.server.dto.update.EngPlaceInfoUpdateDTO;
+import com.kravel.server.dto.update.KorPlaceInfoUpdateDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +29,15 @@ public class Tag {
         this.name = name;
     }
 
-    public Tag(TagUpdateDTO tagUpdateDTO) {
-        this.speech = tagUpdateDTO.getSpeech();
-        this.name = tagUpdateDTO.getName();
+    public Tag(Place place, KorPlaceInfoUpdateDTO korPlaceInfoUpdateDTO) {
+        this.place = place;
+        this.speech = korPlaceInfoUpdateDTO.getSpeech();
+        this.name = korPlaceInfoUpdateDTO.getTags();
+    }
+
+    public Tag(Place place, EngPlaceInfoUpdateDTO engPlaceInfoUpdateDTO) {
+        this.place = place;
+        this.speech = engPlaceInfoUpdateDTO.getSpeech();
+        this.name = engPlaceInfoUpdateDTO.getTags();
     }
 }

@@ -42,9 +42,6 @@ public class PlaceDetailDTO {
         placeDetailDTO.setTitle(entity.getPlaceInfos().stream()
                 .findFirst()
                 .orElse(new PlaceInfo()).getTitle());
-        placeDetailDTO.setContents(entity.getPlaceInfos().stream()
-                .findFirst()
-                .orElse(new PlaceInfo()).getContents());
         placeDetailDTO.setImageUrl(entity.getImageUrl());
         placeDetailDTO.setLocation(entity.getPlaceInfos().stream()
                 .findFirst()

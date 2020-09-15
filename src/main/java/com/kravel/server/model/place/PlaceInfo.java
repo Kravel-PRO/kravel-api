@@ -1,6 +1,7 @@
 package com.kravel.server.model.place;
 
-import com.kravel.server.dto.update.PlaceInfoUpdateDTO;
+import com.kravel.server.dto.update.EngPlaceInfoUpdateDTO;
+import com.kravel.server.dto.update.KorPlaceInfoUpdateDTO;
 import com.kravel.server.model.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,10 +25,16 @@ public class PlaceInfo extends BaseEntity {
     private String title;
     private String location;
 
-    public PlaceInfo(PlaceInfoUpdateDTO placeInfoUpdateDTO) {
-        this.speech = placeInfoUpdateDTO.getSpeech();
-        this.title = placeInfoUpdateDTO.getTitle();
-        this.location = placeInfoUpdateDTO.getLocation();
+    public PlaceInfo(KorPlaceInfoUpdateDTO korPlaceInfoUpdateDTO) {
+        this.speech = korPlaceInfoUpdateDTO.getSpeech();
+        this.title = korPlaceInfoUpdateDTO.getTitle();
+        this.location = korPlaceInfoUpdateDTO.getLocation();
+    }
+
+    public PlaceInfo(EngPlaceInfoUpdateDTO engPlaceInfoUpdateDTO) {
+        this.speech = engPlaceInfoUpdateDTO.getSpeech();
+        this.title = engPlaceInfoUpdateDTO.getTitle();
+        this.location = engPlaceInfoUpdateDTO.getLocation();
     }
 
 }

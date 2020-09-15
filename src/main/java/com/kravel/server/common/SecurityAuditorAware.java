@@ -2,6 +2,7 @@ package com.kravel.server.common;
 
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.auth.service.MemberContextService;
+import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.model.member.Member;
 import com.kravel.server.model.member.MemberRepository;
 import com.kravel.server.service.MemberService;
@@ -27,7 +28,8 @@ public class SecurityAuditorAware implements AuditorAware<Member> {
             return Optional.empty();
         }
         PostAuthorizationToken postAuthorizationToken = (PostAuthorizationToken) authentication;
-        Member member = memberRepository.findById(postAuthorizationToken.getMemberContext().getMember().getId()).get();
+        Member member = memberRepository.findById(postAuthorizationToken.getMemberContext().getMember().getId()).orElseThrow(() -> new InvalidRequestException("🔥 error: is not exist member in audit"));
+
         return Optional.ofNullable(member);
     }
 }
