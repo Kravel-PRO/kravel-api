@@ -163,7 +163,9 @@ public class ReviewService {
 
     public Page<ReviewDetailDTO> findAllByMember(long memberId, Speech speech, Pageable pageable) {
         Page<Review> reviews = reviewQueryRepository.findAllByMember(memberId, pageable);
-        reviews.forEach(review -> review.getPlace().findInfoSpeech(speech));
+        reviews.forEach(review ->
+                review.getPlace().findInfoSpeech(speech)
+        );
         return getReviewDetailDTOs(reviews);
     }
 

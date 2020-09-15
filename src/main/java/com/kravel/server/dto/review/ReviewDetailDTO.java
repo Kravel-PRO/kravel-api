@@ -27,6 +27,7 @@ public class ReviewDetailDTO {
     private boolean like;
     private String createdDate;
     private PlaceTitleDTO place;
+    private String modifiedDate;
 
     @Builder
     public ReviewDetailDTO(long reviewId, String imageUrl, long likeCount, boolean like) {
@@ -41,6 +42,8 @@ public class ReviewDetailDTO {
         reviewDetailDTO.setReviewId(entity.getId());
         reviewDetailDTO.setImageUrl(entity.getImageUrl());
         reviewDetailDTO.setCreatedDate(entity.getCreatedDate().toString().substring(0, 10));
+        reviewDetailDTO.setModifiedDate(entity.getModifiedDate().toString().substring(0, 10));
+
         reviewDetailDTO.setLike(Optional.ofNullable(entity.getReviewLikes())
                 .orElse(new ArrayList<>()).stream()
                 .findFirst().isPresent());

@@ -24,6 +24,9 @@ public class PlaceDTO {
     private double latitude;
     private double longitude;
 
+    private String createdDate;
+    private String modifiedDate;
+
     private long reviewCount;
     private String tags;
     private List<CelebrityDTO> celebrities;
@@ -52,6 +55,9 @@ public class PlaceDTO {
                 .stream()
                 .map(placeCelebrity -> CelebrityDTO.fromEntity(placeCelebrity.getCelebrity()))
                 .collect(Collectors.toList()));
+
+        placeDTO.setCreatedDate(entity.getCreatedDate().toString());
+        placeDTO.setModifiedDate(entity.getModifiedDate().toString());
 
         return placeDTO;
     }

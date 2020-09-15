@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,9 +29,18 @@ public class CelebrityService {
 
     private final PlaceQueryRepository placeQueryRepository;
 
-    public List<CelebrityDTO> findAllCelebrities(Pageable pageable) throws Exception {
-        List<Celebrity> celebrities = celebrityQueryFactory.finaAllCelebrity(pageable);
-        return celebrities.stream().map(CelebrityDTO::fromEntity).collect(Collectors.toList());
+    public Page<CelebrityDTO> findAllCelebrities(Pageable pageable, Speech speech) throws Exception {
+        Page<Celebrity> celebrities = celebrityQueryFactory.finaAllCelebrity(pageable);
+        celebrities.forEach(celebrity ->
+                celebrity.findInfoSpeech(speech)
+        );
+
+        return celebrities.map(new Function<Celebrity, CelebrityDTO>() {
+            @Override
+            public CelebrityDTO apply(Celebrity celebrity) {
+                return CelebrityDTO.fromEntity(celebrity);
+            }
+        });
     }
 
     public CelebrityDetailDTO findCelebrityById(long celebrityId, Speech speech, Pageable pageable) throws Exception {

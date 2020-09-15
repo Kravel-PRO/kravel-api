@@ -35,7 +35,8 @@ public class CelebrityController {
     public ResponseEntity<Message> findAllCelebrities(@PageableDefault Pageable pageable,
                                                       Authentication authentication) throws Exception {
 
-        List<CelebrityDTO> celebrities = celebrityService.findAllCelebrities(pageable);
+        Speech speech = claimExtractor.getSpeech(authentication);
+        Page<CelebrityDTO> celebrities = celebrityService.findAllCelebrities(pageable, speech);
         return ResponseEntity.ok(new Message(celebrities));
     }
 
