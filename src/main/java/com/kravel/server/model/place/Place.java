@@ -86,8 +86,6 @@ public class Place extends BaseEntity {
         EngPlaceInfoUpdateDTO engPlaceInfoUpdateDTO = objectMapper.readValue(placeUpdateDTO.getEngInfo(), EngPlaceInfoUpdateDTO.class);
         List<Integer> celebrities = objectMapper.readValue(placeUpdateDTO.getCelebrities(), new TypeReference<List<Integer >>(){});
 
-        System.out.println(celebrities.toString());
-
         this.placeInfos.add(new PlaceInfo(korPlaceInfoUpdateDTO));
         this.placeInfos.add(new PlaceInfo(engPlaceInfoUpdateDTO));
         this.tags.add(new Tag(this, korPlaceInfoUpdateDTO));

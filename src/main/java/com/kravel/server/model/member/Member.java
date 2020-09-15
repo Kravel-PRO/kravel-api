@@ -5,6 +5,7 @@ import com.kravel.server.enums.Speech;
 import com.kravel.server.model.BaseTimeEntity;
 import com.kravel.server.model.mapping.ReviewLike;
 import com.kravel.server.model.mapping.Scrap;
+import com.kravel.server.model.place.Place;
 import com.kravel.server.model.review.Review;
 import lombok.Builder;
 import lombok.Getter;
