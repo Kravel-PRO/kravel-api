@@ -77,7 +77,7 @@ public class PlaceQueryRepository {
                 .fetch();
     }
 
-    public List<Place> findAllByCelebrity(long celebrityId, Speech speech) {
+    public List<Place> findAllByCelebrity(long celebrityId, Speech speech, Pageable pageable) {
         return queryFactory.selectFrom(place)
                 .leftJoin(place.placeInfos, placeInfo).fetchJoin()
                 .innerJoin(place.placeCelebrities, placeCelebrity)
@@ -85,7 +85,10 @@ public class PlaceQueryRepository {
                 .where(
                         placeInfo.speech.eq(speech),
                         celebrity.id.eq(celebrityId)
-                ).fetch();
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
     }
 
     public List<Place> findMapByLocation(double latitude, double longitude, double height, double width) throws Exception {

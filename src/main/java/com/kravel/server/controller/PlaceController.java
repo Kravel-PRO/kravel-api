@@ -103,5 +103,4 @@ public class PlaceController {
         List<PlaceRelatedMediaDTO> result = placeService.findAllByMedia(mediaId, speech, pageable);
         return ResponseEntity.ok(new Message(result));
     }
-
 }

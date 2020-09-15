@@ -1,6 +1,7 @@
 package com.kravel.server.controller;
 
 import com.kravel.server.common.util.message.Message;
+import com.kravel.server.dto.media.MediaDetailDTO;
 import com.kravel.server.dto.media.PlaceRelatedMediaDTO;
 import com.kravel.server.dto.media.MediaDTO;
 import com.kravel.server.dto.media.MediaOverviewDTO;
@@ -33,11 +34,12 @@ public class MediaController {
 
     @GetMapping("/api/medias/{mediaId}")
     public ResponseEntity<Message> findById(@PathVariable("mediaId") long mediaId,
-                                         Authentication authentication) throws Exception {
+                                            @PageableDefault Pageable pageable,
+                                            Authentication authentication) throws Exception {
 
         Speech speech = claimExtractor.getSpeech(authentication);
 
-        MediaDTO mediaDTO = mediaService.findById(mediaId, speech);
+        MediaDetailDTO mediaDTO = mediaService.findById(mediaId, speech, pageable);
         return ResponseEntity.ok(new Message(mediaDTO));
     }
 }

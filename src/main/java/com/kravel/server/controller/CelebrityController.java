@@ -41,10 +41,11 @@ public class CelebrityController {
 
     @GetMapping("/api/celebrities/{celebrityId}")
     public ResponseEntity<Message> findCelebrityById(@PathVariable("celebrityId") long celebrityId,
+                                                     @PageableDefault Pageable pageable,
                                                      Authentication authentication) throws Exception {
 
         Speech speech = claimExtractor.getSpeech(authentication);
-        CelebrityDetailDTO result = celebrityService.findCelebrityById(celebrityId, speech);
+        CelebrityDetailDTO result = celebrityService.findCelebrityById(celebrityId, speech, pageable);
         return ResponseEntity.ok(new Message(result));
     }
 

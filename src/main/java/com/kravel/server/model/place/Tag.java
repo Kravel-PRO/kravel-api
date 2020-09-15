@@ -15,6 +15,8 @@ public class Tag {
     @Id @GeneratedValue
     @Column(name = "tag_id")
     private long id;
+
+    @Enumerated(EnumType.STRING)
     private Speech speech;
 
     @Column(name = "tag_name")
