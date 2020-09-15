@@ -36,9 +36,11 @@ public class ReviewQueryRepository {
 
     public Page<Review> findAllByPlace(long placeId, Pageable pageable) throws Exception {
         QueryResults<Review> reviewQueryResults = queryFactory.selectFrom(review)
+                .leftJoin(review.reviewLikes, reviewLike)
                 .where(review.place.id.eq(placeId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(OrderUtil.byReviewLikes(pageable, "review"))
                 .fetchResults();
 
         return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
@@ -54,7 +56,9 @@ public class ReviewQueryRepository {
         QueryResults<Review> reviewQueryResults = queryFactory.selectFrom(review)
                 .innerJoin(review.celebrityReviews, celebrityReview)
                 .innerJoin(celebrityReview.celebrity, celebrity)
+                .leftJoin(review.reviewLikes, reviewLike)
                 .where(celebrity.id.eq(celebrityId))
+                .orderBy(OrderUtil.byReviewLikes(pageable, "review"))
                 .fetchResults();
 
         return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
@@ -62,9 +66,11 @@ public class ReviewQueryRepository {
 
     public Page<Review> findAllByMedia(long mediaId, Pageable pageable) throws Exception {
         QueryResults<Review> queryResults = queryFactory.selectFrom(review)
+                .leftJoin(review.reviewLikes, reviewLike)
                 .where(review.media.id.eq(mediaId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(OrderUtil.byReviewLikes(pageable, "review"))
                 .fetchResults();
 
         return new PageImpl<>(queryResults.getResults(), pageable, queryResults.getTotal());

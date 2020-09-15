@@ -41,8 +41,8 @@ public class ReviewController {
 
     @GetMapping("/api/places/{placeId}/reviews")
     public ResponseEntity<Message> findAllByPlace(@PathVariable("placeId") long placeId,
-                                                 @PageableDefault Pageable pageable,
-                                                 Authentication authentication) throws Exception {
+                                                  @PageableDefault Pageable pageable,
+                                                  Authentication authentication) throws Exception {
 
         log.info("🎉 GET /api/places/{placeId}/reviews");
         String speech = claimExtractor.getSpeech(authentication);
@@ -109,7 +109,6 @@ public class ReviewController {
         Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByCelebrity(celebrityId, pageable, speech);
         return ResponseEntity.ok(new Message(reviewDTOs));
     }
-
 
     @GetMapping("/api/member/reviews")
     public ResponseEntity<Message> findAllByMember(@PageableDefault Pageable pageable,
