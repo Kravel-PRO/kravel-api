@@ -163,19 +163,7 @@ public class ReviewService {
 
     public Page<ReviewDetailDTO> findAllByMember(long memberId, Speech speech, Pageable pageable) {
         Page<Review> reviews = reviewQueryRepository.findAllByMember(memberId, pageable);
-        for (var review : reviews) {
-            PlaceInfo placeInfo = review.getPlace().getPlaceInfos().stream()
-                    .filter(info -> info
-                            .getSpeech()
-                            .equals(speech))
-                    .findFirst()
-                    .orElseThrow(() -> new InvalidRequestException("is not exist place info"));
-
-            List<PlaceInfo> placeInfos = new ArrayList<>();
-            placeInfos.add(placeInfo);
-            review.getPlace().changePlaceInfo(placeInfos);
-        }
-
+        reviews.forEach(review -> review.getPlace().findInfoSpeech(speech));
         return getReviewDetailDTOs(reviews);
     }
 

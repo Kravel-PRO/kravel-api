@@ -20,6 +20,7 @@ import java.util.Optional;
 public class JpaAuditingConfig {
 
     private final ClaimExtractor claimExtractor;
+    private final MemberRepository memberRepository;
 
     @Bean
     public AuditorAware<Long> auditorAware() {
@@ -29,10 +30,6 @@ public class JpaAuditingConfig {
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
                 long memberId = claimExtractor.getMemberId(authentication);
-//                Member savedMember = memberRepository.findById(memberId).orElse(new Member());
-                System.out.println("===========================================================");
-                Member member = Member.builder().id(memberId).build();
-
                 return Optional.of(memberId);
             }
         };
