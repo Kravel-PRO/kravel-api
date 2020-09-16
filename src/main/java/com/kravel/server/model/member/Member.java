@@ -35,6 +35,10 @@ public class Member extends BaseTimeEntity {
     private Speech speech;
     private String useAt = "Y";
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "remember_me_id")
+    private RememberMe rememberMe;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Inquire> inquires = new ArrayList<>();
 
@@ -59,9 +63,10 @@ public class Member extends BaseTimeEntity {
     public void changeSpeech(Speech speech) {
         this.speech = speech;
     }
+    public void changeRememberMe(RememberMe rememberMe) { this.rememberMe = rememberMe; }
 
     @Builder
-    public Member(long id, String loginEmail, String nickName, String loginPw, String gender, RoleType roleType, Speech speech) {
+    public Member(long id, String loginEmail, String nickName, String loginPw, String gender, RoleType roleType, Speech speech, RememberMe rememberMe) {
         this.id = id;
         this.loginEmail = loginEmail;
         this.loginPw = loginPw;
@@ -69,5 +74,6 @@ public class Member extends BaseTimeEntity {
         this.gender = gender;
         this.roleType = roleType;
         this.speech = speech;
+        this.rememberMe = rememberMe;
     }
 }

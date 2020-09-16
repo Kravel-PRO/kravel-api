@@ -17,17 +17,22 @@ public class RememberMe extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "remember_me_id")
     private long id;
-    private String loginEmail;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "rememberMe")
+    private Member member;
+
     private String token;
 
-    public void updateToken(String loginEmail, String token) {
-        this.loginEmail = loginEmail;
+    public void updateToken(String token) {
         this.token = token;
     }
 
+    public static RememberMe generateToken(String token) {
+        return RememberMe.builder().token(token).build();
+    }
     @Builder
-    public RememberMe(String loginEmail, String token) {
-        this.loginEmail = loginEmail;
+    public RememberMe(Member member, String token) {
+        this.member = member;
         this.token = token;
     }
 }

@@ -13,10 +13,13 @@ public class RememberMeQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     QRememberMe rememberMe = QRememberMe.rememberMe;
+    QMember member = QMember.member;
 
-    public Optional<RememberMe> findByLoginEmail(String loginEmail) {
+    public Optional<RememberMe> findByMember(long memberId) {
         return Optional.ofNullable(queryFactory.selectFrom(rememberMe)
-                .where(rememberMe.loginEmail.eq(loginEmail))
+                .innerJoin(rememberMe.member, member)
+                    .fetchJoin()
+                .where(rememberMe.member.id.eq(memberId))
                 .fetchOne());
     }
 }

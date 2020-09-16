@@ -2,6 +2,10 @@ package com.kravel.server.service;
 
 import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.auth.model.MemberContext;
+import com.kravel.server.auth.security.util.exception.InvalidJwtException;
+import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
+import com.kravel.server.auth.security.util.jwt.HeaderTokenExtractor;
+import com.kravel.server.auth.security.util.jwt.JwtDecoder;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.NotFoundException;
@@ -14,6 +18,9 @@ import com.kravel.server.dto.update.MemberUpdateDTO;
 import com.kravel.server.enums.RoleType;
 import com.kravel.server.model.member.*;
 import com.kravel.server.model.place.Place;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -36,7 +44,8 @@ public class MemberService {
     private final MemberQueryRepository memberQueryRepository;
     private final InquireRepository inquireRepository;
     private final JwtFactory jwtFactory;
-
+    private final HeaderTokenExtractor headerTokenExtractor;
+    private final RememberMeQueryRepository rememberMeQueryRepository;
     private final S3Uploader s3Uploader;
 
     public long saveMember(SignUpDTO signUpDTO) throws Exception {
@@ -44,6 +53,7 @@ public class MemberService {
         if (optionalMember.isPresent()) {
             throw new InvalidRequestException("🔥 error: login email is exist!");
         }
+
         Member member = Member.builder()
                 .loginEmail(signUpDTO.getLoginEmail())
                 .loginPw(passwordEncoder.encode(signUpDTO.getLoginPw()))
@@ -136,4 +146,23 @@ public class MemberService {
     }
 
 
+    public String refreshToken(String tokenPayload) {
+        String token = headerTokenExtractor.extract(tokenPayload);
+        Jws<Claims> claims = Jwts.parser().parseClaimsJws(token);
+        long memberId = claims.getBody().get("member_id", Long.class);
+        RememberMe rememberMe = rememberMeQueryRepository.findByMember(memberId)
+                .orElseThrow(() ->
+                        new InvalidJwtException("유효하지 않는 refresh token입니다.")
+                );
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime expireDateTime = currentDateTime.plusMonths(2);
+        if (currentDateTime.isBefore(expireDateTime)) {
+            String jwt = jwtFactory.generateToken(MemberContext.fromMemberModel(rememberMe.getMember()));
+            rememberMe.updateToken(jwt);
+            return jwt;
+        } else {
+            throw new InvalidRequestException("refresh token is expired");
+        }
+
+    }
 }

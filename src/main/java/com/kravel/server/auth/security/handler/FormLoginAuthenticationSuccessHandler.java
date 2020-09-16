@@ -7,6 +7,8 @@ import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
 import com.kravel.server.common.util.message.Message;
+import com.kravel.server.model.member.RememberMe;
+import com.kravel.server.model.member.RememberMeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -26,6 +28,7 @@ import java.io.IOException;
 public class FormLoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtFactory factory;
+    private final RememberMeRepository rememberMeRepository;
 
     @Autowired @Lazy
     private ObjectMapper objectMapper;
@@ -36,6 +39,12 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
         MemberContext context = ((PostAuthorizationToken) auth).getMemberContext();
 
         String token = factory.generateToken(context);
+        RememberMe rememberMe = RememberMe.builder()
+                .member(context.getMember())
+                .token(token)
+                .build();
+        rememberMeRepository.save(rememberMe);
+
         processResponse(res, token);
     }
 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -41,6 +42,16 @@ public class MemberController {
         long memberId = memberService.saveMember(signUpDTO);
 
         return ResponseEntity.ok(new Message(memberId));
+    }
+
+    @PostMapping("/auth/refresh-token")
+    public ResponseEntity<Message> refreshToken(HttpServletRequest req, HttpServletResponse res) throws Exception {
+        String tokenPayload = req.getHeader("Authorization");
+
+        String token = memberService.refreshToken(tokenPayload);
+        return ResponseEntity.status(HttpStatus.OK).header(
+                "Authorization", "Bearer " + token)
+                .body(new Message("Refresh token generated succeed"));
     }
 
     @GetMapping("/api/members/me")
@@ -94,8 +105,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/api/member")
-    public ResponseEntity<Message> removeMember(@PathVariable("loginEmail") String loginEmail,
-                                                @RequestBody MemberDTO memberDTO,
+    public ResponseEntity<Message> removeMember(@RequestBody MemberDTO memberDTO,
                                                 Authentication authentication) throws Exception {
 
         long memberId = claimExtractor.getMemberId(authentication);
