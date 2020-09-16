@@ -1,7 +1,7 @@
 package com.kravel.server.model.place;
 
-import com.kravel.server.dto.update.EngPlaceInfoUpdateDTO;
-import com.kravel.server.dto.update.KorPlaceInfoUpdateDTO;
+import com.kravel.server.dto.update.place.EngPlaceInfoUpdateDTO;
+import com.kravel.server.dto.update.place.KorPlaceInfoUpdateDTO;
 import com.kravel.server.enums.Speech;
 import com.kravel.server.model.BaseEntity;
 import lombok.Getter;

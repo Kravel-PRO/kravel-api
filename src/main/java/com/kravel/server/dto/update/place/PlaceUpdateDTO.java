@@ -16,7 +16,6 @@ public class PlaceUpdateDTO {
     private String subway;
     private double latitude;
     private double longitude;
-//
     private String celebrities;
     private long media;
 

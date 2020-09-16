@@ -1,6 +1,5 @@
 package com.kravel.server.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.media.PlaceRelatedMediaDTO;
 import com.kravel.server.dto.place.PlaceDetailDTO;
@@ -8,8 +7,6 @@ import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.dto.place.PlaceMapDTO;
 import com.kravel.server.dto.place.ScrapDTO;
-import com.kravel.server.dto.update.PlaceUpdateDTO;
-import com.kravel.server.dto.update.Test;
 import com.kravel.server.enums.Speech;
 import com.kravel.server.service.PlaceService;
 import lombok.RequiredArgsConstructor;
@@ -83,15 +80,6 @@ public class PlaceController {
         long scrapId = placeService.handlePlaceScrap(placeId, memberId, scrapDTO);
 
         return ResponseEntity.ok().body(new Message(scrapId));
-    }
-
-    @PostMapping("/api/places")
-    public ResponseEntity<Message> savePlaceInfo(@ModelAttribute PlaceUpdateDTO placeUpdateDTO) throws Exception {
-
-        log.info("🎉 POST /api/places");
-
-        long placeId = placeService.savePlace(placeUpdateDTO);
-        return ResponseEntity.ok().body(new Message(placeId));
     }
 
     @GetMapping("/api/medias/{mediaId}/places")

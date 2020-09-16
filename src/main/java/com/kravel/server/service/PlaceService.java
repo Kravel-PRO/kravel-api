@@ -9,9 +9,7 @@ import com.kravel.server.dto.place.PlaceMapDTO;
 import com.kravel.server.dto.place.ScrapDTO;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
-import com.kravel.server.dto.update.PlaceUpdateDTO;
 import com.kravel.server.enums.Speech;
-import com.kravel.server.model.mapping.PlaceCelebrity;
 import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.mapping.ScrapRepository;
 import com.kravel.server.model.media.Media;
@@ -26,7 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -113,11 +110,6 @@ public class PlaceService {
         } else {
             throw new InvalidRequestException("🔥 error: is not valid scarp state");
         }
-    }
-
-    public long savePlace(PlaceUpdateDTO placeUpdateDTO) throws Exception {
-        Place place = new Place(placeUpdateDTO, s3Uploader, objectMapper);
-        return placeRepository.save(place).getId();
     }
 
     public List<PlaceMapDTO> findMapByLocation(double latitude, double longitude, double height, double width) throws Exception {

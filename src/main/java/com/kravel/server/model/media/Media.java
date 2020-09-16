@@ -1,5 +1,11 @@
 package com.kravel.server.model.media;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kravel.server.common.S3Uploader;
+import com.kravel.server.dto.update.media.EngMediaInfoUpdateDTO;
+import com.kravel.server.dto.update.media.KorMediaInfoUpdateDTO;
+import com.kravel.server.dto.update.media.MediaUpdateDTO;
 import com.kravel.server.enums.Speech;
 import com.kravel.server.model.BaseEntity;
 import com.kravel.server.model.mapping.CelebrityMedia;
@@ -9,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,5 +58,16 @@ public class Media extends BaseEntity {
     }
     public Media(long id) {
         this.id = id;
+    }
+
+    public Media(MediaUpdateDTO mediaUpdateDTO, S3Uploader s3Uploader, ObjectMapper objectMapper) throws IOException {
+        this.year = mediaUpdateDTO.getYear();
+
+        KorMediaInfoUpdateDTO korInfo = objectMapper.readValue(mediaUpdateDTO.getKorInfo(), KorMediaInfoUpdateDTO.class);
+        EngMediaInfoUpdateDTO engInfo = objectMapper.readValue(mediaUpdateDTO.getEngInfo(), EngMediaInfoUpdateDTO.class);
+
+        this.mediaInfos.add(new MediaInfo(korInfo));
+        this.mediaInfos.add(new MediaInfo(engInfo));
+        this.imageUrl = s3Uploader.upload(mediaUpdateDTO.getImage(), "media");
     }
 }
