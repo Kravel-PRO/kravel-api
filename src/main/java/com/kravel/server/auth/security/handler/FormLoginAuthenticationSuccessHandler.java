@@ -6,8 +6,10 @@ import com.kravel.server.auth.dto.TokenDTO;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.auth.security.token.PostAuthorizationToken;
+import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.model.member.RememberMe;
+import com.kravel.server.model.member.RememberMeQueryRepository;
 import com.kravel.server.model.member.RememberMeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
 
     private final JwtFactory factory;
     private final RememberMeRepository rememberMeRepository;
+    private final RememberMeQueryRepository rememberMeQueryRepository;
 
     @Autowired @Lazy
     private ObjectMapper objectMapper;
@@ -39,10 +42,8 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
         MemberContext context = ((PostAuthorizationToken) auth).getMemberContext();
 
         String token = factory.generateToken(context);
-        RememberMe rememberMe = RememberMe.builder()
-                .member(context.getMember())
-                .token(token)
-                .build();
+        RememberMe rememberMe = rememberMeQueryRepository.findByMember(context.getMember().getId()).orElseThrow(() -> new InvalidRequestException("is not exist refresh toekn"));
+        rememberMe.updateToken(token);
         rememberMeRepository.save(rememberMe);
 
         processResponse(res, token);

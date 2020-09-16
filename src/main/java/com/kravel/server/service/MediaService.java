@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -29,9 +30,14 @@ public class MediaService {
     private final MediaRepository mediaRepository;
     private final MediaQueryRepository mediaQueryRepository;
 
-    public List<MediaOverviewDTO> findAll(Pageable pageable) throws Exception {
-        Page<Media> mediaPage = mediaRepository.findAll(pageable);
-        return mediaPage.stream().map(MediaOverviewDTO::fromEntity).collect(Collectors.toList());
+    public Page<MediaOverviewDTO> findAll(Pageable pageable) throws Exception {
+        Page<Media> medias = mediaRepository.findAll(pageable);
+        return medias.map(new Function<Media, MediaOverviewDTO>() {
+            @Override
+            public MediaOverviewDTO apply(Media media) {
+                return MediaOverviewDTO.fromEntity(media);
+            }
+        });
     }
 
     public MediaDetailDTO findById(long mediaId, Speech speech, Pageable pageable) throws Exception {

@@ -4,11 +4,8 @@ import com.kravel.server.model.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity @Getter
 @NoArgsConstructor
@@ -18,9 +15,11 @@ public class RememberMe extends BaseTimeEntity {
     @Column(name = "remember_me_id")
     private long id;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "rememberMe")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
+    @Lob
     private String token;
 
     public void updateToken(String token) {

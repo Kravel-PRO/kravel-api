@@ -82,6 +82,7 @@ public class ReviewQueryRepository {
                 .where(member.id.eq(memberId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(OrderUtil.sort(pageable, "review"))
                 .fetchResults();
         return new PageImpl<>(queryResults.getResults(), pageable, queryResults.getTotal());
     }

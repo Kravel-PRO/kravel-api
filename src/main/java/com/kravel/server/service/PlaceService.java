@@ -50,28 +50,22 @@ public class PlaceService {
     public Page<PlaceDTO> findAllByLocation(double latitude, double longitude, double height, double width, Speech speech, Pageable pageable, boolean reviewCount) throws Exception {
 
         Page<Place> places = placeQueryRepository.findAllByLocation(latitude, longitude, height, width, speech, pageable);
-
-        Page<PlaceDTO> placeMapDTOs = (Page<PlaceDTO>) places.map(new Function<Place, PlaceDTO>() {
+        return places.map(new Function<Place, PlaceDTO>() {
             @Override
             public PlaceDTO apply(Place source) {
                 try {
-                    for (int i=0; i<source.getPlaceCelebrities().size(); i++) {
-                        source.getPlaceCelebrities().get(i).getCelebrity().findInfoSpeech(speech);
-                    }
+                    source.getPlaceCelebrities().forEach(placeCelebrity -> placeCelebrity.getCelebrity().findInfoSpeech(speech));
                     PlaceDTO placeDTO = PlaceDTO.fromEntity(source);
                     if (reviewCount) {
                         placeDTO.setReviewCount(reviewQueryRepository.findCountByPlace(placeDTO.getPlaceId()));
                     }
-
                     return placeDTO;
 
                 } catch (Exception exception) {
-                    throw new InvalidRequestException("🔥 error: " + exception.getMessage());
+                    throw new InvalidRequestException("🔥 error: " + "PlaceDTO convert error");
                 }
             }
         });
-
-        return placeMapDTOs;
     }
 
     public PlaceDetailDTO findPlaceById(long placeId, Speech speech, long memberId) throws Exception {

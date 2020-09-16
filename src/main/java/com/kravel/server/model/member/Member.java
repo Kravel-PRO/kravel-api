@@ -35,8 +35,7 @@ public class Member extends BaseTimeEntity {
     private Speech speech;
     private String useAt = "Y";
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "remember_me_id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private RememberMe rememberMe;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)

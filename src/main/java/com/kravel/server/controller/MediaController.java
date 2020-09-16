@@ -9,6 +9,7 @@ import com.kravel.server.enums.Speech;
 import com.kravel.server.service.MediaService;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class MediaController {
     public ResponseEntity<Message> findAll(@PageableDefault Pageable pageable,
                                                 Authentication authentication) throws Exception {
 
-        List<MediaOverviewDTO> mediaOverviewDTOs = mediaService.findAll(pageable);
+        Page<MediaOverviewDTO> mediaOverviewDTOs = mediaService.findAll(pageable);
         return ResponseEntity.ok(new Message(mediaOverviewDTOs));
     }
 

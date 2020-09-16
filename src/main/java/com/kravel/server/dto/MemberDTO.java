@@ -8,7 +8,6 @@ import lombok.Setter;
 
 @Getter @Setter
 public class MemberDTO {
-    private int idx;
     private long memberId;
     private String loginEmail;
     private String loginPw;

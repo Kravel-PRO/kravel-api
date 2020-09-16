@@ -22,6 +22,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,9 +47,13 @@ public class MemberService {
     private final JwtFactory jwtFactory;
     private final HeaderTokenExtractor headerTokenExtractor;
     private final RememberMeQueryRepository rememberMeQueryRepository;
+    private final RememberMeRepository rememberMeRepository;
     private final S3Uploader s3Uploader;
 
-    public long saveMember(SignUpDTO signUpDTO) throws Exception {
+    @Value("${keys.jwt.secret-key}")
+    private String secretKey;
+
+    public MemberDTO saveMember(SignUpDTO signUpDTO) throws Exception {
         Optional<Member> optionalMember = memberQueryRepository.findMemberByLoginEmail(signUpDTO.getLoginEmail());
         if (optionalMember.isPresent()) {
             throw new InvalidRequestException("🔥 error: login email is exist!");
@@ -62,8 +67,18 @@ public class MemberService {
                 .gender(signUpDTO.getGender().toUpperCase())
                 .speech(signUpDTO.getSpeech())
                 .build();
+        memberRepository.save(member);
 
-        return memberRepository.save(member).getId();
+        String token = jwtFactory.generateToken(MemberContext.fromMemberModel(member));
+        RememberMe rememberMe = RememberMe.builder()
+                .member(member)
+                .token(token)
+                .build();
+        rememberMeRepository.save(rememberMe);
+
+        MemberDTO memberDTO = MemberDTO.fromEntity(member);
+        memberDTO.setToken(token);
+        return memberDTO;
     }
 
     public Page<MemberDTO>findAllMember(Pageable pageable) throws Exception {
@@ -148,12 +163,14 @@ public class MemberService {
 
     public String refreshToken(String tokenPayload) {
         String token = headerTokenExtractor.extract(tokenPayload);
-        Jws<Claims> claims = Jwts.parser().parseClaimsJws(token);
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token);
+
         long memberId = claims.getBody().get("member_id", Long.class);
         RememberMe rememberMe = rememberMeQueryRepository.findByMember(memberId)
                 .orElseThrow(() ->
                         new InvalidJwtException("유효하지 않는 refresh token입니다.")
                 );
+
         LocalDateTime currentDateTime = LocalDateTime.now();
         LocalDateTime expireDateTime = currentDateTime.plusMonths(2);
         if (currentDateTime.isBefore(expireDateTime)) {

@@ -39,12 +39,13 @@ public class MemberController {
 
     @PostMapping("/auth/sign-up")
     public ResponseEntity<Message> signUpMember(@RequestBody SignUpDTO signUpDTO) throws Exception {
-        long memberId = memberService.saveMember(signUpDTO);
-
-        return ResponseEntity.ok(new Message(memberId));
+        MemberDTO memberDTO = memberService.saveMember(signUpDTO);
+        return ResponseEntity.status(HttpStatus.OK).header(
+                "Authorization", "Bearer " + memberDTO.getToken())
+                .body(new Message(memberDTO));
     }
 
-    @PostMapping("/auth/refresh-token")
+    @GetMapping("/auth/refresh-token")
     public ResponseEntity<Message> refreshToken(HttpServletRequest req, HttpServletResponse res) throws Exception {
         String tokenPayload = req.getHeader("Authorization");
 
