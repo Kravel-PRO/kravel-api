@@ -1,4 +1,4 @@
-package com.kravel.server.dto.update;
+package com.kravel.server.dto.update.place;
 
 import com.kravel.server.enums.Speech;
 import lombok.Getter;
