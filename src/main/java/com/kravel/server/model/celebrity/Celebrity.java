@@ -25,6 +25,9 @@ public class Celebrity extends BaseEntity {
     @Column(name = "celebrity_id")
     private long id;
 
+    @Column(length = 5)
+    private String useAt = "Y";
+
     @Lob
     private String imageUrl;
 

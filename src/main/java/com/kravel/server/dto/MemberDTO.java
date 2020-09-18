@@ -6,6 +6,8 @@ import com.kravel.server.model.member.Member;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+
 @Getter @Setter
 public class MemberDTO {
     private long memberId;
@@ -17,7 +19,9 @@ public class MemberDTO {
     private Speech speech;
     private String createdDate;
     private String modifiedDate;
-    private String useAt;
+
+    @Column(length = 5)
+    private String useAt = "Y";
 
     @JsonIgnore
     private String token;

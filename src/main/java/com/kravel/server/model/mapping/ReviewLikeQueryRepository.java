@@ -21,7 +21,7 @@ public class ReviewLikeQueryRepository {
         return Optional.ofNullable(queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId).and(reviewLike.member.id.eq(memberId))).fetchOne());
     }
 
-    public long findCountByReview(long reviewId) {
+    public long findLikeCountByReview(long reviewId) {
         return queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId)).fetchCount();
     }
 }

@@ -34,9 +34,10 @@ public class Media extends BaseEntity {
     @Lob
     private String imageUrl;
 
-    @Column(name = "open_year")
-    private LocalDate year;
+    @Column(name = "open_year", length = 5)
+    private String year;
 
+    @Column(length = 5)
     private String useAt = "Y";
 
     @OneToMany(mappedBy = "media", cascade = CascadeType.ALL)

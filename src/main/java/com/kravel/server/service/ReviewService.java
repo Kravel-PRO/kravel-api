@@ -74,7 +74,7 @@ public class ReviewService {
             throw new NotFoundException("🔥 error: is not exist review");
         }
 
-        long likeCount = reviewLikeQueryRepository.findCountByReview(reviewId);
+        long likeCount = reviewLikeQueryRepository.findLikeCountByReview(reviewId);
         ReviewLike reviewLike = reviewLikeQueryRepository
                 .checkReviewLikeExist(reviewId, memberId)
                 .orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
@@ -179,7 +179,8 @@ public class ReviewService {
             @Override
             public ReviewDetailDTO apply(Review review) {
                 ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.fromEntity(review);
-                reviewDetailDTO.setLikeCount(reviewLikeQueryRepository.findCountByReview(reviewDetailDTO.getReviewId()));
+                long likeCountByReview = reviewLikeQueryRepository.findLikeCountByReview(reviewDetailDTO.getReviewId());
+                reviewDetailDTO.setLikeCount(likeCountByReview);
                 return reviewDetailDTO;
             }
         });

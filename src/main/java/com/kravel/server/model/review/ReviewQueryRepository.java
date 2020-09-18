@@ -40,7 +40,7 @@ public class ReviewQueryRepository {
                 .where(review.place.id.eq(placeId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(OrderUtil.byReviewLikes(pageable, "review"))
+                .orderBy(OrderUtil.byReviewLikes(pageable, "review"), review.createdDate.desc())
                 .fetchResults();
 
         return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
@@ -58,7 +58,9 @@ public class ReviewQueryRepository {
                 .innerJoin(celebrityReview.celebrity, celebrity)
                 .leftJoin(review.reviewLikes, reviewLike)
                 .where(celebrity.id.eq(celebrityId))
-                .orderBy(OrderUtil.byReviewLikes(pageable, "review"))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(OrderUtil.byReviewLikes(pageable, "review"), review.createdDate.desc())
                 .fetchResults();
 
         return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
@@ -70,7 +72,7 @@ public class ReviewQueryRepository {
                 .where(review.media.id.eq(mediaId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(OrderUtil.byReviewLikes(pageable, "review"))
+                .orderBy(OrderUtil.byReviewLikes(pageable, "review"), review.createdDate.desc())
                 .fetchResults();
 
         return new PageImpl<>(queryResults.getResults(), pageable, queryResults.getTotal());
@@ -104,7 +106,7 @@ public class ReviewQueryRepository {
                 .leftJoin(review.reviewLikes, reviewLike).fetchJoin()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(OrderUtil.byReviewLikes(pageable, "review"))
+                .orderBy(OrderUtil.byReviewLikes(pageable, "review"), review.createdDate.desc())
                 .fetchResults();
 
         return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());

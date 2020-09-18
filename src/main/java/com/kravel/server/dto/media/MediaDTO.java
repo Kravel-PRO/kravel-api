@@ -31,7 +31,7 @@ public class MediaDTO {
         mediaDTO.setContents(entity.getMediaInfos().stream()
                 .findFirst()
                 .orElse(new MediaInfo()).getContents());
-        mediaDTO.setYear(entity.getYear().toString());
+        mediaDTO.setYear(entity.getYear());
 
         return mediaDTO;
     }

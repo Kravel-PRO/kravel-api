@@ -11,7 +11,7 @@ public class MediaOverviewDTO {
     private long mediaId;
     private String title;
     private String imageUrl;
-    private int year;
+    private String year;
 
     public static MediaOverviewDTO fromEntity(Media entity) {
         MediaOverviewDTO mediaOverviewDTO = new MediaOverviewDTO();
@@ -19,7 +19,7 @@ public class MediaOverviewDTO {
         mediaOverviewDTO.setTitle(entity.getMediaInfos().stream()
                 .findFirst()
                 .orElse(new MediaInfo()).getTitle());
-        mediaOverviewDTO.setYear(entity.getYear().getYear());
+        mediaOverviewDTO.setYear(entity.getYear());
         mediaOverviewDTO.setImageUrl(entity.getImageUrl());
 
         return mediaOverviewDTO;

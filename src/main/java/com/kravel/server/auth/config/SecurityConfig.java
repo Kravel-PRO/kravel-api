@@ -63,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui.html",
             "/webjars/**",
             "/auth/**",
+            "/admin/**",
     };
 
     @Bean
@@ -133,7 +134,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/api/**").hasRole(RoleType.USER.name())
-                .antMatchers("/admin/**").hasRole(RoleType.ADMIN.name())
+//                .antMatchers("/admin/**").hasRole(RoleType.USER.name())
                 .anyRequest().authenticated()
             .and()
                 .sessionManagement()

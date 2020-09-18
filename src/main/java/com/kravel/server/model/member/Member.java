@@ -33,6 +33,8 @@ public class Member extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private Speech speech;
+
+    @Column(length = 5)
     private String useAt = "Y";
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")

@@ -45,6 +45,7 @@ public class Place extends BaseEntity {
     @Lob
     private String filterImageUrl;
 
+    @Column(length = 5)
     private String useAt = "Y";
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -86,8 +87,8 @@ public class Place extends BaseEntity {
         EngPlaceInfoUpdateDTO engPlaceInfoUpdateDTO = objectMapper.readValue(placeUpdateDTO.getEngInfo(), EngPlaceInfoUpdateDTO.class);
         List<Integer> celebrities = objectMapper.readValue(placeUpdateDTO.getCelebrities(), new TypeReference<List<Integer >>(){});
 
-        this.placeInfos.add(new PlaceInfo(korPlaceInfoUpdateDTO));
-        this.placeInfos.add(new PlaceInfo(engPlaceInfoUpdateDTO));
+        this.placeInfos.add(new PlaceInfo(this, korPlaceInfoUpdateDTO));
+        this.placeInfos.add(new PlaceInfo(this, engPlaceInfoUpdateDTO));
         this.tags.add(new Tag(this, korPlaceInfoUpdateDTO));
         this.tags.add(new Tag(this, engPlaceInfoUpdateDTO));
 

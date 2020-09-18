@@ -7,6 +7,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.NullExpression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.PathBuilder;
 import org.springframework.data.domain.Pageable;
 
@@ -69,6 +70,7 @@ public class OrderUtil extends OrderSpecifier {
 
     public static OrderUtil byReviewLikes(Pageable pageable, String qclass) {
         QReviewLike reviewLike = QReviewLike.reviewLike;
+        QReview review = QReview.review;
 
         boolean ascending = pageable.getSort().stream().findFirst().isPresent() && pageable.getSort().stream().findFirst().get().isAscending();
         String property = pageable.getSort().stream().findFirst().isPresent() ? pageable.getSort().stream().findFirst().get().getProperty() : "";
@@ -79,7 +81,10 @@ public class OrderUtil extends OrderSpecifier {
         } else if (property.equals("reviewLikes-count")) {
             return new OrderUtil(ascending
                     ? Order.ASC : Order.DESC,
-                    reviewLike.count()
+                    new CaseBuilder()
+                        .when(review.reviewLikes.isNotEmpty())
+                        .then(review.reviewLikes.size())
+                        .otherwise(0)
             );
         } else {
             return OrderUtil.sort(pageable, qclass);
