@@ -1,23 +1,18 @@
 package com.kravel.server.service;
 
-import com.kravel.server.dto.review.ReviewDTO;
 import com.kravel.server.dto.review.ReviewDetailDTO;
 import com.kravel.server.dto.review.ReviewLikeDTO;
-import com.kravel.server.dto.review.ReviewOverviewDTO;
 import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.enums.Speech;
-import com.kravel.server.model.celebrity.Celebrity;
 import com.kravel.server.model.mapping.PlaceCelebrity;
 import com.kravel.server.model.mapping.ReviewLike;
 import com.kravel.server.model.mapping.ReviewLikeQueryRepository;
 import com.kravel.server.model.mapping.ReviewLikeRepository;
-import com.kravel.server.model.media.Media;
 import com.kravel.server.model.member.Member;
 import com.kravel.server.model.member.MemberRepository;
 import com.kravel.server.model.place.Place;
-import com.kravel.server.model.place.PlaceInfo;
 import com.kravel.server.model.place.PlaceRepository;
 import com.kravel.server.model.review.Review;
 import com.kravel.server.model.review.ReviewQueryRepository;
@@ -29,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -50,6 +44,7 @@ public class ReviewService {
 
     public Page<ReviewDetailDTO> findAll(Pageable pageable, Speech speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAll(pageable);
+
         reviews.forEach(review -> {
             review.getPlace().findTagSpeech(speech);
             review.getPlace().findInfoSpeech(speech);
@@ -58,8 +53,8 @@ public class ReviewService {
     }
 
     public Page<ReviewDetailDTO> findAllByPlace(long placeId, Pageable pageable, Speech speech) throws Exception {
-
         Page<Review> reviews = reviewQueryRepository.findAllByPlace(placeId, pageable);
+
         reviews.forEach(review -> {
             review.getPlace().findTagSpeech(speech);
             review.getPlace().findInfoSpeech(speech);
@@ -70,9 +65,6 @@ public class ReviewService {
     public ReviewDetailDTO findReviewDetailById(long reviewId, long memberId) throws Exception {
 
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
-        if (optionalReview.isEmpty()) {
-            throw new NotFoundException("🔥 error: is not exist review");
-        }
 
         long likeCount = reviewLikeQueryRepository.findLikeCountByReview(reviewId);
         ReviewLike reviewLike = reviewLikeQueryRepository
@@ -92,6 +84,7 @@ public class ReviewService {
     public Page<ReviewDetailDTO> findAllByCelebrity(long celebrityId, Pageable pageable, Speech speech) throws Exception {
 
         Page<Review> reviews = reviewQueryRepository.findAllReviewByCelebrity(celebrityId, pageable);
+
         reviews.forEach(review -> {
             review.getPlace().findTagSpeech(speech);
             review.getPlace().findInfoSpeech(speech);
@@ -154,6 +147,7 @@ public class ReviewService {
 
     public Page<ReviewDetailDTO> findAllByMedia(long mediaId, Pageable pageable, Speech speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAllByMedia(mediaId, pageable);
+
         reviews.forEach(review -> {
             review.getPlace().findTagSpeech(speech);
             review.getPlace().findInfoSpeech(speech);
@@ -163,6 +157,7 @@ public class ReviewService {
 
     public Page<ReviewDetailDTO> findAllByMember(long memberId, Speech speech, Pageable pageable) {
         Page<Review> reviews = reviewQueryRepository.findAllByMember(memberId, pageable);
+
         reviews.forEach(review ->
                 review.getPlace().findInfoSpeech(speech)
         );
@@ -171,6 +166,7 @@ public class ReviewService {
 
     public Page<ReviewDetailDTO> findAllReviewLikeById(long memberId, Pageable pageable) {
         Page<Review> reviews = reviewQueryRepository.findAllReviewLikeById(memberId, pageable);
+
         return getReviewDetailDTOs(reviews);
     }
 

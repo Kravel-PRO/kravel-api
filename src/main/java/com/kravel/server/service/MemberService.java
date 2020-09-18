@@ -3,16 +3,13 @@ package com.kravel.server.service;
 import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.util.exception.InvalidJwtException;
-import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.auth.security.util.jwt.HeaderTokenExtractor;
-import com.kravel.server.auth.security.util.jwt.JwtDecoder;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.MemberDTO;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.dto.place.PlaceDTO;
-import com.kravel.server.dto.place.PlaceDetailDTO;
 import com.kravel.server.dto.update.InquireUploadDTO;
 import com.kravel.server.dto.update.MemberUpdateDTO;
 import com.kravel.server.enums.RoleType;
@@ -27,10 +24,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -58,7 +53,6 @@ public class MemberService {
         if (optionalMember.isPresent()) {
             throw new InvalidRequestException("🔥 error: login email is exist!");
         }
-
         Member member = Member.builder()
                 .loginEmail(signUpDTO.getLoginEmail())
                 .loginPw(passwordEncoder.encode(signUpDTO.getLoginPw()))
@@ -89,7 +83,9 @@ public class MemberService {
 
     public MemberDTO modifyMemberLoginPw(long memberId, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
-        Member savedMember = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("🔥 error: is not exist member"));
+        Member savedMember = memberRepository.findById(memberId).orElseThrow(() ->
+                new NotFoundException("🔥 error: is not exist member")
+        );
         if (!isCorrectPassword(memberUpdateDTO.getLoginPw(), savedMember)) {
             throw new InvalidRequestException("🔥 error: is not correct password");
         }
@@ -105,7 +101,9 @@ public class MemberService {
 
     public MemberDTO modifyMemberNickName(long memberId, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
-        Member savedMember = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
+        Member savedMember = memberRepository.findById(memberId).orElseThrow(() ->
+                new NotFoundException("🔥 error: is not exist member")
+        );
 
         savedMember.changeNickName(memberUpdateDTO.getNickName());
         savedMember.changeGender(memberUpdateDTO.getGender());
@@ -118,7 +116,9 @@ public class MemberService {
 
     public MemberDTO modifyMemberSpeech(long memberId, MemberUpdateDTO memberUpdateDTO) {
 
-        Member savedMember = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist member"));
+        Member savedMember = memberRepository.findById(memberId).orElseThrow(() ->
+                new NotFoundException("🔥 error: is not exist member")
+        );
 
         savedMember.changeSpeech(memberUpdateDTO.getSpeech());
         memberRepository.save(savedMember);

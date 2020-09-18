@@ -2,10 +2,8 @@ package com.kravel.server;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
-@EnableDiscoveryClient
 public class ServerApplication {
 
     public static final String APPLICATION_LOCATIONS = "spring.config.location="

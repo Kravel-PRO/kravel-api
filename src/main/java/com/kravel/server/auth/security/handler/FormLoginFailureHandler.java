@@ -30,6 +30,6 @@ public class FormLoginFailureHandler implements AuthenticationFailureHandler {
 
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
         res.getWriter().write(objectMapper.writeValueAsString(responseMessage));
-        res.setStatus(401);
+        res.setStatus(400);
     }
 }

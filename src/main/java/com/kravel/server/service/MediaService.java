@@ -43,7 +43,7 @@ public class MediaService {
     public MediaDetailDTO findById(long mediaId, Speech speech, Pageable pageable) throws Exception {
 
         Media media = mediaQueryRepository.findById(mediaId, speech)
-                .orElseThrow(() -> new InvalidRequestException("🔥 error: is not exist media information"));
+                .orElseThrow(() -> new NotFoundException("🔥 error: is not exist media information"));
         List<Place> places = mediaQueryRepository.findAllByMedia(mediaId, speech, pageable);
         List<PlaceDTO> placeDTOs = places.stream().map(PlaceDTO::fromEntity).collect(Collectors.toList());;
 

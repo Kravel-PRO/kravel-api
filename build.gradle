@@ -30,9 +30,6 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
-    // kubernetes
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-kubernetes', version: '1.1.5.RELEASE'
-
     // security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-test'

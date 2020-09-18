@@ -120,7 +120,9 @@ public class PlaceService {
 
     public List<PlaceRelatedMediaDTO> findAllByMedia(long mediaId, Speech speech, Pageable pageable) throws Exception {
 
-        Media media = mediaRepository.findById(mediaId).orElseThrow(() -> new NotFoundException("🔥 error: iS not exist media"));
+        Media media = mediaRepository.findById(mediaId).orElseThrow(() ->
+                new NotFoundException("🔥 error: iS not exist media")
+        );
 
         List<Place> places = placeQueryRepository.findAllByMedia(mediaId, speech, pageable);
         places.forEach(place -> place.findTagSpeech(speech));
