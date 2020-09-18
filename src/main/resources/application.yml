@@ -1,3 +1,6 @@
 spring:
   mvc:
     dispatch-options-request: true
+  servlet:
+    multipart:
+      max-file-size: 3MB
