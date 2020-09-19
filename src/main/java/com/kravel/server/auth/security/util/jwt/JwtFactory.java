@@ -34,7 +34,7 @@ public class JwtFactory {
             headers.put("alg", "HS256");
 
             Map<String, Object> payloads = new HashMap<>();
-            Date expiredDate = Date.from(LocalDateTime.now().plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant());
+            Date expiredDate = Date.from(LocalDateTime.now().plusDays(14).atZone(ZoneId.systemDefault()).toInstant());
 
             payloads.put("exp", expiredDate.getTime() / 1000);
             payloads.put("login_email", context.getMember().getLoginEmail());
