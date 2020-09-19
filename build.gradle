@@ -13,9 +13,9 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-//    all {
-//        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-//    }
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
 }
 
 repositories {
@@ -38,9 +38,10 @@ dependencies {
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
     // log
-//    compile 'org.springframework.boot:spring-boot-starter-log4j2'   // log4j2
-//    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.10.3'   // log4j2
-
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.apache.logging.log4j:log4j-web:2.12.1'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.1'
 
     // dev
     annotationProcessor 'org.projectlombok:lombok'

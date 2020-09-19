@@ -1,6 +1,7 @@
 package com.kravel.server.controller;
 
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
+import com.kravel.server.common.LogHandler;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.dto.celebrity.CelebrityDetailDTO;
@@ -19,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,11 @@ public class CelebrityController {
 
     @GetMapping("/api/celebrities")
     public ResponseEntity<Message> findAllCelebrities(@PageableDefault Pageable pageable,
-                                                      Authentication authentication) throws Exception {
+                                                      Authentication authentication,
+                                                      HttpServletRequest request) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
         Page<CelebrityDTO> celebrities = celebrityService.findAllCelebrities(pageable, speech);
@@ -43,7 +49,11 @@ public class CelebrityController {
     @GetMapping("/api/celebrities/{celebrityId}")
     public ResponseEntity<Message> findCelebrityById(@PathVariable("celebrityId") long celebrityId,
                                                      @PageableDefault Pageable pageable,
-                                                     Authentication authentication) throws Exception {
+                                                     Authentication authentication,
+                                                     HttpServletRequest request) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
         CelebrityDetailDTO result = celebrityService.findCelebrityById(celebrityId, speech, pageable);

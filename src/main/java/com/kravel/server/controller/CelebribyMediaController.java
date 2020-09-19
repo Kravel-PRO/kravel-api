@@ -1,6 +1,7 @@
 package com.kravel.server.controller;
 
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
+import com.kravel.server.common.LogHandler;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.SearchDTO;
 import com.kravel.server.enums.Speech;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -26,7 +28,12 @@ public class CelebribyMediaController {
     @GetMapping("/api/search")
     public ResponseEntity<Message> findBySearch(@RequestParam(value = "search") String search,
                                                 @PageableDefault Pageable pageable,
-                                                Authentication authentication) throws Exception {
+                                                Authentication authentication,
+                                                HttpServletRequest request) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
+
         Speech speech = claimExtractor.getSpeech(authentication);
         SearchDTO searchDTOs = celebrityMediaService.findBySearch(search, speech, pageable);
 

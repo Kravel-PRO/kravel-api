@@ -1,5 +1,6 @@
 package com.kravel.server.controller;
 
+import com.kravel.server.common.LogHandler;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.media.PlaceRelatedMediaDTO;
 import com.kravel.server.dto.place.PlaceDetailDTO;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -33,9 +35,12 @@ public class PlaceController {
                                                      @RequestParam(value = "longitude", defaultValue = "0") double longitude,
                                                      @RequestParam(value = "height", defaultValue = "0.025") double height,
                                                      @RequestParam(value = "width", defaultValue = "0.03") double width,
-                                                     Authentication authentication) throws Exception {
+                                                     Authentication authentication,
+                                                     HttpServletRequest request) throws Exception {
 
-        log.info("🎉 GET /api/places/map");
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
+
         List<PlaceMapDTO> placeMapDTOs = placeService.findMapByLocation(latitude, longitude, height, width);
         return ResponseEntity.ok(new Message(placeMapDTOs));
     }
@@ -47,9 +52,11 @@ public class PlaceController {
                                                      @RequestParam(value = "width", defaultValue = "0.03") double width,
                                                      @RequestParam(value = "review-count", defaultValue = "false") boolean reviewCount,
                                                      @PageableDefault Pageable pageable,
-                                                     Authentication authentication) throws Exception {
+                                                     Authentication authentication,
+                                                     HttpServletRequest request) throws Exception {
 
-        log.info("🎉 GET /api/places");
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
 
@@ -59,9 +66,11 @@ public class PlaceController {
 
     @GetMapping("/api/places/{placeId}")
     public ResponseEntity<Message> findPlaceById(@PathVariable("placeId") long placeId,
-                                         Authentication authentication) throws Exception {
+                                                 Authentication authentication,
+                                                 HttpServletRequest request) throws Exception {
 
-        log.info("🎉 GET /api/places/{placeId}");
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
         long memberId = claimExtractor.getMemberId(authentication);
@@ -72,10 +81,13 @@ public class PlaceController {
 
     @PostMapping("/api/places/{placeId}/scrap")
     public ResponseEntity<Message> handleScrape(@PathVariable("placeId") long placeId,
-                                        @RequestBody ScrapDTO scrapDTO,
-                                        Authentication authentication) throws Exception {
+                                                @RequestBody ScrapDTO scrapDTO,
+                                                Authentication authentication,
+                                                HttpServletRequest request) throws Exception {
 
-        log.info("🎉 GET /api/places/{placeId}/scrap");
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
+
         long memberId = claimExtractor.getMemberId(authentication);
         long scrapId = placeService.handlePlaceScrap(placeId, memberId, scrapDTO);
 
@@ -85,7 +97,11 @@ public class PlaceController {
     @GetMapping("/api/medias/{mediaId}/places")
     public ResponseEntity<Message> findAllByMedia(@PathVariable("mediaId") long mediaId,
                                                   @PageableDefault Pageable pageable,
-                                                  Authentication authentication) throws Exception {
+                                                  Authentication authentication,
+                                                  HttpServletRequest request) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
         List<PlaceRelatedMediaDTO> result = placeService.findAllByMedia(mediaId, speech, pageable);

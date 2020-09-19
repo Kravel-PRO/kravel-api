@@ -2,6 +2,7 @@ package com.kravel.server.controller;
 
 import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
+import com.kravel.server.common.LogHandler;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.MemberDTO;
 import com.kravel.server.dto.place.PlaceDTO;
@@ -38,7 +39,12 @@ public class MemberController {
     }
 
     @PostMapping("/auth/sign-up")
-    public ResponseEntity<Message> signUpMember(@RequestBody SignUpDTO signUpDTO) throws Exception {
+    public ResponseEntity<Message> signUpMember(@RequestBody SignUpDTO signUpDTO,
+                                                HttpServletRequest request) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
+
         MemberDTO memberDTO = memberService.saveMember(signUpDTO);
         return ResponseEntity.status(HttpStatus.OK).header(
                 "Authorization", "Bearer " + memberDTO.getToken())
@@ -46,8 +52,12 @@ public class MemberController {
     }
 
     @GetMapping("/auth/refresh-token")
-    public ResponseEntity<Message> refreshToken(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        String tokenPayload = req.getHeader("Authorization");
+    public ResponseEntity<Message> refreshToken(HttpServletRequest request, HttpServletResponse res) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
+
+        String tokenPayload = request.getHeader("Authorization");
 
         String token = memberService.refreshToken(tokenPayload);
         return ResponseEntity.status(HttpStatus.OK).header(
@@ -56,7 +66,11 @@ public class MemberController {
     }
 
     @GetMapping("/api/members/me")
-    public ResponseEntity<Message> findById(Authentication authentication) throws Exception {
+    public ResponseEntity<Message> findById(Authentication authentication, HttpServletRequest request) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
+
         long memberId = claimExtractor.getMemberId(authentication);
 
         MemberDTO memberDTO = memberService.findById(memberId);
@@ -64,7 +78,12 @@ public class MemberController {
     }
 
     @GetMapping("/admin/members")
-    public ResponseEntity<Message> findAllMember(@PageableDefault Pageable pageable) throws Exception {
+    public ResponseEntity<Message> findAllMember(@PageableDefault Pageable pageable,
+                                                 HttpServletRequest request) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
+
         Page<MemberDTO> memberPage = memberService.findAllMember(pageable);
         return ResponseEntity.ok(new Message(memberPage));
     }

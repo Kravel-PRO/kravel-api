@@ -1,5 +1,6 @@
 package com.kravel.server.controller;
 
+import com.kravel.server.common.LogHandler;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.review.ReviewDTO;
 import com.kravel.server.dto.review.ReviewDetailDTO;
@@ -20,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
@@ -32,7 +34,11 @@ public class ReviewController {
 
     @GetMapping("/api/reviews")
     public ResponseEntity<Message> findAll(@PageableDefault Pageable pageable,
-                                           Authentication authentication) throws Exception {
+                                           Authentication authentication,
+                                           HttpServletRequest request) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
 
@@ -42,7 +48,11 @@ public class ReviewController {
 
     @DeleteMapping("/api/reviews/{reviewId}")
     public ResponseEntity<Message> deleteById(@PathVariable long reviewId,
-                                              Authentication authentication) throws Exception {
+                                              Authentication authentication,
+                                              HttpServletRequest request) throws Exception {
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
+
         long memberId = claimExtractor.getMemberId(authentication);
         reviewService.deleteById(memberId, reviewId);
         return ResponseEntity.ok(new Message("Image remove succeed"));
@@ -51,9 +61,11 @@ public class ReviewController {
     @GetMapping("/api/places/{placeId}/reviews")
     public ResponseEntity<Message> findAllByPlace(@PathVariable("placeId") long placeId,
                                                   @PageableDefault Pageable pageable,
-                                                  Authentication authentication) throws Exception {
+                                                  Authentication authentication,
+                                                  HttpServletRequest request) throws Exception {
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
-        log.info("🎉 GET /api/places/{placeId}/reviews");
         Speech speech = claimExtractor.getSpeech(authentication);
 
         Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByPlace(placeId, pageable, speech);
@@ -63,9 +75,11 @@ public class ReviewController {
     @GetMapping("/api/places/{placeId}/reviews/{reviewId}")
     public ResponseEntity<Message> findReviewDetailById(@PathVariable("placeId") long placeId,
                                                         @PathVariable("reviewId") long reviewId,
-                                                        Authentication authentication) throws Exception {
+                                                        Authentication authentication,
+                                                        HttpServletRequest request) throws Exception {
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
-        log.info("🎉 GET /api/places/{placeId}/reviews/{reviewId}");
         long memberId = claimExtractor.getMemberId(authentication);
 
         ReviewDetailDTO reviewDetailDTO = reviewService.findReviewDetailById(reviewId, memberId);
@@ -75,8 +89,11 @@ public class ReviewController {
     @PostMapping("/api/places/{placeId}/reviews")
     public ResponseEntity<Message> saveReview(@PathVariable("placeId") int placeId,
                                               @RequestParam("file") MultipartFile file,
-                                              Authentication authentication) throws Exception {
-        log.info("🎉 GET /api/places/{placeId}/reviews");
+                                              Authentication authentication,
+                                              HttpServletRequest request) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         long memberId = claimExtractor.getMemberId(authentication);
         long reviewId = reviewService.saveReview(file, placeId, memberId);
@@ -87,7 +104,10 @@ public class ReviewController {
     @GetMapping("/api/medias/{mediaId}/reviews")
     public ResponseEntity<Message> findAllReviewsByMedia(@PathVariable("mediaId") long mediaId,
                                                          @PageableDefault Pageable pageable,
-                                                         Authentication authentication) throws Exception {
+                                                         Authentication authentication,
+                                                         HttpServletRequest request) throws Exception {
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
         Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMedia(mediaId, pageable, speech);
@@ -98,10 +118,10 @@ public class ReviewController {
     public ResponseEntity<Message> handleReviewLike(@PathVariable("placeId") long placeId,
                                             @PathVariable("reviewId") long reviewId,
                                             @RequestBody ReviewLikeDTO reviewLikeDTO,
-                                            Authentication authentication) throws Exception{
-
-        log.info("🎉 GET /api/places/{placeId}/reviews/{reviewId}/likes");
-
+                                            Authentication authentication,
+                                                    HttpServletRequest request) throws Exception{
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         long memberId = claimExtractor.getMemberId(authentication);
         long reviewLikeId = reviewService.handleReviewLike(placeId, reviewId, memberId, reviewLikeDTO);
@@ -112,7 +132,11 @@ public class ReviewController {
     @GetMapping("/api/celebrities/{celebrityId}/reviews")
     public ResponseEntity<Message> findAllReviewByCelebrity(@PathVariable("celebrityId") long celebrityId,
                                                             @PageableDefault Pageable pageable,
-                                                            Authentication authentication) throws Exception {
+                                                            Authentication authentication,
+                                                            HttpServletRequest request) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
         Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByCelebrity(celebrityId, pageable, speech);
@@ -121,7 +145,10 @@ public class ReviewController {
 
     @GetMapping("/api/member/reviews")
     public ResponseEntity<Message> findAllByMember(@PageableDefault Pageable pageable,
-                                                   Authentication authentication) throws Exception {
+                                                   Authentication authentication,
+                                                   HttpServletRequest request) throws Exception {
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         long memberId = claimExtractor.getMemberId(authentication);
         Speech speech = claimExtractor.getSpeech(authentication);
@@ -131,7 +158,10 @@ public class ReviewController {
 
     @GetMapping("/api/member/reviews/likes")
     public ResponseEntity<Message> findAllReviewLikeById(@PageableDefault Pageable pageable,
-                                                         Authentication authentication) throws Exception {
+                                                         Authentication authentication,
+                                                         HttpServletRequest request) throws Exception {
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         long memberId = claimExtractor.getMemberId(authentication);
         Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllReviewLikeById(memberId, pageable);

@@ -1,5 +1,6 @@
 package com.kravel.server.controller;
 
+import com.kravel.server.common.LogHandler;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.media.MediaDetailDTO;
 import com.kravel.server.dto.media.PlaceRelatedMediaDTO;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,7 +29,10 @@ public class MediaController {
 
     @GetMapping("/api/medias")
     public ResponseEntity<Message> findAll(@PageableDefault Pageable pageable,
-                                                Authentication authentication) throws Exception {
+                                           Authentication authentication,
+                                           HttpServletRequest request) throws Exception {
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         Page<MediaOverviewDTO> mediaOverviewDTOs = mediaService.findAll(pageable);
         return ResponseEntity.ok(new Message(mediaOverviewDTOs));
@@ -36,7 +41,11 @@ public class MediaController {
     @GetMapping("/api/medias/{mediaId}")
     public ResponseEntity<Message> findById(@PathVariable("mediaId") long mediaId,
                                             @PageableDefault Pageable pageable,
-                                            Authentication authentication) throws Exception {
+                                            Authentication authentication,
+                                            HttpServletRequest request) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
 
