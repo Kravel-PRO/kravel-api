@@ -65,6 +65,7 @@ public class PlaceService {
         });
     }
 
+    @Transactional(readOnly = true)
     public PlaceDetailDTO findPlaceById(long placeId, Speech speech, long memberId) throws Exception {
 
         Place place = placeQueryRepository
@@ -112,12 +113,14 @@ public class PlaceService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<PlaceMapDTO> findMapByLocation(double latitude, double longitude, double height, double width) throws Exception {
         return placeQueryRepository.findMapByLocation(latitude, longitude, height, width).stream()
                 .map(PlaceMapDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<PlaceRelatedMediaDTO> findAllByMedia(long mediaId, Speech speech, Pageable pageable) throws Exception {
 
         Media media = mediaRepository.findById(mediaId).orElseThrow(() ->

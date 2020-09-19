@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class ReviewService {
     private final PlaceRepository placeRepository;
     private final ReviewLikeRepository reviewLikeRepository;
 
+    @Transactional(readOnly = true)
     public Page<ReviewDetailDTO> findAll(Pageable pageable, Speech speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAll(pageable);
 
@@ -52,6 +54,7 @@ public class ReviewService {
         return getReviewDetailDTOs(reviews);
     }
 
+    @Transactional(readOnly = true)
     public Page<ReviewDetailDTO> findAllByPlace(long placeId, Pageable pageable, Speech speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAllByPlace(placeId, pageable);
 
@@ -62,6 +65,7 @@ public class ReviewService {
         return getReviewDetailDTOs(reviews);
     }
 
+    @Transactional(readOnly = true)
     public ReviewDetailDTO findReviewDetailById(long reviewId, long memberId) throws Exception {
 
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
@@ -81,6 +85,7 @@ public class ReviewService {
         return reviewDetailDTO;
     }
 
+    @Transactional(readOnly = true)
     public Page<ReviewDetailDTO> findAllByCelebrity(long celebrityId, Pageable pageable, Speech speech) throws Exception {
 
         Page<Review> reviews = reviewQueryRepository.findAllReviewByCelebrity(celebrityId, pageable);
@@ -151,6 +156,7 @@ public class ReviewService {
         }
     }
 
+    @Transactional(readOnly = true)
     public Page<ReviewDetailDTO> findAllByMedia(long mediaId, Pageable pageable, Speech speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAllByMedia(mediaId, pageable);
 
@@ -161,6 +167,7 @@ public class ReviewService {
         return getReviewDetailDTOs(reviews);
     }
 
+    @Transactional(readOnly = true)
     public Page<ReviewDetailDTO> findAllByMember(long memberId, Speech speech, Pageable pageable) {
         Page<Review> reviews = reviewQueryRepository.findAllByMember(memberId, pageable);
 

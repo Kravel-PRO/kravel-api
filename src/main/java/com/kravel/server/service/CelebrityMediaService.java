@@ -11,6 +11,7 @@ import com.kravel.server.model.media.Media;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ public class CelebrityMediaService {
 
     private final CelebrityMediaQueryRepository celebrityMediaQueryRepository;
 
+    @Transactional(readOnly = true)
     public SearchDTO findBySearch(String search, Speech speech, Pageable pageable) throws Exception {
         List<Celebrity> searchedCelebrities = celebrityMediaQueryRepository.findCelebrityBySearch(search, speech, pageable);
         List<Media> searchedMedias = celebrityMediaQueryRepository.findMediaBySearch(search, speech, pageable);

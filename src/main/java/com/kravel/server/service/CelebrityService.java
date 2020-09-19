@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.function.Function;
@@ -29,6 +30,7 @@ public class CelebrityService {
 
     private final PlaceQueryRepository placeQueryRepository;
 
+    @Transactional(readOnly = true)
     public Page<CelebrityDTO> findAllCelebrities(Pageable pageable, Speech speech) throws Exception {
         Page<Celebrity> celebrities = celebrityQueryFactory.finaAllCelebrity(pageable);
         celebrities.forEach(celebrity ->
@@ -43,6 +45,7 @@ public class CelebrityService {
         });
     }
 
+    @Transactional(readOnly = true)
     public CelebrityDetailDTO findCelebrityById(long celebrityId, Speech speech, Pageable pageable) throws Exception {
 
         Celebrity celebrity = celebrityRepository.findById(celebrityId).orElseThrow(() ->
