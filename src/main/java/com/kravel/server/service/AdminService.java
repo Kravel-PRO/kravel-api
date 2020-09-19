@@ -31,9 +31,15 @@ public class AdminService {
 
     public void deletePlace(long placeId) throws Exception {
         Place place = placeRepository.findById(placeId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist place"));
-        s3Uploader.removeS3Object(place.getImageUrl());
-        s3Uploader.removeS3Object(place.getSubImageUrl());
-        s3Uploader.removeS3Object(place.getFilterImageUrl());
+        if (place.getImageUrl() != null) {
+            s3Uploader.removeS3Object(place.getImageUrl());
+        }
+        if (place.getSubImageUrl() != null) {
+            s3Uploader.removeS3Object(place.getSubImageUrl());
+        }
+        if (place.getFilterImageUrl() != null) {
+            s3Uploader.removeS3Object(place.getFilterImageUrl());
+        }
 
         placeRepository.delete(place);
     }

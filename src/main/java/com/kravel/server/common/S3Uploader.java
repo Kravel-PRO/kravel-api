@@ -37,7 +37,11 @@ public class S3Uploader {
     }
 
     private String upload(File uploadFile, String dirName) {
-        String fileName = dirName + "/" + UUID.randomUUID();;
+        String originFileName = uploadFile.getName();
+        int pos = originFileName.lastIndexOf( "." );
+        String ext = originFileName.substring( pos + 1 );
+
+        String fileName = dirName + "/" + UUID.randomUUID() + "." + ext;
         String uploadImgUrl = putS3(uploadFile, fileName);
 
         removeNewFile(uploadFile);
@@ -57,14 +61,9 @@ public class S3Uploader {
         }
     }
 
-    public void removeS3Object(String imageUrl) {
-        try {
-            String key = imageUrl.substring(47);
-            System.out.println(key);
-            amazonS3Client.deleteObject(bucket, key);
-        } catch (Exception e) {
-            throw new InternalServerException("image remove exception");
-        }
+    public void removeS3Object(String imageUrl) throws Exception {
+        String key = imageUrl.substring(47);
+        amazonS3Client.deleteObject(bucket, key);
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {

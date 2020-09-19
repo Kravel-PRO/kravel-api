@@ -18,11 +18,6 @@ public class AdminContoller {
     private final AdminService adminService;
     private final S3Uploader s3Uploader;
 
-    @GetMapping("/admin/test")
-    public void test(@RequestParam String testt) {
-        s3Uploader.removeS3Object(testt);
-    }
-
     @PostMapping("/admin/places")
     public ResponseEntity<Message> savePlace(@ModelAttribute PlaceUpdateDTO placeUpdateDTO) throws Exception {
         long placeId = adminService.savePlace(placeUpdateDTO);
@@ -41,7 +36,7 @@ public class AdminContoller {
         return ResponseEntity.ok(new Message(placeId));
     }
 
-    @DeleteMapping("/admin/places/{mediaId}")
+    @DeleteMapping("/admin/medias/{mediaId}")
     public ResponseEntity<Message> deleteMedia(@PathVariable long mediaId) throws Exception {
         adminService.deleteMedia(mediaId);
         return ResponseEntity.ok(new Message("remove succeed"));

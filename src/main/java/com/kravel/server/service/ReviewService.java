@@ -197,7 +197,7 @@ public class ReviewService {
         return reviewDetailDTOs;
     }
 
-    public void deleteById(long memberId, long reviewId) {
+    public void deleteById(long memberId, long reviewId) throws Exception {
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist review"));
         if (review.getMember().getId() == memberId) {
             s3Uploader.removeS3Object(review.getImageUrl());
