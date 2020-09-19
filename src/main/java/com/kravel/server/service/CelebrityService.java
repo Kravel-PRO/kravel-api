@@ -31,12 +31,8 @@ public class CelebrityService {
     private final PlaceQueryRepository placeQueryRepository;
 
     @Transactional(readOnly = true)
-    public Page<CelebrityDTO> findAllCelebrities(Pageable pageable, Speech speech) throws Exception {
-        Page<Celebrity> celebrities = celebrityQueryFactory.finaAllCelebrity(pageable);
-        celebrities.forEach(celebrity ->
-                celebrity.findInfoSpeech(speech)
-        );
-
+    public Page<CelebrityDTO> findAll(Pageable pageable, Speech speech) throws Exception {
+        Page<Celebrity> celebrities = celebrityQueryFactory.findAll(pageable, speech);
         return celebrities.map(new Function<Celebrity, CelebrityDTO>() {
             @Override
             public CelebrityDTO apply(Celebrity celebrity) {

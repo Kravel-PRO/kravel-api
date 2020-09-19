@@ -34,7 +34,7 @@ public class CelebrityController {
     private final ClaimExtractor claimExtractor;
 
     @GetMapping("/api/celebrities")
-    public ResponseEntity<Message> findAllCelebrities(@PageableDefault Pageable pageable,
+    public ResponseEntity<Message> findAll(@PageableDefault Pageable pageable,
                                                       Authentication authentication,
                                                       HttpServletRequest request) throws Exception {
 
@@ -42,7 +42,7 @@ public class CelebrityController {
         LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
-        Page<CelebrityDTO> celebrities = celebrityService.findAllCelebrities(pageable, speech);
+        Page<CelebrityDTO> celebrities = celebrityService.findAll(pageable, speech);
         return ResponseEntity.ok(new Message(celebrities));
     }
 

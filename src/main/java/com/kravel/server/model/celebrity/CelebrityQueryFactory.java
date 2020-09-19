@@ -1,5 +1,7 @@
 package com.kravel.server.model.celebrity;
 
+import com.kravel.server.common.OrderUtil;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.mapping.QCelebrityMedia;
 import com.kravel.server.model.media.QMedia;
 import com.kravel.server.model.media.QMediaInfo;
@@ -23,18 +25,17 @@ public class CelebrityQueryFactory {
     QCelebrity celebrity = QCelebrity.celebrity;
     QCelebrityInfo celebrityInfo = QCelebrityInfo.celebrityInfo;
 
-    public Page<Celebrity> finaAllCelebrity(Pageable pageable) {
+    public Page<Celebrity> findAll(Pageable pageable, Speech speech) {
         QueryResults<Celebrity> results = queryFactory.selectFrom(celebrity)
-                .innerJoin(celebrity.celebrityInfos, celebrityInfo)
+                .innerJoin(celebrity.celebrityInfos, celebrityInfo).fetchJoin()
+                .where(celebrityInfo.speech.eq(speech))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(OrderUtil.sort(pageable, "celebrity"))
+                .distinct()
                 .fetchResults();
 
-        return new PageImpl<>(
-                results.getResults().stream().distinct().collect(Collectors.toList()),
-                pageable,
-                results.getTotal()
-        );
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 
 
