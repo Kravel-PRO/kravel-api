@@ -1,5 +1,6 @@
 package com.kravel.server.service;
 
+import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.dto.SearchDTO;
 import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.dto.celebrity.CelebrityDetailDTO;
@@ -24,6 +25,9 @@ public class CelebrityMediaService {
 
     @Transactional(readOnly = true)
     public SearchDTO findBySearch(String search, Speech speech, Pageable pageable) throws Exception {
+        if (search.isEmpty()) {
+            throw new InvalidRequestException("search keyword is not exist");
+        }
         List<Celebrity> searchedCelebrities = celebrityMediaQueryRepository.findCelebrityBySearch(search, speech, pageable);
         List<Media> searchedMedias = celebrityMediaQueryRepository.findMediaBySearch(search, speech, pageable);
 

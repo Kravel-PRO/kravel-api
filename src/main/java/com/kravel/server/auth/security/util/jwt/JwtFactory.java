@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +34,9 @@ public class JwtFactory {
             headers.put("alg", "HS256");
 
             Map<String, Object> payloads = new HashMap<>();
-            Long expiredTime = 1000 * 6000l; // 만료기간 10시간
-            Date now = new Date();
+            Date expiredDate = Date.from(LocalDateTime.now().plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant());
 
-            now.setTime(now.getTime() + expiredTime);
-            payloads.put("exp", now);
+            payloads.put("exp", expiredDate.getTime() / 1000);
             payloads.put("login_email", context.getMember().getLoginEmail());
             payloads.put("role_type", context.getMember().getRoleType().getRoleName());
             payloads.put("speech", context.getMember().getSpeech().name());

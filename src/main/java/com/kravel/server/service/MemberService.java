@@ -183,7 +183,7 @@ public class MemberService {
 
     public String refreshToken(String tokenPayload) {
         String token = headerTokenExtractor.extract(tokenPayload);
-        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token);
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey.getBytes()).setAllowedClockSkewSeconds(6000 * 14).parseClaimsJws(token);
 
         long memberId = claims.getBody().get("member_id", Long.class);
         RememberMe rememberMe = rememberMeQueryRepository.findByMember(memberId)
@@ -191,15 +191,8 @@ public class MemberService {
                         new InvalidJwtException("유효하지 않는 refresh token입니다.")
                 );
 
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        LocalDateTime expireDateTime = currentDateTime.plusMonths(2);
-        if (currentDateTime.isBefore(expireDateTime)) {
-            String jwt = jwtFactory.generateToken(MemberContext.fromMemberModel(rememberMe.getMember()));
-            rememberMe.updateToken(jwt);
-            return jwt;
-        } else {
-            throw new InvalidRequestException("refresh token is expired");
-        }
-
+        String jwt = jwtFactory.generateToken(MemberContext.fromMemberModel(rememberMe.getMember()));
+        rememberMe.updateToken(jwt);
+        return jwt;
     }
 }

@@ -24,7 +24,7 @@ public class CelebribyMediaController {
     private final CelebrityMediaService celebrityMediaService;
 
     @GetMapping("/api/search")
-    public ResponseEntity<Message> findBySearch(@RequestParam(value = "search", defaultValue = "") String search,
+    public ResponseEntity<Message> findBySearch(@RequestParam(value = "search") String search,
                                                 @PageableDefault Pageable pageable,
                                                 Authentication authentication) throws Exception {
         Speech speech = claimExtractor.getSpeech(authentication);

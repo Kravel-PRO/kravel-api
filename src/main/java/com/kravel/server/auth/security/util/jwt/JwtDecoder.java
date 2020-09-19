@@ -2,6 +2,7 @@ package com.kravel.server.auth.security.util.jwt;
 
 import com.kravel.server.auth.model.MemberContext;
 import com.kravel.server.auth.security.util.exception.InvalidJwtException;
+import com.kravel.server.common.util.exception.ForbiddenException;
 import com.kravel.server.enums.RoleType;
 import com.kravel.server.enums.Speech;
 import com.kravel.server.model.member.Member;
@@ -49,10 +50,10 @@ public class JwtDecoder {
             return decodedJWT;
 
         } catch(MissingClaimException mce) {
-            throw new InvalidJwtException("🔥 error: missing claim exception ->" + mce.getMessage());
+            throw new ForbiddenException("🔥 error: missing claim exception ->" + mce.getMessage());
 
         } catch(IncorrectClaimException ice) {
-            throw new InvalidJwtException("🔥 error: incorrect claim exception ->" + ice.getMessage());
+            throw new ForbiddenException("🔥 error: incorrect claim exception ->" + ice.getMessage());
         }
     }
 }
