@@ -1,11 +1,15 @@
 package com.kravel.server.model.media;
 
+import com.kravel.server.common.OrderUtil;
 import com.kravel.server.enums.Speech;
 import com.kravel.server.model.place.Place;
 import com.kravel.server.model.place.QPlace;
 import com.kravel.server.model.place.QPlaceInfo;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -44,5 +48,20 @@ public class MediaQueryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+    }
+
+    public Page<Media> findAll(Pageable pageable, Speech speech) {
+        QueryResults<Media> queryResults = queryFactory.selectFrom(this.media)
+                .innerJoin(this.media.mediaInfos, mediaInfo).fetchJoin()
+                .where(mediaInfo.speech.eq(speech))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(OrderUtil.sort(pageable, "media"))
+                .distinct()
+                .fetchResults();
+
+        return new PageImpl<>(queryResults.getResults(), pageable, queryResults.getTotal());
+
+
     }
 }

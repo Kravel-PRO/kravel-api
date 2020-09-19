@@ -34,7 +34,9 @@ public class MediaController {
         LogHandler.getClientIP(request);
         LogHandler.getRequestUrl(request);
 
-        Page<MediaOverviewDTO> mediaOverviewDTOs = mediaService.findAll(pageable);
+        Speech speech = claimExtractor.getSpeech(authentication);
+
+        Page<MediaOverviewDTO> mediaOverviewDTOs = mediaService.findAll(pageable, speech);
         return ResponseEntity.ok(new Message(mediaOverviewDTOs));
     }
 

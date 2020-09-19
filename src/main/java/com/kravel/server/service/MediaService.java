@@ -32,8 +32,8 @@ public class MediaService {
     private final MediaQueryRepository mediaQueryRepository;
 
     @Transactional(readOnly = true)
-    public Page<MediaOverviewDTO> findAll(Pageable pageable) throws Exception {
-        Page<Media> medias = mediaRepository.findAll(pageable);
+    public Page<MediaOverviewDTO> findAll(Pageable pageable, Speech speech) throws Exception {
+        Page<Media> medias = mediaQueryRepository.findAll(pageable, speech);
         return medias.map(new Function<Media, MediaOverviewDTO>() {
             @Override
             public MediaOverviewDTO apply(Media media) {
