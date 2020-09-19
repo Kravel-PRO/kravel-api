@@ -2,7 +2,9 @@ package com.kravel.server.auth.security.filter;
 
 import com.kravel.server.auth.security.handler.JwtAuthenticationFailureHandler;
 import com.kravel.server.auth.security.token.JwtPreProcessingToken;
+import com.kravel.server.auth.security.util.exception.InvalidJwtException;
 import com.kravel.server.auth.security.util.jwt.HeaderTokenExtractor;
+import com.kravel.server.common.util.exception.UnAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -10,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.rememberme.InvalidCookieException;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.FilterChain;
@@ -44,6 +47,9 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException, IOException, ServletException {
 
         String tokenPayload = req.getHeader("Authorization");
+        if (tokenPayload.isEmpty()) {
+            throw new UnAuthorizedException("🔥 is not exist jwt token");
+        }
 
         JwtPreProcessingToken token = new JwtPreProcessingToken(this.extractor.extract(tokenPayload));
         return super.getAuthenticationManager().authenticate(token);

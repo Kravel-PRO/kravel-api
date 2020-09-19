@@ -1,6 +1,7 @@
 package com.kravel.server.model.member;
 
 import com.kravel.server.common.S3Uploader;
+import com.kravel.server.common.util.exception.InternalServerException;
 import com.kravel.server.dto.update.InquireUploadDTO;
 import com.kravel.server.model.BaseTimeEntity;
 import com.kravel.server.enums.InquireCategory;
@@ -67,7 +68,7 @@ public class Inquire extends BaseTimeEntity {
                 inquireImages.add(inquireImage);
 
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new InternalServerException("🔥 error: save inquire image exception");
             }
         });
     }

@@ -6,6 +6,7 @@ import com.kravel.server.auth.security.util.exception.InvalidJwtException;
 import com.kravel.server.auth.security.util.jwt.HeaderTokenExtractor;
 import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.common.S3Uploader;
+import com.kravel.server.common.util.exception.InternalServerException;
 import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.MemberDTO;
 import com.kravel.server.common.util.exception.InvalidRequestException;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -49,6 +51,13 @@ public class MemberService {
     private String secretKey;
 
     public MemberDTO saveMember(SignUpDTO signUpDTO) throws Exception {
+        if (signUpDTO.getLoginEmail().isEmpty()
+                || signUpDTO.getLoginPw().isEmpty()
+                || signUpDTO.getGender().isEmpty()
+                || signUpDTO.getNickName().isEmpty()
+                || signUpDTO.getSpeech().name().isEmpty()) {
+            throw new InvalidRequestException("🔥 error: have not enough information");
+        }
         Optional<Member> optionalMember = memberQueryRepository.findMemberByLoginEmail(signUpDTO.getLoginEmail());
         if (optionalMember.isPresent()) {
             throw new InvalidRequestException("🔥 error: login email is exist!");
@@ -107,23 +116,26 @@ public class MemberService {
 
         savedMember.changeNickName(memberUpdateDTO.getNickName());
         savedMember.changeGender(memberUpdateDTO.getGender());
-        memberRepository.save(savedMember);
-
-        MemberDTO memberDTO = MemberDTO.fromEntity(savedMember);
-        memberDTO.setToken(jwtFactory.generateToken(MemberContext.fromMemberModel(savedMember)));
-        return memberDTO;
+        return getMemberDTO(savedMember);
     }
 
-    public MemberDTO modifyMemberSpeech(long memberId, MemberUpdateDTO memberUpdateDTO) {
+    public MemberDTO modifyMemberSpeech(long memberId, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
         Member savedMember = memberRepository.findById(memberId).orElseThrow(() ->
-                new NotFoundException("🔥 error: is not exist member")
+            new NotFoundException("🔥 error: is not exist member")
         );
 
         savedMember.changeSpeech(memberUpdateDTO.getSpeech());
-        memberRepository.save(savedMember);
+        return getMemberDTO(savedMember);
+    }
 
-        MemberDTO memberDTO = MemberDTO.fromEntity(savedMember);
+    private MemberDTO getMemberDTO(Member savedMember) {
+        Member changeMember = memberRepository.save(savedMember);
+        if (changeMember.getId() == 0) {
+            throw new InternalServerException("🔥 error: saved exception");
+        }
+
+        MemberDTO memberDTO = MemberDTO.fromEntity(changeMember);
         memberDTO.setToken(jwtFactory.generateToken(MemberContext.fromMemberModel(savedMember)));
         return memberDTO;
     }
@@ -146,12 +158,20 @@ public class MemberService {
         });
     }
 
-    public long saveInquire(InquireUploadDTO inquireUploadDTO, long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new InvalidRequestException("is not exist member"));
+    public long saveInquire(InquireUploadDTO inquireUploadDTO, long memberId) throws Exception {
+        if (inquireUploadDTO.getFiles().isEmpty()) {
+            throw new InvalidRequestException("🔥 error: is not exist image file");
+        }
+        Member member = memberRepository.findById(memberId).orElseThrow(() ->
+                new InvalidRequestException("is not exist member")
+        );
         Inquire inquire = new Inquire(inquireUploadDTO, member);
         inquire.saveImages(s3Uploader, inquireUploadDTO.getFiles());
 
         Inquire savedInquire = inquireRepository.save(inquire);
+        if (savedInquire.getId() == 0) {
+            throw new InterruptedException("🔥 error: save inquire exception");
+        }
         return savedInquire.getId();
     }
 

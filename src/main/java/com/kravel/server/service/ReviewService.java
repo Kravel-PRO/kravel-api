@@ -93,13 +93,19 @@ public class ReviewService {
     }
 
     public long saveReview(MultipartFile file, long placeId, long memberId) throws Exception {
+        if (file.isEmpty()) {
+            throw new InvalidRequestException("🔥 error: is not exist image file");
+        }
+
         Member savedMember = memberRepository
                 .findById(memberId)
                 .orElseThrow(() -> new NotFoundException("🔥 error: not found member"));
         Place savedPlace = placeRepository
                 .findById(placeId)
                 .orElseThrow(() -> new NotFoundException("🔥 error: not found place"));
-
+        if (file.isEmpty()) {
+            throw new InvalidRequestException("🔥 error: is not exist image file");
+        }
         Review review = Review.builder()
                 .member(savedMember)
                 .place(savedPlace)

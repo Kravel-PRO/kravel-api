@@ -1,5 +1,6 @@
 package com.kravel.server.model.celebrity;
 
+import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.enums.Speech;
 import com.kravel.server.model.BaseEntity;
 import com.kravel.server.model.mapping.CelebrityMedia;
@@ -50,7 +51,8 @@ public class Celebrity extends BaseEntity {
     }
 
     public void findInfoSpeech(Speech speech) {
-        this.celebrityInfos = Optional.ofNullable(this.celebrityInfos).orElse(new ArrayList<>()).stream()
+        this.celebrityInfos = Optional.ofNullable(this.celebrityInfos)
+                .orElseThrow(() -> new NotFoundException("🔥 error: is not exist celebrity info")).stream()
                 .filter(info -> info.getSpeech().equals(speech))
                 .collect(Collectors.toList());
     }
