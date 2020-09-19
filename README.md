@@ -10,7 +10,7 @@
 * Swagger2
 
 ### Database ERD
-![image](etc/img/erd.png)
+![image](etc/img/erd-new.png)
 
 ---
 
