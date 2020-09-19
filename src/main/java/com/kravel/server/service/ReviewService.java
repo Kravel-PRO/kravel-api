@@ -196,4 +196,14 @@ public class ReviewService {
 
         return reviewDetailDTOs;
     }
+
+    public void deleteById(long memberId, long reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist review"));
+        if (review.getMember().getId() == memberId) {
+            s3Uploader.removeS3Object(review.getImageUrl());
+            reviewRepository.delete(review);
+        } else  {
+            throw new InvalidRequestException("🔥 error: is not valid request");
+        }
+    }
 }

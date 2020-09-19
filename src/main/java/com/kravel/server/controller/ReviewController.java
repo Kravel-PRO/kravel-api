@@ -40,6 +40,14 @@ public class ReviewController {
         return ResponseEntity.ok(new Message(reviewDTOs));
     }
 
+    @DeleteMapping("/api/reviews/{reviewId}")
+    public ResponseEntity<Message> deleteById(@PathVariable long reviewId,
+                                              Authentication authentication) throws Exception {
+        long memberId = claimExtractor.getMemberId(authentication);
+        reviewService.deleteById(memberId, reviewId);
+        return ResponseEntity.ok(new Message("Image remove succeed"));
+    }
+
     @GetMapping("/api/places/{placeId}/reviews")
     public ResponseEntity<Message> findAllByPlace(@PathVariable("placeId") long placeId,
                                                   @PageableDefault Pageable pageable,

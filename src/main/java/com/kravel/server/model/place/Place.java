@@ -102,9 +102,11 @@ public class Place extends BaseEntity {
             this.media = new Media(placeUpdateDTO.getMedia());
         }
 
-        this.imageUrl = s3Uploader.upload(placeUpdateDTO.getImage(), "place");
+        this.imageUrl = s3Uploader.upload(placeUpdateDTO.getImage(), "place/represent");
         this.subImageUrl = s3Uploader.upload(placeUpdateDTO.getSubImage(), "place/sub");
-        this.filterImageUrl = s3Uploader.upload(placeUpdateDTO.getFilterImage(), "place/filter");
+        if (placeUpdateDTO.getFilterImage() != null) {
+            this.filterImageUrl = s3Uploader.upload(placeUpdateDTO.getFilterImage(), "place/filter");
+        }
     }
 
     public void changePlaceInfo(List<PlaceInfo> placeInfos) {

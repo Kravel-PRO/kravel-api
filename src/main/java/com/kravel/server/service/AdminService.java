@@ -2,6 +2,7 @@ package com.kravel.server.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kravel.server.common.S3Uploader;
+import com.kravel.server.common.util.exception.NotFoundException;
 import com.kravel.server.dto.update.media.MediaUpdateDTO;
 import com.kravel.server.dto.update.place.PlaceUpdateDTO;
 import com.kravel.server.model.celebrity.CelebrityRepository;
@@ -29,7 +30,12 @@ public class AdminService {
     }
 
     public void deletePlace(long placeId) throws Exception {
-        placeRepository.deleteById(placeId);
+        Place place = placeRepository.findById(placeId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist place"));
+        s3Uploader.removeS3Object(place.getImageUrl());
+        s3Uploader.removeS3Object(place.getSubImageUrl());
+        s3Uploader.removeS3Object(place.getFilterImageUrl());
+
+        placeRepository.delete(place);
     }
 
     public long saveMedia(MediaUpdateDTO mediaUpdateDTO) throws Exception {
@@ -38,6 +44,8 @@ public class AdminService {
     }
 
     public void deleteMedia(long mediaId) throws Exception {
-        mediaRepository.deleteById(mediaId);
+        Media media = mediaRepository.findById(mediaId).orElseThrow(() -> new NotFoundException("🔥 error: is not exist media"));
+        s3Uploader.removeS3Object(media.getImageUrl());
+        mediaRepository.delete(media);
     }
 }

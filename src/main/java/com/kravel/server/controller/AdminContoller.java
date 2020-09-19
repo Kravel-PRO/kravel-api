@@ -1,5 +1,6 @@
 package com.kravel.server.controller;
 
+import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.update.media.MediaUpdateDTO;
 import com.kravel.server.dto.update.place.PlaceUpdateDTO;
@@ -15,6 +16,12 @@ import org.springframework.web.bind.annotation.*;
 public class AdminContoller {
 
     private final AdminService adminService;
+    private final S3Uploader s3Uploader;
+
+    @GetMapping("/admin/test")
+    public void test(@RequestParam String testt) {
+        s3Uploader.removeS3Object(testt);
+    }
 
     @PostMapping("/admin/places")
     public ResponseEntity<Message> savePlace(@ModelAttribute PlaceUpdateDTO placeUpdateDTO) throws Exception {
