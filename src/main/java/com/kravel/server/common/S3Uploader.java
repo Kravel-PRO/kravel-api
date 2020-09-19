@@ -3,6 +3,7 @@ package com.kravel.server.common;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.kravel.server.common.util.exception.InternalServerException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -35,7 +37,7 @@ public class S3Uploader {
     }
 
     private String upload(File uploadFile, String dirName) {
-        String fileName = dirName + "/" + uploadFile.getName();
+        String fileName = dirName + "/" + UUID.randomUUID();;
         String uploadImgUrl = putS3(uploadFile, fileName);
 
         removeNewFile(uploadFile);
@@ -52,6 +54,16 @@ public class S3Uploader {
             log.info("File delete success");
         } else {
             log.info("File delete fail");
+        }
+    }
+
+    public void removeS3Object(String imageUrl) {
+        try {
+            String key = imageUrl.substring(47);
+            System.out.println(key);
+            amazonS3Client.deleteObject(bucket, key);
+        } catch (Exception e) {
+            throw new InternalServerException("image remove exception");
         }
     }
 
