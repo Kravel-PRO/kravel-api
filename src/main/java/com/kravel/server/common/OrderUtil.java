@@ -37,7 +37,10 @@ public class OrderUtil extends OrderSpecifier {
         } else if (property.equals("review-count")) {
             return new OrderUtil(ascending
                     ? Order.ASC : Order.DESC,
-                    review.count()
+                    new CaseBuilder()
+                            .when(place.reviews.isNotEmpty())
+                            .then(place.reviews.size())
+                            .otherwise(0)
             );
         } else {
             return OrderUtil.sort(pageable, qclass);
@@ -58,9 +61,13 @@ public class OrderUtil extends OrderSpecifier {
             return new OrderUtil(Order.ASC, place.longitude.abs().subtract(longitude));
 
         } else if (property.equals("review-count")) {
+            System.out.println("dsafsadfs");
             return new OrderUtil(ascending
                     ? Order.ASC : Order.DESC,
-                    review.count()
+                    new CaseBuilder()
+                            .when(place.reviews.isNotEmpty())
+                            .then(place.reviews.size())
+                            .otherwise(0)
             );
 
         } else {

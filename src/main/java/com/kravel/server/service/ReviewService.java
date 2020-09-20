@@ -44,25 +44,25 @@ public class ReviewService {
     private final ReviewLikeRepository reviewLikeRepository;
 
     @Transactional(readOnly = true)
-    public Page<ReviewDetailDTO> findAll(Pageable pageable, Speech speech) throws Exception {
+    public Page<ReviewDetailDTO> findAll(long memberId, Pageable pageable, Speech speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAll(pageable);
 
         reviews.forEach(review -> {
             review.getPlace().findTagSpeech(speech);
             review.getPlace().findInfoSpeech(speech);
         });
-        return getReviewDetailDTOs(reviews);
+        return getReviewDetailDTOs(reviews, memberId);
     }
 
     @Transactional(readOnly = true)
-    public Page<ReviewDetailDTO> findAllByPlace(long placeId, Pageable pageable, Speech speech) throws Exception {
+    public Page<ReviewDetailDTO> findAllByPlace(long placeId, long memberId, Pageable pageable, Speech speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAllByPlace(placeId, pageable);
 
         reviews.forEach(review -> {
             review.getPlace().findTagSpeech(speech);
             review.getPlace().findInfoSpeech(speech);
         });
-        return getReviewDetailDTOs(reviews);
+        return getReviewDetailDTOs(reviews, memberId);
     }
 
     @Transactional(readOnly = true)
@@ -86,7 +86,7 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ReviewDetailDTO> findAllByCelebrity(long celebrityId, Pageable pageable, Speech speech) throws Exception {
+    public Page<ReviewDetailDTO> findAllByCelebrity(long celebrityId, long memberId, Pageable pageable, Speech speech) throws Exception {
 
         Page<Review> reviews = reviewQueryRepository.findAllReviewByCelebrity(celebrityId, pageable);
 
@@ -94,7 +94,7 @@ public class ReviewService {
             review.getPlace().findTagSpeech(speech);
             review.getPlace().findInfoSpeech(speech);
         });
-        return getReviewDetailDTOs(reviews);
+        return getReviewDetailDTOs(reviews, memberId);
     }
 
     public long saveReview(MultipartFile file, long placeId, long memberId) throws Exception {
@@ -147,8 +147,10 @@ public class ReviewService {
             if (savedLike.isEmpty()) {
                 throw new InvalidRequestException("🔥 error: like is not exist");
             }
-
-            reviewLikeRepository.delete(savedLike.get());
+            ReviewLike reviewLike = savedLike.get();
+            if (reviewLike.getMember().getId() == memberId) {
+                reviewLikeRepository.delete(reviewLike);
+            }
             return -1;
 
         } else  {
@@ -157,14 +159,14 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ReviewDetailDTO> findAllByMedia(long mediaId, Pageable pageable, Speech speech) throws Exception {
+    public Page<ReviewDetailDTO> findAllByMedia(long mediaId, long memberId, Pageable pageable, Speech speech) throws Exception {
         Page<Review> reviews = reviewQueryRepository.findAllByMedia(mediaId, pageable);
 
         reviews.forEach(review -> {
             review.getPlace().findTagSpeech(speech);
             review.getPlace().findInfoSpeech(speech);
         });
-        return getReviewDetailDTOs(reviews);
+        return getReviewDetailDTOs(reviews, memberId);
     }
 
     @Transactional(readOnly = true)
@@ -174,20 +176,21 @@ public class ReviewService {
         reviews.forEach(review ->
                 review.getPlace().findInfoSpeech(speech)
         );
-        return getReviewDetailDTOs(reviews);
+        return getReviewDetailDTOs(reviews, memberId);
     }
 
     public Page<ReviewDetailDTO> findAllReviewLikeById(long memberId, Pageable pageable) {
         Page<Review> reviews = reviewQueryRepository.findAllReviewLikeById(memberId, pageable);
 
-        return getReviewDetailDTOs(reviews);
+        return getReviewDetailDTOs(reviews, memberId);
     }
 
-    private Page<ReviewDetailDTO> getReviewDetailDTOs(Page<Review> reviews) {
+    private Page<ReviewDetailDTO> getReviewDetailDTOs(Page<Review> reviews, long memberId) {
         Page<ReviewDetailDTO> reviewDetailDTOs = reviews.map(new Function<Review, ReviewDetailDTO>() {
             @Override
             public ReviewDetailDTO apply(Review review) {
                 ReviewDetailDTO reviewDetailDTO = ReviewDetailDTO.fromEntity(review);
+                reviewDetailDTO.setLike(review.getReviewLikes().stream().anyMatch(reviewLike -> reviewLike.getMember().getId() == memberId));
                 long likeCountByReview = reviewLikeQueryRepository.findLikeCountByReview(reviewDetailDTO.getReviewId());
                 reviewDetailDTO.setLikeCount(likeCountByReview);
                 return reviewDetailDTO;

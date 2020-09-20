@@ -44,7 +44,7 @@ public class PlaceService {
     private final ObjectMapper objectMapper;
 
     @Transactional(readOnly = true)
-    public Page<PlaceDTO> findAllByLocation(double latitude, double longitude, double height, double width, Speech speech, Pageable pageable, boolean reviewCount) throws Exception {
+    public Page<PlaceDTO> findAllByLocation(double latitude, double longitude, double height, double width, Speech speech, Pageable pageable) throws Exception {
 
         Page<Place> places = placeQueryRepository.findAllByLocation(latitude, longitude, height, width, speech, pageable);
         places.forEach(place -> place.findTagSpeech(speech));
@@ -54,9 +54,7 @@ public class PlaceService {
                 try {
                     source.getPlaceCelebrities().forEach(placeCelebrity -> placeCelebrity.getCelebrity().findInfoSpeech(speech));
                     PlaceDTO placeDTO = PlaceDTO.fromEntity(source);
-                    if (reviewCount) {
-                        placeDTO.setReviewCount(reviewQueryRepository.findCountByPlace(placeDTO.getPlaceId()));
-                    }
+                    placeDTO.setReviewCount(reviewQueryRepository.findCountByPlace(placeDTO.getPlaceId()));
                     return placeDTO;
 
                 } catch (Exception exception) {

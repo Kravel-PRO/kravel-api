@@ -44,9 +44,6 @@ public class ReviewDetailDTO {
         reviewDetailDTO.setCreatedDate(entity.getCreatedDate().toString().substring(0, 10));
         reviewDetailDTO.setModifiedDate(entity.getModifiedDate().toString().substring(0, 10));
 
-        reviewDetailDTO.setLike(Optional.ofNullable(entity.getReviewLikes())
-                .orElse(new ArrayList<>()).stream()
-                .findFirst().isPresent());
         reviewDetailDTO.setPlace(PlaceTitleDTO.fromEntity(entity.getPlace()));
         return reviewDetailDTO;
     }

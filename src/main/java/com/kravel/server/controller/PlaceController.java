@@ -50,7 +50,6 @@ public class PlaceController {
                                                      @RequestParam(value = "longitude", defaultValue = "0") double longitude,
                                                      @RequestParam(value = "height", defaultValue = "0.025") double height,
                                                      @RequestParam(value = "width", defaultValue = "0.03") double width,
-                                                     @RequestParam(value = "review-count", defaultValue = "false") boolean reviewCount,
                                                      @PageableDefault Pageable pageable,
                                                      Authentication authentication,
                                                      HttpServletRequest request) throws Exception {
@@ -60,7 +59,7 @@ public class PlaceController {
 
         Speech speech = claimExtractor.getSpeech(authentication);
 
-        Page<PlaceDTO> placeMapDTOs = placeService.findAllByLocation(latitude, longitude, height, width, speech, pageable, reviewCount);
+        Page<PlaceDTO> placeMapDTOs = placeService.findAllByLocation(latitude, longitude, height, width, speech, pageable);
         return ResponseEntity.ok().body(new Message(placeMapDTOs));
     }
 

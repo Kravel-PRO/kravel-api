@@ -41,8 +41,9 @@ public class ReviewController {
         LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
+        long memberId = claimExtractor.getMemberId(authentication);
 
-        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAll(pageable, speech);
+        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAll(memberId, pageable, speech);
         return ResponseEntity.ok(new Message(reviewDTOs));
     }
 
@@ -67,8 +68,9 @@ public class ReviewController {
         LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
+        long memberId = claimExtractor.getMemberId(authentication);
 
-        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByPlace(placeId, pageable, speech);
+        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByPlace(placeId, memberId, pageable, speech);
         return ResponseEntity.ok().body(new Message(reviewDTOs));
     }
 
@@ -110,15 +112,17 @@ public class ReviewController {
         LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
-        Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMedia(mediaId, pageable, speech);
+        long memberId = claimExtractor.getMemberId(authentication);
+
+        Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMedia(mediaId, memberId, pageable, speech);
         return ResponseEntity.ok(new Message(reviewDetailDTOs));
     }
 
     @PostMapping("/api/places/{placeId}/reviews/{reviewId}/likes")
     public ResponseEntity<Message> handleReviewLike(@PathVariable("placeId") long placeId,
-                                            @PathVariable("reviewId") long reviewId,
-                                            @RequestBody ReviewLikeDTO reviewLikeDTO,
-                                            Authentication authentication,
+                                                    @PathVariable("reviewId") long reviewId,
+                                                    @RequestBody ReviewLikeDTO reviewLikeDTO,
+                                                    Authentication authentication,
                                                     HttpServletRequest request) throws Exception{
         LogHandler.getClientIP(request);
         LogHandler.getRequestUrl(request);
@@ -139,7 +143,9 @@ public class ReviewController {
         LogHandler.getRequestUrl(request);
 
         Speech speech = claimExtractor.getSpeech(authentication);
-        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByCelebrity(celebrityId, pageable, speech);
+        long memberId = claimExtractor.getMemberId(authentication);
+
+        Page<ReviewDetailDTO> reviewDTOs = reviewService.findAllByCelebrity(celebrityId, memberId, pageable, speech);
         return ResponseEntity.ok(new Message(reviewDTOs));
     }
 
@@ -152,6 +158,7 @@ public class ReviewController {
 
         long memberId = claimExtractor.getMemberId(authentication);
         Speech speech = claimExtractor.getSpeech(authentication);
+
         Page<ReviewDetailDTO> reviewDetailDTOs = reviewService.findAllByMember(memberId, speech, pageable);
         return ResponseEntity.ok(new Message(reviewDetailDTOs));
     }

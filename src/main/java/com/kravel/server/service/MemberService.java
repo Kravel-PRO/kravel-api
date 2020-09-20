@@ -130,13 +130,16 @@ public class MemberService {
     }
 
     private MemberDTO getMemberDTO(Member savedMember) {
+
+        String token = jwtFactory.generateToken(MemberContext.fromMemberModel(savedMember));
+        savedMember.getRememberMe().updateToken(token);
         Member changeMember = memberRepository.save(savedMember);
         if (changeMember.getId() == 0) {
             throw new InternalServerException("🔥 error: saved exception");
         }
-
         MemberDTO memberDTO = MemberDTO.fromEntity(changeMember);
-        memberDTO.setToken(jwtFactory.generateToken(MemberContext.fromMemberModel(savedMember)));
+        memberDTO.setToken(token);
+
         return memberDTO;
     }
 
