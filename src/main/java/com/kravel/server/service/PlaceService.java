@@ -47,6 +47,7 @@ public class PlaceService {
     public Page<PlaceDTO> findAllByLocation(double latitude, double longitude, double height, double width, Speech speech, Pageable pageable, boolean reviewCount) throws Exception {
 
         Page<Place> places = placeQueryRepository.findAllByLocation(latitude, longitude, height, width, speech, pageable);
+        places.forEach(place -> place.findTagSpeech(speech));
         return places.map(new Function<Place, PlaceDTO>() {
             @Override
             public PlaceDTO apply(Place source) {

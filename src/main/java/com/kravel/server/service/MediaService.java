@@ -34,6 +34,7 @@ public class MediaService {
     @Transactional(readOnly = true)
     public Page<MediaOverviewDTO> findAll(Pageable pageable, Speech speech) throws Exception {
         Page<Media> medias = mediaQueryRepository.findAll(pageable, speech);
+        medias.forEach(media -> media.findInfoSpeech(speech));
         return medias.map(new Function<Media, MediaOverviewDTO>() {
             @Override
             public MediaOverviewDTO apply(Media media) {
@@ -47,6 +48,8 @@ public class MediaService {
 
         Media media = mediaQueryRepository.findById(mediaId, speech)
                 .orElseThrow(() -> new NotFoundException("🔥 error: is not exist media information"));
+        media.findInfoSpeech(speech);
+
         List<Place> places = mediaQueryRepository.findAllByMedia(mediaId, speech, pageable);
         List<PlaceDTO> placeDTOs = places.stream().map(PlaceDTO::fromEntity).collect(Collectors.toList());;
 
