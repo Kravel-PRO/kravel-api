@@ -20,6 +20,7 @@ public class RememberMeQueryRepository {
                 .innerJoin(rememberMe.member, member)
                     .fetchJoin()
                 .where(rememberMe.member.id.eq(memberId))
+                .distinct()
                 .fetchOne());
     }
 }

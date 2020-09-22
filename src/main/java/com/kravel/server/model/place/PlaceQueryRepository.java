@@ -47,19 +47,8 @@ public class PlaceQueryRepository {
         return Optional.ofNullable(queryFactory.selectFrom(place)
                 .innerJoin(place.placeInfos, placeInfo)
                     .fetchJoin()
-//                .leftJoin(place.placeCelebrities, placeCelebrity)
-//                    .fetchJoin()
-//                .leftJoin(placeCelebrity.celebrity, celebrity)
-//                    .fetchJoin()
-//                .leftJoin(celebrity.celebrityInfos, celebrityInfo)
-//                    .on(celebrityInfo.speech.eq(speech))
-//                    .fetchJoin()
-//                .leftJoin(place.media, media)
-//                    .fetchJoin()
-//                .leftJoin(media.mediaInfos, mediaInfo)
-//                    .on(mediaInfo.speech.eq(speech))
-//                    .fetchJoin()
                 .where(place.id.eq(placeId))
+                .distinct()
                 .fetchOne());
     }
 
@@ -74,6 +63,7 @@ public class PlaceQueryRepository {
                         )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .distinct()
                 .fetch();
     }
 
@@ -88,6 +78,7 @@ public class PlaceQueryRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .distinct()
                 .fetch();
     }
 
@@ -99,6 +90,7 @@ public class PlaceQueryRepository {
                         latitudeBetween(latitude, height),
                         longitudeBetween(longitude, width)
                 )
+                .distinct()
                 .fetch();
     }
 
@@ -114,6 +106,7 @@ public class PlaceQueryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(OrderUtil.byLongitude(longitude, pageable, "place"), OrderUtil.byLatitude(latitude, pageable, "place"))
+                .distinct()
                 .fetch();
 
         long placeCount = queryFactory.selectFrom(place)
@@ -126,6 +119,7 @@ public class PlaceQueryRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .distinct()
                 .fetchCount();
 
         return new PageImpl<>(places, pageable, placeCount);
@@ -143,6 +137,7 @@ public class PlaceQueryRepository {
         return Optional.ofNullable(queryFactory.selectFrom(scrap)
                 .where(scrap.member.id.eq(memberId)
                         .and(scrap.place.id.eq(placeId)))
+                .distinct()
                 .fetchOne()).isPresent();
     }
 
@@ -150,6 +145,7 @@ public class PlaceQueryRepository {
         return Optional.ofNullable(queryFactory.selectFrom(scrap)
                 .where(scrap.member.id.eq(memberId)
                         .and(scrap.place.id.eq(placeId)))
+                .distinct()
                 .fetchOne());
     }
 }

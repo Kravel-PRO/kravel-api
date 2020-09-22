@@ -38,6 +38,7 @@ public class MemberQueryRepository {
                 .where(scrap.member.id.eq(memberId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .distinct()
                 .fetchResults();
 
         return new PageImpl<>(placeQueryResults.getResults(), pageable, placeQueryResults.getTotal());

@@ -36,6 +36,7 @@ public class CelebrityMediaQueryRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .distinct()
                 .fetch().stream().distinct().collect(Collectors.toList());
     }
 
@@ -48,6 +49,7 @@ public class CelebrityMediaQueryRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .distinct()
                 .fetch().stream().distinct().collect(Collectors.toList());
     }
 }

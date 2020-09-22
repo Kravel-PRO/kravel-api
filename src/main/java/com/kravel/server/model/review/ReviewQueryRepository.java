@@ -41,6 +41,7 @@ public class ReviewQueryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(OrderUtil.byReviewLikes(pageable, "review"), review.createdDate.desc())
+                .distinct()
                 .fetchResults();
 
         return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
@@ -49,6 +50,7 @@ public class ReviewQueryRepository {
     public long findCountByPlace(long placeId) throws Exception {
         return queryFactory.selectFrom(review)
                 .where(review.place.id.eq(placeId))
+                .distinct()
                 .fetchCount();
     }
 
@@ -61,6 +63,7 @@ public class ReviewQueryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(OrderUtil.byReviewLikes(pageable, "review"), review.createdDate.desc())
+                .distinct()
                 .fetchResults();
 
         return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
@@ -73,6 +76,7 @@ public class ReviewQueryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(OrderUtil.byReviewLikes(pageable, "review"), review.createdDate.desc())
+                .distinct()
                 .fetchResults();
 
         return new PageImpl<>(queryResults.getResults(), pageable, queryResults.getTotal());
@@ -85,6 +89,7 @@ public class ReviewQueryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(OrderUtil.sort(pageable, "review"))
+                .distinct()
                 .fetchResults();
         return new PageImpl<>(queryResults.getResults(), pageable, queryResults.getTotal());
     }
@@ -96,6 +101,7 @@ public class ReviewQueryRepository {
                 .where(member.id.eq(memberId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .distinct()
                 .fetchResults();
 
         return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());
@@ -107,6 +113,7 @@ public class ReviewQueryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(OrderUtil.byReviewLikes(pageable, "review"), review.createdDate.desc())
+                .distinct()
                 .fetchResults();
 
         return new PageImpl<>(reviewQueryResults.getResults(), pageable, reviewQueryResults.getTotal());

@@ -18,10 +18,10 @@ public class ReviewLikeQueryRepository {
     QReviewLike reviewLike = QReviewLike.reviewLike;
 
     public Optional<ReviewLike> checkReviewLikeExist(long reviewId, long memberId) {
-        return Optional.ofNullable(queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId).and(reviewLike.member.id.eq(memberId))).fetchOne());
+        return Optional.ofNullable(queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId).and(reviewLike.member.id.eq(memberId))).distinct().fetchOne());
     }
 
     public long findLikeCountByReview(long reviewId) {
-        return queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId)).fetchCount();
+        return queryFactory.selectFrom(reviewLike).where(reviewLike.review.id.eq(reviewId)).distinct().fetchCount();
     }
 }

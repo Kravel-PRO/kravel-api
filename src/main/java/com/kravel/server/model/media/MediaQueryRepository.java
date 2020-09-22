@@ -47,6 +47,7 @@ public class MediaQueryRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .distinct()
                 .fetch();
     }
 
