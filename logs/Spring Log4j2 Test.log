@@ -1,4 +1,0 @@
-[36m2020/09/19 23:48:23,996[m [34m[DEBUG][m  [org.springframework.core.env.PropertySourcesPropertyResolver] [33m[restartedMain][m- Found key 'spring.liveBeansView.mbeanDomain' in PropertySource 'systemProperties' with value of type String
- -[36m2020/09/19 23:48:23,997[m [32m[INFO ][m  [org.springframework.boot.StartupInfoLogger] [33m[restartedMain][m- Started ServerApplication in 1.453 seconds (JVM running for 784.151)
- -[36m2020/09/19 23:48:23,999[m [32m[INFO ][m  [org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener] [33m[restartedMain][m- Condition evaluation unchanged
- -
