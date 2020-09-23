@@ -37,6 +37,6 @@ database.yml
 keys.yml
 
 src/main/generated
-logs
+./logs
 **.log.gz
 **.log

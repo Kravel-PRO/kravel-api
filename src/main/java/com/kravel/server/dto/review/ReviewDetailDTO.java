@@ -26,8 +26,8 @@ public class ReviewDetailDTO {
     private long likeCount;
     private boolean like;
     private String createdDate;
-    private PlaceTitleDTO place;
     private String modifiedDate;
+    private PlaceTitleDTO place;
 
     @Builder
     public ReviewDetailDTO(long reviewId, String imageUrl, long likeCount, boolean like) {
