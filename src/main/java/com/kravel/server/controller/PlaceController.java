@@ -48,8 +48,8 @@ public class PlaceController {
     @GetMapping("/api/places")
     public ResponseEntity<Message> findAllByLocation(@RequestParam(value = "latitude", defaultValue = "0") double latitude,
                                                      @RequestParam(value = "longitude", defaultValue = "0") double longitude,
-                                                     @RequestParam(value = "height", defaultValue = "0.025") double height,
-                                                     @RequestParam(value = "width", defaultValue = "0.03") double width,
+                                                     @RequestParam(value = "height", defaultValue = "0.25") double height,  // 50km
+                                                     @RequestParam(value = "width", defaultValue = "0.3") double width, // 50km
                                                      @PageableDefault Pageable pageable,
                                                      Authentication authentication,
                                                      HttpServletRequest request) throws Exception {

@@ -39,7 +39,7 @@ public class AdminService {
 
     public long savePlace(PlaceUpdateDTO placeUpdateDTO) throws Exception {
         Place place = new Place();
-        place.fromPlaceUpdateDTO(placeUpdateDTO, s3Uploader, objectMapper);
+        place.fromPlaceUpdateDTO(placeUpdateDTO, s3Uploader, objectMapper, placeCelebrityRepository, mediaRepository);
         return placeRepository.save(place).getId();
     }
 
