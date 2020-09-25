@@ -32,13 +32,13 @@ public class Tag {
         this.name = name;
     }
 
-    public Tag(Place place, KorPlaceInfoUpdateDTO korPlaceInfoUpdateDTO) {
+    public void updateTag(Place place, KorPlaceInfoUpdateDTO korPlaceInfoUpdateDTO) {
         this.place = place;
         this.speech = korPlaceInfoUpdateDTO.getSpeech();
         this.name = korPlaceInfoUpdateDTO.getTags();
     }
 
-    public Tag(Place place, EngPlaceInfoUpdateDTO engPlaceInfoUpdateDTO) {
+    public void updateTag(Place place, EngPlaceInfoUpdateDTO engPlaceInfoUpdateDTO) {
         this.place = place;
         this.speech = engPlaceInfoUpdateDTO.getSpeech();
         this.name = engPlaceInfoUpdateDTO.getTags();

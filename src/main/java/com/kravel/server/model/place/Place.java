@@ -70,69 +70,56 @@ public class Place extends BaseEntity {
     private List<Tag> tags = new ArrayList<>();
 
     @Builder
-    public Place(long id, double latitude, double longitude, String imageUrl, String subImageUrl, String filterImageUrl) {
+    public Place(long id, String bus, String subway, double latitude, double longitude, String imageUrl, String subImageUrl, String filterImageUrl, String useAt, Media media, List<PlaceInfo> placeInfos, List<Review> reviews, List<Scrap> scraps, List<PlaceCelebrity> placeCelebrities, List<Tag> tags) {
         this.id = id;
+        this.bus = bus;
+        this.subway = subway;
         this.latitude = latitude;
         this.longitude = longitude;
         this.imageUrl = imageUrl;
         this.subImageUrl = subImageUrl;
         this.filterImageUrl = filterImageUrl;
+        this.useAt = useAt;
+        this.media = media;
+        this.placeInfos = placeInfos;
+        this.reviews = reviews;
+        this.scraps = scraps;
+        this.placeCelebrities = placeCelebrities;
+        this.tags = tags;
     }
 
-    public void fromPlaceUpdateDTO(PlaceUpdateDTO placeUpdateDTO, S3Uploader s3Uploader, ObjectMapper objectMapper, PlaceCelebrityRepository placeCelebrityRepository, MediaRepository mediaRepository) throws Exception {
-        this.bus = placeUpdateDTO.getBus();
-        this.subway = placeUpdateDTO.getSubway();
-        this.latitude = placeUpdateDTO.getLatitude();
-        this.longitude = placeUpdateDTO.getLongitude();
-
-        KorPlaceInfoUpdateDTO korPlaceInfoUpdateDTO = objectMapper.readValue(placeUpdateDTO.getKorInfo(), KorPlaceInfoUpdateDTO.class);
-        EngPlaceInfoUpdateDTO engPlaceInfoUpdateDTO = objectMapper.readValue(placeUpdateDTO.getEngInfo(), EngPlaceInfoUpdateDTO.class);
-        List<Integer> celebrities = objectMapper.readValue(placeUpdateDTO.getCelebrities(), new TypeReference<List<Integer >>(){});
-
-        this.placeInfos.add(new PlaceInfo(this, korPlaceInfoUpdateDTO));
-        this.placeInfos.add(new PlaceInfo(this, engPlaceInfoUpdateDTO));
-        this.tags.add(new Tag(this, korPlaceInfoUpdateDTO));
-        this.tags.add(new Tag(this, engPlaceInfoUpdateDTO));
-
-        if (celebrities.size() != 0) {
-            if (this.placeCelebrities.size() != 0) {
-                this.placeCelebrities.forEach(placeCelebrityRepository::delete);
-                this.placeCelebrities = new ArrayList<>();
-            }
-            celebrities.forEach(celebrity -> {
-                PlaceCelebrity placeCelebrity = new PlaceCelebrity(this, celebrity);
-                this.placeCelebrities.add(placeCelebrity);
-            });
-        }
-        if (placeUpdateDTO.getMedia() != 0) {
-            if (this.media != null) {
-                mediaRepository.delete(this.media);
-            }
-            this.media = new Media(placeUpdateDTO.getMedia());
-        }
-
-        if (placeUpdateDTO.getImage() != null) {
-            if (this.imageUrl != null) {
-                s3Uploader.removeS3Object(this.imageUrl);
-            }
-            this.imageUrl = s3Uploader.upload(placeUpdateDTO.getImage(), "place/represent");
-        }
-        if (placeUpdateDTO.getSubImage() != null) {
-            if (this.subImageUrl != null) {
-                s3Uploader.removeS3Object(this.subImageUrl);
-            }
-            this.subImageUrl = s3Uploader.upload(placeUpdateDTO.getSubImage(), "place/sub");
-        }
-        if (placeUpdateDTO.getFilterImage() != null) {
-            if (this.filterImageUrl != null) {
-                s3Uploader.removeS3Object(this.filterImageUrl);
-            }
-            this.filterImageUrl = s3Uploader.upload(placeUpdateDTO.getFilterImage(), "place/filter");
-        }
+    public void changeBus(String bus) {
+        this.bus = bus;
     }
-
+    public void changeSubway(String subway) {
+        this.subway = subway;
+    }
+    public void changeLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+    public void changeLatitude(double latitude) {
+        this.latitude = latitude;
+    }
     public void changePlaceInfo(List<PlaceInfo> placeInfos) {
         this.placeInfos = placeInfos;
+    }
+    public void changeMedia(Media media) {
+        this.media = media;
+    }
+    public void changeImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    public void changeSubImageUrl(String subImageUrl) {
+        this.subImageUrl = subImageUrl;
+    }
+    public void changeFilterImageUrl(String filterImageUrl) {
+        this.filterImageUrl = filterImageUrl;
+    }
+    public void changePlaceCelebrities(List<PlaceCelebrity> placeCelebrities) {
+        this.placeCelebrities = placeCelebrities;
+    }
+    public void changeTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     public void findTagSpeech(Speech speech) {

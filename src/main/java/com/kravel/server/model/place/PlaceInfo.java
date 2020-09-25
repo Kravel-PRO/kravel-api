@@ -28,14 +28,14 @@ public class PlaceInfo extends BaseEntity {
     private String title;
     private String location;
 
-    public PlaceInfo(Place place, KorPlaceInfoUpdateDTO korPlaceInfoUpdateDTO) {
+    public void updatePlaceInfo(Place place, KorPlaceInfoUpdateDTO korPlaceInfoUpdateDTO) {
         this.place = place;
         this.speech = korPlaceInfoUpdateDTO.getSpeech();
         this.title = korPlaceInfoUpdateDTO.getTitle();
         this.location = korPlaceInfoUpdateDTO.getLocation();
     }
 
-    public PlaceInfo(Place place, EngPlaceInfoUpdateDTO engPlaceInfoUpdateDTO) {
+    public void updatePlaceInfo(Place place, EngPlaceInfoUpdateDTO engPlaceInfoUpdateDTO) {
         this.place = place;
         this.speech = engPlaceInfoUpdateDTO.getSpeech();
         this.title = engPlaceInfoUpdateDTO.getTitle();
