@@ -5,6 +5,7 @@ import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.message.Message;
 import com.kravel.server.dto.update.media.MediaUpdateDTO;
 import com.kravel.server.dto.update.place.PlaceUpdateDTO;
+import com.kravel.server.dto.update.place.PlaceWebDTO;
 import com.kravel.server.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,19 @@ public class AdminContoller {
 
     private final AdminService adminService;
     private final S3Uploader s3Uploader;
+
+    @GetMapping("/api/places/{placeId}/update")
+    public ResponseEntity<Message> findUpdateById(@PathVariable long placeId) throws Exception {
+        PlaceWebDTO placeWebDTO = adminService.findUpdateById(placeId);
+        return ResponseEntity.ok(new Message(placeWebDTO));
+    }
+
+    @PutMapping("/admin/places/{placeId}")
+    public ResponseEntity<Message> updatePlace(@ModelAttribute PlaceUpdateDTO placeUpdateDTO,
+                                               @PathVariable long placeId) throws Exception {
+        adminService.updatePlace(placeUpdateDTO, placeId);
+        return ResponseEntity.ok(new Message("succeed"));
+    }
 
     @PostMapping("/admin/places")
     public ResponseEntity<Message> savePlace(@ModelAttribute PlaceUpdateDTO placeUpdateDTO,

@@ -9,8 +9,10 @@ import com.kravel.server.dto.update.place.PlaceUpdateDTO;
 import com.kravel.server.enums.Speech;
 import com.kravel.server.model.BaseEntity;
 import com.kravel.server.model.mapping.PlaceCelebrity;
+import com.kravel.server.model.mapping.PlaceCelebrityRepository;
 import com.kravel.server.model.mapping.Scrap;
 import com.kravel.server.model.media.Media;
+import com.kravel.server.model.media.MediaRepository;
 import com.kravel.server.model.review.Review;
 import lombok.Builder;
 import lombok.Getter;
@@ -77,7 +79,7 @@ public class Place extends BaseEntity {
         this.filterImageUrl = filterImageUrl;
     }
 
-    public Place(PlaceUpdateDTO placeUpdateDTO, S3Uploader s3Uploader, ObjectMapper objectMapper) throws IOException {
+    public void fromPlaceUpdateDTO(PlaceUpdateDTO placeUpdateDTO, S3Uploader s3Uploader, ObjectMapper objectMapper, PlaceCelebrityRepository placeCelebrityRepository, MediaRepository mediaRepository) throws Exception {
         this.bus = placeUpdateDTO.getBus();
         this.subway = placeUpdateDTO.getSubway();
         this.latitude = placeUpdateDTO.getLatitude();
@@ -93,18 +95,38 @@ public class Place extends BaseEntity {
         this.tags.add(new Tag(this, engPlaceInfoUpdateDTO));
 
         if (celebrities.size() != 0) {
+            if (this.placeCelebrities.size() != 0) {
+                this.placeCelebrities.forEach(placeCelebrityRepository::delete);
+                this.placeCelebrities = new ArrayList<>();
+            }
             celebrities.forEach(celebrity -> {
                 PlaceCelebrity placeCelebrity = new PlaceCelebrity(this, celebrity);
                 this.placeCelebrities.add(placeCelebrity);
             });
         }
         if (placeUpdateDTO.getMedia() != 0) {
+            if (this.media != null) {
+                mediaRepository.delete(this.media);
+            }
             this.media = new Media(placeUpdateDTO.getMedia());
         }
 
-        this.imageUrl = s3Uploader.upload(placeUpdateDTO.getImage(), "place/represent");
-        this.subImageUrl = s3Uploader.upload(placeUpdateDTO.getSubImage(), "place/sub");
+        if (placeUpdateDTO.getImage() != null) {
+            if (this.imageUrl != null) {
+                s3Uploader.removeS3Object(this.imageUrl);
+            }
+            this.imageUrl = s3Uploader.upload(placeUpdateDTO.getImage(), "place/represent");
+        }
+        if (placeUpdateDTO.getSubImage() != null) {
+            if (this.subImageUrl != null) {
+                s3Uploader.removeS3Object(this.subImageUrl);
+            }
+            this.subImageUrl = s3Uploader.upload(placeUpdateDTO.getSubImage(), "place/sub");
+        }
         if (placeUpdateDTO.getFilterImage() != null) {
+            if (this.filterImageUrl != null) {
+                s3Uploader.removeS3Object(this.filterImageUrl);
+            }
             this.filterImageUrl = s3Uploader.upload(placeUpdateDTO.getFilterImage(), "place/filter");
         }
     }

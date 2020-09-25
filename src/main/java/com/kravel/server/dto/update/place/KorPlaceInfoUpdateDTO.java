@@ -1,6 +1,7 @@
 package com.kravel.server.dto.update.place;
 
 import com.kravel.server.enums.Speech;
+import com.kravel.server.model.place.PlaceInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,4 +11,5 @@ public class KorPlaceInfoUpdateDTO {
     private String title;
     private String location;
     private String tags;
+
 }
