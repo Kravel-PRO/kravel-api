@@ -13,13 +13,11 @@ import com.kravel.server.dto.update.place.PlaceWebDTO;
 import com.kravel.server.enums.Speech;
 import com.kravel.server.model.celebrity.CelebrityRepository;
 import com.kravel.server.model.mapping.PlaceCelebrity;
+import com.kravel.server.model.mapping.PlaceCelebrityQueryRepository;
 import com.kravel.server.model.mapping.PlaceCelebrityRepository;
 import com.kravel.server.model.media.Media;
 import com.kravel.server.model.media.MediaRepository;
-import com.kravel.server.model.place.Place;
-import com.kravel.server.model.place.PlaceInfo;
-import com.kravel.server.model.place.PlaceRepository;
-import com.kravel.server.model.place.Tag;
+import com.kravel.server.model.place.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +37,9 @@ public class AdminService {
     private final MediaRepository mediaRepository;
     private final PlaceCelebrityRepository placeCelebrityRepository;
     private final CelebrityRepository celebrityRepository;
+    private final TagRepository tagRepository;
+    private final PlaceInfoRepository placeInfoRepository;
+    private final PlaceCelebrityQueryRepository placeCelebrityQueryRepository;
 
     public long savePlace(PlaceUpdateDTO placeUpdateDTO) throws Exception {
 
@@ -186,40 +187,45 @@ public class AdminService {
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("🔥 error: not found info"));
         korInfo.updatePlaceInfo(place, korPlaceInfoUpdateDTO);
+        placeInfoRepository.save(korInfo);
 
         PlaceInfo engInfo = place.getPlaceInfos().stream()
                 .filter(placeInfo -> placeInfo.getSpeech().equals(Speech.ENG))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("🔥 error: not found info"));
         engInfo.updatePlaceInfo(place, engPlaceInfoUpdateDTO);
+        placeInfoRepository.save(engInfo);
 
         Tag korTag = place.getTags().stream()
                 .filter(tag -> tag.getSpeech().equals(Speech.KOR))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("🔥 error: not found tag"));
         korTag.updateTag(place, korPlaceInfoUpdateDTO);
+        tagRepository.save(korTag);
 
         Tag engTag = place.getTags().stream()
                 .filter(tag -> tag.getSpeech().equals(Speech.ENG))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("🔥 error: not found tag"));
         engTag.updateTag(place, engPlaceInfoUpdateDTO);
+        tagRepository.save(engTag);
 
-        if (celebrities.size() != 0) {
-            if (place.getPlaceCelebrities().size() != 0) {
-                place.getPlaceCelebrities().forEach(placeCelebrityRepository::delete);
-            }
-            List<PlaceCelebrity> placeCelebrities = new ArrayList<>();
-            celebrities.forEach(celebrity -> {
-                PlaceCelebrity placeCelebrity = new PlaceCelebrity(place, celebrity);
-                placeCelebrities.add(placeCelebrity);
-            });
-            place.changePlaceCelebrities(placeCelebrities);
-        }
+//        if (celebrities.size() != 0) {
+//            List<PlaceCelebrity> placeCelebrities = new ArrayList<>();
+//            if (place.getPlaceCelebrities().size() != 0) {
+//                List<PlaceCelebrity> savedPlaceCelebrities = placeCelebrityQueryRepository.findByPlace(placeId);
+//                savedPlaceCelebrities.forEach(placeCelebrity -> placeCelebrities.stream().forEach(placeCelebrity1 -> System.out.println(placeCelebrity1.getId())));
+//                placeCelebrityRepository.deleteAll(savedPlaceCelebrities);
+//                place.changePlaceCelebrities(placeCelebrities);
+//                placeRepository.save(place);
+//            }
+//            celebrities.forEach(celebrity -> {
+//                PlaceCelebrity placeCelebrity = new PlaceCelebrity(place, celebrity);
+//                placeCelebrities.add(placeCelebrity);
+//            });
+//            place.changePlaceCelebrities(placeCelebrities);
+//        }
         if (placeUpdateDTO.getMedia() != 0) {
-            if (place.getMedia() != null) {
-                mediaRepository.delete(place.getMedia());
-            }
             Media savedMedia = new Media(placeUpdateDTO.getMedia());
             mediaRepository.save(savedMedia);
         }

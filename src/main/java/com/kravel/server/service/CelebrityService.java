@@ -7,7 +7,7 @@ import com.kravel.server.dto.celebrity.CelebrityDTO;
 import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.enums.Speech;
 import com.kravel.server.model.celebrity.Celebrity;
-import com.kravel.server.model.celebrity.CelebrityQueryFactory;
+import com.kravel.server.model.celebrity.CelebrityQueryRepository;
 import com.kravel.server.model.celebrity.CelebrityRepository;
 import com.kravel.server.model.place.Place;
 import com.kravel.server.model.place.PlaceQueryRepository;
@@ -25,14 +25,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CelebrityService {
 
-    private final CelebrityQueryFactory celebrityQueryFactory;
+    private final CelebrityQueryRepository celebrityQueryRepository;
     private final CelebrityRepository celebrityRepository;
 
     private final PlaceQueryRepository placeQueryRepository;
 
     @Transactional(readOnly = true)
     public Page<CelebrityDTO> findAll(Pageable pageable, Speech speech) throws Exception {
-        Page<Celebrity> celebrities = celebrityQueryFactory.findAll(pageable, speech);
+        Page<Celebrity> celebrities = celebrityQueryRepository.findAll(pageable, speech);
         return celebrities.map(new Function<Celebrity, CelebrityDTO>() {
             @Override
             public CelebrityDTO apply(Celebrity celebrity) {

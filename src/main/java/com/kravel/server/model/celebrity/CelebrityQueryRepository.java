@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-public class CelebrityQueryFactory {
+public class CelebrityQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
