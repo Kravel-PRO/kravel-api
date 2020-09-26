@@ -226,8 +226,8 @@ public class AdminService {
 //            place.changePlaceCelebrities(placeCelebrities);
 //        }
         if (placeUpdateDTO.getMedia() != 0) {
-            Media savedMedia = new Media(placeUpdateDTO.getMedia());
-            mediaRepository.save(savedMedia);
+            Media media = new Media(placeUpdateDTO.getMedia());
+            place.changeMedia(media);
         }
         if (placeUpdateDTO.getImage() != null) {
             if (place.getImageUrl() != null) {
