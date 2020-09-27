@@ -14,6 +14,7 @@ import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.dto.update.InquireUploadDTO;
 import com.kravel.server.dto.update.MemberUpdateDTO;
 import com.kravel.server.enums.RoleType;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.model.member.*;
 import com.kravel.server.model.place.Place;
 import io.jsonwebtoken.Claims;
@@ -151,11 +152,12 @@ public class MemberService {
         return 1;
     }
 
-    public Page<PlaceDTO> findAllScrapById(long memberId, Pageable pageable) {
+    public Page<PlaceDTO> findAllScrapById(long memberId, Pageable pageable, Speech speech) {
         Page<Place> places = memberQueryRepository.findAllScrapById(memberId, pageable);
         return places.map(new Function<Place, PlaceDTO>() {
             @Override
             public PlaceDTO apply(Place place) {
+                place.findInfoSpeech(speech);
                 return PlaceDTO.fromEntity(place);
             }
         });

@@ -9,6 +9,7 @@ import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.dto.update.InquireUploadDTO;
 import com.kravel.server.dto.update.MemberUpdateDTO;
 import com.kravel.server.enums.InquireCategory;
+import com.kravel.server.enums.Speech;
 import com.kravel.server.service.MemberService;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import lombok.RequiredArgsConstructor;
@@ -137,7 +138,8 @@ public class MemberController {
                                                  Authentication authentication) throws Exception {
 
         long memberId = claimExtractor.getMemberId(authentication);
-        Page<PlaceDTO> placeDTOs = memberService.findAllScrapById(memberId, pageable);
+        Speech speech = claimExtractor.getSpeech(authentication);
+        Page<PlaceDTO> placeDTOs = memberService.findAllScrapById(memberId, pageable, speech);
 
         return ResponseEntity.ok(new Message(placeDTOs));
     }
