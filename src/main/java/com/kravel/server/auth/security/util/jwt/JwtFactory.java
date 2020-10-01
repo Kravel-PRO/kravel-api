@@ -1,6 +1,7 @@
 package com.kravel.server.auth.security.util.jwt;
 
 import com.kravel.server.auth.model.MemberContext;
+import com.kravel.server.enums.RoleType;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
@@ -23,6 +24,36 @@ public class JwtFactory {
     private String secretKey;
 
     private static final Logger log = LoggerFactory.getLogger(JwtFactory.class);
+
+    public String generateGuestToken(String speech) {
+        String token = null;
+        try {
+            Map<String, Object> headers = new HashMap<>();
+            headers.put("typ", "JWT");
+            headers.put("alg", "HS256");
+
+            Map<String, Object> payloads = new HashMap<>();
+            Date expiredDate = Date.from(LocalDateTime.now().plusDays(14).atZone(ZoneId.systemDefault()).toInstant());
+
+            payloads.put("exp", expiredDate.getTime() / 1000);
+            payloads.put("speech", speech);
+            payloads.put("role_type", RoleType.GUEST.getRoleName());
+            payloads.put("login_email", "unknown");
+            payloads.put("gender", "unknown");
+            payloads.put("member_id", 0);
+            payloads.put("nick_name", "unknown");
+
+            token = Jwts.builder()
+                    .setHeader(headers)
+                    .setClaims(payloads)
+                    .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
+                    .compact();
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return token;
+    }
 
     public String generateToken(MemberContext context) {
 

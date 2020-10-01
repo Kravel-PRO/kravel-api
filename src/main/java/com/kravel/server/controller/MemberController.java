@@ -4,6 +4,7 @@ import com.kravel.server.auth.dto.SignUpDTO;
 import com.kravel.server.auth.security.util.jwt.ClaimExtractor;
 import com.kravel.server.common.LogHandler;
 import com.kravel.server.common.util.message.Message;
+import com.kravel.server.dto.GuestTokenDTO;
 import com.kravel.server.dto.MemberDTO;
 import com.kravel.server.dto.place.PlaceDTO;
 import com.kravel.server.dto.update.InquireUploadDTO;
@@ -63,6 +64,20 @@ public class MemberController {
         String token = memberService.refreshToken(tokenPayload);
         return ResponseEntity.status(HttpStatus.OK).header(
                 "Authorization", "Bearer " + token)
+                .body(new Message("Refresh token generated succeed"));
+    }
+
+    @PostMapping("/auth/guest")
+    public ResponseEntity<Message> guestToken(HttpServletRequest request,
+                                              @RequestBody GuestTokenDTO guestTokenDTO) throws Exception {
+
+        LogHandler.getClientIP(request);
+        LogHandler.getRequestUrl(request);
+
+        String guestToken = memberService.getGuestToken(guestTokenDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).header(
+                "Authorization", "Bearer " + guestToken)
                 .body(new Message("Refresh token generated succeed"));
     }
 

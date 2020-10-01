@@ -8,6 +8,7 @@ import com.kravel.server.auth.security.util.jwt.JwtFactory;
 import com.kravel.server.common.S3Uploader;
 import com.kravel.server.common.util.exception.InternalServerException;
 import com.kravel.server.common.util.exception.NotFoundException;
+import com.kravel.server.dto.GuestTokenDTO;
 import com.kravel.server.dto.MemberDTO;
 import com.kravel.server.common.util.exception.InvalidRequestException;
 import com.kravel.server.dto.place.PlaceDTO;
@@ -199,5 +200,9 @@ public class MemberService {
         String jwt = jwtFactory.generateToken(MemberContext.fromMemberModel(rememberMe.getMember()));
         rememberMe.updateToken(jwt);
         return jwt;
+    }
+
+    public String getGuestToken(GuestTokenDTO guestTokenDTO) throws Exception {
+        return jwtFactory.generateGuestToken(guestTokenDTO.getSpeech().name());
     }
 }
