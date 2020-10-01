@@ -136,12 +136,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole(
                         RoleType.GUEST.name(),
-                        RoleType.USER.name()
+                        RoleType.USER.name(),
+                        RoleType.ADMIN.name()
                 )
                 .antMatchers(HttpMethod.POST, "/api/**").hasAnyRole(
-                        RoleType.USER.name()
+                        RoleType.USER.name(),
+                        RoleType.ADMIN.name()
                 )
-//                .antMatchers("/admin/**").hasRole(RoleType.USER.name())
                 .anyRequest().authenticated()
             .and()
                 .sessionManagement()
