@@ -31,7 +31,7 @@ public class AdminContoller {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/admin/places/{placeId}")
+    @PutMapping("/api/places/{placeId}")
     public ResponseEntity<Message> updatePlace(@ModelAttribute PlaceUpdateDTO placeUpdateDTO,
                                                @PathVariable long placeId) throws Exception {
         adminService.updatePlace(placeUpdateDTO, placeId);
@@ -39,7 +39,7 @@ public class AdminContoller {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/admin/places")
+    @PostMapping("/api/places")
     public ResponseEntity<Message> savePlace(@ModelAttribute PlaceUpdateDTO placeUpdateDTO,
                                              HttpServletRequest request) throws Exception {
 
@@ -51,7 +51,7 @@ public class AdminContoller {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/admin/places/{placeId}")
+    @DeleteMapping("/api/places/{placeId}")
     public ResponseEntity<Message> deletePlace(@PathVariable long placeId,
                                                HttpServletRequest request) throws Exception {
         LogHandler.getClientIP(request);
@@ -62,7 +62,7 @@ public class AdminContoller {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/admin/medias")
+    @PostMapping("/api/medias")
     public ResponseEntity<Message> saveMedia(@ModelAttribute MediaUpdateDTO mediaUpdateDTO) throws Exception {
         long placeId = adminService.saveMedia(mediaUpdateDTO);
         return ResponseEntity.ok(new Message(placeId));

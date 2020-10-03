@@ -29,6 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.function.Function;
@@ -52,6 +53,7 @@ public class MemberService {
     @Value("${keys.jwt.secret-key}")
     private String secretKey;
 
+    @Transactional
     public MemberDTO saveMember(SignUpDTO signUpDTO) throws Exception {
         if (signUpDTO.getLoginEmail().isEmpty()
                 || signUpDTO.getLoginPw().isEmpty()
@@ -92,6 +94,7 @@ public class MemberService {
         return memberDTOs;
     }
 
+    @Transactional
     public MemberDTO modifyMemberLoginPw(long memberId, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
         Member savedMember = memberRepository.findById(memberId).orElseThrow(() ->
@@ -101,7 +104,6 @@ public class MemberService {
             throw new InvalidRequestException("🔥 error: is not correct password");
         }
         savedMember.changeLoginPw(passwordEncoder.encode(memberUpdateDTO.getModifyLoginPw()));
-        memberRepository.save(savedMember);
 
         return MemberDTO.fromEntity(savedMember);
     }
@@ -110,6 +112,7 @@ public class MemberService {
         return passwordEncoder.matches(password, member.getLoginPw());
     }
 
+    @Transactional
     public MemberDTO modifyMemberNickName(long memberId, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
         Member savedMember = memberRepository.findById(memberId).orElseThrow(() ->
@@ -121,6 +124,7 @@ public class MemberService {
         return getMemberDTO(savedMember);
     }
 
+    @Transactional
     public MemberDTO modifyMemberSpeech(long memberId, MemberUpdateDTO memberUpdateDTO) throws Exception {
 
         Member savedMember = memberRepository.findById(memberId).orElseThrow(() ->
@@ -135,11 +139,8 @@ public class MemberService {
 
         String token = jwtFactory.generateToken(MemberContext.fromMemberModel(savedMember));
         savedMember.getRememberMe().updateToken(token);
-        Member changeMember = memberRepository.save(savedMember);
-        if (changeMember.getId() == 0) {
-            throw new InternalServerException("🔥 error: saved exception");
-        }
-        MemberDTO memberDTO = MemberDTO.fromEntity(changeMember);
+
+        MemberDTO memberDTO = MemberDTO.fromEntity(savedMember);
         memberDTO.setToken(token);
 
         return memberDTO;
