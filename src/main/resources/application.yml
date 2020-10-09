@@ -3,6 +3,6 @@ spring:
     dispatch-options-request: true
   servlet:
     multipart:
-      max-file-size: 6MB
+      max-file-size: 10MB
 logging:
   config: classpath:log4j2.xml
